@@ -1,8 +1,8 @@
 export interface Patient{
     id: number;
     insuredNumber: string;
-    name: string;
-    surname: string;
+    firstName: string;
+    lastName: string;
     birthDate: Date;
     gender: string;
     blodType: string;

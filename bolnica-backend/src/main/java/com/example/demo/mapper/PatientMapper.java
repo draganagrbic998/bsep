@@ -1,5 +1,8 @@
 package com.example.demo.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.PatientDTO;
@@ -12,8 +15,8 @@ public class PatientMapper {
 		Patient patient = new Patient();
 		patient.setId(patientDTO.getId());
 		patient.setInsuredNumber(patientDTO.getInsuredNumber());
-		patient.setName(patientDTO.getName());
-		patient.setSurname(patientDTO.getSurname());
+		patient.setFirstName(patientDTO.getFirstName());
+		patient.setLastName(patientDTO.getLastName());
 		patient.setBirthDate(patientDTO.getBirthDate());
 		patient.setGender(patientDTO.getGender());
 		patient.setBlodType(patientDTO.getBlodType());
@@ -26,6 +29,10 @@ public class PatientMapper {
 	
 	public PatientDTO map(Patient patient) {
 		return new PatientDTO(patient);
+	}
+	
+	public List<PatientDTO> map(List<Patient> patients){
+		return patients.stream().map(PatientDTO::new).collect(Collectors.toList());
 	}
 	
 }

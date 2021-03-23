@@ -21,8 +21,8 @@ export class PatientFormComponent implements OnInit {
 
   patientForm: FormGroup = new FormGroup({
     insuredNumber: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    name: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    surname: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
+    firstName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
+    lastName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     birthDate: new FormControl('', [Validators.required, this.birthDateValidator()]),
     gender: new FormControl('', [Validators.required]),
     blodType: new FormControl('', [Validators.required]),

@@ -10,8 +10,8 @@ public class PatientDTO {
 
 	private Long id;
 	private String insuredNumber;
-	private String name;
-	private String surname;
+	private String firstName;
+	private String lastName;
 	private LocalDate birthDate;
 	private Gender gender;
 	private BlodType blodType;
@@ -26,7 +26,17 @@ public class PatientDTO {
 	
 	public PatientDTO(Patient patient) {
 		super();
-		
+		this.id = patient.getId();
+		this.insuredNumber = patient.getInsuredNumber();
+		this.firstName = patient.getFirstName();
+		this.lastName = patient.getLastName();
+		this.birthDate = patient.getBirthDate();
+		this.gender = patient.getGender();
+		this.blodType = patient.getBlodType();
+		this.height = patient.getHeight();
+		this.weight = patient.getWeight();
+		this.address = patient.getAddress();
+		this.city = patient.getCity();
 	}
 
 	public Long getId() {
@@ -45,20 +55,20 @@ public class PatientDTO {
 		this.insuredNumber = insuredNumber;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public LocalDate getBirthDate() {

@@ -1,0 +1,15 @@
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<app-empty-container *ngIf="!fetchPending && !patients.length" [title]="'NO PATIENTS'"></app-empty-container>
+
+<div *ngIf="!fetchPending && patients.length">
+    <app-paginator
+    [pending]="fetchPending"
+    [pagination]="pagination"
+    (changedPage)="changePage($event)"
+    ></app-paginator>
+    <app-patient-details
+    *ngFor="let patient of patients"
+    [patient]="patient"
+    ></app-patient-details>
+</div>

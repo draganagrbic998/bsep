@@ -21,6 +21,14 @@ import { SpacerContainerComponent } from './components/shared/containers/spacer-
 import { PreloaderComponent } from './components/shared/loaders/preloader/preloader.component';
 import { SpinnerButtonComponent } from './components/shared/loaders/spinner-button/spinner-button.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
+import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
+import { BoldTextComponent } from './components/shared/containers/bold-text/bold-text.component';
+import { BlodTypePipe } from './components/patient/patient-details/blod-type.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { EmptyContainerComponent } from './components/shared/containers/empty-container/empty-container.component';
+import { PaginatorComponent } from './components/shared/controls/paginator/paginator.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -29,7 +37,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormContainerComponent,
     SpacerContainerComponent,
     PreloaderComponent,
-    SpinnerButtonComponent
+    SpinnerButtonComponent,
+    PatientDetailsComponent,
+    PatientListComponent,
+    BoldTextComponent,
+    BlodTypePipe,
+    EmptyContainerComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +61,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatNativeDateModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
