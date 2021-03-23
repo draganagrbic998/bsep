@@ -1,0 +1,13 @@
+button:focus{
+    border: 0 !important;
+    outline: 0 !important;
+}
+
+.mat-form-field{
+    display: block !important;
+}
+
+.disabled{
+    pointer-events: none;
+    opacity: 0.3;
+}
