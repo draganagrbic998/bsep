@@ -6,7 +6,7 @@ import { PatientListComponent } from './components/patient/patient-list/patient-
 
 const routes: Routes = [
   {
-    path: environment.patientFormRoute,
+    path: `${environment.patientFormRoute}/:mode`,
     component: PatientFormComponent,
     // dodaj guard
   },

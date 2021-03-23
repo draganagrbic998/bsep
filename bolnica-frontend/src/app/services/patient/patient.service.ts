@@ -29,6 +29,11 @@ export class PatientService {
   }
 
   save(patient: Patient): Observable<Patient>{
+    if (patient.id){
+      return this.http.put<Patient>(`${environment.patientsApi}/${patient.id}`, patient).pipe(
+        catchError(() => of(null))
+      );
+    }
     return this.http.post<Patient>(environment.patientsApi, patient).pipe(
       catchError(() => of(null))
     );

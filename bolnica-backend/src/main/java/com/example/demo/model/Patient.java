@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,6 +63,7 @@ public class Patient {
 
 	public Patient() {
 		super();
+		this.insuredNumber = UUID.randomUUID().toString();
 	}
 
 	public Long getId() {

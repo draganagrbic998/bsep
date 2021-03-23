@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient/patient.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
+import { environment } from 'src/environments/environment';
 import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
 
 @Component({
@@ -13,14 +16,17 @@ import { DeleteConfirmationComponent } from '../../shared/controls/delete-confir
 export class PatientDetailsComponent implements OnInit {
 
   constructor(
+    private storageService: StorageService,
     private patientService: PatientService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   @Input() patient: Patient = {} as Patient;
 
   edit(): void{
-
+    this.storageService.set(this.storageService.PATIENT_KEY, this.patient);
+    this.router.navigate([`${environment.patientFormRoute}/edit`]);
   }
 
   delete(): void{

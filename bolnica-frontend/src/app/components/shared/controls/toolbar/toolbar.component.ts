@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PatientService } from 'src/app/services/patient/patient.service';
+import { StorageService } from 'src/app/services/storage/storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,8 +13,9 @@ import { PatientService } from 'src/app/services/patient/patient.service';
 export class ToolbarComponent implements OnInit {
 
   constructor(
-    private router: Router,
-    private patientService: PatientService
+    private storageService: StorageService,
+    private patientService: PatientService,
+    private router: Router
   ) { }
 
   search: FormControl = new FormControl('');
@@ -25,7 +28,8 @@ export class ToolbarComponent implements OnInit {
   }
 
   createPatient(): void{
-
+    this.storageService.remove(this.storageService.PATIENT_KEY);
+    this.router.navigate([`${environment.patientFormRoute}/create`]);
   }
 
   announceSearchData(): void{
