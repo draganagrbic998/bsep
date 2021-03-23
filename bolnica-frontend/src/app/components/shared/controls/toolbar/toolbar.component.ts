@@ -21,6 +21,9 @@ export class ToolbarComponent implements OnInit {
     return this.router.url.substr(1).includes(param);
   }
 
+  signOut(): void{
+  }
+
   createPatient(): void{
 
   }

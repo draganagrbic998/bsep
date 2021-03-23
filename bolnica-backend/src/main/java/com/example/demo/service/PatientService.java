@@ -24,5 +24,10 @@ public class PatientService {
 	public Patient save(Patient patient) {
 		return this.patientRepository.save(patient);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void delete(long id) {
+		this.patientRepository.deleteById(id);
+	}
+
 }

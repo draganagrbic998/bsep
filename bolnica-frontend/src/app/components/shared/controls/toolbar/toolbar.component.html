@@ -9,7 +9,7 @@
             New medical record
         </button>
     </span>
-    <span>
+    <span class="main">
         <form *ngIf="onRoute('patient-list')" (ngSubmit)="announceSearchData()">
             <input
             *ngIf="onRoute('patient-list')"
@@ -19,5 +19,14 @@
             autocomplete="off"
             placeholder="Search...">   
         </form>
+        <button *ngIf="!onRoute('patient-form')" mat-icon-button [matMenuTriggerFor]="more">
+            <mat-icon matTooltip="More">more_vert</mat-icon>
+        </button>
+        <mat-menu #more="matMenu">
+            <button mat-menu-item (click)="signOut()">
+                <mat-icon>logout</mat-icon>
+                <span>Sign out</span>
+            </button>
+        </mat-menu>
     </span>
 </mat-toolbar>

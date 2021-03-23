@@ -31,6 +31,8 @@ import { PaginatorComponent } from './components/shared/controls/paginator/pagin
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { DeleteConfirmationComponent } from './components/shared/controls/delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     BlodTypePipe,
     EmptyContainerComponent,
     PaginatorComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    DeleteConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     MatIconModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
