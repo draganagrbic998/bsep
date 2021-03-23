@@ -16,7 +16,7 @@ import com.example.demo.mapper.PatientMapper;
 import com.example.demo.service.PatientService;
 
 @RestController
-@RequestMapping(value = "/patients", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/patients", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PatientController {
 
 	@Autowired

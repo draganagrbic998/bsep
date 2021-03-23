@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  patientsApi: 'http://localhost:8081/patients',
+  patientsApi: 'http://localhost:8081/api/patients',
   patientFormRoute: 'patient-form'
 };
 
