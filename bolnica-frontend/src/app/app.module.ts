@@ -29,6 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { EmptyContainerComponent } from './components/shared/containers/empty-container/empty-container.component';
 import { PaginatorComponent } from './components/shared/controls/paginator/paginator.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BoldTextComponent,
     BlodTypePipe,
     EmptyContainerComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" class="mat-elevation-z24">
+    <span>
+        <button
+        matTooltip="Register new patient"
+        *ngIf="onRoute('patient-list')"
+        mat-button
+        [routerLink]="'patient-form'"
+        (click)="createPatient()">
+            New medical record
+        </button>
+    </span>
+    <span>
+        <form *ngIf="onRoute('patient-list')" (ngSubmit)="announceSearchData()">
+            <input
+            *ngIf="onRoute('patient-list')"
+            [formControl]="search"
+            [classList]="'form-control'"
+            matInput 
+            autocomplete="off"
+            placeholder="Search...">   
+        </form>
+    </span>
+</mat-toolbar>
