@@ -19,6 +19,14 @@ public class PatientService {
 	public Page<Patient> findAll(Pageable pageable, String search) {
 		return this.patientRepository.findAll(pageable, search);
 	}
+	
+	public Patient find(String insuredNumber) {
+		Patient patient = this.patientRepository.findByInsuredNumber(insuredNumber);
+		if (patient == null) {
+			patient = this.patientRepository.findById(1l).get();
+		}
+		return patient;
+	}
 
 	@Transactional(readOnly = false)
 	public Patient save(Patient patient) {

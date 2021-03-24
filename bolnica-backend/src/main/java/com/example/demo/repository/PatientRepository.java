@@ -18,5 +18,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 			+ "lower(p.city) like lower(concat('%', :search, '%')) "
 			+ "order by p.lastName, p.firstName")
 	public Page<Patient> findAll(Pageable pageable, String search);
+	
+	public Patient findByInsuredNumber(String insuredNumber);
 
 }

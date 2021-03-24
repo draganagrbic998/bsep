@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.MessageDTO;
 import com.example.demo.dto.PatientDTO;
 import com.example.demo.mapper.PatientMapper;
 import com.example.demo.model.Patient;
@@ -37,7 +36,7 @@ public class PatientController {
 	
 	@Autowired
 	private PatientMapper patientMapper;
-	
+			
 	@GetMapping
 	public ResponseEntity<List<PatientDTO>> findAll(Pageable pageable, @RequestParam String search, HttpServletResponse response){
 		Page<Patient> patients = this.patientService.findAll(pageable, search);
@@ -65,9 +64,4 @@ public class PatientController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping(value = "/save-message")
-	public ResponseEntity<Void> saveMessage(@Valid @RequestBody MessageDTO messageDTO){
-		System.out.println(messageDTO.getText());
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
 }

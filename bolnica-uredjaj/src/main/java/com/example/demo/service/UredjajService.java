@@ -14,7 +14,7 @@ import com.example.demo.dto.MessageDTO;
 @Service
 public class UredjajService {
 
-	private static final String BOLNICA_PATH = "http://localhost:8081/api/patients/save-message";
+	private static final String MESSAGES_API = "http://localhost:8081/api/messages";
 	private static final long SLEEP_INTERVAL = 5000;
 	
 	@Autowired
@@ -39,7 +39,8 @@ public class UredjajService {
 		while (true) {
 			String text = String.format("Timestamp=%s patient=%s pusle=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
 					LocalDate.now(), this.getPatient(), this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
-			this.restTemplate.postForEntity(BOLNICA_PATH, new MessageDTO(text), String.class);
+			System.out.println(text);
+			this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
 			Thread.sleep(SLEEP_INTERVAL);
 		}
 	}
