@@ -19,37 +19,29 @@ public class Alarm {
 	@Column(name = "id")
 	private Long id;
 
-	@NotNull
 	@Column(name = "min_pulse")
-	private double minPulse;
+	private Double minPulse;
 	
-	@NotNull
 	@Column(name = "max_pulse")
-	private double maxPulse;
+	private Double maxPulse;
 	
-	@NotNull
 	@Column(name = "min_pressure")
-	private double minPressure;
+	private Double minPressure;
 	
-	@NotNull
 	@Column(name = "max_pressure")
-	private double maxPressure;
+	private Double maxPressure;
 	
-	@NotNull
 	@Column(name = "min_temperature")
-	private double minTemperature;
+	private Double minTemperature;
 	
-	@NotNull
 	@Column(name = "max_temperature")
-	private double maxTemperature;
+	private Double maxTemperature;
 	
-	@NotNull
 	@Column(name = "min_oxygen_level")
-	private double minOxygenLevel;
+	private Double minOxygenLevel;
 	
-	@NotNull
 	@Column(name = "max_oxygen_level")
-	private double maxOxygenLevel;
+	private Double maxOxygenLevel;
 	
 	@NotNull
 	@ManyToOne
@@ -68,67 +60,67 @@ public class Alarm {
 		this.id = id;
 	}
 
-	public double getMinPulse() {
+	public Double getMinPulse() {
 		return minPulse;
 	}
 
-	public void setMinPulse(double minPulse) {
+	public void setMinPulse(Double minPulse) {
 		this.minPulse = minPulse;
 	}
 
-	public double getMaxPulse() {
+	public Double getMaxPulse() {
 		return maxPulse;
 	}
 
-	public void setMaxPulse(double maxPulse) {
+	public void setMaxPulse(Double maxPulse) {
 		this.maxPulse = maxPulse;
 	}
 
-	public double getMinPressure() {
+	public Double getMinPressure() {
 		return minPressure;
 	}
 
-	public void setMinPressure(double minPressure) {
+	public void setMinPressure(Double minPressure) {
 		this.minPressure = minPressure;
 	}
 
-	public double getMaxPressure() {
+	public Double getMaxPressure() {
 		return maxPressure;
 	}
 
-	public void setMaxPressure(double maxPressure) {
+	public void setMaxPressure(Double maxPressure) {
 		this.maxPressure = maxPressure;
 	}
 
-	public double getMinTemperature() {
+	public Double getMinTemperature() {
 		return minTemperature;
 	}
 
-	public void setMinTemperature(double minTemperature) {
+	public void setMinTemperature(Double minTemperature) {
 		this.minTemperature = minTemperature;
 	}
 
-	public double getMaxTemperature() {
+	public Double getMaxTemperature() {
 		return maxTemperature;
 	}
 
-	public void setMaxTemperature(double maxTemperature) {
+	public void setMaxTemperature(Double maxTemperature) {
 		this.maxTemperature = maxTemperature;
 	}
 
-	public double getMinOxygenLevel() {
+	public Double getMinOxygenLevel() {
 		return minOxygenLevel;
 	}
 
-	public void setMinOxygenLevel(double minOxygenLevel) {
+	public void setMinOxygenLevel(Double minOxygenLevel) {
 		this.minOxygenLevel = minOxygenLevel;
 	}
 
-	public double getMaxOxygenLevel() {
+	public Double getMaxOxygenLevel() {
 		return maxOxygenLevel;
 	}
 
-	public void setMaxOxygenLevel(double maxOxygenLevel) {
+	public void setMaxOxygenLevel(Double maxOxygenLevel) {
 		this.maxOxygenLevel = maxOxygenLevel;
 	}
 

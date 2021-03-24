@@ -21,6 +21,7 @@ export class AlarmDialogComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+  // dodaj da se forma validira tako da ne mogu da posaljem ako su mi bas svi prazni
   savePending = false;
   alarmForm: FormGroup = new FormGroup({
     minPulse: new FormControl(''),

@@ -2,80 +2,80 @@ package com.example.demo.dto;
 
 public class AlarmDTO {
 
-	private double minPulse;
-	private double maxPulse;
-	private double minPressure;
-	private double maxPressure;
-	private double minTemperature;
-	private double maxTemperature;
-	private double minOxygenLevel;
-	private double maxOxygenLevel;
+	private Double minPulse;
+	private Double maxPulse;
+	private Double minPressure;
+	private Double maxPressure;
+	private Double minTemperature;
+	private Double maxTemperature;
+	private Double minOxygenLevel;
+	private Double maxOxygenLevel;
 	
 	public AlarmDTO() {
 		super();
 	}
 
-	public double getMinPulse() {
+	public Double getMinPulse() {
 		return minPulse;
 	}
 
-	public void setMinPulse(double minPulse) {
+	public void setMinPulse(Double minPulse) {
 		this.minPulse = minPulse;
 	}
 
-	public double getMaxPulse() {
+	public Double getMaxPulse() {
 		return maxPulse;
 	}
 
-	public void setMaxPulse(double maxPulse) {
+	public void setMaxPulse(Double maxPulse) {
 		this.maxPulse = maxPulse;
 	}
 
-	public double getMinPressure() {
+	public Double getMinPressure() {
 		return minPressure;
 	}
 
-	public void setMinPressure(double minPressure) {
+	public void setMinPressure(Double minPressure) {
 		this.minPressure = minPressure;
 	}
 
-	public double getMaxPressure() {
+	public Double getMaxPressure() {
 		return maxPressure;
 	}
 
-	public void setMaxPressure(double maxPressure) {
+	public void setMaxPressure(Double maxPressure) {
 		this.maxPressure = maxPressure;
 	}
 
-	public double getMinTemperature() {
+	public Double getMinTemperature() {
 		return minTemperature;
 	}
 
-	public void setMinTemperature(double minTemperature) {
+	public void setMinTemperature(Double minTemperature) {
 		this.minTemperature = minTemperature;
 	}
 
-	public double getMaxTemperature() {
+	public Double getMaxTemperature() {
 		return maxTemperature;
 	}
 
-	public void setMaxTemperature(double maxTemperature) {
+	public void setMaxTemperature(Double maxTemperature) {
 		this.maxTemperature = maxTemperature;
 	}
 
-	public double getMinOxygenLevel() {
+	public Double getMinOxygenLevel() {
 		return minOxygenLevel;
 	}
 
-	public void setMinOxygenLevel(double minOxygenLevel) {
+	public void setMinOxygenLevel(Double minOxygenLevel) {
 		this.minOxygenLevel = minOxygenLevel;
 	}
 
-	public double getMaxOxygenLevel() {
+	public Double getMaxOxygenLevel() {
 		return maxOxygenLevel;
 	}
 
-	public void setMaxOxygenLevel(double maxOxygenLevel) {
+	public void setMaxOxygenLevel(Double maxOxygenLevel) {
 		this.maxOxygenLevel = maxOxygenLevel;
 	}
 	

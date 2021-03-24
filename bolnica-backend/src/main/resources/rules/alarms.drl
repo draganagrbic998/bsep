@@ -1,0 +1,11 @@
+package rules
+
+
+rule "Your First Rule"
+
+    when
+        //conditions
+    then
+        //actions
+
+end
