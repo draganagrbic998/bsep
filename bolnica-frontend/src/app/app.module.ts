@@ -33,6 +33,11 @@ import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.c
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { DeleteConfirmationComponent } from './components/shared/controls/delete-confirmation/delete-confirmation.component';
+import { MessageDetailsComponent } from './components/message/message-details/message-details.component';
+import { MessageListComponent } from './components/message/message-list/message-list.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { AlarmDetailsComponent } from './components/alarm/alarm-details/alarm-details.component';
+import { AlarmListComponent } from './components/alarm/alarm-list/alarm-list.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +54,11 @@ import { DeleteConfirmationComponent } from './components/shared/controls/delete
     EmptyContainerComponent,
     PaginatorComponent,
     ToolbarComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    MessageDetailsComponent,
+    MessageListComponent,
+    AlarmDetailsComponent,
+    AlarmListComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +80,8 @@ import { DeleteConfirmationComponent } from './components/shared/controls/delete
     MatIconModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatMenuModule
+    MatMenuModule,
+    ScrollingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

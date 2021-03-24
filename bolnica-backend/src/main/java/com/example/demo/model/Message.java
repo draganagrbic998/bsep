@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class Message {
 
 	@NotNull
 	@Column(name = "date")
-	private LocalDate date;
+	private Date date;
 
 	@NotNull
 	@Column(name = "pulse")
@@ -58,11 +58,11 @@ public class Message {
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

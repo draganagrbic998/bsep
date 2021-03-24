@@ -1,0 +1,17 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.left{
+    width: 40%;
+    text-align: center;
+}
+
+.scroller{
+    height: 620px;
+}

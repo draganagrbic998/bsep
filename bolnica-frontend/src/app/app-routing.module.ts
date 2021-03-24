@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { MessageListComponent } from './components/message/message-list/message-list.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 
@@ -13,6 +14,11 @@ const routes: Routes = [
   {
     path: environment.patientListRoute,
     component: PatientListComponent,
+    // dodaj guard
+  },
+  {
+    path: environment.messageListRoute,
+    component: MessageListComponent,
     // dodaj guard
   }
 ];

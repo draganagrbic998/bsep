@@ -7,18 +7,24 @@
         (click)="createPatient()">
             New medical record
         </button>
+        <button
+        matTooltip="List all messages"
+        *ngIf="onRoute('patient-list')"
+        mat-button
+        [routerLink]="'message-list'">
+            Messages
+        </button>
     </span>
     <span class="main">
         <form *ngIf="onRoute('patient-list')" (ngSubmit)="announceSearchData()">
             <input
-            *ngIf="onRoute('patient-list')"
             [formControl]="search"
             [classList]="'form-control'"
             matInput 
             autocomplete="off"
             placeholder="Search...">   
         </form>
-        <button *ngIf="!onRoute('patient-form')" mat-icon-button [matMenuTriggerFor]="more">
+        <button *ngIf="onRoute('patient-list')" mat-icon-button [matMenuTriggerFor]="more">
             <mat-icon matTooltip="More">more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">

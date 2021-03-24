@@ -1,11 +1,15 @@
 package com.example.demo.mapper;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.MessageDTO;
+import com.example.demo.dto.MessageMeasureDTO;
 import com.example.demo.model.Message;
 import com.example.demo.service.PatientService;
 
@@ -15,15 +19,21 @@ public class MessageMapper {
 	@Autowired
 	private PatientService patientService;
 	
-	public Message map(MessageDTO messageDTO) {
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	
+	public Message map(MessageMeasureDTO messageDTO) throws ParseException {
 		Message message = new Message();
-		message.setDate(LocalDate.parse(messageDTO.getText().split(" ")[0].split("=")[1]));
+		message.setDate(DATE_FORMAT.parse(messageDTO.getText().split(" ")[0].split("=")[1]));
 		message.setPulse(Double.parseDouble(messageDTO.getText().split(" ")[2].split("=")[1]));
 		message.setPressure(Double.parseDouble(messageDTO.getText().split(" ")[3].split("=")[1]));
 		message.setTemperature(Double.parseDouble(messageDTO.getText().split(" ")[4].split("=")[1]));
 		message.setOxygenLevel(Double.parseDouble(messageDTO.getText().split(" ")[5].split("=")[1]));
 		message.setPatient(this.patientService.find(messageDTO.getText().split(" ")[1].split("=")[1]));
 		return message;
+	}
+	
+	public List<MessageDTO> map(List<Message> messages){
+		return messages.stream().map(MessageDTO::new).collect(Collectors.toList());
 	}
 	
 }

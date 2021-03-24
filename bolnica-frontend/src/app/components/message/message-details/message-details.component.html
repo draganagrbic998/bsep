@@ -1,0 +1,33 @@
+<div class="root mat-elevation-z24">
+    <mat-card>
+        <mat-card-content>
+            <div class="details">
+                <span>
+                </span>
+                <app-bold-text>
+                    {{message.date | date: "dd/mm/yyyy HH:mm:ss"}}
+                </app-bold-text>
+            </div>
+            <div class="text">
+                <div>
+                    <app-bold-text>Patient: </app-bold-text>{{message.patient}}
+                </div>
+                <br>
+                <div class="main">
+                    <div>
+                        <app-bold-text>Pulse: </app-bold-text>{{message.pulse | number: '.2'}}
+                    </div>
+                    <div>
+                        <app-bold-text>Pressure: </app-bold-text>{{message.pressure| number: '.2'}}
+                    </div>
+                    <div>
+                        <app-bold-text>Temperature: </app-bold-text>{{message.temperature| number: '.2'}}
+                    </div>
+                    <div>
+                        <app-bold-text>Oxygen level: </app-bold-text>{{message.oxygenLevel| number: '.2'}}
+                    </div>    
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

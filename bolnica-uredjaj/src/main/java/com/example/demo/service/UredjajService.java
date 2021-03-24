@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ public class UredjajService {
 
 	private static final String MESSAGES_API = "http://localhost:8081/api/messages";
 	private static final long SLEEP_INTERVAL = 5000;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -37,12 +39,17 @@ public class UredjajService {
 	
 	private void monitorPatients() throws InterruptedException {
 		while (true) {
+			System.out.println(this.getTimestamp());
 			String text = String.format("Timestamp=%s patient=%s pusle=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
-					LocalDate.now(), this.getPatient(), this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
+					DATE_FORMAT.format(this.getTimestamp()), this.getPatient(), this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
 			System.out.println(text);
 			this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
 			Thread.sleep(SLEEP_INTERVAL);
 		}
+	}
+	
+	private Date getTimestamp() {
+		return new Date();
 	}
 	
 	private String getPatient() {

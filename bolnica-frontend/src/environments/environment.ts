@@ -5,8 +5,10 @@
 export const environment = {
   production: false,
   patientsApi: 'http://localhost:8081/api/patients',
+  messagesApi: 'http://localhost:8081/api/messages',
   patientFormRoute: 'patient-form',
-  patientListRoute: 'patient-list'
+  patientListRoute: 'patient-list',
+  messageListRoute: 'message-list'
 };
 
 /*
