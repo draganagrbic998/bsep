@@ -6,6 +6,7 @@ import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { environment } from 'src/environments/environment';
+import { AlarmDialogComponent } from '../../alarm/alarm-dialog/alarm-dialog.component';
 import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
 
 @Component({
@@ -37,6 +38,11 @@ export class PatientDetailsComponent implements OnInit {
         this.patientService.announceRefreshData();
       }
     });
+  }
+
+  addAlarm(): void{
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patient}};
+    this.dialog.open(AlarmDialogComponent, options);
   }
 
   ngOnInit(): void {

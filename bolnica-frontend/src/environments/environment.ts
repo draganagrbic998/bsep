@@ -6,9 +6,11 @@ export const environment = {
   production: false,
   patientsApi: 'http://localhost:8081/api/patients',
   messagesApi: 'http://localhost:8081/api/messages',
+  alarmsApi: 'http://localhost:8081/api/alarms',
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',
-  messageListRoute: 'message-list'
+  messageListRoute: 'message-list',
+  alarmListRoute: 'alarm-list'
 };
 
 /*

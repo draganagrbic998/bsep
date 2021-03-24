@@ -1,0 +1,81 @@
+<div class="root">
+
+    <div class="header">
+        <h3>Create new alarm</h3>
+    </div>
+
+    <div class="content">
+        <form [formGroup]="alarmForm" (ngSubmit)="confirm()">
+            <div class="temp">
+                <span>Pulse: </span>
+                <input
+                formControlName="minPulse"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter min pulse">     
+                <input
+                formControlName="maxPulse"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter max pulse">           
+            </div><br>
+            <div>
+                <span>Pressure: </span>
+                <input
+                formControlName="minPressure"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter min pressure">     
+                <input
+                formControlName="maxPressure"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter max pressure">           
+            </div><br>
+            <div>
+                <span>Temperature: </span>
+                <input
+                formControlName="minTemperature"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter min temperature">     
+                <input
+                formControlName="maxTemperature"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter max temperature">
+            </div><br>
+            <div>
+                <span>Oxygen level: </span>
+                <input
+                formControlName="minOxygenLevel"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter min oxygen level">     
+                <input
+                formControlName="maxOxygenLevel"
+                [classList]="'form-control'"
+                matInput 
+                autocomplete="off"
+                placeholder="Enter max oxygen level">
+            </div>
+        </form><br><br>
+        <app-spacer-container>
+            <span>
+                <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
+            </span>
+            <span>
+                <button *ngIf="!savePending" mat-button (click)="confirm()">Confirm</button>
+                <app-spinner-button *ngIf="savePending"></app-spinner-button>
+            </span>
+        </app-spacer-container>    
+    </div>
+        
+</div>

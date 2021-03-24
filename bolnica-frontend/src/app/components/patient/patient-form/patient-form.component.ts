@@ -49,7 +49,6 @@ export class PatientFormComponent implements OnInit {
         this.savePending = false;
         if (patient){
           this.snackBar.open('Patient saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
-          this.patientService.announceRefreshData();
           this.location.back();
         }
         else{

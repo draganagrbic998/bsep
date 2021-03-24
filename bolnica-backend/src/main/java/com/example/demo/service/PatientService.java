@@ -20,7 +20,11 @@ public class PatientService {
 		return this.patientRepository.findAll(pageable, search);
 	}
 	
-	public Patient find(String insuredNumber) {
+	public Patient find(long id) {
+		return this.patientRepository.findById(id).get();
+	}
+	
+	public Patient findByInsuredNumber(String insuredNumber) {
 		Patient patient = this.patientRepository.findByInsuredNumber(insuredNumber);
 		if (patient == null) {
 			patient = this.patientRepository.findById(1l).get();

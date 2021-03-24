@@ -1,0 +1,36 @@
+@import "../../../../styles/theme";
+
+.root{
+    text-align: center;
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background-color: $primary;
+}
+
+.content{
+    padding: 40px;
+    padding-bottom: 30px;
+}
+
+.content div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.content span{
+    font-weight: bold;
+    min-width: 130px;
+    text-align: left;
+}

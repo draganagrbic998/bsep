@@ -1,8 +1,8 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
 import { Message } from 'src/app/models/message';
+import { MessageSearch } from 'src/app/models/message-search';
 import { Pagination } from 'src/app/models/pagination';
 import { MessageService } from 'src/app/services/message/message.service';
 
@@ -24,15 +24,8 @@ export class MessageListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-
-  searchForm: FormGroup = new FormGroup({
-    insuredNumber: new FormControl(''),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    startDate: new FormControl(''),
-    endDate: new FormControl('')
-  });
-  searchPending = false;
+  // izbaci ova prazna polja kasnije
+  search: MessageSearch = {insuredNumber: '', firstName: '', lastName: ''} as MessageSearch;
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
@@ -42,7 +35,7 @@ export class MessageListComponent implements OnInit {
   fetchMessages(): void{
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
-    this.messageService.findAll(this.pagination.pageNumber, this.searchForm.value).subscribe(
+    this.messageService.findAll(this.pagination.pageNumber, this.search).subscribe(
       (data: HttpResponse<Message[]>) => {
         this.fetchPending = false;
         if (data){

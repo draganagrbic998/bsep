@@ -28,7 +28,7 @@ public class MessageMapper {
 		message.setPressure(Double.parseDouble(messageDTO.getText().split(" ")[3].split("=")[1]));
 		message.setTemperature(Double.parseDouble(messageDTO.getText().split(" ")[4].split("=")[1]));
 		message.setOxygenLevel(Double.parseDouble(messageDTO.getText().split(" ")[5].split("=")[1]));
-		message.setPatient(this.patientService.find(messageDTO.getText().split(" ")[1].split("=")[1]));
+		message.setPatient(this.patientService.findByInsuredNumber(messageDTO.getText().split(" ")[1].split("=")[1]));
 		return message;
 	}
 	

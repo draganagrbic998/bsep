@@ -14,6 +14,13 @@
         [routerLink]="'message-list'">
             Messages
         </button>
+        <button
+        matTooltip="List all alarms"
+        *ngIf="onRoute('patient-list')"
+        mat-button
+        [routerLink]="'alarm-list'">
+            Alarms
+        </button>
     </span>
     <span class="main">
         <form *ngIf="onRoute('patient-list')" (ngSubmit)="announceSearchData()">

@@ -38,6 +38,8 @@ import { MessageListComponent } from './components/message/message-list/message-
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AlarmDetailsComponent } from './components/alarm/alarm-details/alarm-details.component';
 import { AlarmListComponent } from './components/alarm/alarm-list/alarm-list.component';
+import { SearchFormComponent } from './components/shared/controls/search-form/search-form.component';
+import { AlarmDialogComponent } from './components/alarm/alarm-dialog/alarm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { AlarmListComponent } from './components/alarm/alarm-list/alarm-list.com
     MessageDetailsComponent,
     MessageListComponent,
     AlarmDetailsComponent,
-    AlarmListComponent
+    AlarmListComponent,
+    SearchFormComponent,
+    AlarmDialogComponent
   ],
   imports: [
     BrowserModule,

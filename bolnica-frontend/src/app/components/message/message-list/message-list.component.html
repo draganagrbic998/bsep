@@ -17,70 +17,9 @@
             </cdk-virtual-scroll-viewport>        
         </div>
     </div>
-    <div class="right"><br>
-        <app-form-container>
-            <form [formGroup]="searchForm">
-                <div [class.disabled]="searchPending">
-                    <h2>Messages Search</h2><br><br>
-                    <mat-form-field>
-                        <mat-label>Patient insured number</mat-label>
-                        <input 
-                        formControlName="insuredNumber" 
-                        matInput 
-                        autocomplete="off"
-                        placeholder="Enter insured number">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Patient first name</mat-label>
-                        <input 
-                        formControlName="firstName" 
-                        matInput 
-                        autocomplete="off"
-                        placeholder="Enter first name">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Patient last name</mat-label>
-                        <input 
-                        formControlName="lastName" 
-                        matInput 
-                        autocomplete="off"
-                        placeholder="Enter last name">
-                    </mat-form-field>
-                    <mat-form-field> 
-                        <mat-label>Start date</mat-label>
-                        <input 
-                        formControlName="startDate"
-                        matInput 
-                        autocomplete="off"
-                        placeholder="Enter start date"
-                        [matDatepicker]="startDate">
-                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                        <mat-datepicker #startDate></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field> 
-                        <mat-label>End date</mat-label>
-                        <input 
-                        formControlName="endDate"
-                        matInput 
-                        autocomplete="off"
-                        placeholder="Enter end date"
-                        [matDatepicker]="endDate">
-                        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-                        <mat-datepicker #endDate></mat-datepicker>
-                    </mat-form-field>        
-                </div><br><br>
-                <app-spacer-container>
-                    <span></span>
-                    <span>
-                        <button 
-                        *ngIf="!searchPending"
-                        mat-raised-button 
-                        color="primary"
-                        (click)="fetchMessages()">Search</button>
-                        <app-spinner-button *ngIf="searchPending"></app-spinner-button>    
-                    </span>
-                </app-spacer-container>        
-            </form>
-        </app-form-container>
+    <div class="right">
+        <br>
+        <app-search-form [fetchPending]="fetchPending" 
+        (searchTriggered)="search = $event; fetchMessages()"></app-search-form>
     </div>
 </div>
