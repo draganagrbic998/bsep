@@ -32,7 +32,11 @@ public class AlarmMapper {
 		return alarm;
 	}
 	
-	public List<AlarmTriggeringDTO> map(List<AlarmTriggering> alarmTriggerings){
+	public List<AlarmDTO> map(List<Alarm> alarms){
+		return alarms.stream().map(AlarmDTO::new).collect(Collectors.toList());
+	}
+
+	public List<AlarmTriggeringDTO> mapTriggerings(List<AlarmTriggering> alarmTriggerings){
 		return alarmTriggerings.stream().map(AlarmTriggeringDTO::new).collect(Collectors.toList());
 	}
 	

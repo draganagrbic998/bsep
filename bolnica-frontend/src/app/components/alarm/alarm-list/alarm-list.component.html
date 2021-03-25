@@ -1,1 +1,25 @@
-<p>alarm-list works!</p>
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<div *ngIf="!fetchPending">
+    <cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
+        <app-alarm-details
+        *ngFor="let alarm of alarms; let i = index"
+        [alarm]="alarm"
+        [index]="i + 1"
+        ></app-alarm-details>
+        <div *ngIf="alarms.length < 10">
+            <br><br><br><br><br>
+        </div>
+        <app-empty-container *ngIf="!alarms.length" [title]="'NO ALARMS'"></app-empty-container>
+    </cdk-virtual-scroll-viewport>
+</div>
+<br>
+<div class="paginator">
+    <app-paginator
+    [alarm]="true"
+    (alarmWanted)="addAlarm()"
+    [pending]="fetchPending"
+    [pagination]="pagination"
+    (changedPage)="changePage($event)"
+    ></app-paginator>
+</div>

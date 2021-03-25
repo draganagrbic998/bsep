@@ -1,7 +1,10 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.Alarm;
+
 public class AlarmDTO {
 
+	private long id;
 	private Double minPulse;
 	private Double maxPulse;
 	private Double minPressure;
@@ -13,6 +16,27 @@ public class AlarmDTO {
 	
 	public AlarmDTO() {
 		super();
+	}
+
+	public AlarmDTO(Alarm alarm) {
+		super();
+		this.id = alarm.getId();
+		this.minPulse = alarm.getMinPulse();
+		this.maxPulse = alarm.getMaxPulse();
+		this.minPressure = alarm.getMinPressure();
+		this.maxPressure = alarm.getMaxPressure();
+		this.minTemperature = alarm.getMinTemperature();
+		this.maxTemperature = alarm.getMaxTemperature();
+		this.minOxygenLevel = alarm.getMinOxygenLevel();
+		this.maxOxygenLevel = alarm.getMaxOxygenLevel();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Double getMinPulse() {

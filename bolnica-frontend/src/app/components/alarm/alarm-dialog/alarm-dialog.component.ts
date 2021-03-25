@@ -15,13 +15,12 @@ import { AlarmService } from 'src/app/services/alarm/alarm.service';
 export class AlarmDialogComponent implements OnInit {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private patient: Patient,
+    @Inject(MAT_DIALOG_DATA) private patientId: number,
     private alarmService: AlarmService,
     public dialogRef: MatDialogRef<AlarmDialogComponent>,
     private snackBar: MatSnackBar
   ) { }
 
-  // dodaj da se forma validira tako da ne mogu da posaljem ako su mi bas svi prazni
   savePending = false;
   alarmForm: FormGroup = new FormGroup({
     minPulse: new FormControl(''),
@@ -46,12 +45,13 @@ export class AlarmDialogComponent implements OnInit {
   confirm(): void{
     this.savePending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.save(this.patient.id, this.alarmForm.value).subscribe(
+    this.alarmService.save(this.patientId, this.alarmForm.value).subscribe(
       (alarm: Alarm) => {
         this.savePending = false;
         if (alarm){
           this.snackBar.open('Alarm saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
+          this.alarmService.announceRefreshData();
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);

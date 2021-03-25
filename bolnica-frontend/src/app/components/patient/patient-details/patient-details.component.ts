@@ -1,13 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { Component, OnInit } from '@angular/core';
 import { Patient } from 'src/app/models/patient';
-import { PatientService } from 'src/app/services/patient/patient.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
-import { environment } from 'src/environments/environment';
-import { AlarmDialogComponent } from '../../alarm/alarm-dialog/alarm-dialog.component';
-import { DeleteConfirmationComponent } from '../../shared/controls/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -17,35 +10,13 @@ import { DeleteConfirmationComponent } from '../../shared/controls/delete-confir
 export class PatientDetailsComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService,
-    private patientService: PatientService,
-    private dialog: MatDialog,
-    private router: Router
+    private storageService: StorageService
   ) { }
 
-  @Input() patient: Patient = {} as Patient;
-
-  edit(): void{
-    this.storageService.set(this.storageService.PATIENT_KEY, this.patient);
-    this.router.navigate([`${environment.patientFormRoute}/edit`]);
-  }
-
-  delete(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.patientService.delete(this.patient.id)}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.patientService.announceRefreshData();
-      }
-    });
-  }
-
-  addAlarm(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patient}};
-    this.dialog.open(AlarmDialogComponent, options);
-  }
+  patient: Patient;
 
   ngOnInit(): void {
+    this.patient = this.storageService.get(this.storageService.PATIENT_KEY) as Patient;
   }
 
 }

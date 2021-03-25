@@ -77,6 +77,11 @@ export class PatientListComponent implements OnInit {
     });
   }
 
+  openDetails(patient: Patient): void{
+    this.storageService.set(this.storageService.PATIENT_KEY, patient);
+    this.router.navigate([environment.patientDetailsRoute]);
+  }
+
   ngOnInit(): void {
     this.changePage(0);
     // tslint:disable-next-line: deprecation

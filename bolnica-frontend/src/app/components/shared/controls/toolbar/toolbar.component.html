@@ -9,7 +9,7 @@
         </button>
         <button
         matTooltip="List all patients"
-        *ngIf="onRoute('list') && !onRoute('patient-list')"
+        *ngIf="!onRoute('patient-list') && !onRoute('form')"
         mat-button
         [routerLink]="'patient-list'">
             Patients
@@ -38,7 +38,7 @@
             autocomplete="off"
             placeholder="Search...">   
         </form>
-        <button *ngIf="onRoute('list')" mat-icon-button [matMenuTriggerFor]="more">
+        <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
             <mat-icon matTooltip="More">more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">

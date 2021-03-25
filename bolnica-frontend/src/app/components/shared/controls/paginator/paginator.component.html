@@ -12,7 +12,14 @@
         *ngIf="!pending && !pagination.pageNumber"
         mat-icon-button 
         (click)="changedPage.emit(0)">
-            <mat-icon class="refresh" matTooltip="refresh">autorenew</mat-icon>
+            <mat-icon class="small" matTooltip="refresh">autorenew</mat-icon>
+        </button>
+    </span>
+    <span *ngIf="alarm">
+        <button 
+        mat-icon-button 
+        (click)="alarmWanted.emit()">
+            <mat-icon class="small" matTooltip="Add alarm">alarm_on</mat-icon>
         </button>
     </span>
     <span class="right">

@@ -1,4 +1,5 @@
 export interface Alarm{
+    id: number;
     minPulse: number;
     maxPulse: number;
     minPressure: number;

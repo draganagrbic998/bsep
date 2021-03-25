@@ -50,7 +50,16 @@
               (click)="delete(patient.id)">
                   <mat-icon>delete</mat-icon>
               </button>
-          </span>
+            </span>
+            <span>
+              <button 
+              matTooltip="Open medical record"
+              mat-icon-button 
+              color="accent"
+              (click)="openDetails(patient)">
+                  <mat-icon>details</mat-icon>
+              </button>
+            </span>
           </app-spacer-container>
         </td>
       </ng-container>

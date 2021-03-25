@@ -10,11 +10,13 @@ export class PaginatorComponent implements OnInit {
 
   constructor() { }
 
+  @Input() alarm: boolean;
   @Input() small: boolean;
   @Input() canRefresh: boolean;
   @Input() pending: boolean;
   @Input() pagination: Pagination = {firstPage: true, lastPage: true, pageNumber: 0};
   @Output() changedPage: EventEmitter<number> = new EventEmitter();
+  @Output() alarmWanted: EventEmitter<null> = new EventEmitter();
 
   ngOnInit(): void {
   }
