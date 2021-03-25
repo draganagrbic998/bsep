@@ -1,7 +1,7 @@
 <app-form-container>
     <form [formGroup]="searchForm">
         <div [class.disabled]="fetchPending">
-            <h2>Messages Search</h2><br><br>
+            <h2>Search</h2><br><br>
             <mat-form-field>
                 <mat-label>Patient insured number</mat-label>
                 <input 
@@ -29,25 +29,14 @@
             <mat-form-field> 
                 <mat-label>Start date</mat-label>
                 <input 
-                formControlName="startDate"
+                formControlName="date"
                 matInput 
                 autocomplete="off"
                 placeholder="Enter start date"
-                [matDatepicker]="startDate">
-                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                <mat-datepicker #startDate></mat-datepicker>
+                [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
             </mat-form-field>
-            <mat-form-field> 
-                <mat-label>End date</mat-label>
-                <input 
-                formControlName="endDate"
-                matInput 
-                autocomplete="off"
-                placeholder="Enter end date"
-                [matDatepicker]="endDate">
-                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
-                <mat-datepicker #endDate></mat-datepicker>
-            </mat-form-field>        
         </div><br><br>
         <app-spacer-container>
             <span></span>

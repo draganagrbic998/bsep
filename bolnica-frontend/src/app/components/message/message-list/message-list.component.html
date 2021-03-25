@@ -5,6 +5,7 @@
         [title]="'NO MESSAGES'" [transparent]="true"></app-empty-container>    
         <div *ngIf="!fetchPending && messages.length">
             <app-paginator
+            [canRefresh]="true"
             [pending]="fetchPending"
             [pagination]="pagination"
             (changedPage)="changePage($event)"

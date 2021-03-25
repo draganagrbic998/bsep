@@ -13,6 +13,7 @@ public class MessageDTO {
 	private double temperature;
 	private double oxygenLevel;
 	private String patient;
+	private String insuredNumber;
 	
 	public MessageDTO() {
 		super();
@@ -27,6 +28,7 @@ public class MessageDTO {
 		this.temperature = message.getTemperature();
 		this.oxygenLevel = message.getOxygenLevel();
 		this.patient = message.getPatient().getFirstName() + " " + message.getPatient().getLastName();
+		this.insuredNumber = message.getPatient().getInsuredNumber();
 	}
 
 	public long getId() {
@@ -83,6 +85,14 @@ public class MessageDTO {
 
 	public void setPatient(String patient) {
 		this.patient = patient;
+	}
+
+	public String getInsuredNumber() {
+		return insuredNumber;
+	}
+
+	public void setInsuredNumber(String insuredNumber) {
+		this.insuredNumber = insuredNumber;
 	}
 	
 }

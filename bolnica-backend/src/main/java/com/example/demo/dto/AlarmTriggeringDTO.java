@@ -10,6 +10,7 @@ public class AlarmTriggeringDTO {
 	private Date date;
 	private String message;
 	private String patient;
+	private String insuredNumber;
 	
 	public AlarmTriggeringDTO() {
 		super();
@@ -21,6 +22,7 @@ public class AlarmTriggeringDTO {
 		this.date = alarmTriggering.getDate();
 		this.message = alarmTriggering.getMessage();
 		this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
+		this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();
 	}
 
 	public long getId() {
@@ -53,6 +55,14 @@ public class AlarmTriggeringDTO {
 
 	public void setPatient(String patient) {
 		this.patient = patient;
+	}
+
+	public String getInsuredNumber() {
+		return insuredNumber;
+	}
+
+	public void setInsuredNumber(String insuredNumber) {
+		this.insuredNumber = insuredNumber;
 	}
 	
 }

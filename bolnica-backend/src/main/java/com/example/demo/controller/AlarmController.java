@@ -40,7 +40,7 @@ public class AlarmController {
 	private AlarmMapper alarmMapper;
 	
 	@PostMapping(value = "/search")
-	public ResponseEntity<List<AlarmTriggeringDTO>> findAll(Pageable pageable, @RequestBody SearchDTO searchDTO, HttpServletResponse response){
+	public ResponseEntity<List<AlarmTriggeringDTO>> findAll(Pageable pageable, @Valid @RequestBody SearchDTO searchDTO, HttpServletResponse response){
 		Page<AlarmTriggering> alarms = this.alarmTriggeringService.findAll(pageable, searchDTO);
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");

@@ -7,6 +7,14 @@
             <mat-icon color="primary" matTooltip="previous page">navigate_before</mat-icon>
         </button>
     </span>
+    <span *ngIf="canRefresh">
+        <button 
+        *ngIf="!pending && !pagination.pageNumber"
+        mat-icon-button 
+        (click)="changedPage.emit(0)">
+            <mat-icon class="refresh" matTooltip="refresh">autorenew</mat-icon>
+        </button>
+    </span>
     <span class="right">
         <button 
         *ngIf="!pending && !pagination.lastPage"

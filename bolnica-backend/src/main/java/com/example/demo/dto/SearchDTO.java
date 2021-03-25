@@ -2,13 +2,19 @@ package com.example.demo.dto;
 
 import java.util.Date;
 
+import com.sun.istack.NotNull;
+
 public class SearchDTO {
 
+	@NotNull
 	private String insuredNumber;
+	
+	@NotNull
 	private String firstName;
+	
+	@NotNull
 	private String lastName;
-	private Date startDate;
-	private Date endDate;
+	private Date date;
 	
 	public SearchDTO() {
 		super();
@@ -38,20 +44,12 @@ public class SearchDTO {
 		this.lastName = lastName;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }

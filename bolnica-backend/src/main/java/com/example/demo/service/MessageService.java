@@ -25,8 +25,7 @@ public class MessageService {
 			searchDTO.getInsuredNumber(), 
 			searchDTO.getFirstName(), 
 			searchDTO.getLastName(), 
-			searchDTO.getStartDate(), 
-			searchDTO.getEndDate());
+			searchDTO.getDate());
 	}
 
 	@Transactional(readOnly = false)

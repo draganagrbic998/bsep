@@ -18,8 +18,7 @@ export class SearchFormComponent implements OnInit {
     insuredNumber: new FormControl(''),
     firstName: new FormControl(''),
     lastName: new FormControl(''),
-    startDate: new FormControl(''),
-    endDate: new FormControl('')
+    date: new FormControl('')
   });
 
   ngOnInit(): void {

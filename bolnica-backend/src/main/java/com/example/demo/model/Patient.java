@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,7 +66,7 @@ public class Patient {
 	@Column(name = "city")
 	private String city;
 
-	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private Set<Alarm> alarms = new HashSet<>();
 
 	public Patient() {

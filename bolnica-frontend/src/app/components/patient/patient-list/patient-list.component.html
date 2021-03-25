@@ -1,15 +1,78 @@
 <app-preloader *ngIf="fetchPending"></app-preloader>
 
-<app-empty-container *ngIf="!fetchPending && !patients.length" [title]="'NO PATIENTS'"></app-empty-container>
+<div class="root" *ngIf="!fetchPending">
+  <div class="mat-elevation-z24">
+    <table mat-table [dataSource]="patients">
+      
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>First name</th>
+        <td mat-cell *matCellDef="let patient"> {{patient.firstName}} </td>
+      </ng-container>
 
-<div *ngIf="!fetchPending && patients.length">
-    <app-paginator
-    [pending]="fetchPending"
-    [pagination]="pagination"
-    (changedPage)="changePage($event)"
-    ></app-paginator>
-    <app-patient-details
-    *ngFor="let patient of patients"
-    [patient]="patient"
-    ></app-patient-details>
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Last name</th>
+        <td mat-cell *matCellDef="let patient"> {{patient.lastName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="birthDate">
+        <th mat-header-cell *matHeaderCellDef>Birth date</th>
+        <td mat-cell *matCellDef="let patient"> {{patient.birthDate | date: "dd/MM/yyyy"}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let patient"> {{patient.address}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef>City</th>
+        <td mat-cell *matCellDef="let patient"> {{patient.city}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let patient">
+          <app-spacer-container>
+            <span>
+              <button 
+              matTooltip="Edit"
+              mat-icon-button 
+              color="primary"
+              (click)="edit(patient)">
+                  <mat-icon>edit</mat-icon>
+              </button>
+            </span>
+            <span>
+              <button 
+              matTooltip="Delete"
+              mat-icon-button 
+              color="warn"
+              (click)="delete(patient.id)">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          </span>
+          </app-spacer-container>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let odgovor; columns: columns;"></tr>
+      <tr class="mat-row" *matNoDataRow><td class="mat-cell" colspan="6">No patients</td></tr>
+
+    </table>  
+
+    <div class="paginator">
+      <app-spacer-container>
+        <span></span>
+        <span>
+          <app-paginator 
+          [small]="true" 
+          [pending]="fetchPending"
+          [pagination]="pagination" 
+          (changedPage)="changePage($event)"
+          ></app-paginator>
+        </span>
+      </app-spacer-container>
+    </div>
+  </div>
 </div>

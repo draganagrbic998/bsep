@@ -36,7 +36,7 @@ public class MessageController {
 	private MessageMapper messageMapper;
 
 	@PostMapping(value = "/search")
-	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @RequestBody SearchDTO searchDTO, HttpServletResponse response){
+	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody SearchDTO searchDTO, HttpServletResponse response){
 		Page<Message> messages = this.messageService.findAll(pageable, searchDTO);
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, messages.isFirst() + "");

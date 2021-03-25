@@ -5,18 +5,25 @@
         *ngIf="onRoute('patient-list')"
         mat-button
         (click)="createPatient()">
-            New medical record
+            New Patient
+        </button>
+        <button
+        matTooltip="List all patients"
+        *ngIf="onRoute('list') && !onRoute('patient-list')"
+        mat-button
+        [routerLink]="'patient-list'">
+            Patients
         </button>
         <button
         matTooltip="List all messages"
-        *ngIf="onRoute('patient-list')"
+        *ngIf="onRoute('patient-list') || onRoute('alarm-triggering-list')"
         mat-button
         [routerLink]="'message-list'">
             Messages
         </button>
         <button
         matTooltip="List all alarms"
-        *ngIf="onRoute('patient-list')"
+        *ngIf="onRoute('patient-list') || onRoute('message-list')"
         mat-button
         [routerLink]="'alarm-triggering-list'">
             Alarms
@@ -31,7 +38,7 @@
             autocomplete="off"
             placeholder="Search...">   
         </form>
-        <button *ngIf="onRoute('patient-list')" mat-icon-button [matMenuTriggerFor]="more">
+        <button *ngIf="onRoute('list')" mat-icon-button [matMenuTriggerFor]="more">
             <mat-icon matTooltip="More">more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">

@@ -15,9 +15,8 @@ public interface AlarmTriggeringRepository extends JpaRepository<AlarmTriggering
 			+ "lower(a.patient.insuredNumber) like lower(concat('%', :insuredNumber, '%')) and "
 			+ "lower(a.patient.firstName) like lower(concat('%', :firstName, '%')) and "
 			+ "lower(a.patient.lastName) like lower(concat('%', :lastName, '%')) and "
-			+ "(cast(:startDate as date) is null or a.date >= :startDate) and "
-			+ "(cast(:endDate as date) is null or a.date <= :endDate) "
+			+ "(cast(:date as date) is null or a.date <= :date) "
 			+ "order by a.date desc")
-	public Page<AlarmTriggering> findAll(Pageable pageable, String insuredNumber, String firstName, String lastName, Date startDate, Date endDate);
+	public Page<AlarmTriggering> findAll(Pageable pageable, String insuredNumber, String firstName, String lastName, Date date);
 
 }

@@ -9,12 +9,15 @@
             <div>
                 <span>Pulse: </span>
                 <input
+                appOnlyNumbers
+                pattern="/[0-9]+/i"
                 formControlName="minPulse"
                 [classList]="'form-control'"
                 matInput 
                 autocomplete="off"
                 placeholder="Enter min pulse">     
                 <input
+                appOnlyNumbers
                 formControlName="maxPulse"
                 [classList]="'form-control'"
                 matInput 
@@ -24,12 +27,14 @@
             <div>
                 <span>Pressure: </span>
                 <input
+                appOnlyNumbers
                 formControlName="minPressure"
                 [classList]="'form-control'"
                 matInput 
                 autocomplete="off"
                 placeholder="Enter min pressure">     
                 <input
+                appOnlyNumbers
                 formControlName="maxPressure"
                 [classList]="'form-control'"
                 matInput 
@@ -39,12 +44,14 @@
             <div>
                 <span>Temperature: </span>
                 <input
+                appOnlyNumbers
                 formControlName="minTemperature"
                 [classList]="'form-control'"
                 matInput 
                 autocomplete="off"
                 placeholder="Enter min temperature">     
                 <input
+                appOnlyNumbers
                 formControlName="maxTemperature"
                 [classList]="'form-control'"
                 matInput 
@@ -54,12 +61,14 @@
             <div>
                 <span>Oxygen level: </span>
                 <input
+                appOnlyNumbers
                 formControlName="minOxygenLevel"
                 [classList]="'form-control'"
                 matInput 
                 autocomplete="off"
                 placeholder="Enter min oxygen level">     
                 <input
+                appOnlyNumbers
                 formControlName="maxOxygenLevel"
                 [classList]="'form-control'"
                 matInput 
@@ -72,7 +81,7 @@
                 <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
             </span>
             <span>
-                <button *ngIf="!savePending" mat-button (click)="confirm()">Confirm</button>
+                <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="emptyForm">Confirm</button>
                 <app-spinner-button *ngIf="savePending"></app-spinner-button>
             </span>
         </app-spacer-container>    

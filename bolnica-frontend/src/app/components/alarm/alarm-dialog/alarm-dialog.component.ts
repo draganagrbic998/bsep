@@ -34,6 +34,15 @@ export class AlarmDialogComponent implements OnInit {
     maxOxygenLevel: new FormControl('')
   });
 
+  get emptyForm(): boolean{
+    for (const control in this.alarmForm.controls){
+      if (this.alarmForm.controls[control].value.trim() !== ''){
+        return false;
+      }
+    }
+    return true;
+  }
+
   confirm(): void{
     this.savePending = true;
     // tslint:disable-next-line: deprecation

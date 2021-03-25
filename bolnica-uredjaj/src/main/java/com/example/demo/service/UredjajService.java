@@ -39,10 +39,8 @@ public class UredjajService {
 	
 	private void monitorPatients() throws InterruptedException {
 		while (true) {
-			System.out.println(this.getTimestamp());
 			String text = String.format("Timestamp=%s patient=%s pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
 					DATE_FORMAT.format(this.getTimestamp()), this.getPatient(), this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
-			System.out.println(text);
 			this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
 			Thread.sleep(SLEEP_INTERVAL);
 		}
