@@ -19,7 +19,7 @@ public class EventService {
 	
 	public void checkAlarm(Message message) {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.ALARM_RULES);
-		//mozes dodati setfocus
+		kieSession.getAgenda().getAgendaGroup(Constants.ALARM_RULES).setFocus();
 		kieSession.setGlobal("alarmService", this.alarmTriggeringService);
 		kieSession.insert(message);
 		kieSession.fireAllRules();

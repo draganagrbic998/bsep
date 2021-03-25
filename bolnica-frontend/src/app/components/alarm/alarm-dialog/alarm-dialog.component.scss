@@ -9,8 +9,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 60px;
     background-color: $primary;
+    height: 60px;
 }
 
 .content{
@@ -30,6 +30,6 @@ span + input{
 
 .content div span{
     font-weight: bold;
-    min-width: 130px;
     text-align: left;
+    min-width: 130px;
 }

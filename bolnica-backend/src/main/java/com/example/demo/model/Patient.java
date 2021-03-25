@@ -55,7 +55,7 @@ public class Patient {
 	private double height;
 
 	@NotNull
-	@Column(name = "width")
+	@Column(name = "weight")
 	private double weight;
 
 	@NotBlank

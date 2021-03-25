@@ -1,7 +1,7 @@
 <div class="root mat-elevation-z24">
     <mat-card>
         <mat-card-content>
-            <div class="left">
+            <div class="main">
                 <div>
                     <app-bold-text>Insured number:<br> </app-bold-text>{{patient.insuredNumber}}
                 </div>
@@ -31,10 +31,8 @@
                     </div>        
                 </div>
             </div>
-            <div class="right">
-                <app-alarm-list
-                [patientId]="patient.id"
-                ></app-alarm-list>    
+            <div>
+                <app-alarm-list [patientId]="patient.id"></app-alarm-list>    
             </div>
         </mat-card-content>
     </mat-card>

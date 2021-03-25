@@ -10,16 +10,17 @@
         <div *ngIf="alarms.length < 10">
             <br><br><br><br><br>
         </div>
-        <app-empty-container *ngIf="!alarms.length" [title]="'NO ALARMS'"></app-empty-container>
+        <app-empty-container *ngIf="!alarms.length" 
+        [title]="'NO ALARMS'"></app-empty-container>
     </cdk-virtual-scroll-viewport>
 </div>
 <br>
 <div class="paginator">
     <app-paginator
-    [alarm]="true"
-    (alarmWanted)="addAlarm()"
     [pending]="fetchPending"
     [pagination]="pagination"
     (changedPage)="changePage($event)"
+    [alarm]="true"
+    (alarmWanted)="addAlarm()"
     ></app-paginator>
 </div>

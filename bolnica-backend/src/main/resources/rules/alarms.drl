@@ -10,7 +10,7 @@ global AlarmTriggeringService alarmService
 
 
 rule "High pulse"
-	no-loop
+	agenda-group "alarm-rules"
 	
     when
     	Message($pulse: pulse, $patient: patient)
@@ -24,7 +24,7 @@ rule "High pulse"
 end
 
 rule "Low pulse"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($pulse: pulse, $patient: patient)
@@ -38,7 +38,7 @@ rule "Low pulse"
 end
 
 rule "High pressure"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($pressure: pressure, $patient: patient)
@@ -52,7 +52,7 @@ rule "High pressure"
 end
 
 rule "Low pressure"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($pressure: pressure, $patient: patient)
@@ -66,7 +66,7 @@ rule "Low pressure"
 end
 
 rule "High temperature"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($temperature: temperature, $patient: patient)
@@ -80,7 +80,7 @@ rule "High temperature"
 end
 
 rule "Low temperature"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($temperature: temperature, $patient: patient)
@@ -94,7 +94,7 @@ rule "Low temperature"
 end
 
 rule "High oxygen level"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($oxygenLevel: oxygenLevel, $patient: patient)
@@ -108,7 +108,7 @@ rule "High oxygen level"
 end
 
 rule "Low oxygen level"
-	no-loop
+	agenda-group "alarm-rules"
 
     when
     	Message($oxygenLevel: oxygenLevel, $patient: patient)

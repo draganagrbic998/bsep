@@ -24,8 +24,7 @@ export class AlarmTriggeringListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  // izbaci ova prazna polja kasnije
-  search: Search = {insuredNumber: '', firstName: '', lastName: ''} as Search;
+  search: Search = {insuredNumber: '', firstName: '', lastName: '', date: null};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
@@ -55,10 +54,6 @@ export class AlarmTriggeringListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changePage(0);
-    // tslint:disable-next-line: deprecation
-    this.alarmTriggeringService.refreshData$.subscribe(() => {
-      this.changePage(0);
-    });
   }
 
 }

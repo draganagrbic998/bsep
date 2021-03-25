@@ -46,7 +46,10 @@ public class MessageController {
 
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody MessageMeasureDTO messageDTO) throws ParseException{
-		this.messageService.save(this.messageMapper.map(messageDTO));
+		Message message = this.messageMapper.map(messageDTO);
+		if (message.getPatient() != null) {
+			this.messageService.save(this.messageMapper.map(messageDTO));			
+		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

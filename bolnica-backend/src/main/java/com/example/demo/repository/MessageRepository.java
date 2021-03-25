@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-	//dodaj kastovanje nulla u string
 	@Query("select m from Message m where "
 			+ "lower(m.patient.insuredNumber) like lower(concat('%', :insuredNumber, '%')) and "
 			+ "lower(m.patient.firstName) like lower(concat('%', :firstName, '%')) and "

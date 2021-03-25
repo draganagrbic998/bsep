@@ -24,8 +24,7 @@ export class MessageListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  // izbaci ova prazna polja kasnije
-  search: Search = {insuredNumber: '', firstName: '', lastName: ''} as Search;
+  search: Search = {insuredNumber: '', firstName: '', lastName: '', date: null};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
@@ -55,10 +54,6 @@ export class MessageListComponent implements OnInit {
 
   ngOnInit(): void {
     this.changePage(0);
-    // tslint:disable-next-line: deprecation
-    this.messageService.refreshData$.subscribe(() => {
-      this.changePage(0);
-    });
   }
 
 }

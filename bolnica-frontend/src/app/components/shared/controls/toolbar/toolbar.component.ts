@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'src/app/services/message/message.service';
 import { PatientService } from 'src/app/services/patient/patient.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +15,6 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private storageService: StorageService,
     private patientService: PatientService,
-    private messageService: MessageService,
     private router: Router
   ) { }
 

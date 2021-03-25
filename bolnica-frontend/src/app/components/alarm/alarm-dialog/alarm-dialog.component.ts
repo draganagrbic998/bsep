@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
 import { Alarm } from 'src/app/models/alarm';
-import { Patient } from 'src/app/models/patient';
 import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({

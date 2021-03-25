@@ -35,7 +35,6 @@ export class PatientFormComponent implements OnInit {
     address: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     city: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
   });
-
   savePending = false;
 
   save(): void{

@@ -59,17 +59,17 @@ public class AlarmController {
 		response.setHeader(Constants.LAST_PAGE, alarms.isLast() + "");
 		return new ResponseEntity<>(this.alarmMapper.mapTriggerings(alarms.toList()), HttpStatus.OK);
 	}
-	
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable long id){
-		this.alarmService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
 
 	@PostMapping(value = "/{patientId}")
 	public ResponseEntity<AlarmDTO> create(@PathVariable long patientId, @Valid @RequestBody AlarmDTO alarmDTO){
 		this.alarmService.save(this.alarmMapper.map(patientId, alarmDTO));
 		return new ResponseEntity<>(alarmDTO, HttpStatus.CREATED);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable long id){
+		this.alarmService.delete(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	
 }

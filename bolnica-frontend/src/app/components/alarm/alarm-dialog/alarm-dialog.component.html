@@ -5,12 +5,11 @@
     </div>
 
     <div class="content">
-        <form [formGroup]="alarmForm" (ngSubmit)="confirm()">
+        <form [formGroup]="alarmForm">
             <div>
                 <span>Pulse: </span>
                 <input
                 appOnlyNumbers
-                pattern="/[0-9]+/i"
                 formControlName="minPulse"
                 [classList]="'form-control'"
                 matInput 

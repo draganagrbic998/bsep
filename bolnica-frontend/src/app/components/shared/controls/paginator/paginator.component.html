@@ -4,7 +4,7 @@
         *ngIf="!pending && !pagination.firstPage"
         mat-icon-button 
         (click)="changedPage.emit(-1)">
-            <mat-icon color="primary" matTooltip="previous page">navigate_before</mat-icon>
+            <mat-icon color="primary" matTooltip="Previous page">navigate_before</mat-icon>
         </button>
     </span>
     <span *ngIf="canRefresh">
@@ -12,7 +12,7 @@
         *ngIf="!pending && !pagination.pageNumber"
         mat-icon-button 
         (click)="changedPage.emit(0)">
-            <mat-icon class="small" matTooltip="refresh">autorenew</mat-icon>
+            <mat-icon class="small" matTooltip="Refresh">autorenew</mat-icon>
         </button>
     </span>
     <span *ngIf="alarm">
@@ -27,7 +27,7 @@
         *ngIf="!pending && !pagination.lastPage"
         mat-icon-button 
         (click)="changedPage.emit(1)">
-            <mat-icon color="primary" matTooltip="next page">navigate_next</mat-icon>
+            <mat-icon color="primary" matTooltip="Next page">navigate_next</mat-icon>
         </button>
     </span>
 </app-spacer-container>    

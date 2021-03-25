@@ -16,8 +16,8 @@ import com.example.demo.dto.MessageDTO;
 public class UredjajService {
 
 	private static final String MESSAGES_API = "http://localhost:8081/api/messages";
-	private static final long SLEEP_INTERVAL = 5000;
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	private static final long SLEEP_INTERVAL = 5000;
 	
 	@Autowired
 	private RestTemplate restTemplate;
