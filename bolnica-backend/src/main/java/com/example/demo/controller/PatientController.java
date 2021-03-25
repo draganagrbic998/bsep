@@ -40,9 +40,9 @@ public class PatientController {
 	@GetMapping
 	public ResponseEntity<List<PatientDTO>> findAll(Pageable pageable, @RequestParam String search, HttpServletResponse response){
 		Page<Patient> patients = this.patientService.findAll(pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, patients.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, patients.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, patients.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, patients.isLast() + "");
 		return new ResponseEntity<>(this.patientMapper.map(patients.toList()), HttpStatus.OK);
 	}
 

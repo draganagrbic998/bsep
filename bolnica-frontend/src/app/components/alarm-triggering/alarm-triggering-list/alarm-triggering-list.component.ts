@@ -1,23 +1,23 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
-import { Message } from 'src/app/models/message';
-import { Search } from 'src/app/models/search';
+import { AlarmTriggering } from 'src/app/models/alarm-triggering';
 import { Pagination } from 'src/app/models/pagination';
-import { MessageService } from 'src/app/services/message/message.service';
+import { Search } from 'src/app/models/search';
+import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
 
 @Component({
-  selector: 'app-message-list',
-  templateUrl: './message-list.component.html',
-  styleUrls: ['./message-list.component.scss']
+  selector: 'app-alarm-triggering-list',
+  templateUrl: './alarm-triggering-list.component.html',
+  styleUrls: ['./alarm-triggering-list.component.scss']
 })
-export class MessageListComponent implements OnInit {
+export class AlarmTriggeringListComponent implements OnInit {
 
   constructor(
-    private messageService: MessageService
+    private alarmTriggeringService: AlarmTriggeringService
   ) { }
 
-  messages: Message[] = [];
+  alarmTriggerings: AlarmTriggering[] = [];
   fetchPending = true;
   pagination: Pagination = {
     pageNumber: 0,
@@ -29,23 +29,23 @@ export class MessageListComponent implements OnInit {
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
-    this.fetchMessages();
+    this.fetchAlarmTriggerings();
   }
 
-  fetchMessages(): void{
+  fetchAlarmTriggerings(): void{
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
-    this.messageService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Message[]>) => {
+    this.alarmTriggeringService.findAll(this.pagination.pageNumber, this.search).subscribe(
+      (data: HttpResponse<AlarmTriggering[]>) => {
         this.fetchPending = false;
         if (data){
-          this.messages = data.body;
+          this.alarmTriggerings = data.body;
           const headers: HttpHeaders = data.headers;
           this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
           this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
         }
         else{
-          this.messages = [];
+          this.alarmTriggerings = [];
           this.pagination.firstPage = true;
           this.pagination.lastPage = true;
         }
@@ -56,7 +56,7 @@ export class MessageListComponent implements OnInit {
   ngOnInit(): void {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
-    this.messageService.refreshData$.subscribe(() => {
+    this.alarmTriggeringService.refreshData$.subscribe(() => {
       this.changePage(0);
     });
   }

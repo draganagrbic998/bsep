@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import java.util.Date;
 
-public class MessageSearchDTO {
+public class SearchDTO {
 
 	private String insuredNumber;
 	private String firstName;
@@ -10,7 +10,7 @@ public class MessageSearchDTO {
 	private Date startDate;
 	private Date endDate;
 	
-	public MessageSearchDTO() {
+	public SearchDTO() {
 		super();
 	}
 

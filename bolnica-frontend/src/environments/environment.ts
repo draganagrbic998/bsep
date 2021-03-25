@@ -10,7 +10,7 @@ export const environment = {
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',
   messageListRoute: 'message-list',
-  alarmListRoute: 'alarm-list'
+  alarmTriggeringListRoute: 'alarm-triggering-list'
 };
 
 /*

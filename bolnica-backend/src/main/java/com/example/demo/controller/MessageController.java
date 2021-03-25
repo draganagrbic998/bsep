@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.MessageDTO;
 import com.example.demo.dto.MessageMeasureDTO;
-import com.example.demo.dto.MessageSearchDTO;
+import com.example.demo.dto.SearchDTO;
 import com.example.demo.mapper.MessageMapper;
 import com.example.demo.model.Message;
 import com.example.demo.service.MessageService;
@@ -36,11 +36,11 @@ public class MessageController {
 	private MessageMapper messageMapper;
 
 	@PostMapping(value = "/search")
-	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @RequestBody MessageSearchDTO searchDTO, HttpServletResponse response){
+	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @RequestBody SearchDTO searchDTO, HttpServletResponse response){
 		Page<Message> messages = this.messageService.findAll(pageable, searchDTO);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE_HEADER + ", " + Constants.LAST_PAGE_HEADER);
-		response.setHeader(Constants.FIRST_PAGE_HEADER, messages.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE_HEADER, messages.isLast() + "");
+		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
+		response.setHeader(Constants.FIRST_PAGE, messages.isFirst() + "");
+		response.setHeader(Constants.LAST_PAGE, messages.isLast() + "");
 		return new ResponseEntity<>(this.messageMapper.map(messages.toList()), HttpStatus.OK);
 	}
 

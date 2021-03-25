@@ -40,6 +40,8 @@ import { AlarmDetailsComponent } from './components/alarm/alarm-details/alarm-de
 import { AlarmListComponent } from './components/alarm/alarm-list/alarm-list.component';
 import { SearchFormComponent } from './components/shared/controls/search-form/search-form.component';
 import { AlarmDialogComponent } from './components/alarm/alarm-dialog/alarm-dialog.component';
+import { AlarmTriggeringDetailsComponent } from './components/alarm-triggering/alarm-triggering-details/alarm-triggering-details.component';
+import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { AlarmDialogComponent } from './components/alarm/alarm-dialog/alarm-dial
     AlarmDetailsComponent,
     AlarmListComponent,
     SearchFormComponent,
-    AlarmDialogComponent
+    AlarmDialogComponent,
+    AlarmTriggeringDetailsComponent,
+    AlarmTriggeringListComponent
   ],
   imports: [
     BrowserModule,

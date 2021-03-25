@@ -1,13 +1,17 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -61,11 +65,14 @@ public class Patient {
 	@Column(name = "city")
 	private String city;
 
+	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+	private Set<Alarm> alarms = new HashSet<>();
+
 	public Patient() {
 		super();
 		this.insuredNumber = UUID.randomUUID().toString();
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -152,6 +159,14 @@ public class Patient {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Set<Alarm> getAlarms() {
+		return alarms;
+	}
+
+	public void setAlarms(Set<Alarm> alarms) {
+		this.alarms = alarms;
 	}
 	
 }

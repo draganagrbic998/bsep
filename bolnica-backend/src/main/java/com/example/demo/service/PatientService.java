@@ -15,7 +15,7 @@ public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
-	
+		
 	public Page<Patient> findAll(Pageable pageable, String search) {
 		return this.patientRepository.findAll(pageable, search);
 	}

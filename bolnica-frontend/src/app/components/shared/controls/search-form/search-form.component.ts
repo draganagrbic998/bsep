@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MessageSearch } from 'src/app/models/message-search';
+import { Search } from 'src/app/models/search';
 
 @Component({
   selector: 'app-search-form',
@@ -12,7 +12,7 @@ export class SearchFormComponent implements OnInit {
   constructor() { }
 
   @Input() fetchPending: boolean;
-  @Output() searchTriggered: EventEmitter<MessageSearch> = new EventEmitter();
+  @Output() searchTriggered: EventEmitter<Search> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({
     insuredNumber: new FormControl(''),

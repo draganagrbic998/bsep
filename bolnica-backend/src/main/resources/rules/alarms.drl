@@ -1,11 +1,122 @@
 package rules
+import com.example.demo.model.Patient
+import com.example.demo.model.Message
+import com.example.demo.model.Alarm
+import com.example.demo.model.AlarmTriggering
+import com.example.demo.service.AlarmTriggeringService
+import com.example.demo.utils.Constants
+
+global AlarmTriggeringService alarmService
 
 
-rule "Your First Rule"
+rule "High pulse"
+	no-loop
+	
+    when
+    	Message($pulse: pulse, $patient: patient)
+    	Number(doubleValue < $pulse) from accumulate(
+    		Alarm(maxPulse != null, $maxPulse: maxPulse) from $patient.getAlarms(),
+    		min($maxPulse)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Pulse has reached " + $pulse + "!!"));
+
+end
+
+rule "Low pulse"
+	no-loop
 
     when
-        //conditions
+    	Message($pulse: pulse, $patient: patient)
+    	Number(doubleValue > $pulse) from accumulate(
+    		Alarm(minPulse != null, $minPulse: minPulse) from $patient.getAlarms(),
+    		max($minPulse)
+    	)
     then
-        //actions
+        alarmService.save(new AlarmTriggering($patient, "Pulse fell bellow " + $pulse + "!!"));
+
+end
+
+rule "High pressure"
+	no-loop
+
+    when
+    	Message($pressure: pressure, $patient: patient)
+    	Number(doubleValue < $pressure) from accumulate(
+    		Alarm(maxPressure != null, $maxPressure: maxPressure) from $patient.getAlarms(),
+    		min($maxPressure)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Pressure has reached " + $pressure + "!!"));
+
+end
+
+rule "Low pressure"
+	no-loop
+
+    when
+    	Message($pressure: pressure, $patient: patient)
+    	Number(doubleValue > $pressure) from accumulate(
+    		Alarm(minPressure != null, $minPressure: minPressure) from $patient.getAlarms(),
+    		max($minPressure)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Pressure fell bellow " + $pressure + "!!"));
+
+end
+
+rule "High temperature"
+	no-loop
+
+    when
+    	Message($temperature: temperature, $patient: patient)
+    	Number(doubleValue < $temperature) from accumulate(
+    		Alarm(maxTemperature != null, $maxTemperature: maxTemperature) from $patient.getAlarms(),
+    		min($maxTemperature)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Temperature has reached " + $temperature + "!!"));
+
+end
+
+rule "Low temperature"
+	no-loop
+
+    when
+    	Message($temperature: temperature, $patient: patient)
+    	Number(doubleValue > $temperature) from accumulate(
+    		Alarm(minTemperature != null, $minTemperature: minTemperature) from $patient.getAlarms(),
+    		max($minTemperature)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Temperature fell bellow " + $temperature + "!!"));
+
+end
+
+rule "High oxygen level"
+	no-loop
+
+    when
+    	Message($oxygenLevel: oxygenLevel, $patient: patient)
+    	Number(doubleValue < $oxygenLevel) from accumulate(
+    		Alarm(maxOxygenLevel != null, $maxOxygenLevel: maxOxygenLevel) from $patient.getAlarms(),
+    		min($maxOxygenLevel)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Oxygen level has reached " + $oxygenLevel + "!!"));
+
+end
+
+rule "Low oxygen level"
+	no-loop
+
+    when
+    	Message($oxygenLevel: oxygenLevel, $patient: patient)
+    	Number(doubleValue > $oxygenLevel) from accumulate(
+    		Alarm(minOxygenLevel != null, $minOxygenLevel: minOxygenLevel) from $patient.getAlarms(),
+    		max($minOxygenLevel)
+    	)
+    then
+        alarmService.save(new AlarmTriggering($patient, "Oxygen level fell bellow " + $oxygenLevel + "!!"));
 
 end

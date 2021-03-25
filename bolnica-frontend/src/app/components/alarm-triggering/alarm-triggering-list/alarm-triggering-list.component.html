@@ -1,0 +1,25 @@
+<div class="main">
+    <div class="left">
+        <app-preloader *ngIf="fetchPending"></app-preloader>
+        <app-empty-container *ngIf="!fetchPending && !alarmTriggerings.length" 
+        [title]="'NO ALARMS'" [transparent]="true"></app-empty-container>    
+        <div *ngIf="!fetchPending && alarmTriggerings.length">
+            <app-paginator
+            [pending]="fetchPending"
+            [pagination]="pagination"
+            (changedPage)="changePage($event)"
+            ></app-paginator>
+            <cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
+                <app-alarm-triggering-details
+                *ngFor="let alarmTriggering of alarmTriggerings"
+                [alarmTriggering]="alarmTriggering"
+                ></app-alarm-triggering-details>            
+            </cdk-virtual-scroll-viewport>        
+        </div>
+    </div>
+    <div class="right">
+        <br>
+        <app-search-form [fetchPending]="fetchPending" 
+        (searchTriggered)="search = $event; fetchAlarmTriggerings()"></app-search-form>
+    </div>
+</div>
