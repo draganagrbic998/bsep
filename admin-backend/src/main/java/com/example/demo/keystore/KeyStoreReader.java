@@ -1,18 +1,18 @@
-import com.example.demo.exceptions.CertificateNotFoundException;
+package com.example.demo.keystore;
+
+import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.model.IssuerData;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
+import java.io.IOException;
+import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
-
 
 public class KeyStoreReader {
     //KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
@@ -25,9 +25,7 @@ public class KeyStoreReader {
     public KeyStoreReader() {
         try {
             keyStore = KeyStore.getInstance("JKS", "SUN");
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
+        } catch (KeyStoreException | NoSuchProviderException e) {
             e.printStackTrace();
         }
     }
@@ -55,20 +53,8 @@ public class KeyStoreReader {
 
             X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
             return new IssuerData(privKey, issuerName);
-        } catch (KeyStoreException e) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | IOException | CertificateException e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateNotFoundException e) {
-            throw e;
         }
         return null;
     }
@@ -88,17 +74,7 @@ public class KeyStoreReader {
                 Certificate[] cert = ks.getCertificateChain(alias);
                 return cert[0];
             }
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (KeyStoreException | NoSuchProviderException | NoSuchAlgorithmException | CertificateException | IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -113,20 +89,9 @@ public class KeyStoreReader {
             ks.load(in, keyStorePass.toCharArray());
 
             if(ks.isKeyEntry(alias)) {
-                Certificate[] cert = ks.getCertificateChain(alias);
-                return cert;
+                return ks.getCertificateChain(alias);
             }
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (KeyStoreException | NoSuchProviderException | NoSuchAlgorithmException | CertificateException | IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -144,22 +109,9 @@ public class KeyStoreReader {
             ks.load(in, keyStorePass.toCharArray());
 
             if(ks.isKeyEntry(alias)) {
-                PrivateKey pk = (PrivateKey) ks.getKey(alias, pass.toCharArray());
-                return pk;
+                return (PrivateKey) ks.getKey(alias, pass.toCharArray());
             }
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableKeyException e) {
+        } catch (KeyStoreException | NoSuchProviderException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException e) {
             e.printStackTrace();
         }
         return null;

@@ -1,7 +1,14 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
+import com.example.demo.exception.CertificateNotFoundException;
+import com.example.demo.keystore.KeyStoreReader;
+import com.example.demo.keystore.KeyStoreWriter;
+import com.example.demo.model.IssuerData;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 
 @Service
 public class KeyStoreService {
@@ -15,10 +22,10 @@ public class KeyStoreService {
     @Value("${PKI.keystore_password}")
     public String keystore_password;
 
-    private KeyStoreReader keyStoreReader;
-    private KeyStoreWriter keyStoreWriter;
+    private final KeyStoreReader keyStoreReader;
+    private final KeyStoreWriter keyStoreWriter;
 
-    public KeyStoreServiceImpl(){
+    public KeyStoreService(){
         this.keyStoreReader = new KeyStoreReader();
         this.keyStoreWriter = new KeyStoreWriter();
     }
@@ -63,7 +70,8 @@ public class KeyStoreService {
         return keyStoreReader.readCertificateChain(this.keystore_path + this.keystore_name, this.keystore_password, alias);
     }
 
-    public IssuerData readIssuerFromStore(String keyStoreFile, String alias, char[] password, char[] keyPass) throws CertificateNotFoundException {
+    public IssuerData readIssuerFromStore(String keyStoreFile, String alias, char[] password, char[] keyPass)
+            throws CertificateNotFoundException {
         return keyStoreReader.readIssuerFromStore(keyStoreFile, alias, password, keyPass);
     }
 
