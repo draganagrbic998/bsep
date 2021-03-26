@@ -80,7 +80,7 @@
                 <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
             </span>
             <span>
-                <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="emptyForm">Confirm</button>
+                <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="emptyForm || alarmForm.invalid">Confirm</button>
                 <app-spinner-button *ngIf="savePending"></app-spinner-button>
             </span>
         </app-spacer-container>    

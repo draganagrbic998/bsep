@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
@@ -30,16 +30,9 @@ export class AlarmDialogComponent implements OnInit {
     maxTemperature: new FormControl(''),
     minOxygenLevel: new FormControl(''),
     maxOxygenLevel: new FormControl('')
+  }, {
+    validators: [this.minMaxValidator()]
   });
-
-  get emptyForm(): boolean{
-    for (const control in this.alarmForm.controls){
-      if (this.alarmForm.controls[control].value.trim() !== ''){
-        return false;
-      }
-    }
-    return true;
-  }
 
   confirm(): void{
     this.savePending = true;
@@ -57,6 +50,27 @@ export class AlarmDialogComponent implements OnInit {
         }
       }
     );
+  }
+
+  get emptyForm(): boolean{
+    for (const control in this.alarmForm.controls){
+      if (this.alarmForm.controls[control].value.trim() !== ''){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  minMaxValidator(): ValidatorFn{
+    return (control: AbstractControl): ValidationErrors => {
+      const params = ['Pulse', 'Pressure', 'Temperature', 'OxygenLevel'];
+      for (const param of params){
+        if (parseInt(control.get('min' + param).value, 10) >= parseInt(control.get('max' + param).value, 10)){
+          return {error: true};
+        }
+      }
+      return null;
+    };
   }
 
   ngOnInit(): void {
