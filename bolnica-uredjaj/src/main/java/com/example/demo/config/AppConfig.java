@@ -15,10 +15,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class AppConfig {
 
-	@SuppressWarnings("deprecation")
 	@Bean
 	public RestTemplate getRestTeplate() {
 		RestTemplate restTemplate = new RestTemplate();
