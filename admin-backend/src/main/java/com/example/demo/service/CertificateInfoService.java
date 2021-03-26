@@ -1,0 +1,27 @@
+package com.example.demo.service;
+
+import com.example.demo.model.CertificateInfo;
+import com.example.demo.repository.CertificateInfoRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CertificateInfoService {
+
+    private final CertificateInfoRepository certificateInfoRepository;
+
+    public CertificateInfoService(CertificateInfoRepository certificateInfoRepository) {
+        this.certificateInfoRepository = certificateInfoRepository;
+    }
+
+    public CertificateInfo findById(Long id){
+        return certificateInfoRepository.findById(id).orElse(null);
+    }
+
+    public CertificateInfo findByAlias(String alias) { return certificateInfoRepository.findByAlias(alias); }
+
+    public CertificateInfo findByAliasIgnoreCase(String alias){ return certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias); }
+
+    public CertificateInfo save(CertificateInfo certInfo){
+        return certificateInfoRepository.save(certInfo);
+    }
+}
