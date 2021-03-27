@@ -13,16 +13,18 @@
 .mat-card-content{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .main{
     border: 2px inset rgba(200, 200, 200, 0.3);
     border-radius: 5px;
     font-size: 22px;
-    padding: 15px;
     min-width: 500px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 15px;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
