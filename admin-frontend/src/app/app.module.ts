@@ -18,12 +18,14 @@ import {InputTextModule} from 'primeng/inputtext';
 import {PasswordModule} from 'primeng/password';
 import {CardModule} from 'primeng/card';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { DashboardComponent } from './components/main-views/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainViewComponent,
-    LoginComponent
+    LoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

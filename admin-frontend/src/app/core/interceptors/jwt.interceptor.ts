@@ -25,12 +25,6 @@ export class JwtInterceptor implements HttpInterceptor {
         }
       });
     }
-    request = request.clone({
-      setHeaders: {
-        'Content-Type': 'application/xml'
-      },
-      responseType: 'text'
-    });
     return next.handle(request);
   }
 }

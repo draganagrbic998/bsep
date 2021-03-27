@@ -35,7 +35,7 @@ export class MainViewComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['prijava']);
+    this.router.navigate(['login']);
   }
 
 }

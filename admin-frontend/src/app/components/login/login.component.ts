@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
               private messageService: MessageService,
               private router: Router) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', Validators.required]
     });
   }

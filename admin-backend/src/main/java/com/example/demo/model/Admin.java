@@ -25,7 +25,7 @@ public class Admin implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<Authority> a = new ArrayList<>();
-        a.add(new Authority("ROLE_ADMIN"));
+        a.add(new Authority("ROLE_ADMIN")); // hardcoded admin
         return a;
     }
 

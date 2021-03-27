@@ -19,7 +19,7 @@ import java.net.URI;
 import java.security.Principal;
 
 @RestController
-@RequestMapping(value = "api/certificates")
+@RequestMapping(path = "/api/certificates")
 public class CertificatesController {
 
     private final CertificateService certificateService;
