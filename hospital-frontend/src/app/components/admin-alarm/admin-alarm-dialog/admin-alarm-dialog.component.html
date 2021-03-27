@@ -4,15 +4,32 @@
 
 <div class="content">
     <form [formGroup]="alarmForm">
-        <mat-slide-toggle formControlName="status">Track status</mat-slide-toggle><br><br>
+        <mat-slide-toggle formControlName="status">
+            {{alarmForm.controls.status.value ? 'Alarm for tracking logs status' : 'Alarm for tracking logs description'}}
+        </mat-slide-toggle><br><br>
         <div>
             <span>Param: </span>
-            <input
+            <select
+            *ngIf="alarmForm.controls.status.value"
             formControlName="param"
-            [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
-            placeholder="Enter search param">     
+            [classList]="'form-control'">
+                <option value="" hidden>Select search param</option>
+                <option>INFO</option>
+                <option>WARNING</option>
+                <option>ERROR</option>
+                <option>FATAL</option>
+            </select>    
+            <select
+            *ngIf="!alarmForm.controls.status.value"
+            formControlName="param"
+            [classList]="'form-control'">
+                <option value="" hidden>Select search param</option>
+                <option>Login with wrong credentials</option>
+                <option>Forbidden patients view</option>
+                <option>Forbidden messages view</option>
+                <option>Forbidden logs view</option>
+                <option>Forbidden alarms view</option>
+            </select>    
         </div><br>
         <div>
             <span>Minutes: </span>

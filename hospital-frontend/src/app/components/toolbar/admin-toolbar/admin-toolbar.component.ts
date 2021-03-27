@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/core/utils/dialog';
 import { AdminAlarmDialogComponent } from '../../admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
@@ -32,7 +32,8 @@ export class AdminToolbarComponent implements OnInit {
   }
 
   listAlarms(): void{
-    this.dialog.open(AdminAlarmListComponent, DIALOG_OPTIONS);
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{width: '500px', height: '550px'}};
+    this.dialog.open(AdminAlarmListComponent, options);
   }
 
   ngOnInit(): void {

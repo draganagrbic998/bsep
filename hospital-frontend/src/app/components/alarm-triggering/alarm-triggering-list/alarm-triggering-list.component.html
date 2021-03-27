@@ -6,7 +6,7 @@
         [title]="'NO ALARMS'" [transparent]="true"></app-empty-container>    
         <div *ngIf="!fetchPending && alarmTriggerings.length">
             <app-paginator
-            [canRefresh]="true"
+            [refresh]="true"
             [pending]="fetchPending"
             [pagination]="pagination"
             (changedPage)="changePage($event)"

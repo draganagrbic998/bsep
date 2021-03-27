@@ -11,7 +11,7 @@ export class PaginatorComponent implements OnInit {
   constructor() { }
 
   @Input() small: boolean;
-  @Input() canRefresh: boolean;
+  @Input() refresh: boolean;
   @Input() alarm: boolean;
   @Input() pending: boolean;
   @Input() pagination: Pagination = {firstPage: true, lastPage: true, pageNumber: 0};

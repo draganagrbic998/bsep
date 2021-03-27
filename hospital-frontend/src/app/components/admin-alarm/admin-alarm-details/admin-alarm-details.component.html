@@ -1,1 +1,19 @@
-<p>admin-alarm-details works!</p>
+<div class="root mat-elevation-z24">
+    <mat-card>
+        <mat-card-content>
+            <app-spacer-container>
+                <h5>Alarm #{{index}}</h5>
+                <button 
+                matTooltip="Delete"
+                mat-icon-button 
+                color="warn"
+                (click)="delete()">
+                    <mat-icon>delete</mat-icon>
+                </button>  
+            </app-spacer-container>
+            <div>
+                <app-bold-text>Min pulse: </app-bold-text>{{alarm.status}}
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -6,7 +6,7 @@
         [title]="'NO LOGS'" [transparent]="true"></app-empty-container>    
         <div *ngIf="!fetchPending && logs.length">
             <app-paginator
-            [canRefresh]="true"
+            [refresh]="true"
             [pending]="fetchPending"
             [pagination]="pagination"
             (changedPage)="changePage($event)"
