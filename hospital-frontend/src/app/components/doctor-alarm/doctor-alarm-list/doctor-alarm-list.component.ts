@@ -64,6 +64,7 @@ export class DoctorAlarmListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.alarmService.refreshData$.subscribe(() => {
+      this.pagination.pageNumber = 0;
       this.changePage(0);
     });
   }

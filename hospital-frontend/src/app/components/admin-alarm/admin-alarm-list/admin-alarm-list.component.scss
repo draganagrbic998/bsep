@@ -1,5 +1,6 @@
 .paginator{
     text-align: center;
+    margin-top: 8px;
 }
 
 button{
@@ -9,9 +10,15 @@ button{
 }
 
 button .mat-icon{
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 15px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 20px;
     font-weight: bold;
+}
+
+.main{
+    border-top: 1px inset rgba(200, 200, 200, 0.3);
+    border-radius: 5px;
+    padding: 2%;
 }

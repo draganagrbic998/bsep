@@ -11,15 +11,15 @@
 <app-empty-container *ngIf="!fetchPending && !alarms.length" 
 [title]="'NO ALARMS'"></app-empty-container>    
 
-<br><div class="paginator">
-    <app-paginator
-    [pending]="fetchPending"
-    [pagination]="pagination"
-    (changedPage)="changePage($event)"
-    ></app-paginator>
-</div>
-
-<div *ngIf="!fetchPending && alarms.length">
+<div class="main" *ngIf="!fetchPending && alarms.length">
+    <div class="paginator">
+        <app-paginator
+        [small]="true"
+        [pending]="fetchPending"
+        [pagination]="pagination"
+        (changedPage)="changePage($event)"
+        ></app-paginator>
+    </div>    
     <app-admin-alarm-details
     *ngFor="let alarm of alarms; let i = index"
     [alarm]="alarm"
