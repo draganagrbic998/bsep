@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './core/interceptors/jwt.interceptor';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { MainViewComponent } from './components/main-views/main-view/main-view.component';
 import {MenuModule} from 'primeng/menu';
 import {MenubarModule} from 'primeng/menubar';
@@ -19,13 +19,25 @@ import {PasswordModule} from 'primeng/password';
 import {CardModule} from 'primeng/card';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { DashboardComponent } from './components/main-views/dashboard/dashboard.component';
+import { CertificatesComponent } from './components/main-views/certificates/certificates.component';
+import {Dialog, DialogModule} from 'primeng/dialog';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ToolbarModule} from 'primeng/toolbar';
+import {TableModule} from 'primeng/table';
+import {CheckboxModule} from 'primeng/checkbox';
+import {DropdownModule} from 'primeng/dropdown';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {InputNumberModule} from 'primeng/inputnumber';
+import {DialogService} from 'primeng/dynamicdialog';
+import {BadgeModule} from 'primeng/badge';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainViewComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    CertificatesComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +45,14 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToolbarModule,
+    TableModule,
+    CheckboxModule,
+    DropdownModule,
+    RadioButtonModule,
+    InputNumberModule,
     InputTextModule,
     PasswordModule,
     CardModule,
@@ -42,10 +62,13 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
     MenuModule,
     MenubarModule,
     ButtonModule,
+    BadgeModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    MessageService
+    MessageService,
+    DialogService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

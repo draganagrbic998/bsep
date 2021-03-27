@@ -21,6 +21,14 @@ public class CertificateInfo {
 
     private String commonName;
 
+    private String serialNumber;
+
+    private String organisation;
+
+    private String organisationUnit;
+
+    private String country;
+
     private Date startDate;
 
     private Date endDate;
@@ -33,6 +41,8 @@ public class CertificateInfo {
     private Date revocationDate;
 
     private boolean isCA;
+
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Template template;

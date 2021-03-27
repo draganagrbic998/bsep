@@ -4,6 +4,8 @@ import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CertificateInfoService {
 
@@ -11,6 +13,10 @@ public class CertificateInfoService {
 
     public CertificateInfoService(CertificateInfoRepository certificateInfoRepository) {
         this.certificateInfoRepository = certificateInfoRepository;
+    }
+
+    public List<CertificateInfo> findAll() {
+        return certificateInfoRepository.findAll();
     }
 
     public CertificateInfo findById(Long id){

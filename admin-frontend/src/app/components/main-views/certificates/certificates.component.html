@@ -1,0 +1,151 @@
+<div class="p-card p-mt-4 p-mx-4 p-shadow-3">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+    </ng-template>
+    <ng-template pTemplate="right">
+      Current CA:
+      <button pButton [label]="!!ca ? ca.commonName : 'Details'" class="p-button p-button-outlined p-ml-3" (click)="openDetails()"></button>
+      <button pButton label="Switch" class="p-button p-ml-3" (click)="openNew()"></button>
+    </ng-template>
+
+  </p-toolbar>
+
+  <p-table #dt [value]="certificates" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <h5 class="p-m-0">Manage Certificates</h5>
+<!--        <span class="p-input-icon-left">-->
+<!--          <i class="pi pi-search"></i>-->
+<!--          <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />-->
+<!--        </span>-->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Common name</th>
+        <th>Alias</th>
+        <th>Country</th>
+        <th>Template</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cert>
+      <tr>
+        <td>{{cert.commonName}}</td>
+        <td>{{cert.alias}}</td>
+        <td>{{cert.country}}</td>
+        <td>{{cert.template}}</td>
+        <td>
+          <p-badge [value]="cert.revoked ? 'REVOKED' : 'VALID'" [severity]="cert.revoked ? 'danger' : 'success'"></p-badge>
+        </td>
+        <td>
+          <button pButton icon="pi pi-info" class="p-button-icon p-button-rounded p-button-outlined p-button-success p-mr-2"></button>
+          <button pButton icon="pi pi-trash" class="p-button-icon p-button-rounded p-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        In total there are {{certificates ? certificates.length : 0 }} certificates.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+
+
+    <div class="p-grid">
+      <div class="p-sm-12 p-md-6">
+        <div class="p-field">
+          <label for="common-name">Common name</label>
+          <input type="text" pInputText id="common-name" [(ngModel)]="certificate.commonName" required autofocus/>
+          <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>
+        </div>
+      </div>
+      <div class="p-sm-12 p-md-6">
+        <div class="p-field">
+          <label for="alias">Alias</label>
+          <input type="text" pInputText id="alias" [(ngModel)]="certificate.alias" required autofocus/>
+          <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>
+        </div>
+      </div>
+      <div class="p-sm-12 p-md-6">
+        <div class="p-field">
+          <label for="organization">Organization</label>
+          <input type="text" pInputText id="organization" [(ngModel)]="certificate.organization" required autofocus />
+          <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>
+        </div>
+      </div>
+      <div class="p-sm-12 p-md-6">
+        <div class="p-field">
+          <label for="organization-unit">Organization unit</label>
+          <input type="text" pInputText id="organization-unit" [(ngModel)]="certificate.organizationUnit" required autofocus />
+          <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is required.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="country">Country code</label>
+      <input type="text" pInputText id="country" [(ngModel)]="certificate.country" required autofocus />
+      <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>
+    </div>
+
+    <div class="p-field">
+      <label for="email">Email</label>
+      <input type="email" pInputText id="email" [(ngModel)]="certificate.email" required autofocus />
+      <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
+    </div>
+
+    <div class="p-field">
+      <label class="p-mb-3">Template</label>
+      <div class="p-formgrid p-grid">
+        <div class="p-field-radiobutton p-col-4">
+          <p-radioButton id="template1" name="template" value="SUB_CA" [(ngModel)]="certificate.template" #t1></p-radioButton>
+          <label (click)="t1.select(null)" for="template1">Subordinate CA</label>
+        </div>
+        <div class="p-field-radiobutton p-col-4">
+          <p-radioButton id="template2" name="template" value="TLS" [(ngModel)]="certificate.template" #t2></p-radioButton>
+          <label (click)="t2.select(null)" for="template2">TLS Server</label>
+        </div>
+        <div class="p-field-radiobutton p-col-4">
+          <p-radioButton id="template3" name="template" value="USER" [(ngModel)]="certificate.template" #t3></p-radioButton>
+          <label (click)="t3.select(null)" for="template3">User</label>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>
+    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCertificate()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="header">
+
+    <span class="p-text-left p-align-center p-d-flex">
+      <img src="assets/certificate-icon.png" alt="certificate" height="30" width="30">
+      <span class="p-ml-3">CA: <span class="p-text-bold">{{certificate.commonName}}</span></span>
+    </span>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="p-grid">
+      <div class="p-col-fixed">
+      </div>
+    </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton  label="Close" icon="pi pi-times" class="p-button p-button-text" (click)="hideDetails()"></button>
+  </ng-template>
+</p-dialog>
+
+
