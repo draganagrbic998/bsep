@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/core/utils/dialog';
 import { DoctorAlarm } from 'src/app/core/models/doctor-alarm';
-import { DoctorAlarmService } from 'src/app/services/doctor-alarm/doctor-alarm.service';
+import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
   selector: 'app-doctor-alarm-dialog',
@@ -15,7 +15,7 @@ export class DoctorAlarmDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientId: number,
-    private alarmService: DoctorAlarmService,
+    private alarmService: AlarmService,
     public dialogRef: MatDialogRef<DoctorAlarmDialogComponent>,
     private snackBar: MatSnackBar
   ) { }
@@ -37,13 +37,13 @@ export class DoctorAlarmDialogComponent implements OnInit {
   confirm(): void{
     this.savePending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.save(this.patientId, this.alarmForm.value).subscribe(
+    this.alarmService.saveDoctor(this.patientId, this.alarmForm.value).subscribe(
       (alarm: DoctorAlarm) => {
         this.savePending = false;
         if (alarm){
           this.snackBar.open('Alarm saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
-          this.alarmService.announceRefreshData();
+          this.alarmService.announceRefreshDoctorData();
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);

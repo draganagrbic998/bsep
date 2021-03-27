@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AdminAlarm } from 'src/app/core/models/admin-alarm';
 import { Pagination } from 'src/app/core/models/pagination';
 import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
-import { AdminAlarmService } from 'src/app/services/admin-alarm/admin-alarm.service';
+import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
   selector: 'app-admin-alarm-list',
@@ -14,7 +14,7 @@ import { AdminAlarmService } from 'src/app/services/admin-alarm/admin-alarm.serv
 export class AdminAlarmListComponent implements OnInit {
 
   constructor(
-    private alarmService: AdminAlarmService,
+    private alarmService: AlarmService,
     public dialogRef: MatDialogRef<AdminAlarmListComponent>
   ) { }
 
@@ -34,7 +34,7 @@ export class AdminAlarmListComponent implements OnInit {
   fetchAlarms(): void{
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.findAll(this.pagination.pageNumber).subscribe(
+    this.alarmService.findAllAdmin(this.pagination.pageNumber).subscribe(
       (data: HttpResponse<AdminAlarm[]>) => {
         this.fetchPending = false;
         if (data){
@@ -55,7 +55,7 @@ export class AdminAlarmListComponent implements OnInit {
   ngOnInit(): void {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
-    this.alarmService.refreshData$.subscribe(() => {
+    this.alarmService.refreshAdminData$.subscribe(() => {
       this.pagination.pageNumber = 0;
       this.changePage(0);
     });

@@ -5,8 +5,8 @@ import { DIALOG_OPTIONS } from 'src/app/core/utils/dialog';
 import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
 import { DoctorAlarm } from 'src/app/core/models/doctor-alarm';
 import { Pagination } from 'src/app/core/models/pagination';
-import { DoctorAlarmService } from 'src/app/services/doctor-alarm/doctor-alarm.service';
 import { DoctorAlarmDialogComponent } from '../doctor-alarm-dialog/doctor-alarm-dialog.component';
+import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
   selector: 'app-alarm-list',
@@ -16,7 +16,7 @@ import { DoctorAlarmDialogComponent } from '../doctor-alarm-dialog/doctor-alarm-
 export class DoctorAlarmListComponent implements OnInit {
 
   constructor(
-    private alarmService: DoctorAlarmService,
+    private alarmService: AlarmService,
     private dialog: MatDialog
   ) { }
 
@@ -37,7 +37,7 @@ export class DoctorAlarmListComponent implements OnInit {
   fetchAlarms(): void{
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.findAll(this.patientId, this.pagination.pageNumber).subscribe(
+    this.alarmService.findAllDoctor(this.patientId, this.pagination.pageNumber).subscribe(
       (data: HttpResponse<DoctorAlarm[]>) => {
         this.fetchPending = false;
         if (data){
@@ -63,7 +63,7 @@ export class DoctorAlarmListComponent implements OnInit {
   ngOnInit(): void {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
-    this.alarmService.refreshData$.subscribe(() => {
+    this.alarmService.refreshDoctorData$.subscribe(() => {
       this.pagination.pageNumber = 0;
       this.changePage(0);
     });

@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/core/controls/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/core/utils/dialog';
 import { DoctorAlarm } from 'src/app/core/models/doctor-alarm';
-import { DoctorAlarmService } from 'src/app/services/doctor-alarm/doctor-alarm.service';
+import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
   selector: 'app-doctor-alarm-details',
@@ -13,7 +13,7 @@ import { DoctorAlarmService } from 'src/app/services/doctor-alarm/doctor-alarm.s
 export class DoctorAlarmDetailsComponent implements OnInit {
 
   constructor(
-    private alarmService: DoctorAlarmService,
+    private alarmService: AlarmService,
     private dialog: MatDialog
   ) { }
 
@@ -25,11 +25,11 @@ export class DoctorAlarmDetailsComponent implements OnInit {
   }
 
   delete(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.alarmService.delete(this.alarm.id)}};
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.alarmService.deleteDoctor(this.alarm.id)}};
     // tslint:disable-next-line: deprecation
     this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
       if (result){
-        this.alarmService.announceRefreshData();
+        this.alarmService.announceRefreshDoctorData();
       }
     });
   }

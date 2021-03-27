@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DoctorAlarmService } from './doctor-alarm.service';
+import { AlarmService } from './alarm.service';
 
-describe('DoctorAlarmService', () => {
-  let service: DoctorAlarmService;
+describe('AlarmService', () => {
+  let service: AlarmService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DoctorAlarmService);
+    service = TestBed.inject(AlarmService);
   });
 
   it('should be created', () => {

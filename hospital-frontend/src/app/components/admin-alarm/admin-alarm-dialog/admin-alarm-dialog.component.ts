@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/core/utils/dialog';
 import { AdminAlarm } from 'src/app/core/models/admin-alarm';
-import { AdminAlarmService } from 'src/app/services/admin-alarm/admin-alarm.service';
+import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
   selector: 'app-admin-alarm-dialog',
@@ -14,7 +14,7 @@ import { AdminAlarmService } from 'src/app/services/admin-alarm/admin-alarm.serv
 export class AdminAlarmDialogComponent implements OnInit {
 
   constructor(
-    private alarmService: AdminAlarmService,
+    private alarmService: AlarmService,
     public dialogRef: MatDialogRef<AdminAlarmDialogComponent>,
     private snackBar: MatSnackBar
   ) { }
@@ -30,7 +30,7 @@ export class AdminAlarmDialogComponent implements OnInit {
   confirm(): void{
     this.savePending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.save(this.alarmForm.value).subscribe(
+    this.alarmService.saveAdmin(this.alarmForm.value).subscribe(
       (alarm: AdminAlarm) => {
         this.savePending = false;
         if (alarm){
