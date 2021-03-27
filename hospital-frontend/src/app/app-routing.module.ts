@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
+import { LogListComponent } from './components/log/log-list/log-list.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
@@ -31,6 +32,11 @@ const routes: Routes = [
   {
     path: environment.patientDetailsRoute,
     component: PatientDetailsComponent,
+    // dodaj guard
+  },
+  {
+    path: environment.logListRoute,
+    component: LogListComponent,
     // dodaj guard
   }
 ];

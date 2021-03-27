@@ -7,11 +7,13 @@ export const environment = {
   patientsApi: 'https://localhost:8081/api/patients',
   messagesApi: 'https://localhost:8081/api/messages',
   alarmsApi: 'https://localhost:8081/api/alarms',
+  logsApi: 'https://localhost:8081/api/logs',
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',
   messageListRoute: 'message-list',
   alarmTriggeringListRoute: 'alarm-triggering-list',
-  patientDetailsRoute: 'patient-details'
+  patientDetailsRoute: 'patient-details',
+  logListRoute: 'log-list'
 };
 
 /*

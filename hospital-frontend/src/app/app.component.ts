@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StorageService } from './services/storage/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'bolnica-frontend';
+
+  constructor(
+    private storageService: StorageService
+  ){}
+
+  get role(): string{
+    return 'ADMIN';
+    return 'DOCTOR';
+    return this.storageService.getUser()?.role;
+  }
+
 }

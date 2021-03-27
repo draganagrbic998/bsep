@@ -1,3 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-admin-toolbar *ngIf="role === 'ADMIN'"></app-admin-toolbar>
+<app-doctor-toolbar *ngIf="role === 'DOCTOR'"></app-doctor-toolbar>
 <div></div>
 <router-outlet></router-outlet>

@@ -1,0 +1,21 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.left{
+    width: 40%;
+    text-align: center;
+}
+
+.right{
+    width: 40%;
+}
+
+.scroller{
+    height: 620px;
+}

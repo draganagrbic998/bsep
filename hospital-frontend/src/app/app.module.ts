@@ -13,7 +13,7 @@ import { BoldTextComponent } from './components/shared/containers/bold-text/bold
 import { BlodTypePipe } from './components/patient/patient-details/blod-type.pipe';
 import { EmptyContainerComponent } from './components/shared/containers/empty-container/empty-container.component';
 import { PaginatorComponent } from './components/shared/controls/paginator/paginator.component';
-import { ToolbarComponent } from './components/shared/controls/toolbar/toolbar.component';
+import { DoctorToolbarComponent } from './components/toolbar/doctor-toolbar/doctor-toolbar.component';
 import { DeleteConfirmationComponent } from './components/shared/controls/delete-confirmation/delete-confirmation.component';
 import { MessageDetailsComponent } from './components/message/message-details/message-details.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
@@ -26,6 +26,10 @@ import { AlarmTriggeringListComponent } from './components/alarm-triggering/alar
 import { OnlyNumbersDirective } from './components/alarm/alarm-dialog/only-numbers.directive';
 import { CommonModule } from './common.module';
 import { MaterialModule } from './material.module';
+import { LogDetailsComponent } from './components/log/log-details/log-details.component';
+import { LogListComponent } from './components/log/log-list/log-list.component';
+import { AdminToolbarComponent } from './components/toolbar/admin-toolbar/admin-toolbar.component';
+import { LogSearchComponent } from './components/log/log-search/log-search.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,7 @@ import { MaterialModule } from './material.module';
     BlodTypePipe,
     EmptyContainerComponent,
     PaginatorComponent,
-    ToolbarComponent,
+    DoctorToolbarComponent,
     DeleteConfirmationComponent,
     MessageDetailsComponent,
     MessageListComponent,
@@ -51,7 +55,11 @@ import { MaterialModule } from './material.module';
     AlarmDialogComponent,
     AlarmTriggeringDetailsComponent,
     AlarmTriggeringListComponent,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    LogDetailsComponent,
+    LogListComponent,
+    AdminToolbarComponent,
+    LogSearchComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,0 +1,9 @@
+{
+	"configurations": [
+		{
+			"path": "temp.txt",
+			"interval": 5000,
+			"regExp": ""
+		}
+	]
+}

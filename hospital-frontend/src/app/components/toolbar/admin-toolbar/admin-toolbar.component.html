@@ -1,0 +1,27 @@
+<mat-toolbar color="primary" class="mat-elevation-z24">
+    <span>
+        <button
+        matTooltip="List all logs"
+        mat-button
+        [routerLink]="'log-list'">
+            Logs
+        </button>
+        <button
+        matTooltip="List all alarms"
+        mat-button
+        [routerLink]="'alarm-triggering-list'">
+            Alarms
+        </button>
+    </span>
+    <span>
+        <button mat-icon-button [matMenuTriggerFor]="more">
+            <mat-icon matTooltip="More">more_vert</mat-icon>
+        </button>
+        <mat-menu #more="matMenu">
+            <button mat-menu-item (click)="signOut()">
+                <mat-icon>logout</mat-icon>
+                <span>Sign out</span>
+            </button>
+        </mat-menu>
+    </span>
+</mat-toolbar>

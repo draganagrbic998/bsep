@@ -6,11 +6,11 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  selector: 'app-doctor-toolbar',
+  templateUrl: './doctor-toolbar.component.html',
+  styleUrls: ['./doctor-toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class DoctorToolbarComponent implements OnInit {
 
   constructor(
     private storageService: StorageService,
