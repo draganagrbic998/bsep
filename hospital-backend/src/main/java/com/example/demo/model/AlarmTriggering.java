@@ -30,7 +30,6 @@ public class AlarmTriggering {
 	@Column(name = "message")
 	private String message;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private Patient patient;
@@ -38,6 +37,11 @@ public class AlarmTriggering {
 	public AlarmTriggering() {
 		super();
 		this.date = new Date();
+	}
+	
+	public AlarmTriggering(String message) {
+		this();
+		this.message = message;
 	}
 
 	public AlarmTriggering(Patient patient, String message) {

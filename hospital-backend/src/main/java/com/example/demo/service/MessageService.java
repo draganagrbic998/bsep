@@ -18,7 +18,7 @@ public class MessageService {
 	private MessageRepository messageRepository;
 	
 	@Autowired
-	private EventService resonerService;
+	private MessageEventService resonerService;
 	
 	public Page<Message> findAll(Pageable pageable, SearchDTO searchDTO) {
 		return this.messageRepository.findAll(pageable, 

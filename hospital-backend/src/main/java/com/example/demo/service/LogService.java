@@ -20,7 +20,9 @@ import com.example.demo.dto.LogDTO;
 import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Log;
 import com.example.demo.repository.LogRepository;
+import com.example.demo.utils.Configuration;
 import com.example.demo.utils.Constants;
+import com.example.demo.utils.LogConfiguration;
 import com.google.gson.Gson;
 
 @Service
@@ -32,6 +34,9 @@ public class LogService {
 	
 	@Autowired
 	private LogMapper logMapper;
+		
+	@Autowired
+	private LogEventService eventService;
 	
 	@PostConstruct
 	public void init() {
@@ -79,7 +84,9 @@ public class LogService {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				System.out.println(line);
-				this.save(this.logMapper.map(line));
+				Log log = this.logMapper.map(line);
+				this.save(log);
+				this.eventService.addLog(log);
 			}
 			reader.close();
 			FileWriter writer = new FileWriter(path);

@@ -11,8 +11,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.kie.api.definition.type.Expires;
+import org.kie.api.definition.type.Role;
+
 @Entity
 @Table(name = "log_table")
+@Role(Role.Type.EVENT)
+@Expires("1m")
 public class Log {
 
 	@Id

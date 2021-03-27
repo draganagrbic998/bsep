@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dto.AlarmDTO;
+import com.example.demo.dto.DoctorAlarmDTO;
+import com.example.demo.dto.AdminAlarmDTO;
 import com.example.demo.dto.AlarmTriggeringDTO;
-import com.example.demo.model.Alarm;
+import com.example.demo.model.DoctorAlarm;
+import com.example.demo.model.AdminAlarm;
 import com.example.demo.model.AlarmTriggering;
 import com.example.demo.service.PatientService;
 
@@ -18,8 +20,8 @@ public class AlarmMapper {
 	@Autowired
 	private PatientService patientService;
 
-	public Alarm map(long patientId, AlarmDTO alarmDTO) {
-		Alarm alarm = new Alarm();
+	public DoctorAlarm map(long patientId, DoctorAlarmDTO alarmDTO) {
+		DoctorAlarm alarm = new DoctorAlarm();
 		alarm.setPatient(this.patientService.find(patientId));
 		alarm.setMinPulse(alarmDTO.getMinPulse());
 		alarm.setMaxPulse(alarmDTO.getMaxPulse());
@@ -32,11 +34,24 @@ public class AlarmMapper {
 		return alarm;
 	}
 	
-	public List<AlarmDTO> map(List<Alarm> alarms){
-		return alarms.stream().map(AlarmDTO::new).collect(Collectors.toList());
+	public AdminAlarm map(AdminAlarmDTO alarmDTO) {
+		AdminAlarm alarm = new AdminAlarm();
+		alarm.setStatus(alarmDTO.isStatus());
+		alarm.setParam(alarmDTO.getParam());
+		alarm.setMinutes(alarmDTO.getMinutes());
+		alarm.setCounts(alarmDTO.getCounts());
+		return alarm;
 	}
 
-	public List<AlarmTriggeringDTO> mapTriggerings(List<AlarmTriggering> alarmTriggerings){
+	public List<DoctorAlarmDTO> doctorMap(List<DoctorAlarm> alarms){
+		return alarms.stream().map(DoctorAlarmDTO::new).collect(Collectors.toList());
+	}
+
+	public List<AdminAlarmDTO> adminMap(List<AdminAlarm> alarms){
+		return alarms.stream().map(AdminAlarmDTO::new).collect(Collectors.toList());
+	}
+
+	public List<AlarmTriggeringDTO> triggeringsMap(List<AlarmTriggering> alarmTriggerings){
 		return alarmTriggerings.stream().map(AlarmTriggeringDTO::new).collect(Collectors.toList());
 	}
 	

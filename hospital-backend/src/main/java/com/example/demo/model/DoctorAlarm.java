@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "alarm_table")
-public class Alarm {
+@Table(name = "doctor_alarm_table")
+public class DoctorAlarm {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Alarm {
 	@JoinColumn(name="patient_id")
 	private Patient patient;
 
-	public Alarm() {
+	public DoctorAlarm() {
 		super();
 	}
 

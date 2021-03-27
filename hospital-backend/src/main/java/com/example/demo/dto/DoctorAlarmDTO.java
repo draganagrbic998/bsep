@@ -1,8 +1,8 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.Alarm;
+import com.example.demo.model.DoctorAlarm;
 
-public class AlarmDTO {
+public class DoctorAlarmDTO {
 
 	private Long id;
 	private Double minPulse;
@@ -14,11 +14,11 @@ public class AlarmDTO {
 	private Double minOxygenLevel;
 	private Double maxOxygenLevel;
 	
-	public AlarmDTO() {
+	public DoctorAlarmDTO() {
 		super();
 	}
 
-	public AlarmDTO(Alarm alarm) {
+	public DoctorAlarmDTO(DoctorAlarm alarm) {
 		super();
 		this.id = alarm.getId();
 		this.minPulse = alarm.getMinPulse();

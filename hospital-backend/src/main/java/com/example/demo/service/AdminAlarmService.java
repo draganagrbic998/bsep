@@ -8,26 +8,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.model.DoctorAlarm;
-import com.example.demo.repository.DoctorAlarmRepository;
+import com.example.demo.model.AdminAlarm;
+import com.example.demo.repository.AdminAlarmRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class DoctorAlarmService {
+public class AdminAlarmService {
 
 	@Autowired
-	private DoctorAlarmRepository alarmRepository;
+	private AdminAlarmRepository alarmRepository;
 	
-	public Page<DoctorAlarm> findAll(long patientId, Pageable pageable){
-		return this.alarmRepository.findByPatientId(patientId, pageable);
+	public Page<AdminAlarm> findAll(Pageable pageable){
+		return this.alarmRepository.findAll(pageable);
 	}
 	
-	public List<DoctorAlarm> findAll(long patientId){
-		return this.alarmRepository.findByPatientId(patientId);
+	public List<AdminAlarm> findAll(){
+		return this.alarmRepository.findAll();
 	}
 
 	@Transactional(readOnly = false)
-	public DoctorAlarm save(DoctorAlarm alarm) {
+	public AdminAlarm save(AdminAlarm alarm) {
 		return this.alarmRepository.save(alarm);
 	}
 	

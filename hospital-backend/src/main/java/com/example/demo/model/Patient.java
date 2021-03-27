@@ -1,18 +1,13 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -65,9 +60,6 @@ public class Patient {
 	@NotBlank
 	@Column(name = "city")
 	private String city;
-
-	@OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private Set<Alarm> alarms = new HashSet<>();
 
 	public Patient() {
 		super();
@@ -162,12 +154,4 @@ public class Patient {
 		this.city = city;
 	}
 
-	public Set<Alarm> getAlarms() {
-		return alarms;
-	}
-
-	public void setAlarms(Set<Alarm> alarms) {
-		this.alarms = alarms;
-	}
-	
 }

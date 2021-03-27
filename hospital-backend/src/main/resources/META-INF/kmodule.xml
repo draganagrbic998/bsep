@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
-	<kbase name="alarms" packages="rules">
-		<ksession name="alarm-rules"/>
+	<kbase name="doctor" packages="rules.doctor">
+		<ksession name="doctor-alarms"/>
+	</kbase> 
+	<kbase name="admin" packages="rules.admin" eventProcessingMode="stream">
+		<ksession name="admin-alarms" clockType="realtime"/>
 	</kbase> 
 </kmodule>

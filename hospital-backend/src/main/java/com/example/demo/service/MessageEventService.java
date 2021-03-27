@@ -9,8 +9,11 @@ import com.example.demo.model.Message;
 import com.example.demo.utils.Constants;
 
 @Service
-public class EventService {
+public class MessageEventService {
 
+	@Autowired
+	private DoctorAlarmService alarmService;
+	
 	@Autowired
 	private AlarmTriggeringService alarmTriggeringService;
 	
@@ -18,9 +21,10 @@ public class EventService {
 	private KieContainer kieContainer;
 	
 	public void checkAlarm(Message message) {
-		KieSession kieSession = this.kieContainer.newKieSession(Constants.ALARM_RULES);
-		kieSession.getAgenda().getAgendaGroup(Constants.ALARM_RULES).setFocus();
-		kieSession.setGlobal("alarmService", this.alarmTriggeringService);
+		KieSession kieSession = this.kieContainer.newKieSession(Constants.DOCTOR_ALARMS);
+		kieSession.getAgenda().getAgendaGroup(Constants.DOCTOR_ALARMS).setFocus();
+		kieSession.setGlobal("alarmService", this.alarmService);
+		kieSession.setGlobal("alarmTriggeringService", this.alarmTriggeringService);
 		kieSession.insert(message);
 		kieSession.fireAllRules();
 	}
