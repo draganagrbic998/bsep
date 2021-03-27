@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/core/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +32,7 @@ export class StorageService {
   }
 
   getUser(): User{
+    return {role: 'ADMIN'} as User;
     return this.get(this.USER_KEY) as User;
   }
 

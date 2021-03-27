@@ -1,0 +1,48 @@
+<div class="header">
+    <h3>Create new alarm</h3>
+</div>
+
+<div class="content">
+    <form [formGroup]="alarmForm">
+        <mat-slide-toggle formControlName="status">Track status</mat-slide-toggle><br><br>
+        <div>
+            <span>Param: </span>
+            <input
+            formControlName="param"
+            [classList]="'form-control'"
+            matInput 
+            autocomplete="off"
+            placeholder="Enter search param">     
+        </div><br>
+        <div>
+            <span>Minutes: </span>
+            <input
+            appOnlyNumbers
+            formControlName="minutes"
+            [classList]="'form-control'"
+            matInput 
+            autocomplete="off"
+            placeholder="Enter tracking minutes">     
+        </div><br>
+        <div>
+            <span>Counts: </span>
+            <input
+            appOnlyNumbers
+            formControlName="counts"
+            [classList]="'form-control'"
+            matInput 
+            autocomplete="off"
+            placeholder="Enter number of counts">     
+        </div>
+    </form><br><br>
+    <app-spacer-container>
+        <span>
+            <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
+        </span>
+        <span>
+            <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="alarmForm.invalid">Confirm</button>
+            <app-spinner-button *ngIf="savePending"></app-spinner-button>
+        </span>
+    </app-spacer-container>    
+</div>
+

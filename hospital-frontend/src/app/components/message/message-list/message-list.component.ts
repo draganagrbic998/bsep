@@ -1,9 +1,9 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
-import { Message } from 'src/app/models/message';
-import { Search } from 'src/app/models/search';
-import { Pagination } from 'src/app/models/pagination';
+import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
+import { Message } from 'src/app/core/models/message';
+import { Search } from 'src/app/core/models/search';
+import { Pagination } from 'src/app/core/models/pagination';
 import { MessageService } from 'src/app/services/message/message.service';
 
 @Component({

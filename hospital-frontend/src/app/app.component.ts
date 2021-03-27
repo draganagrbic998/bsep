@@ -13,8 +13,6 @@ export class AppComponent {
   ){}
 
   get role(): string{
-    return 'ADMIN';
-    return 'DOCTOR';
     return this.storageService.getUser()?.role;
   }
 

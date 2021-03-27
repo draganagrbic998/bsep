@@ -1,0 +1,25 @@
+<cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
+    <div *ngIf="!fetchPending">
+        <app-doctor-alarm-details
+        *ngFor="let alarm of alarms; let i = index"
+        [alarm]="alarm"
+        [index]="i + 1"
+        ></app-doctor-alarm-details>
+        <div *ngIf="alarms.length < 10">
+            <br><br><br><br><br>
+        </div>
+        <app-empty-container *ngIf="!alarms.length" 
+        [title]="'NO ALARMS'"></app-empty-container>    
+    </div>
+    <app-preloader *ngIf="fetchPending"></app-preloader>
+</cdk-virtual-scroll-viewport>
+<br>
+<div class="paginator">
+    <app-paginator
+    [pending]="fetchPending"
+    [pagination]="pagination"
+    (changedPage)="changePage($event)"
+    [alarm]="true"
+    (alarmWanted)="addAlarm()"
+    ></app-paginator>
+</div>

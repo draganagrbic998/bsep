@@ -2,8 +2,8 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/constants/pagination';
-import { Log } from 'src/app/models/log';
+import { PAGE_SIZE } from 'src/app/core/utils/pagination';
+import { Log } from 'src/app/core/models/log';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
