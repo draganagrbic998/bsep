@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginDto;
+import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.TokenResponse;
 import com.example.demo.mapper.AdminMapper;
 import com.example.demo.model.Admin;
@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping(path="/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginDto loginInfo){
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginDTO loginInfo){
         try{
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getUsername(),

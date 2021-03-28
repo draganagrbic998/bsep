@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.CertificateInfoDto;
+import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.model.CertificateInfo;
 import org.springframework.stereotype.Component;
 
@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 @Component
 public class CertificateInfoMapper {
 
-    public CertificateInfoDto mapToDto(CertificateInfo certificateInfo) {
+    public CertificateInfoDTO mapToDto(CertificateInfo certificateInfo) {
         return this.mapToDto(certificateInfo, 1);
     }
 
-    public CertificateInfoDto mapToDto(CertificateInfo certificateInfo, int mappingLevel) {
+    public CertificateInfoDTO mapToDto(CertificateInfo certificateInfo, int mappingLevel) {
         if (certificateInfo == null) {
             return null;
         }
-        CertificateInfoDto certificateInfoDto = new CertificateInfoDto();
+        CertificateInfoDTO certificateInfoDto = new CertificateInfoDTO();
         certificateInfoDto.setId(certificateInfo.getId());
         if (mappingLevel > 0) {
             certificateInfoDto.setIssued(certificateInfo.getIssued().stream()

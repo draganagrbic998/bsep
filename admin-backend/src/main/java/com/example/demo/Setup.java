@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.dto.CertificateInfoDto;
+import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;

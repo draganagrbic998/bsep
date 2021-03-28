@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class CreateCertificateDto {
+public class CreateCertificateDTO {
 
     @NotBlank(message = "Issuer alias cannot be empty")
     private String issuerAlias;

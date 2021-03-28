@@ -1,6 +1,6 @@
 package com.example.demo.advice;
 
-import com.example.demo.dto.ErrorDto;
+import com.example.demo.dto.ErrorDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
 import com.example.demo.exception.CertificateNotFoundException;
@@ -17,29 +17,29 @@ public class ErrorHandlingAdvice {
 
     @ExceptionHandler(CertificateNotFoundException.class)
     @ResponseBody
-    ResponseEntity<ErrorDto> onCertificateNotFoundException(CertificateNotFoundException e){
-        return new ResponseEntity<>(new ErrorDto("The certificate was not found", "CERT_NOT_FOUND"),
+    ResponseEntity<ErrorDTO> onCertificateNotFoundException(CertificateNotFoundException e){
+        return new ResponseEntity<>(new ErrorDTO("The certificate was not found", "CERT_NOT_FOUND"),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CertificateAuthorityException.class)
     @ResponseBody
-    ResponseEntity<ErrorDto> onIssuerNotCAException(CertificateAuthorityException e){
-        return new ResponseEntity<>(new ErrorDto("The certificate is not a CA", "NOT_CA"),
+    ResponseEntity<ErrorDTO> onIssuerNotCAException(CertificateAuthorityException e){
+        return new ResponseEntity<>(new ErrorDTO("The certificate is not a CA", "NOT_CA"),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidIssuerException.class)
     @ResponseBody
-    ResponseEntity<ErrorDto> onIssuerNotValidException(InvalidIssuerException e){
-        return new ResponseEntity<>(new ErrorDto("The issuer is not valid", "INVALID_ISSUER"),
+    ResponseEntity<ErrorDTO> onIssuerNotValidException(InvalidIssuerException e){
+        return new ResponseEntity<>(new ErrorDTO("The issuer is not valid", "INVALID_ISSUER"),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AliasExistsException.class)
     @ResponseBody
-    ResponseEntity<ErrorDto> onAliasAlreadyTakenException(AliasExistsException e){
-        return new ResponseEntity<>(new ErrorDto("The alias specified already exists", "ALIAS_EXISTS"),
+    ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasExistsException e){
+        return new ResponseEntity<>(new ErrorDTO("The alias specified already exists", "ALIAS_EXISTS"),
                 HttpStatus.BAD_REQUEST);
     }
 

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CertificateInfoDto;
+import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
@@ -23,29 +23,29 @@ public class CertificateInfoService {
         this.mapper = certificateInfoMapper;
     }
 
-    public List<CertificateInfoDto> findAll() {
+    public List<CertificateInfoDTO> findAll() {
         return certificateInfoRepository.findAll().stream()
                 .map(ci -> mapper.mapToDto(ci, 0)).collect(Collectors.toList());
     }
 
-    public Page<CertificateInfoDto> findAll(Pageable pageable) {
+    public Page<CertificateInfoDTO> findAll(Pageable pageable) {
         return  certificateInfoRepository.findAll(pageable)
                 .map(certificateInfo -> mapper.mapToDto(certificateInfo, 0));
     }
 
-    public CertificateInfoDto findById(Long id){
+    public CertificateInfoDTO findById(Long id){
         return mapper.mapToDto(certificateInfoRepository.findById(id).orElse(null));
     }
 
-    public CertificateInfoDto findByAlias(String alias) {
+    public CertificateInfoDTO findByAlias(String alias) {
         return mapper.mapToDto(certificateInfoRepository.findByAlias(alias));
     }
 
-    public CertificateInfoDto findByAliasIgnoreCase(String alias) {
+    public CertificateInfoDTO findByAliasIgnoreCase(String alias) {
         return mapper.mapToDto(certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias));
     }
 
-    public CertificateInfoDto save(CertificateInfo certInfo){
+    public CertificateInfoDTO save(CertificateInfo certInfo){
         return mapper.mapToDto(certificateInfoRepository.save(certInfo));
     }
 }
