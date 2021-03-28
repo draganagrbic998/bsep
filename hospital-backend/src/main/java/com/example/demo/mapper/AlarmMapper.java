@@ -38,7 +38,6 @@ public class AlarmMapper {
 		AdminAlarm alarm = new AdminAlarm();
 		alarm.setStatus(alarmDTO.isStatus());
 		alarm.setParam(alarmDTO.getParam());
-		alarm.setMinutes(alarmDTO.getMinutes());
 		alarm.setCounts(alarmDTO.getCounts());
 		return alarm;
 	}

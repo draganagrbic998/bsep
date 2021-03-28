@@ -7,7 +7,6 @@ public class AdminAlarmDTO {
 	private Long id;
 	private boolean status;
 	private String param;
-	private long minutes;
 	private long counts;
 	
 	public AdminAlarmDTO() {
@@ -19,7 +18,6 @@ public class AdminAlarmDTO {
 		this.id = alarm.getId();
 		this.status = alarm.isStatus();
 		this.param = alarm.getParam();
-		this.minutes = alarm.getMinutes();
 		this.counts = alarm.getCounts();
 	}
 
@@ -45,14 +43,6 @@ public class AdminAlarmDTO {
 
 	public void setParam(String param) {
 		this.param = param;
-	}
-
-	public long getMinutes() {
-		return minutes;
-	}
-
-	public void setMinutes(long minutes) {
-		this.minutes = minutes;
 	}
 
 	public long getCounts() {

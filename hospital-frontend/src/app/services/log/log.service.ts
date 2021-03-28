@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { PAGE_SIZE } from 'src/app/core/utils/pagination';
 import { Log } from 'src/app/core/models/log';
 import { environment } from 'src/environments/environment';
+import { LogSearch } from 'src/app/core/models/log-search';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class LogService {
     private http: HttpClient
   ) { }
 
-  findAll(page: number, search: Log): Observable<HttpResponse<Log[]>>{
+  findAll(page: number, search: LogSearch): Observable<HttpResponse<Log[]>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
     return this.http.post<Log[]>(environment.logsApi, search, {observe: 'response', params}).pipe(
       catchError(() => of(null))

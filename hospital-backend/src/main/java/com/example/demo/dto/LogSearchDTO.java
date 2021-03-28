@@ -1,40 +1,28 @@
 package com.example.demo.dto;
 
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
-import com.example.demo.model.Log;
-
-public class LogDTO {
+public class LogSearchDTO {
 	
-	private Date date;
+	@NotNull
 	private String status;
+	
+	@NotNull
 	private String description;
+	
+	@NotNull
 	private String userName;
+	
+	@NotNull
 	private String computerName;
+	
+	@NotNull
 	private String serviceName;
-	
-	public LogDTO() {
+
+	public LogSearchDTO() {
 		super();
 	}
 
-	public LogDTO(Log log) {
-		super();
-		this.date = log.getDate();
-		this.status = log.getStatus();
-		this.description = log.getDescription();
-		this.userName = log.getUserName();
-		this.computerName = log.getComputerName();
-		this.serviceName = log.getServiceName();
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
 	public String getStatus() {
 		return status;
 	}

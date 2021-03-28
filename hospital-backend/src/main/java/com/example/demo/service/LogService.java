@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
 
 import javax.annotation.PostConstruct;
 
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
-import com.example.demo.dto.LogDTO;
+import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Log;
 import com.example.demo.repository.LogRepository;
@@ -49,12 +47,7 @@ public class LogService {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						try {
-							readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
-						}
-						catch(Exception e) {
-							e.printStackTrace();
-						}
+						readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
 					}
 				}).start();
 			}
@@ -64,7 +57,7 @@ public class LogService {
 		}
 	}
 	
-	public Page<Log> findAll(Pageable pageable, LogDTO searchDTO) {
+	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
 		return this.logRepository.findAll(pageable, 
 				searchDTO.getStatus(), 
 				searchDTO.getDescription(), 
@@ -78,20 +71,33 @@ public class LogService {
 		return this.logRepository.save(log);
 	}
 	
-	private void readLogs(String path, long interval, String regExp) throws IOException, ParseException, InterruptedException {
+	private void readLogs(String path, long interval, String regExp) {
+		BufferedReader reader = null;
+		String line;
 		while (true) {
-			BufferedReader reader = new BufferedReader(new FileReader(path));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-				Log log = this.logMapper.map(line);
-				this.save(log);
-				this.eventService.addLog(log);
+			try {
+				reader = new BufferedReader(new FileReader(path));
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
+					Log log = this.logMapper.map(line);
+					this.save(log);
+					this.eventService.addLog(log);
+				}
 			}
-			reader.close();
-			FileWriter writer = new FileWriter(path);
-			writer.close();
-			Thread.sleep(interval);
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					reader.close();
+					FileWriter writer = new FileWriter(path);
+					writer.close();
+					Thread.sleep(interval);	
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	

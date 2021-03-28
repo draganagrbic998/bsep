@@ -4,6 +4,7 @@ import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/paginati
 import { Log } from 'src/app/core/models/log';
 import { Pagination } from 'src/app/core/models/pagination';
 import { LogService } from 'src/app/services/log/log.service';
+import { LogSearch } from 'src/app/core/models/log-search';
 
 @Component({
   selector: 'app-log-list',
@@ -23,7 +24,7 @@ export class LogListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  search: Log = {status: '', description: '', userName: '', computerName: '', serviceName: ''} as Log;
+  search: LogSearch = {status: '', description: '', userName: '', computerName: '', serviceName: ''};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;

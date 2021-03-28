@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Log } from 'src/app/core/models/log';
+import { LogSearch } from 'src/app/core/models/log-search';
 
 @Component({
   selector: 'app-log-search',
@@ -12,7 +12,7 @@ export class LogSearchComponent implements OnInit {
   constructor() { }
 
   @Input() fetchPending: boolean;
-  @Output() searchTriggered: EventEmitter<Log> = new EventEmitter();
+  @Output() searchTriggered: EventEmitter<LogSearch> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({
     status: new FormControl(''),

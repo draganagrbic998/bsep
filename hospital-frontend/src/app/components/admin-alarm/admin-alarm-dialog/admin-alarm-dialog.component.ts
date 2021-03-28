@@ -23,7 +23,6 @@ export class AdminAlarmDialogComponent implements OnInit {
   alarmForm: FormGroup = new FormGroup({
     status: new FormControl(true, [Validators.required]),
     param: new FormControl('', [Validators.required]),
-    minutes: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
     counts: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)])
   });
 

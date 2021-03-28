@@ -27,10 +27,6 @@ public class AdminAlarm {
 	private String param;
 	
 	@NotNull
-	@Column(name = "minutes")
-	private long minutes;
-
-	@NotNull
 	@Column(name = "counts")
 	private long counts;
 
@@ -60,14 +56,6 @@ public class AdminAlarm {
 
 	public void setParam(String param) {
 		this.param = param;
-	}
-
-	public long getMinutes() {
-		return minutes;
-	}
-
-	public void setMinutes(long minutes) {
-		this.minutes = minutes;
 	}
 
 	public long getCounts() {

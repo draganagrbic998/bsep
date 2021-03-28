@@ -21,8 +21,10 @@ public class AlarmTriggeringDTO {
 		this.id = alarmTriggering.getId();
 		this.date = alarmTriggering.getDate();
 		this.message = alarmTriggering.getMessage();
-		this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
-		this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();
+		if (alarmTriggering.getPatient() != null) {
+			this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
+			this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();			
+		}
 	}
 
 	public long getId() {

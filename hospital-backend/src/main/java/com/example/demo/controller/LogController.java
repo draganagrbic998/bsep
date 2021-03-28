@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LogDTO;
+import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Log;
 import com.example.demo.service.LogService;
@@ -33,7 +34,7 @@ public class LogController {
 	private LogMapper logMapper;
 	
 	@PostMapping
-	public ResponseEntity<List<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogDTO searchDTO, HttpServletResponse response){
+	public ResponseEntity<List<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogSearchDTO searchDTO, HttpServletResponse response){
 		Page<Log> logs = this.logService.findAll(pageable, searchDTO);
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, logs.isFirst() + "");

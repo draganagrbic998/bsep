@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
 import { AlarmTriggering } from 'src/app/core/models/alarm-triggering';
 import { Pagination } from 'src/app/core/models/pagination';
-import { Search } from 'src/app/core/models/search';
 import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class AlarmTriggeringListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  search: Search = {insuredNumber: '', firstName: '', lastName: '', date: null};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
@@ -34,7 +32,7 @@ export class AlarmTriggeringListComponent implements OnInit {
   fetchAlarmTriggerings(): void{
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmTriggeringService.findAll(this.pagination.pageNumber, this.search).subscribe(
+    this.alarmTriggeringService.findAll(this.pagination.pageNumber).subscribe(
       (data: HttpResponse<AlarmTriggering[]>) => {
         this.fetchPending = false;
         if (data){
