@@ -33,7 +33,7 @@ export class CertificatesComponent implements OnInit {
   ngOnInit(): void {
 
     this.templates = [
-      {label: 'Subordinate CA', value: 'SUB_CA', icon: 'pi pi-globe'},
+      {label: 'CA', value: 'SUB_CA', icon: 'pi pi-globe'},
       {label: 'TLS Server', value: 'TLS', icon: 'pi pi-cloud'},
       {label: 'User', value: 'USER', icon: 'pi pi-user'}
     ];

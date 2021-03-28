@@ -50,7 +50,10 @@
         <td>{{cert.alias}}</td>
         <td>{{cert.country}}</td>
         <td class="responsive-column">
-          <p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
+          <p-chip *ngIf="caAlias.getValue() === cert.alias; else noBadge" [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon" pBadge></p-chip>
+          <ng-template #noBadge>
+            <p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
+          </ng-template>
         </td>
         <td>
           <p-badge [value]="cert.revoked ? 'REVOKED' : 'VALID'" [severity]="cert.revoked ? 'danger' : 'success'"></p-badge>
