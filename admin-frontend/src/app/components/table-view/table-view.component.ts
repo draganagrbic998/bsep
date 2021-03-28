@@ -55,8 +55,11 @@ export class TableViewComponent implements OnInit {
       {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(certificate)},
       {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(certificate)}
     ];
-    if (certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias) {
+    if (!certificate.revoked && certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias) {
       items.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(certificate)});
+    }
+    if (certificate.revoked) {
+      items.splice(1, 1);
     }
     return items;
   }

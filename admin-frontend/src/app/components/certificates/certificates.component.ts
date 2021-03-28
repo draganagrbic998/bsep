@@ -5,6 +5,8 @@ import {LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
 import {BehaviorSubject} from 'rxjs';
 import {Table} from 'primeng/table';
 import {TableViewComponent} from '../table-view/table-view.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'app-certificates',
@@ -25,7 +27,8 @@ export class CertificatesComponent implements OnInit {
   table: TableViewComponent;
 
   constructor(private certificateService: CertificateService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
 
@@ -37,7 +40,6 @@ export class CertificatesComponent implements OnInit {
 
     this.getCA();
   }
-
 
   getCA(): void {
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
@@ -67,9 +69,26 @@ export class CertificatesComponent implements OnInit {
     this.certificate = new CertificateInfo();
   }
 
-
-  // TODO
-  revokeCertificate(certificate: CertificateInfo): void {}
+  revokeCertificate(certificate: CertificateInfo): void {
+    this.confirmationService.confirm({
+      icon: 'pi pi-exclamation-triangle',
+      header: 'Confirm Revocation',
+      message: `Are you sure that you want to revoke ${certificate.commonName}?`,
+      defaultFocus: 'reject',
+      accept: () => {
+        this.certificateService.revokeCertificate(certificate.id).subscribe(val => {
+          if (val) {
+            certificate.revoked = true;
+            this.table.reset();
+            this.messageService.add({severity: 'success', summary: 'Success', detail: `${certificate.commonName} successfully revoked.`});
+          }
+          else {
+            this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
+          }
+        });
+       }
+    });
+  }
 
   saveCertificate(): void {
     this.submitted = true;
