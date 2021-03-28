@@ -31,6 +31,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {DialogService} from 'primeng/dynamicdialog';
 import {BadgeModule} from 'primeng/badge';
 import {ChipModule} from 'primeng/chip';
+import {SplitButtonModule} from 'primeng/splitbutton';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import {ChipModule} from 'primeng/chip';
     MenubarModule,
     ButtonModule,
     BadgeModule,
-    ChipModule
+    ChipModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

@@ -39,7 +39,7 @@
         <th>Common name</th>
         <th>Alias</th>
         <th>Country</th>
-        <th>Template</th>
+        <th class="responsive-column">Template</th>
         <th>Status</th>
         <th></th>
       </tr>
@@ -49,19 +49,21 @@
         <td>{{cert.commonName}}</td>
         <td>{{cert.alias}}</td>
         <td>{{cert.country}}</td>
-        <td><p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip></td>
+        <td class="responsive-column">
+          <p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
+        </td>
         <td>
           <p-badge [value]="cert.revoked ? 'REVOKED' : 'VALID'" [severity]="cert.revoked ? 'danger' : 'success'"></p-badge>
         </td>
         <td>
-          <button pButton icon="pi pi-info" class="p-button-icon p-button-rounded p-button-outlined p-button-success p-mr-2"></button>
-          <button pButton icon="pi pi-trash" class="p-button-icon p-button-rounded p-button-danger p-mr-2"></button>
-          <button *ngIf="cert.template === 'SUB_CA' && cert.alias !== caAlias.getValue()"
+          <button type="button"
+                  class="p-button-sm p-button-rounded p-button-outlined"
                   pButton
-                  class="p-button-rounded p-button-outlined"
-                  label="Switch CA"
-                  (click)="switchCA(cert)"
+                  icon="pi pi-bars"
+                  label="Options"
+                  (click)="menu.toggle($event)"
           ></button>
+          <p-menu #menu [popup]="true" [model]="getMenuItems(cert)" appendTo="body"></p-menu>
         </td>
       </tr>
     </ng-template>

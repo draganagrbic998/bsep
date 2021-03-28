@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CertificateService} from '../../../core/services/certificate.service';
 import {CertificateInfo} from '../../../core/model/certificate-info';
-import {LazyLoadEvent, MessageService} from 'primeng/api';
+import {LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
 import {BehaviorSubject} from 'rxjs';
 import {Table} from 'primeng/table';
 
@@ -78,6 +78,23 @@ export class CertificatesComponent implements OnInit {
     this.detailsDialog = false;
     this.certificate = new CertificateInfo();
   }
+
+  getMenuItems(certificate: CertificateInfo): MenuItem[] {
+    const items = [
+      {icon: 'pi pi-info', label: 'Details', command: () => this.openInfo(certificate)},
+      {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate(certificate)}
+    ];
+    if (certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias.getValue()) {
+      items.push({icon: 'pi pi-replay', label: 'Switch CA', command: () => this.switchCA(certificate)});
+    }
+    return items;
+  }
+
+  // TODO
+  openInfo(certificate: CertificateInfo): void {}
+
+  // TODO
+  revokeCertificate(certificate: CertificateInfo): void {}
 
   saveCertificate(): void {
     this.submitted = true;
