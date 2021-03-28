@@ -64,8 +64,8 @@ export class CertificatesComponent implements OnInit {
     this.newDialog = true;
   }
 
-  openDetails(): void {
-    this.certificate = this.ca;
+  openDetails(cert: CertificateInfo): void {
+    this.certificate = cert;
     this.detailsDialog = true;
   }
 
@@ -81,7 +81,7 @@ export class CertificatesComponent implements OnInit {
 
   getMenuItems(certificate: CertificateInfo): MenuItem[] {
     const items = [
-      {icon: 'pi pi-info', label: 'Details', command: () => this.openInfo(certificate)},
+      {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails(certificate)},
       {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate(certificate)}
     ];
     if (certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias.getValue()) {
@@ -89,9 +89,6 @@ export class CertificatesComponent implements OnInit {
     }
     return items;
   }
-
-  // TODO
-  openInfo(certificate: CertificateInfo): void {}
 
   // TODO
   revokeCertificate(certificate: CertificateInfo): void {}

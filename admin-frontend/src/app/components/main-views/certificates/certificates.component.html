@@ -5,7 +5,7 @@
     </ng-template>
     <ng-template pTemplate="right">
       Current CA:
-      <button pButton [label]="!!ca ? ca.commonName : 'Details'" class="p-button p-button-outlined p-ml-3" (click)="openDetails()"></button>
+      <button pButton [label]="!!ca ? ca.commonName : 'Details'" class="p-button p-button-outlined p-ml-3" (click)="openDetails(ca)"></button>
       <button *ngIf="caAlias.getValue() !== 'root'"
               pButton
               label="Reset"
@@ -152,12 +152,48 @@
   <ng-template pTemplate="header">
     <span class="p-text-left p-align-center p-d-flex">
       <img src="assets/certificate-icon.png" alt="certificate" height="30" width="30">
-      <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.commonName}}</span></span>
+      <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.alias}}</span></span>
     </span>
   </ng-template>
   <ng-template pTemplate="content">
-    <div class="p-grid">
-      <div class="p-col-fixed">
+    <div class="p-m-2 p-p-2 details-content">
+      <div class="p-grid">
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Common name: </span> <span class="p-text-bold">{{certificate.commonName}}</span>
+        </div>
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Alias: </span> <span class="p-text-bold">{{certificate.alias}}</span>
+        </div>
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Organization: </span> <span class="p-text-bold">{{certificate.organization}}</span>
+        </div>
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Organization unit: </span> <span
+          class="p-text-bold">{{certificate.organizationUnit}}</span>
+        </div>
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Country code:</span> <span class="p-text-bold">{{certificate.country}}</span>
+        </div>
+        <div class="p-col-12 p-lg-6">
+          <span class="p-text-light">Email: </span> <span class="p-text-bold">{{certificate.email}}</span>
+        </div>
+      </div>
+      <hr>
+      <div class="p-grid p-justify-around p-mt-3">
+        <div class="p-col p-text-left p-as-center">
+          <span class="p-text-light">Issued by: </span> <span class="p-text-bold">{{certificate.issuerAlias}}</span>
+        </div>
+        <div class="p-col p-d-flex p-ai-center">
+          <p-chip *ngIf="caAlias.getValue() === certificate.alias; else noBadge"
+                  [label]="getTemplate(certificate.template).label" [icon]="getTemplate(certificate.template).icon"
+                  pBadge></p-chip>
+          <ng-template #noBadge>
+            <p-chip [label]="getTemplate(certificate.template).label"
+                    [icon]="getTemplate(certificate.template).icon"></p-chip>
+          </ng-template>
+          <p-badge class="p-ml-4" [value]="certificate.revoked ? 'REVOKED' : 'VALID'"
+                   [severity]="certificate.revoked ? 'danger' : 'success'"></p-badge>
+        </div>
       </div>
     </div>
 
