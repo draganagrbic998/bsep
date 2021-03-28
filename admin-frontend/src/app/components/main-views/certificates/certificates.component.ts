@@ -54,6 +54,7 @@ export class CertificatesComponent implements OnInit {
 
   getCA(): void {
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+      console.log(val);
       this.certificateService.ca.next(val);
     });
   }
@@ -85,7 +86,7 @@ export class CertificatesComponent implements OnInit {
       {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate(certificate)}
     ];
     if (certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias.getValue()) {
-      items.push({icon: 'pi pi-replay', label: 'Switch CA', command: () => this.switchCA(certificate)});
+      items.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA(certificate)});
     }
     return items;
   }

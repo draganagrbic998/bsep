@@ -9,6 +9,7 @@ import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
 import com.example.demo.model.Template;
+import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.util.CertificateGenerator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -27,14 +28,14 @@ import java.util.Date;
 public class CertificateService {
 
     private final KeyStoreService keyStoreService;
-    private final CertificateInfoService certificateInfoService;
+    private final CertificateInfoRepository certificateInfoRepository;
     private final CertificateGenerator certificateGenerator;
 
     public CertificateService(KeyStoreService keyStoreService,
-                              CertificateInfoService certificateInfoService,
+                              CertificateInfoRepository certificateInfoRepository,
                               CertificateGenerator certificateGenerator) {
         this.keyStoreService = keyStoreService;
-        this.certificateInfoService = certificateInfoService;
+        this.certificateInfoRepository = certificateInfoRepository;
         this.certificateGenerator = certificateGenerator;
     }
 
@@ -48,6 +49,7 @@ public class CertificateService {
         IssuerData issuerData = keyStoreService.readIssuerFromStore(issuerAlias);
 
         X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
+        CertificateInfo issuerInfo = certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
         if (!isCertificateValid(issuerAlias))
             throw new InvalidIssuerException();
 
@@ -62,8 +64,7 @@ public class CertificateService {
 
         String alias = createCertificateDto.getAlias();
 
-        CertificateInfo certInfo = certificateInfoService.findByAliasIgnoreCase(alias);
-        if (certInfo != null)
+        if (certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias) != null)
             throw new AliasExistsException();
 
         KeyPair keyPair = generateKeyPair();
@@ -76,32 +77,15 @@ public class CertificateService {
         SubjectData subjectData = new SubjectData();
         subjectData.setX500name(subjectName);
 
-        String template = createCertificateDto.getTemplate();
-
-        switch (template) {
-            case "SUB_CA":
-                return createCertificate_SUB_CA(createCertificateDto, issuerCertificateChain, issuerData, keyPair, subjectData);
-            case "TLS":
-                return createCertificate_TLS(createCertificateDto, issuerCertificateChain, issuerData, keyPair, subjectData);
-            case "USER":
-                return createCertificate_USER(createCertificateDto, issuerCertificateChain, issuerData, keyPair, subjectData);
-            default:
-                throw new IllegalArgumentException(String.format("Template %s unavailable", template));
-        }
-    }
-
-    private CertificateInfo createCertificate_SUB_CA(
-            CreateCertificateDto createCertificateDto,
-            Certificate[] issuerCertificateChain,
-            IssuerData issuerData,
-            KeyPair keyPair,
-            SubjectData subjectData) {
+        String templateString = createCertificateDto.getTemplate();
 
         Date[] dates;
-        dates = generateDates(24);
+        dates = generateDates(templateString.equals("SUB_CA") ? 24 : 12);
         subjectData.setStartDate(dates[0]);
         subjectData.setEndDate(dates[1]);
         subjectData.setPublicKey(keyPair.getPublic());
+
+        Template template = Template.valueOf(templateString);
 
         CertificateInfo certInfo = generateCertificateInfo(subjectData,
                 createCertificateDto.getIssuerAlias(),
@@ -110,75 +94,26 @@ public class CertificateService {
                 createCertificateDto.getOrganizationUnit(),
                 createCertificateDto.getOrganization(),
                 createCertificateDto.getEmail(),
-                true,
-                Template.SUB_CA);
+                template == Template.SUB_CA,
+                template);
+
+        issuerInfo.addIssued(certInfo);
+        this.certificateInfoRepository.save(issuerInfo);
+
         subjectData.setSerialNumber(certInfo.getId().toString());
-        X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData, Template.SUB_CA, keyPair, false, issuerCertificateChain[0]);
+
+        X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData, template, keyPair, false, issuerCertificateChain[0]);
+
         Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
+
         keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
+
         keyStoreService.saveKeyStore();
+
         return certInfo;
+
     }
 
-    private CertificateInfo createCertificate_TLS(
-            CreateCertificateDto createCertificateDto,
-            Certificate[] issuerCertificateChain,
-            IssuerData issuerData,
-            KeyPair keyPair,
-            SubjectData subjectData) {
-
-        Date[] dates;
-        dates = generateDates(12);
-        subjectData.setStartDate(dates[0]);
-        subjectData.setEndDate(dates[1]);
-        subjectData.setPublicKey(keyPair.getPublic());
-
-        CertificateInfo certInfo = generateCertificateInfo(subjectData,
-                createCertificateDto.getIssuerAlias(),
-                createCertificateDto.getAlias(),
-                createCertificateDto.getCountry(),
-                createCertificateDto.getOrganizationUnit(),
-                createCertificateDto.getOrganization(),
-                createCertificateDto.getEmail(),
-                false,
-                Template.TLS);
-        subjectData.setSerialNumber(certInfo.getId().toString());
-        X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData, Template.TLS, keyPair, false, issuerCertificateChain[0]);
-        Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
-        keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
-        keyStoreService.saveKeyStore();
-        return certInfo;
-    }
-
-    private CertificateInfo createCertificate_USER(
-            CreateCertificateDto createCertificateDto,
-            Certificate[] issuerCertificateChain,
-            IssuerData issuerData,
-            KeyPair keyPair,
-            SubjectData subjectData) {
-
-        Date[] dates;
-        dates = generateDates(12);
-        subjectData.setStartDate(dates[0]);
-        subjectData.setEndDate(dates[1]);
-        subjectData.setPublicKey(keyPair.getPublic());
-
-        CertificateInfo certInfo = generateCertificateInfo(subjectData,
-                createCertificateDto.getIssuerAlias(),
-                createCertificateDto.getAlias(),
-                createCertificateDto.getCountry(),
-                createCertificateDto.getOrganizationUnit(),
-                createCertificateDto.getOrganization(),
-                createCertificateDto.getEmail(),
-                false,
-                Template.USER);
-        subjectData.setSerialNumber(certInfo.getId().toString());
-        X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData, Template.USER, keyPair, false, issuerCertificateChain[0]);
-        Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
-        keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
-        keyStoreService.saveKeyStore();
-        return certInfo;
-    }
     public static X500Name certificateNameFromData(CreateCertificateDto createCertificateDto){
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.CN, createCertificateDto.getCommonName());
@@ -201,7 +136,7 @@ public class CertificateService {
         for (int i = 0; i < chain.length; i++) {
             x509cert = (X509Certificate) chain[i];
 
-            CertificateInfo certificateInfo = certificateInfoService.findById(x509cert.getSerialNumber().longValue());
+            CertificateInfo certificateInfo = certificateInfoRepository.findById(x509cert.getSerialNumber().longValue()).orElse(null);
 
             if (certificateInfo.isRevoked()) {
                 return false;
@@ -277,12 +212,12 @@ public class CertificateService {
         certInfo.setEndDate(subjectData.getEndDate());
         certInfo.setRevoked(false);
         certInfo.setCountry(country);
-        certInfo.setOrganisationUnit(organizationUnit);
-        certInfo.setOrganisation(organization);
+        certInfo.setOrganizationUnit(organizationUnit);
+        certInfo.setOrganization(organization);
         certInfo.setEmail(email);
         certInfo.setRevocationReason("");
         certInfo.setCA(isCA);
         certInfo.setTemplate(template);
-        return certificateInfoService.save(certInfo);
+        return certificateInfoRepository.save(certInfo);
     }
 }

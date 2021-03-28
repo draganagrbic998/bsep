@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CertificateInfoDto;
 import com.example.demo.dto.CreateCertificateDto;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
@@ -44,12 +45,12 @@ public class CertificatesController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CertificateInfo>> getCertificates(Pageable pageable) {
+    public ResponseEntity<Page<CertificateInfoDto>> getCertificates(Pageable pageable) {
         return ResponseEntity.ok(certificateInfoService.findAll(pageable));
     }
 
     @GetMapping(path = "/alias/{alias}")
-    public ResponseEntity<CertificateInfo> getByAlias(@PathVariable String alias) {
+    public ResponseEntity<CertificateInfoDto> getByAlias(@PathVariable String alias) {
         return ResponseEntity.ok(certificateInfoService.findByAliasIgnoreCase(alias));
     }
 

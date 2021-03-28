@@ -1,9 +1,11 @@
 package com.example.demo;
 
+import com.example.demo.dto.CertificateInfoDto;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
 import com.example.demo.model.Template;
+import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.KeyStoreService;
@@ -29,7 +31,7 @@ public class Setup implements ApplicationRunner {
     private KeyStoreService keyStoreService;
 
     @Autowired
-    private CertificateInfoService certificateInfoService;
+    private CertificateInfoRepository certificateInfoRepository;
 
     @Autowired
     private CertificateService certificateService;
@@ -46,7 +48,7 @@ public class Setup implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         File keystore = new File(this.keystore_path + this.keystore_name);
-        CertificateInfo ci = certificateInfoService.findByAliasIgnoreCase("root");
+        CertificateInfo ci = certificateInfoRepository.findFirstByAliasContainingIgnoreCase("root");
         if (ci == null) {
             keystore.delete();
         }
@@ -104,13 +106,13 @@ public class Setup implements ApplicationRunner {
         certInfo.setEndDate(subjectData.getEndDate());
         certInfo.setRevoked(false);
         certInfo.setRevocationReason("");
-        certInfo.setOrganisation("BSEP");
+        certInfo.setOrganization("BSEP");
         certInfo.setCountry("RS");
         certInfo.setEmail("tim1@email.com");
-        certInfo.setOrganisationUnit("CA");
+        certInfo.setOrganizationUnit("CA");
         certInfo.setIssuerAlias("root");
         certInfo.setCA(true);
         certInfo.setTemplate(Template.SUB_CA);
-        return certificateInfoService.save(certInfo);
+        return certificateInfoRepository.save(certInfo);
     }
 }
