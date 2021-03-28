@@ -16,66 +16,21 @@
 
   </p-toolbar>
 
-  <p-table [value]="certificates"
-           [rows]="rows"
-           [lazy]="true"
-           (onLazyLoad)="getCertificates($event)"
-           [paginator]="true"
-           [rowHover]="true"
-           dataKey="id"
-           [totalRecords]="totalRecords"
-           [loading]="loading"
-           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-           [showCurrentPageReport]="true"
-           #table
-  >
-    <ng-template pTemplate="caption">
-      <div class="p-d-flex p-ai-center p-jc-between">
-        <h5 class="p-m-0">Manage Certificates</h5>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Common name</th>
-        <th>Alias</th>
-        <th>Country</th>
-        <th class="responsive-column">Template</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-cert>
-      <tr>
-        <td>{{cert.commonName}}</td>
-        <td>{{cert.alias}}</td>
-        <td>{{cert.country}}</td>
-        <td class="responsive-column">
-          <p-chip *ngIf="caAlias.getValue() === cert.alias; else noBadge" [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon" pBadge></p-chip>
-          <ng-template #noBadge>
-            <p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
-          </ng-template>
-        </td>
-        <td>
-          <p-badge [value]="cert.revoked ? 'REVOKED' : 'VALID'" [severity]="cert.revoked ? 'danger' : 'success'"></p-badge>
-        </td>
-        <td>
-          <button type="button"
-                  class="p-button-sm p-button-rounded p-button-outlined"
-                  pButton
-                  icon="pi pi-bars"
-                  label="Options"
-                  (click)="menu.toggle($event)"
-          ></button>
-          <p-menu #menu [popup]="true" [model]="getMenuItems(cert)" appendTo="body"></p-menu>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="summary">
-      <div class="p-d-flex p-ai-center p-jc-between">
-        In total there are {{totalRecords}} certificates.
-      </div>
-    </ng-template>
-  </p-table>
+  <p-tabView>
+    <p-tabPanel header="Table">
+      <app-table-view (openDetails)="openDetails($event)"
+                      (revokeCertificate)="revokeCertificate($event)"
+                      (switchCA)="switchCA($event)"
+                      [caAlias]="caAlias.getValue()"
+                      [templates]="templates"
+                      #table
+      ></app-table-view>
+    </p-tabPanel>
+    <p-tabPanel header="Tree" class="p-p-3">
+      Under construction
+    </p-tabPanel>
+  </p-tabView>
+
 </div>
 
 <p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">
@@ -151,7 +106,7 @@
 <p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="header">
     <span class="p-text-left p-align-center p-d-flex">
-      <img src="assets/certificate-icon.png" alt="certificate" height="30" width="30">
+      <img src="../../../assets/certificate-icon.png" alt="certificate" height="30" width="30">
       <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.alias}}</span></span>
     </span>
   </ng-template>

@@ -11,3 +11,7 @@
 .details-content {
   border: 1px solid black;
 }
+
+:host::ng-deep .p-tabview-panels {
+  padding: 0;
+}

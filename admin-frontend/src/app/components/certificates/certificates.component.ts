@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CertificateService} from '../../../core/services/certificate.service';
-import {CertificateInfo} from '../../../core/model/certificate-info';
+import {CertificateService} from '../../core/services/certificate.service';
+import {CertificateInfo} from '../../core/model/certificate-info';
 import {LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
 import {BehaviorSubject} from 'rxjs';
 import {Table} from 'primeng/table';
+import {TableViewComponent} from '../table-view/table-view.component';
 
 @Component({
   selector: 'app-certificates',
@@ -20,12 +21,8 @@ export class CertificatesComponent implements OnInit {
   caAlias: BehaviorSubject<string> = new BehaviorSubject('root');
 
   // table
-  rows = 10;
-  totalRecords = 0;
-  first = 0;
-  loading = true;
   @ViewChild('table')
-  table: Table;
+  table: TableViewComponent;
 
   constructor(private certificateService: CertificateService,
               private messageService: MessageService) { }
@@ -41,16 +38,6 @@ export class CertificatesComponent implements OnInit {
     this.getCA();
   }
 
-  getCertificates(event: LazyLoadEvent): void {
-    this.loading = true;
-    const page = Math.floor(event.first / this.rows);
-    const size = this.rows;
-    this.certificateService.getCertificates(page, size).subscribe(val => {
-      this.certificateService.certificates = val.content;
-      this.totalRecords = val.totalElements;
-      this.loading = false;
-    });
-  }
 
   getCA(): void {
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
@@ -80,16 +67,6 @@ export class CertificatesComponent implements OnInit {
     this.certificate = new CertificateInfo();
   }
 
-  getMenuItems(certificate: CertificateInfo): MenuItem[] {
-    const items = [
-      {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails(certificate)},
-      {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate(certificate)}
-    ];
-    if (certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias.getValue()) {
-      items.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA(certificate)});
-    }
-    return items;
-  }
 
   // TODO
   revokeCertificate(certificate: CertificateInfo): void {}
@@ -134,7 +111,4 @@ export class CertificatesComponent implements OnInit {
     return this.certificateService.ca.getValue();
   }
 
-  get currentPage(): number {
-    return Math.floor(this.first / this.rows);
-  }
 }

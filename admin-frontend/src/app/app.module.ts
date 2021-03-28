@@ -19,7 +19,7 @@ import {PasswordModule} from 'primeng/password';
 import {CardModule} from 'primeng/card';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { DashboardComponent } from './components/main-views/dashboard/dashboard.component';
-import { CertificatesComponent } from './components/main-views/certificates/certificates.component';
+import { CertificatesComponent } from './components/certificates/certificates.component';
 import {Dialog, DialogModule} from 'primeng/dialog';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToolbarModule} from 'primeng/toolbar';
@@ -32,6 +32,9 @@ import {DialogService} from 'primeng/dynamicdialog';
 import {BadgeModule} from 'primeng/badge';
 import {ChipModule} from 'primeng/chip';
 import {SplitButtonModule} from 'primeng/splitbutton';
+import {TabViewModule} from 'primeng/tabview';
+import { TableViewComponent } from './components/table-view/table-view.component';
+import { TreeViewComponent } from './components/tree-view/tree-view.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,9 @@ import {SplitButtonModule} from 'primeng/splitbutton';
     MainViewComponent,
     LoginComponent,
     DashboardComponent,
-    CertificatesComponent
+    CertificatesComponent,
+    TableViewComponent,
+    TreeViewComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +71,7 @@ import {SplitButtonModule} from 'primeng/splitbutton';
     ButtonModule,
     BadgeModule,
     ChipModule,
+    TabViewModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

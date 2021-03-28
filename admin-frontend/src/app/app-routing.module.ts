@@ -4,7 +4,7 @@ import {AuthGuard} from './core/guards/auth.guard';
 import {LoginComponent} from './components/login/login.component';
 import {MainViewComponent} from './components/main-views/main-view/main-view.component';
 import {DashboardComponent} from './components/main-views/dashboard/dashboard.component';
-import {CertificatesComponent} from './components/main-views/certificates/certificates.component';
+import {CertificatesComponent} from './components/certificates/certificates.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, data: {roles: ['UNREGISTERED']}, canActivate: [AuthGuard]},
