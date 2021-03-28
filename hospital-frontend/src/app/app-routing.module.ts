@@ -7,6 +7,7 @@ import { MessageListComponent } from './components/message/message-list/message-
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
+import { ReportComponent } from './components/report/report.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
   {
     path: environment.logListRoute,
     component: LogListComponent,
+    // dodaj guard
+  },
+  {
+    path: environment.reportRoute,
+    component: ReportComponent,
     // dodaj guard
   }
 ];

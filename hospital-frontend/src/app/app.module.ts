@@ -33,6 +33,7 @@ import { LogSearchComponent } from './components/log/log-search/log-search.compo
 import { AdminAlarmDetailsComponent } from './components/admin-alarm/admin-alarm-details/admin-alarm-details.component';
 import { AdminAlarmListComponent } from './components/admin-alarm/admin-alarm-list/admin-alarm-list.component';
 import { AdminAlarmDialogComponent } from './components/admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { AdminAlarmDialogComponent } from './components/admin-alarm/admin-alarm-
     LogSearchComponent,
     AdminAlarmDetailsComponent,
     AdminAlarmListComponent,
-    AdminAlarmDialogComponent
+    AdminAlarmDialogComponent,
+    ReportComponent
   ],
   imports: [
     AppRoutingModule,

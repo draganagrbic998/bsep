@@ -1,0 +1,37 @@
+<app-preloader *ngIf="fetchPending"></app-preloader>
+
+<app-empty-container *ngIf="!fetchPending && !report" 
+[title]="'ERROR LOADING REPORT'"></app-empty-container>
+
+<div class="root" *ngIf="!fetchPending && report">
+    <table class="table table-bordered mat-elevation-z24">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">INFO</th>
+            <th scope="col">WARNING</th>
+            <th scope="col">ERROR</th>
+            <th scope="col">FATAL</th>
+            <th scope="col">DESCRIPTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Logs</th>
+            <td>{{report.infoLogs}}</td>
+            <td>{{report.warningLogs}}</td>
+            <td>{{report.errorLogs}}</td>
+            <td>{{report.fatalLogs}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Alarms</th>
+            <td>{{report.infoAlarms}}</td>
+            <td>{{report.warningAlarms}}</td>
+            <td>{{report.errorAlarms}}</td>
+            <td>{{report.fatalAlarms}}</td>
+            <td>{{report.descriptionAlarms}}</td>
+          </tr>
+        </tbody>
+    </table>
+</div>

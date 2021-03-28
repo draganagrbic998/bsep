@@ -9,12 +9,14 @@ export const environment = {
   alarmsApi: 'https://localhost:8081/api/alarms',
   alarmTriggeringsApi: 'https://localhost:8081/api/alarm-triggerings',
   logsApi: 'https://localhost:8081/api/logs',
+  reportApi: 'https://localhost:8081/api/report',
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',
   messageListRoute: 'message-list',
   alarmTriggeringListRoute: 'alarm-triggering-list',
   patientDetailsRoute: 'patient-details',
-  logListRoute: 'log-list'
+  logListRoute: 'log-list',
+  reportRoute: 'report'
 };
 
 /*

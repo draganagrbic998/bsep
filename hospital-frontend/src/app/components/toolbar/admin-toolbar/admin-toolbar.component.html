@@ -15,6 +15,13 @@
             Alarms
         </button>
         <button
+        matTooltip="Report"
+        *ngIf="!onRoute('log-list') && !onRoute('alarm-triggering-list')"
+        mat-button
+        [routerLink]="'report'">
+            Report
+        </button>
+        <button
         matTooltip="Add alarm"
         *ngIf="onRoute('alarm-triggering-list')"
         mat-button

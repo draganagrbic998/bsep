@@ -1,0 +1,15 @@
+@import "../../../styles/theme";
+
+.root{
+    padding: 40px;
+    margin-top: 40px;
+}
+
+table{
+    background-color: whitesmoke;
+}
+
+thead > tr > th, td{
+    text-align: center;
+}
+
