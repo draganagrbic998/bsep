@@ -20,4 +20,6 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 			+ "order by m.date desc")
 	public Page<Log> findAll(Pageable pageable, String status, String description, String userName, String computerName, String serviceName);
 	
+	public long countByStatus(String status);
+	
 }

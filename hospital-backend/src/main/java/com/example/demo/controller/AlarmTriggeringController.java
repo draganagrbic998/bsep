@@ -32,6 +32,7 @@ public class AlarmTriggeringController {
 
 	@GetMapping
 	public ResponseEntity<List<AlarmTriggeringDTO>> findAll(Pageable pageable, HttpServletResponse response){
+		//treba ovde ako je admin kroisnik da vratis one kojima je paciejnt null a doktoru one kojima nije null
 		Page<AlarmTriggering> alarms = this.alarmTriggeringService.findAll(pageable);
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");
