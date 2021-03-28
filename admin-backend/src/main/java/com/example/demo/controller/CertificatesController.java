@@ -10,6 +10,9 @@ import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +44,8 @@ public class CertificatesController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CertificateInfo>> getCertificates() {
-        return ResponseEntity.ok(certificateInfoService.findAll());
+    public ResponseEntity<Page<CertificateInfo>> getCertificates(Pageable pageable) {
+        return ResponseEntity.ok(certificateInfoService.findAll(pageable));
     }
 
     @GetMapping(path = "/alias/{alias}")

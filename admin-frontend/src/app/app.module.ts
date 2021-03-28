@@ -30,6 +30,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {DialogService} from 'primeng/dynamicdialog';
 import {BadgeModule} from 'primeng/badge';
+import {ChipModule} from 'primeng/chip';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {BadgeModule} from 'primeng/badge';
     MenuModule,
     MenubarModule,
     ButtonModule,
-    BadgeModule
+    BadgeModule,
+    ChipModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

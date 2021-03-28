@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,10 @@ public class CertificateInfoService {
 
     public List<CertificateInfo> findAll() {
         return certificateInfoRepository.findAll();
+    }
+
+    public Page<CertificateInfo> findAll(Pageable pageable) {
+        return  certificateInfoRepository.findAll(pageable);
     }
 
     public CertificateInfo findById(Long id){
