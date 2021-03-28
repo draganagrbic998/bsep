@@ -15,6 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.*;
@@ -26,16 +27,14 @@ import java.util.Date;
 @Service
 public class CertificateService {
 
-	private final KeyStoreService keyStoreService;
-	private final CertificateInfoRepository certificateInfoRepository;
-	private final CertificateGenerator certificateGenerator;
+	@Autowired
+	private KeyStoreService keyStoreService;
 
-	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
-			CertificateGenerator certificateGenerator) {
-		this.keyStoreService = keyStoreService;
-		this.certificateInfoRepository = certificateInfoRepository;
-		this.certificateGenerator = certificateGenerator;
-	}
+	@Autowired
+	private CertificateInfoRepository certificateInfoRepository;
+
+	@Autowired
+	private CertificateGenerator certificateGenerator;
 
 	public CertificateInfo createCertificate(CreateCertificateDTO createCertificateDto)
 			throws CertificateNotFoundException, InvalidIssuerException, CertificateAuthorityException,

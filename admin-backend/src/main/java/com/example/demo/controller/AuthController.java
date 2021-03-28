@@ -22,35 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/auth")
 public class AuthController {
 
-    private final AdminService userService;
-    private final AuthenticationManager authenticationManager;
-    private final AdminMapper adminMapper;
+	@Autowired
+	private AdminService userService;
 
-    @Autowired
-    public AuthController(AdminService userService,
-                          AuthenticationManager authenticationManager,
-                          AdminMapper adminMapper) {
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.adminMapper = adminMapper;
-    }
+	@Autowired
+	private AdminMapper adminMapper;
 
-    @PostMapping(path="/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginDTO loginInfo){
-        try{
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getUsername(),
-                            loginInfo.getPassword()));
+	@PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TokenResponse> login(@RequestBody LoginDTO loginInfo) {
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginInfo.getUsername(), loginInfo.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Admin user = (Admin) authentication.getPrincipal();
-            String jwt = TokenUtils.generateToken(user);
+			Admin user = (Admin) authentication.getPrincipal();
+			String jwt = TokenUtils.generateToken(user);
 
-            return ResponseEntity.ok(new TokenResponse(jwt, adminMapper.entityToAdminDto(user)));
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+			return ResponseEntity.ok(new TokenResponse(jwt, adminMapper.entityToAdminDto(user)));
+		} catch (Exception ex) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 }

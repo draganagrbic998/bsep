@@ -23,14 +23,11 @@ import java.security.Principal;
 @RequestMapping(path = "/api/certificates")
 public class CertificatesController {
 
-	private final CertificateService certificateService;
-	private final CertificateInfoService certificateInfoService;
+	@Autowired
+	private CertificateService certificateService;
 
 	@Autowired
-	CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService) {
-		this.certificateService = certificateService;
-		this.certificateInfoService = certificateInfoService;
-	}
+	private CertificateInfoService certificateInfoService;
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> createCertificate(Principal principal,
