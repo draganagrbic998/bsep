@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.ReportDTO;
+import com.example.demo.dto.ReportSearchDTO;
 import com.example.demo.model.LogStatus;
-import com.example.demo.repository.AdminAlarmRepository;
+import com.example.demo.repository.AlarmTriggeringRepository;
 import com.example.demo.repository.LogRepository;
 
 @Service
@@ -17,19 +18,15 @@ public class ReportService {
 	private LogRepository logRepository;
 
 	@Autowired
-	private AdminAlarmRepository alarmRepository;
+	private AlarmTriggeringRepository alarmRepository;
 		
-	public ReportDTO report() {
+	public ReportDTO report(ReportSearchDTO searchDTO) {
 		return new ReportDTO(
-			this.logRepository.countByStatus(LogStatus.INFO.name()),
-			this.logRepository.countByStatus(LogStatus.WARNING.name()),
-			this.logRepository.countByStatus(LogStatus.ERROR.name()),
-			this.logRepository.countByStatus(LogStatus.FATAL.name()),
-			this.alarmRepository.countByStatusAndParam(true, LogStatus.INFO.name()),
-			this.alarmRepository.countByStatusAndParam(true, LogStatus.WARNING.name()),
-			this.alarmRepository.countByStatusAndParam(true, LogStatus.ERROR.name()),
-			this.alarmRepository.countByStatusAndParam(true, LogStatus.FATAL.name()),
-			this.alarmRepository.countByStatus(false)
+			this.logRepository.report(LogStatus.INFO.name(), searchDTO.getStart(), searchDTO.getEnd()),
+			this.logRepository.report(LogStatus.WARNING.name(), searchDTO.getStart(), searchDTO.getEnd()),
+			this.logRepository.report(LogStatus.ERROR.name(), searchDTO.getStart(), searchDTO.getEnd()),
+			this.logRepository.report(LogStatus.FATAL.name(), searchDTO.getStart(), searchDTO.getEnd()),
+			this.alarmRepository.report(searchDTO.getStart(), searchDTO.getEnd())
 		);
 	}
 	

@@ -14,9 +14,9 @@ export class AuthGuard implements CanActivate {
   ){}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const roles = route.data.roles as string[];
-    for (const role of roles){
-      if (this.storageService.getUser()?.authorities.includes(role)){
+    const authorities = route.data.authorities as string[];
+    for (const authority of authorities){
+      if (this.storageService.getUser()?.authorities.includes(authority)){
         return true;
       }
     }

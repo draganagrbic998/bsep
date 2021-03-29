@@ -43,12 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint()).and()
 			.authorizeRequests()
-			.antMatchers("/h2").permitAll()
-			.antMatchers("/api/**").permitAll()
+			.antMatchers("/auth/**").permitAll()
 			.and().cors().and()
 			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
 		http.csrf().disable();
-    	http.headers().frameOptions().disable();
 	}
 		
 }

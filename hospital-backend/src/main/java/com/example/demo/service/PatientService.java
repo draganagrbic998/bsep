@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +21,7 @@ public class PatientService {
 	}
 	
 	public Patient find(long id) {
-		return this.patientRepository.findById(id).get();
+		return this.patientRepository.findById(id).orElse(null);
 	}
 	
 	@Transactional(readOnly = false)
@@ -34,14 +32,6 @@ public class PatientService {
 	@Transactional(readOnly = false)
 	public void delete(long id) {
 		this.patientRepository.deleteById(id);
-	}
-
-	public Patient findByInsuredNumber(String insuredNumber) {
-		if (this.patientRepository.findByInsuredNumber(insuredNumber) == null && this.patientRepository.count() == 0) {
-			return null;
-		}
-		int length = (int) this.patientRepository.count();
-		return this.patientRepository.findById(this.patientRepository.findIds().get(new Random().nextInt(length))).get();
 	}
 
 }

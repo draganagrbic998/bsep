@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +22,10 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 			+ "order by m.date desc")
 	public Page<Log> findAll(Pageable pageable, String status, String description, String userName, String computerName, String serviceName);
 	
-	public long countByStatus(String status);
+	@Query("select count(m) from Log m where "
+			+ "lower(m.status) like lower(:status) and "
+			+ "(cast(:start as date) is null or m.date >= :start) and "
+			+ "(cast(:end as date) is null or m.date <= :end)")
+	public long report(String status, Date start, Date end);
 	
 }

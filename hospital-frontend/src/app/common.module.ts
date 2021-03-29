@@ -9,19 +9,16 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 
-const modules = [
-    NgbModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ScrollingModule
-];
-
 @NgModule({
-    imports: modules,
-    exports: modules,
+    exports: [
+        NgbModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ScrollingModule
+    ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

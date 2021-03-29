@@ -1,4 +1,4 @@
-export interface Search{
+export interface MessageSearch{
     insuredNumber: string;
     firstName: string;
     lastName: string;

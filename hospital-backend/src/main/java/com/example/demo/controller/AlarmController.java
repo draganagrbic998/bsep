@@ -35,6 +35,9 @@ import com.example.demo.utils.Constants;
 public class AlarmController {
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private AdminAlarmService adminAlarmService;
 
 	@Autowired
@@ -43,9 +46,6 @@ public class AlarmController {
 	@Autowired
 	private AlarmMapper alarmMapper;
 	
-	@Autowired
-	private UserService userService;
-
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMIN')")	
 	public ResponseEntity<List<AdminAlarmDTO>> findAll(Pageable pageable, HttpServletResponse response){

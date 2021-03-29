@@ -1,7 +1,5 @@
 package com.example.demo.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +18,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 			+ "lower(p.city) like lower(concat('%', :search, '%')) "
 			+ "order by p.lastName, p.firstName")
 	public Page<Patient> findAll(Pageable pageable, String search);
-
-	@Query("select p.id from Patient p")
-	public List<Long> findIds();
-
-	public Patient findByInsuredNumber(String insuredNumber);
 		
 }

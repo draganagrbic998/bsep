@@ -28,14 +28,14 @@ import com.example.demo.utils.Constants;
 public class AlarmTriggeringController {
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private AlarmTriggeringService alarmTriggeringService;
 
 	@Autowired
 	private AlarmMapper alarmMapper;
 	
-	@Autowired
-	private UserService userService;
-
 	@GetMapping
 	public ResponseEntity<List<AlarmTriggeringDTO>> findAll(Pageable pageable, HttpServletResponse response){
 		Page<AlarmTriggering> alarms;

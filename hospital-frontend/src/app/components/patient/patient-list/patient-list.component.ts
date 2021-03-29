@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Pagination } from 'src/app/models/pagination';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient/patient.service';
@@ -50,8 +50,8 @@ export class PatientListComponent implements OnInit {
         if (data){
           this.patients = new MatTableDataSource(data.body);
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.patients = new MatTableDataSource([]);
@@ -86,7 +86,7 @@ export class PatientListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.patientService.refreshData$.subscribe(() => {
-      this.pagination.pageNumber = 0;
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber - 1 : 0;
       this.changePage(0);
     });
     // tslint:disable-next-line: deprecation

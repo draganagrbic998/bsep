@@ -2,7 +2,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { Pagination } from 'src/app/models/pagination';
 import { DoctorAlarmDialogComponent } from '../doctor-alarm-dialog/doctor-alarm-dialog.component';
@@ -43,8 +43,8 @@ export class DoctorAlarmListComponent implements OnInit {
         if (data){
           this.alarms = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.alarms = [];
@@ -64,7 +64,7 @@ export class DoctorAlarmListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.alarmService.refreshDoctorData$.subscribe(() => {
-      this.pagination.pageNumber = 0;
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber - 1 : 0;
       this.changePage(0);
     });
   }

@@ -4,6 +4,7 @@ import com.example.demo.model.AdminAlarm
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.service.AdminAlarmService
 import com.example.demo.service.AlarmTriggeringService
+import java.util.HashSet
 
 global AdminAlarmService alarmService
 global AlarmTriggeringService alarmTriggeringService
@@ -13,21 +14,19 @@ rule "Alarm for log status"
 	no-loop
 
     when
-		$first: Log(!normal, $status: status)
 		accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase($status), $counts: counts) from alarmService.findAll(),
-			$minCounts: min($counts)
+			Log($log: this, !normal, $status: status),
+			$logSet: collectSet($status),
+			$logList: collectList($status),
+			$count: count($log)
 		)
-		Number(intValue >= $minCounts - 1) from accumulate(
-			$log: Log(
-				normal,
-				this != $first,
-				status.equalsIgnoreCase($status)
-			),
-			count($log)
+		eval($logSet.size() == 1)
+		Number(intValue <= $count) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase($logList.get(0) + ""), $counts: counts) from alarmService.findAll(),
+			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering("At least " + $minCounts + " logs with " + $status + " status appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($count + " logs with " + $logList.get(0) + " status appeared in the last minute!!"));
 
 end
 
@@ -35,21 +34,20 @@ rule "Alarm for log description"
 	no-loop
 
     when
-		$first: Log(!normal, $description: description, $userName: userName, $computerName: computerName)
 		accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase($description), $counts: counts) from alarmService.findAll(),
-			$minCounts: min($counts)
+			Log($log: this, !normal, $description: description, $userName: userName, $computerName: computerName),
+			$logSet: collectSet($description),
+			$logList: collectList($description),
+			$count: count($log),
+			$userNameSet: collectSet($userName),
+			$computerNameSet: collectSet($computerName)
 		)
-		Number(intValue >= $minCounts - 1) from accumulate(
-			$log: Log(
-				normal,
-				this != $first,
-				description.equalsIgnoreCase($description),
-				userName.equalsIgnoreCase($userName) || computerName.equalsIgnoreCase($computerName)
-			),
-			count($log)
+		eval($logSet.size() == 1 && ($userNameSet.size() == 1 || $computerNameSet.size() == 1))
+		Number(intValue <= $count) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase($logList.get(0) + ""), $counts: counts) from alarmService.findAll(),
+			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering("At least " + $minCounts + " attempts on '" + $description + "' action appeared in the last minute from the same user/computer!"));
+        alarmTriggeringService.save(new AlarmTriggering($count + " attempts on '" + $logList.get(0) + "' action appeared in the last minute from the same user/computer!"));
 
 end

@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.dto.Authority;
 import com.example.demo.utils.Constants;
 
 @SuppressWarnings("serial")

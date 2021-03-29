@@ -9,7 +9,7 @@ import { PatientFormComponent } from './components/patient/patient-form/patient-
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/report/report.component';
 import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { ADMIN, DOCTOR } from './constants/roles';
+import { ADMIN, DOCTOR } from './constants/authorities';
 import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
@@ -21,43 +21,43 @@ const routes: Routes = [
     path: `${environment.patientFormRoute}/:mode`,
     component: PatientFormComponent,
     canActivate: [AuthGuard],
-    data: {roles: [DOCTOR]}
+    data: {authorities: [DOCTOR]}
   },
   {
     path: environment.patientListRoute,
     component: PatientListComponent,
     canActivate: [AuthGuard],
-    data: {roles: [DOCTOR]}
+    data: {authorities: [DOCTOR]}
   },
   {
     path: environment.patientDetailsRoute,
     component: PatientDetailsComponent,
     canActivate: [AuthGuard],
-    data: {roles: [DOCTOR]}
+    data: {authorities: [DOCTOR]}
   },
   {
     path: environment.messageListRoute,
     component: MessageListComponent,
     canActivate: [AuthGuard],
-    data: {roles: [DOCTOR]}
+    data: {authorities: [DOCTOR]}
   },
   {
     path: environment.logListRoute,
     component: LogListComponent,
     canActivate: [AuthGuard],
-    data: {roles: [ADMIN]}
+    data: {authorities: [ADMIN]}
   },
   {
     path: environment.alarmTriggeringListRoute,
     component: AlarmTriggeringListComponent,
     canActivate: [AuthGuard],
-    data: {roles: [DOCTOR, ADMIN]}
+    data: {authorities: [DOCTOR, ADMIN]}
   },
   {
     path: environment.reportRoute,
     component: ReportComponent,
     canActivate: [AuthGuard],
-    data: {roles: [ADMIN]}
+    data: {authorities: [ADMIN]}
   },
   {
     path: '**',

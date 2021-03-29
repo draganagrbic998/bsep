@@ -8,29 +8,29 @@
         <thead>
           <tr>
             <th scope="col"></th>
-            <th scope="col">INFO</th>
-            <th scope="col">WARNING</th>
-            <th scope="col">ERROR</th>
-            <th scope="col">FATAL</th>
-            <th scope="col">DESCRIPTION</th>
+            <th scope="col">COUNT</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Logs</th>
+            <th scope="row">INFO LOGS</th>
             <td>{{report.infoLogs}}</td>
-            <td>{{report.warningLogs}}</td>
-            <td>{{report.errorLogs}}</td>
-            <td>{{report.fatalLogs}}</td>
-            <td></td>
           </tr>
           <tr>
-            <th scope="row">Alarms</th>
-            <td>{{report.infoAlarms}}</td>
-            <td>{{report.warningAlarms}}</td>
-            <td>{{report.errorAlarms}}</td>
-            <td>{{report.fatalAlarms}}</td>
-            <td>{{report.descriptionAlarms}}</td>
+            <th scope="row">WARNING LOGS</th>
+            <td>{{report.warningLogs}}</td>
+          </tr>
+          <tr>
+            <th scope="row">ERROR LOGS</th>
+            <td>{{report.errorLogs}}</td>
+          </tr>
+          <tr>
+            <th scope="row">FATAL LOGS</th>
+            <td>{{report.fatalLogs}}</td>
+          </tr>
+          <tr>
+            <th scope="row">ALARMS</th>
+            <td>{{report.alarms}}</td>
           </tr>
         </tbody>
     </table>

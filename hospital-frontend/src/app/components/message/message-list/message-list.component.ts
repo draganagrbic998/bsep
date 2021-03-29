@@ -1,8 +1,8 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Message } from 'src/app/models/message';
-import { Search } from 'src/app/models/search';
+import { MessageSearch } from 'src/app/models/message-search';
 import { Pagination } from 'src/app/models/pagination';
 import { MessageService } from 'src/app/services/message/message.service';
 
@@ -24,7 +24,7 @@ export class MessageListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  search: Search = {insuredNumber: '', firstName: '', lastName: '', date: null};
+  search: MessageSearch = {insuredNumber: '', firstName: '', lastName: '', date: null};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;
@@ -40,8 +40,8 @@ export class MessageListComponent implements OnInit {
         if (data){
           this.messages = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.messages = [];

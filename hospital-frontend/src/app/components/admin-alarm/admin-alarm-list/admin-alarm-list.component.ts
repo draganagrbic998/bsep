@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { Pagination } from 'src/app/models/pagination';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({
@@ -40,8 +40,8 @@ export class AdminAlarmListComponent implements OnInit {
         if (data){
           this.alarms = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.alarms = [];
@@ -56,7 +56,7 @@ export class AdminAlarmListComponent implements OnInit {
     this.changePage(0);
     // tslint:disable-next-line: deprecation
     this.alarmService.refreshAdminData$.subscribe(() => {
-      this.pagination.pageNumber = 0;
+      this.pagination.pageNumber = this.pagination.pageNumber ? this.pagination.pageNumber - 1 : 0;
       this.changePage(0);
     });
   }

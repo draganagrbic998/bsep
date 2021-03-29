@@ -6,28 +6,19 @@ public class ReportDTO {
 	private long warningLogs;
 	private long errorLogs;
 	private long fatalLogs;
-	private long infoAlarms;
-	private long warningAlarms;
-	private long errorAlarms;
-	private long fatalAlarms;
-	private long descriptionAlarms;
+	private long alarms;
 	
 	public ReportDTO() {
 		super();
 	}
-
-	public ReportDTO(long infoLogs, long warningLogs, long errorLogs, long fatalLogs, 
-			long infoAlarms, long warningAlarms, long errorAlarms, long fatalAlarms, long descriptionAlarms) {
+	
+	public ReportDTO(long infoLogs, long warningLogs, long errorLogs, long fatalLogs, long alarms) {
 		super();
 		this.infoLogs = infoLogs;
 		this.warningLogs = warningLogs;
 		this.errorLogs = errorLogs;
 		this.fatalLogs = fatalLogs;
-		this.infoAlarms = infoAlarms;
-		this.warningAlarms = warningAlarms;
-		this.errorAlarms = errorAlarms;
-		this.fatalAlarms = fatalAlarms;
-		this.descriptionAlarms = descriptionAlarms;
+		this.alarms = alarms;
 	}
 
 	public long getInfoLogs() {
@@ -62,44 +53,12 @@ public class ReportDTO {
 		this.fatalLogs = fatalLogs;
 	}
 
-	public long getInfoAlarms() {
-		return infoAlarms;
+	public long getAlarms() {
+		return alarms;
 	}
 
-	public void setInfoAlarms(long infoAlarms) {
-		this.infoAlarms = infoAlarms;
-	}
-
-	public long getWarningAlarms() {
-		return warningAlarms;
-	}
-
-	public void setWarningAlarms(long warningAlarms) {
-		this.warningAlarms = warningAlarms;
-	}
-
-	public long getErrorAlarms() {
-		return errorAlarms;
-	}
-
-	public void setErrorAlarms(long errorAlarms) {
-		this.errorAlarms = errorAlarms;
-	}
-
-	public long getFatalAlarms() {
-		return fatalAlarms;
-	}
-
-	public void setFatalAlarms(long fatalAlarms) {
-		this.fatalAlarms = fatalAlarms;
-	}
-
-	public long getDescriptionAlarms() {
-		return descriptionAlarms;
-	}
-
-	public void setDescriptionAlarms(long descriptionAlarms) {
-		this.descriptionAlarms = descriptionAlarms;
+	public void setAlarms(long alarms) {
+		this.alarms = alarms;
 	}
 	
 }

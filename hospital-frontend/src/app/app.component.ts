@@ -12,8 +12,7 @@ export class AppComponent {
     private storageService: StorageService
   ){}
 
-  get role(): string{
-    // za sad nek je ovako
+  get authority(): string{
     return this.storageService.getUser()?.authorities[0];
   }
 

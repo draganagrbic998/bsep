@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,18 +42,16 @@ public class AuthController {
 		if (user != null && this.tokenUtils.validateToken(token, user)) {
 			return new ResponseEntity<>(new UserDTO(user, token), HttpStatus.OK);
 		}
-		//jel ovo ok ispod bas??
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
+	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 		try {
 			User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
 			return new ResponseEntity<>(new UserDTO(user, this.tokenUtils.generateToken(user.getEmail())), HttpStatus.OK);
 		}
 		catch(Exception e) {
-			//jel ovo oko ovako??
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 	}

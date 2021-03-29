@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +14,7 @@ import com.example.demo.dto.MessageDTO;
 @Service
 public class DeviceService {
 
+	private static final long PATIENT_ID = 1;
 	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	private static final long SLEEP_INTERVAL = 5000;
@@ -39,8 +39,8 @@ public class DeviceService {
 	
 	private void monitorPatients() throws InterruptedException {
 		while (true) {
-			String text = String.format("Timestamp=%s patient=%s pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
-					DATE_FORMAT.format(this.getTimestamp()), this.getPatient(), this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
+			String text = String.format("Timestamp=%s patient=%d pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
+					DATE_FORMAT.format(this.getTimestamp()), PATIENT_ID, this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
 			this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
 			Thread.sleep(SLEEP_INTERVAL);
 		}
@@ -49,11 +49,7 @@ public class DeviceService {
 	private Date getTimestamp() {
 		return new Date();
 	}
-	
-	private String getPatient() {
-		return UUID.randomUUID().toString();
-	}
-	
+		
 	private double getPulse() {
 		return Math.random();
 	}

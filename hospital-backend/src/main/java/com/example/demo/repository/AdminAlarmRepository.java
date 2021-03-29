@@ -7,8 +7,5 @@ import com.example.demo.model.AdminAlarm;
 
 @Repository
 public interface AdminAlarmRepository extends JpaRepository<AdminAlarm, Long> {
-
-	public long countByStatus(boolean status);
-	public long countByStatusAndParam(boolean status, String param);
 	
 }

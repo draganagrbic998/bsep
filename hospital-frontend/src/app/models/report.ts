@@ -3,9 +3,5 @@ export interface Report{
     warningLogs: number;
     errorLogs: number;
     fatalLogs: number;
-    infoAlarms: number;
-    warningAlarms: number;
-    errorAlarms: number;
-    fatalAlarms: number;
-    descriptionAlarms: number;
+    alarms: number;
 }

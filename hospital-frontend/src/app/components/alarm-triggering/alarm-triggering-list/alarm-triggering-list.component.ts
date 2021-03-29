@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { AlarmTriggering } from 'src/app/models/alarm-triggering';
 import { Pagination } from 'src/app/models/pagination';
 import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
@@ -38,8 +38,8 @@ export class AlarmTriggeringListComponent implements OnInit {
         if (data){
           this.alarmTriggerings = data.body;
           const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE_HEADER) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE_HEADER) === 'false' ? false : true;
+          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
+          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
         }
         else{
           this.alarmTriggerings = [];

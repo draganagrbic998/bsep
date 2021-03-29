@@ -52,15 +52,6 @@ export class DoctorAlarmDialogComponent implements OnInit {
     );
   }
 
-  get emptyForm(): boolean{
-    for (const control in this.alarmForm.controls){
-      if (this.alarmForm.controls[control].value.trim() !== ''){
-        return false;
-      }
-    }
-    return true;
-  }
-
   minMaxValidator(): ValidatorFn{
     return (control: AbstractControl): ValidationErrors => {
       const params = ['Pulse', 'Pressure', 'Temperature', 'OxygenLevel'];
@@ -71,6 +62,15 @@ export class DoctorAlarmDialogComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  get emptyForm(): boolean{
+    for (const control in this.alarmForm.controls){
+      if (this.alarmForm.controls[control].value.trim() !== ''){
+        return false;
+      }
+    }
+    return true;
   }
 
   ngOnInit(): void {

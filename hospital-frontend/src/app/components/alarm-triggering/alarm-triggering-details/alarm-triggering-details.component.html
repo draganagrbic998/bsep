@@ -8,10 +8,10 @@
                 </app-bold-text>
             </div>
             <div class="text">
-                <div>
+                <div *ngIf="alarmTriggering.patient">
                     <app-bold-text>Patient: </app-bold-text>{{alarmTriggering.patient}}
                 </div>
-                <div>
+                <div *ngIf="alarmTriggering.insuredNumber">
                     <app-bold-text>Insured number: </app-bold-text>{{alarmTriggering.insuredNumber}}
                 </div>
                 <br>

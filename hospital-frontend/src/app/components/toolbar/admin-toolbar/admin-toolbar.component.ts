@@ -20,8 +20,6 @@ export class AdminToolbarComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
-  // dodaj ngIf kod toolbar buttona
-
   onRoute(param: string): boolean{
     return this.router.url.substr(1).includes(param);
   }

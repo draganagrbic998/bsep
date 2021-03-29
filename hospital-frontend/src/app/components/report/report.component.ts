@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Report } from 'src/app/models/report';
 import { ReportService } from 'src/app/services/report/report.service';
 
@@ -15,10 +16,14 @@ export class ReportComponent implements OnInit {
 
   report: Report;
   fetchPending = true;
+  searchForm: FormGroup = new FormGroup({
+    start: new FormControl(''),
+    end: new FormControl('')
+  });
 
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
-    this.reportService.report().subscribe(
+    this.reportService.report(this.searchForm.value).subscribe(
       (report: Report) => {
         this.fetchPending = false;
         this.report = report;
