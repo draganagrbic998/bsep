@@ -27,7 +27,9 @@
       ></app-table-view>
     </p-tabPanel>
     <p-tabPanel header="Tree" class="p-p-3">
-      Under construction
+      <ng-template pTemplate="content">
+        <app-tree-view></app-tree-view>
+      </ng-template>
     </p-tabPanel>
   </p-tabView>
 

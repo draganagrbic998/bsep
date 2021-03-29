@@ -38,7 +38,6 @@ export class TableViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   getCertificates(event: LazyLoadEvent): void {
     this.loading = true;
     const page = Math.floor(event.first / this.rows);
