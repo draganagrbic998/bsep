@@ -1,8 +1,10 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import * as d3 from 'd3';
 import {CollapsibleNode} from '../../core/model/collapsible-node';
 import {CertificateService} from '../../core/services/certificate.service';
 import {CertificateInfo} from '../../core/model/certificate-info';
+import {MenuItem} from 'primeng/api';
+import {ContextMenu} from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-tree-view',
@@ -23,25 +25,27 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   zoomBehavior: d3.ZoomBehavior<any, any>;
   loading = false;
   noChildren = false;
+  context: CertificateInfo | null = null;
+  menuItems: MenuItem[] = [
+    {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
+    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)}
+  ];
+  oldMenuItems: MenuItem[] = [
+    {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
+    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)}
+  ];
 
-  // TODO
-  root2: CollapsibleNode;
-  i = 0;
-  ca: CertificateInfo | null = null;
-  treeData =
-    {
-      name: 'Top Level',
-      children: [
-        {
-          name: 'Level 2: A',
-          children: [
-            { name: 'Son of A' },
-            { name: 'Daughter of A' }
-          ]
-        },
-        { name: 'Level 2: B' }
-      ]
-    };
+  @Output()
+  revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+
+  @Output()
+  openDetails: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+
+  @Output()
+  switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+
+  @ViewChild('contextMenu')
+  contextMenu!: ContextMenu;
 
   constructor(private certificateService: CertificateService) { }
 
@@ -50,15 +54,6 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
-    this.certificateService.ca.subscribe(val => {
-      if (val.alias !== 'root') {
-        this.loading = true;
-        return;
-      }
-      this.ca = val;
-      this.loading = false;
-    });
 
     const rect: ClientRect = this.canvas.nativeElement.getBoundingClientRect();
     this.width = rect.width;
@@ -70,19 +65,17 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
   setupCanvas(): void {
     const svg = d3.select('.canvas')
-      .append('svg');
+      .append('svg').on('contextmenu', ev => this.svgContextMenu(ev));
+
     this.g = svg.attr('width', this.width)
       .attr('height', this.height)
       .append('g')
+      .attr('id', 'main')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    const zoom = d3.zoom().scaleExtent([1, 1])
+    const zoom = d3.zoom().scaleExtent([1, 5])
       .on('zoom', event => {
-        this.g.selectAll('path')
-          .attr('transform', event.transform);
-        this.g.selectAll('circle')
-          .attr('transform', event.transform);
-        this.g.selectAll('text')
+        svg.select('#main')
           .attr('transform', event.transform);
       });
 
@@ -96,7 +89,6 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     if (!this.root.children) {
       this.noChildren = true;
     }
-
 
     this.root.children.forEach(it => this.collapse(it));
 
@@ -136,7 +128,8 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
         return `translate(${d.x}, ${d.y})`;
       })
       .style('opacity', 0)
-      .on('click', (ev, d) => this.click(ev, d));
+      .on('click', (ev, d) => this.click(ev, d))
+      .on('contextmenu', (ev, d) => this.openContextMenu(ev, d));
 
     // // Add Circle for the nodes
     nodeEnter.append('circle')
@@ -225,6 +218,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
   click(ev: Event, d: any): void {
     ev.preventDefault();
+    ev.stopPropagation();
     if (!!d.children) {
       d._children = d.children;
       d.children = null;
@@ -248,8 +242,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       const children = val.issued.map(i => d3.hierarchy(i, j => j.issued));
 
       for (const child of children) {
-        // @ts-ignore
-        child.depth = d.depth + 1;
+        child[`depth`] = d.depth + 1;
         child.parent = d;
       }
       d.children = children;
@@ -260,10 +253,36 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     });
   }
 
-  async animateNode(d: CollapsibleNode): void {
-
-    while (this.loading) {
-
+  openContextMenu(ev: MouseEvent, d: any): void {
+    this.menuItems = [...this.oldMenuItems];
+    ev.preventDefault();
+    ev.stopPropagation();
+    this.context = d.data;
+    if (!!this.context && !this.context.revoked && this.context.template === 'SUB_CA' && this.context.alias !== this.ca.alias) {
+      this.menuItems.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(this.context)});
     }
+    if (!!this.context && this.context.revoked) {
+      this.menuItems.splice(1, 1);
+    }
+    this.contextMenu.show(ev);
   }
+
+  svgContextMenu(ev: MouseEvent): void {
+    ev.preventDefault();
+    this.context = null;
+    this.menuItems = [...this.oldMenuItems];
+    this.contextMenu.hide();
+  }
+
+  @Input()
+  set caAlias(val: string) {
+    this.certificateService.getByAlias(val).subscribe(v => {
+      this.certificateService.ca.next(v);
+    });
+  }
+
+  get ca(): CertificateInfo {
+    return this.certificateService.ca.getValue();
+  }
+
 }

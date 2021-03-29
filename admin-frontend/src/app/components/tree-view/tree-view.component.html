@@ -1,3 +1,9 @@
-<div class="canvas" #canvas>
-  <h2 *ngIf="noChildren">There aren't any certificate trees available for visualization.</h2>
+<div>
+  <div class="canvas" #canvas>
+    <h2 *ngIf="noChildren">There aren't any certificate trees available for visualization.</h2>
+  </div>
+  <p-contextMenu [model]="menuItems"
+                 [baseZIndex]="10000"
+                 #contextMenu
+  ></p-contextMenu>
 </div>

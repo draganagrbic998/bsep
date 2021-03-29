@@ -35,7 +35,11 @@
       </app-table-view>
     </div>
     <div *ngIf="activeIndex === 1">
-      <app-tree-view></app-tree-view>
+      <app-tree-view [caAlias]="caAlias.getValue()"
+                     (switchCA)="this.switchCA($event)"
+                     (revokeCertificate)="this.revokeCertificate($event)"
+                     (openDetails)="this.openDetails($event)"
+      ></app-tree-view>
     </div>
   </div>
 

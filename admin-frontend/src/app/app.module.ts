@@ -38,6 +38,7 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
 import {BlockUIModule} from 'primeng/blockui';
 import {TabMenu, TabMenuModule} from 'primeng/tabmenu';
 import {PanelModule} from 'primeng/panel';
+import {ContextMenuModule} from 'primeng/contextmenu';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import {PanelModule} from 'primeng/panel';
     TabViewModule,
     BlockUIModule,
     TabMenuModule,
-    PanelModule
+    PanelModule,
+    ContextMenuModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
