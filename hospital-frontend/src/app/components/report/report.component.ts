@@ -21,7 +21,8 @@ export class ReportComponent implements OnInit {
     end: new FormControl('')
   });
 
-  ngOnInit(): void {
+  getReport(): void{
+    this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.reportService.report(this.searchForm.value).subscribe(
       (report: Report) => {
@@ -29,6 +30,10 @@ export class ReportComponent implements OnInit {
         this.report = report;
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.getReport();
   }
 
 }

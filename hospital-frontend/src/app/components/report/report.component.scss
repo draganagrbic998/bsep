@@ -1,9 +1,5 @@
 @import "../../../styles/theme";
 
-.root{
-    padding: 40px;
-    margin-top: 40px;
-}
 
 table{
     background-color: whitesmoke;
@@ -13,6 +9,25 @@ thead > tr > th, td{
     text-align: center;
 }
 
-th{
-    max-width: 120px;
+th, td{
+    width: 50%;
+    height: 75px;
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 70px;
+    margin-left: 120px;
+    margin-right: 0;
+}
+
+.left{
+    width: 45%;
+}
+
+.right{
+    width: 55%;
 }
