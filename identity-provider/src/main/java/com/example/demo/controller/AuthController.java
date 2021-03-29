@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
@@ -27,10 +26,7 @@ public class AuthController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private UserMapper userMapper;
-	
+		
 	@Autowired
 	private TokenUtils tokenUtils;
 	
@@ -43,21 +39,21 @@ public class AuthController {
 		String username = this.tokenUtils.getUsername(token);		
 		User user = (User) this.userService.loadUserByUsername(username);
 		if (user != null && this.tokenUtils.validateToken(token, user)) {
-			return new ResponseEntity<>(this.userMapper.map(user), HttpStatus.OK);
+			return new ResponseEntity<>(new UserDTO(user, token), HttpStatus.OK);
 		}
 		//jel ovo ok ispod bas??
-		return new ResponseEntity<>(null, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO){
 		try {
 			User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
-			return new ResponseEntity<>(this.userMapper.map(user), HttpStatus.OK);
+			return new ResponseEntity<>(new UserDTO(user, this.tokenUtils.generateToken(user.getEmail())), HttpStatus.OK);
 		}
 		catch(Exception e) {
 			//jel ovo oko ovako??
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 	

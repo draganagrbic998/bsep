@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  authApi: 'https://localhost:8081/auth',
   patientsApi: 'https://localhost:8081/api/patients',
   messagesApi: 'https://localhost:8081/api/messages',
   alarmsApi: 'https://localhost:8081/api/alarms',
@@ -16,7 +17,8 @@ export const environment = {
   alarmTriggeringListRoute: 'alarm-triggering-list',
   patientDetailsRoute: 'patient-details',
   logListRoute: 'log-list',
-  reportRoute: 'report'
+  reportRoute: 'report',
+  loginRoute: 'login'
 };
 
 /*

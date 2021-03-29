@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class MessageController {
 	private MessageMapper messageMapper;
 
 	@PostMapping(value = "/search")
+	@PreAuthorize("hasAuthority('DOCTOR')")	
 	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody SearchDTO searchDTO, HttpServletResponse response){
 		Page<Message> messages = this.messageService.findAll(pageable, searchDTO);
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);

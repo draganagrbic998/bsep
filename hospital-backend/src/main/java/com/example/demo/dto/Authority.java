@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -9,6 +9,11 @@ public class Authority implements GrantedAuthority {
 
 	public Authority() {
 		super();
+	}
+	
+	public Authority(String name) {
+		super();
+		this.name = name;
 	}
 	
 	@Override

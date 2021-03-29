@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="right">
-        <app-search-form [fetchPending]="fetchPending" 
-        (searchTriggered)="search = $event; fetchMessages()"></app-search-form>
+        <app-message-search [fetchPending]="fetchPending" 
+        (searchTriggered)="search = $event; fetchMessages()"></app-message-search>
     </div>
 </div>

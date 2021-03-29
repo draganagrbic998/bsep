@@ -8,42 +8,61 @@ import { PatientDetailsComponent } from './components/patient/patient-details/pa
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/report/report.component';
+import { LoginFormComponent } from './components/user/login-form/login-form.component';
+import { ADMIN, DOCTOR } from './constants/roles';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
+    path: environment.loginRoute,
+    component: LoginFormComponent,
+  },
+  {
     path: `${environment.patientFormRoute}/:mode`,
     component: PatientFormComponent,
-    // dodaj guard
+    canActivate: [AuthGuard],
+    data: {roles: [DOCTOR]}
   },
   {
     path: environment.patientListRoute,
     component: PatientListComponent,
-    // dodaj guard
-  },
-  {
-    path: environment.messageListRoute,
-    component: MessageListComponent,
-    // dodaj guard
-  },
-  {
-    path: environment.alarmTriggeringListRoute,
-    component: AlarmTriggeringListComponent,
-    // dodaj guard
+    canActivate: [AuthGuard],
+    data: {roles: [DOCTOR]}
   },
   {
     path: environment.patientDetailsRoute,
     component: PatientDetailsComponent,
-    // dodaj guard
+    canActivate: [AuthGuard],
+    data: {roles: [DOCTOR]}
+  },
+  {
+    path: environment.messageListRoute,
+    component: MessageListComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [DOCTOR]}
   },
   {
     path: environment.logListRoute,
     component: LogListComponent,
-    // dodaj guard
+    canActivate: [AuthGuard],
+    data: {roles: [ADMIN]}
+  },
+  {
+    path: environment.alarmTriggeringListRoute,
+    component: AlarmTriggeringListComponent,
+    canActivate: [AuthGuard],
+    data: {roles: [DOCTOR, ADMIN]}
   },
   {
     path: environment.reportRoute,
     component: ReportComponent,
-    // dodaj guard
+    canActivate: [AuthGuard],
+    data: {roles: [ADMIN]}
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: environment.loginRoute
   }
 ];
 

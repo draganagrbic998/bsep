@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { LogSearch } from 'src/app/core/models/log-search';
+import { LogSearch } from 'src/app/models/log-search';
 
 @Component({
   selector: 'app-log-search',

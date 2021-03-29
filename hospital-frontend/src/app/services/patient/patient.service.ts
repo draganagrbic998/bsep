@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { Patient } from 'src/app/core/models/patient';
+import { Patient } from 'src/app/models/patient';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/core/utils/pagination';
+import { PAGE_SIZE } from 'src/app/constants/pagination';
 
 @Injectable({
   providedIn: 'root'

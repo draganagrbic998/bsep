@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Report } from 'src/app/core/models/report';
+import { Report } from 'src/app/models/report';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

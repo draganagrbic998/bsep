@@ -1,9 +1,9 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AdminAlarm } from 'src/app/core/models/admin-alarm';
-import { Pagination } from 'src/app/core/models/pagination';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
+import { AdminAlarm } from 'src/app/models/admin-alarm';
+import { Pagination } from 'src/app/models/pagination';
+import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
 import { AlarmService } from 'src/app/services/alarm/alarm.service';
 
 @Component({

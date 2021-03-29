@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AlarmTriggering } from 'src/app/core/models/alarm-triggering';
+import { AlarmTriggering } from 'src/app/models/alarm-triggering';
 
 @Component({
   selector: 'app-alarm-triggering-details',

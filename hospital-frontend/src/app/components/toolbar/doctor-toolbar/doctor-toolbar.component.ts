@@ -25,6 +25,8 @@ export class DoctorToolbarComponent implements OnInit {
   }
 
   signOut(): void{
+    this.storageService.removeUser();
+    this.router.navigate([environment.loginRoute]);
   }
 
   createPatient(): void{

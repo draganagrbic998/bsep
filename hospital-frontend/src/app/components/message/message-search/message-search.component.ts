@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Search } from 'src/app/core/models/search';
+import { Search } from 'src/app/models/search';
 
 @Component({
-  selector: 'app-search-form',
-  templateUrl: './search-form.component.html',
-  styleUrls: ['./search-form.component.scss']
+  selector: 'app-message-search',
+  templateUrl: './message-search.component.html',
+  styleUrls: ['./message-search.component.scss']
 })
-export class SearchFormComponent implements OnInit {
+export class MessageSearchComponent implements OnInit {
 
   constructor() { }
 

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +23,7 @@ public class UserService implements UserDetailsService {
 	private RestTemplate restTemplate;
 
 	@Override
-	public UserDetails loadUserByUsername(String token) {
+	public User loadUserByUsername(String token) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set(Constants.AUTH_HEADER, token);
 		HttpEntity<String> entity = new HttpEntity<>("body", headers);
@@ -32,6 +32,15 @@ public class UserService implements UserDetailsService {
 	
 	public UserDTO login(LoginDTO loginDTO) {
 		return this.restTemplate.postForEntity(AUTH_API + "/login", loginDTO, UserDTO.class).getBody();
+	}
+	
+	public User currentUser() {
+		try {
+			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
+		catch(Exception e) {
+			return null;
+		}
 	}
 	
 }

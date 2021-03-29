@@ -2,10 +2,10 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/core/utils/pagination';
-import { AdminAlarm } from 'src/app/core/models/admin-alarm';
+import { PAGE_SIZE } from 'src/app/constants/pagination';
+import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { environment } from 'src/environments/environment';
-import { DoctorAlarm } from 'src/app/core/models/doctor-alarm';
+import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 
 @Injectable({
   providedIn: 'root'
@@ -47,17 +47,8 @@ export class AlarmService {
     );
   }
 
-  // ovo ces izmeniti da radi kad sredis JWT
-  deleteAdmin(id: number): Observable<boolean>{
+  delete(id: number): Observable<boolean>{
     return this.http.delete<null>(`${environment.alarmsApi}/${id}`).pipe(
-      map(() => true),
-      catchError(() => of(null))
-    );
-  }
-
-    // ovo ces izmeniti da radi kad sredis JWT
-  deleteDoctor(id: number): Observable<boolean>{
-    return this.http.delete<null>(`${environment.alarmsApi}/${id}/doctor`).pipe(
       map(() => true),
       catchError(() => of(null))
     );

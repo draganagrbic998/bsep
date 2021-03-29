@@ -15,10 +15,14 @@ public class AlarmTriggeringService {
 	@Autowired
 	private AlarmTriggeringRepository alarmTriggeringRepository;
 	
-	public Page<AlarmTriggering> findAll(Pageable pageable) {
-		return this.alarmTriggeringRepository.findAll(pageable);
+	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable) {
+		return this.alarmTriggeringRepository.findByPatientIdNull(pageable);
 	}
 	
+	public Page<AlarmTriggering> findAllForDoctor(Pageable pageable) {
+		return this.alarmTriggeringRepository.findByPatientIdNotNull(pageable);
+	}
+
 	@Transactional(readOnly = false)
 	public AlarmTriggering save(AlarmTriggering alarmTriggering) {
 		return this.alarmTriggeringRepository.save(alarmTriggering);

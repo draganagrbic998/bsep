@@ -1,8 +1,8 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
-import { AlarmTriggering } from 'src/app/core/models/alarm-triggering';
-import { Pagination } from 'src/app/core/models/pagination';
+import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { AlarmTriggering } from 'src/app/models/alarm-triggering';
+import { Pagination } from 'src/app/models/pagination';
 import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
 
 @Component({

@@ -1,10 +1,10 @@
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/core/utils/pagination';
-import { Log } from 'src/app/core/models/log';
-import { Pagination } from 'src/app/core/models/pagination';
+import { FIRST_PAGE_HEADER, LAST_PAGE_HEADER } from 'src/app/constants/pagination';
+import { Log } from 'src/app/models/log';
+import { Pagination } from 'src/app/models/pagination';
 import { LogService } from 'src/app/services/log/log.service';
-import { LogSearch } from 'src/app/core/models/log-search';
+import { LogSearch } from 'src/app/models/log-search';
 
 @Component({
   selector: 'app-log-list',

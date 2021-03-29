@@ -2,9 +2,9 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/core/utils/pagination';
-import { Message } from 'src/app/core/models/message';
-import { Search } from 'src/app/core/models/search';
+import { PAGE_SIZE } from 'src/app/constants/pagination';
+import { Message } from 'src/app/models/message';
+import { Search } from 'src/app/models/search';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
