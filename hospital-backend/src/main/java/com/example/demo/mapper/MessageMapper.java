@@ -23,6 +23,14 @@ public class MessageMapper {
 	
 	public Message map(MessageMeasureDTO messageDTO) throws ParseException {
 		Message message = new Message();
+
+		// on ceratain machines, there's a probability of decimal separator being a comma instead of decimal point
+		// 0,54 instead of 0.54
+
+		// therefore, replace all commas in the messageDto
+
+		messageDTO.setText(messageDTO.getText().replace(',', '.'));
+
 		message.setDate(DATE_FORMAT.parse(messageDTO.getText().split(" ")[0].split("=")[1].trim()));
 		message.setPulse(Double.parseDouble(messageDTO.getText().split(" ")[2].split("=")[1].trim()));
 		message.setPressure(Double.parseDouble(messageDTO.getText().split(" ")[3].split("=")[1].trim()));

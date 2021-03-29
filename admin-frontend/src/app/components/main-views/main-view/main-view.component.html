@@ -1,0 +1,11 @@
+<div>
+  <p-menubar [model]="items" act>
+    <ng-template pTemplate="start">
+      <h3 class="p-text-bold p-my-0 p-ml-3 p-mr-6">Admin</h3>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <button class="p-button-danger" label="Logout" (click)="logout()" pButton></button>
+    </ng-template>
+  </p-menubar>
+  <router-outlet></router-outlet>
+</div>
