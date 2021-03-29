@@ -54,6 +54,11 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (this.certificateService.ca.getValue().alias !== 'root') {
+      this.certificateService.getByAlias('root').subscribe(val => {
+        this.switchCA.emit(val);
+      });
+    }
 
     const rect: ClientRect = this.canvas.nativeElement.getBoundingClientRect();
     this.width = rect.width;
@@ -73,7 +78,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       .attr('id', 'main')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-    const zoom = d3.zoom().scaleExtent([1, 5])
+    const zoom = d3.zoom().scaleExtent([.3, 5])
       .on('zoom', event => {
         svg.select('#main')
           .attr('transform', event.transform);
@@ -92,7 +97,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
     this.root.children.forEach(it => this.collapse(it));
 
-    this.update();
+    this.update(this.root);
 
   }
 
@@ -104,15 +109,15 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     }
   }
 
-  update(): void {
-    const duration = 100;
+  update(source: CollapsibleNode): void {
+    const duration = 400;
 
     const treeData = this.tree(this.root);
 
     const nodes = treeData.descendants();
-    const links = treeData.links();
+    const links = treeData.descendants().splice(1);
 
-    nodes.forEach(n => { n.y = n.depth * 210; });
+    nodes.forEach(n => { n.y = n.depth * 180; });
 
     // ****************** Nodes section ***************************
 
@@ -124,17 +129,14 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
       .attr('id', d => `N${d.data.id}`)
-      .attr('transform', d => {
-        return `translate(${d.x}, ${d.y})`;
-      })
-      .style('opacity', 0)
+      .attr('transform', `translate(${source.y0}, ${source.x0})`)
       .on('click', (ev, d) => this.click(ev, d))
       .on('contextmenu', (ev, d) => this.openContextMenu(ev, d));
 
     // // Add Circle for the nodes
     nodeEnter.append('circle')
       .attr('class', 'node')
-      .attr('r', 10)
+      .attr('r', 1e-6)
       .style('fill', (d: CollapsibleNode) => d._children ? 'lightsteelblue' : '#fff');
 
     // // Add labels for the nodes
@@ -149,10 +151,10 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     // Transition to the proper position for the node
     nodeUpdate.transition()
       .duration(duration)
-      .style('opacity', 1);
-
+      .attr('transform', d => `translate(${d.x}, ${d.y})`);
     // // Update the node attributes and style
     nodeUpdate.select('circle.node')
+      .attr('r', 10)
       .style('fill', (d: CollapsibleNode) => {
         if (!d._children && !d.children && d.data.numIssued > 0) {
           return 'lightsteelblue';
@@ -171,9 +173,10 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     // // Remove any exiting nodes
     const nodeExit = node.exit().transition()
       .duration(duration)
-      .style('opacity', 0);
-
-    //
+      .attr('transform', `translate(${source.x}, ${source.y})`)
+      .remove();
+    nodeExit.select('circle')
+      .attr('r', 1e-6);
     // // On exit reduce the opacity of text labels
     nodeExit.select('text')
       .style('fill-opacity', 0);
@@ -182,14 +185,14 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
     // Update the links...
     const link = this.g.selectAll('path.link')
-      .data(links, (d: any) => `L${d.target.data.id}`);
+      .data(links, (d: any) => `L${d.data.alias}`);
 
     // Enter any new links at the parent's previous position.
     const linkEnter = link.enter().insert('path', 'g')
       .attr('class', 'link')
-      .style('opacity', 0)
-      .attr('d', d => {
-        return this.diagonal(d.source, d.target);
+      .attr('d', () => {
+        const o = {x: source.x0, y: source.y0};
+        return this.diagonal(o, o);
       });
 
     // UPDATE
@@ -199,17 +202,25 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     // Transition back to the parent element position
     linkUpdate.transition()
       .duration(duration)
-      .style('opacity', 1);
+      .attr('d', d => this.diagonal(d, d.parent));
 
     // Remove any exiting links
     const linkExit = link.exit().transition()
       .duration(duration)
-      .style('opacity', 0);
+      .attr('d', () => {
+        const o = {x: source.y, y: source.x};
+        return this.diagonal(o, o);
+      })
+      .remove();
 
-
+    nodes.forEach((d: CollapsibleNode) => {
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
   }
 
   diagonal(s: any, d: any): string {
+    console.log(s);
     return `M ${s.x}, ${s.y}
             C ${s.x}, ${(s.y + d.y) / 2}
             ${d.x}, ${(s.y + d.y) / 2}
@@ -222,11 +233,11 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     if (!!d.children) {
       d._children = d.children;
       d.children = null;
-      this.update();
+      this.update(d);
     } else if (!!d._children) {
       d.children = d._children;
       d._children = null;
-      this.update();
+      this.update(d);
     } else if (d.data.numIssued > 0) {
       this.loadNode(d);
     }
@@ -249,7 +260,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       node.transition().delay(50)
         .attr('r', 10)
         .style('fill', '#fff');
-      this.update();
+      this.update(d);
     });
   }
 
@@ -276,8 +287,19 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
   @Input()
   set caAlias(val: string) {
+    if (val === this.certificateService.ca.getValue().alias) {
+      return;
+    }
     this.certificateService.getByAlias(val).subscribe(v => {
       this.certificateService.ca.next(v);
+    });
+  }
+
+  reset(): void {
+    this.certificateService.getByAlias('root').subscribe(val => {
+      this.certificateService.ca.next(val);
+      this.switchCA.emit(val);
+      this.setupTree();
     });
   }
 
