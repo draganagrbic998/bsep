@@ -64,6 +64,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     this.width = rect.width;
     this.height = rect.height;
 
+
     this.setupCanvas();
     this.setupTree();
   }
@@ -90,6 +91,9 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   setupTree(): void {
     this.tree = d3.tree().size([this.height, this.width]);
     this.root = d3.hierarchy(this.ca, d => d.issued) as CollapsibleNode;
+
+    this.root.x0 = this.height / 2;
+    this.root.y0 = 0;
 
     if (!this.root.children) {
       this.noChildren = true;
@@ -129,7 +133,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
       .attr('id', d => `N${d.data.id}`)
-      .attr('transform', `translate(${source.y0}, ${source.x0})`)
+      .attr('transform', `translate(${source.x0}, ${source.y0})`)
       .on('click', (ev, d) => this.click(ev, d))
       .on('contextmenu', (ev, d) => this.openContextMenu(ev, d));
 
@@ -208,7 +212,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     const linkExit = link.exit().transition()
       .duration(duration)
       .attr('d', () => {
-        const o = {x: source.y, y: source.x};
+        const o = {x: source.x, y: source.y};
         return this.diagonal(o, o);
       })
       .remove();
@@ -220,7 +224,6 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   }
 
   diagonal(s: any, d: any): string {
-    console.log(s);
     return `M ${s.x}, ${s.y}
             C ${s.x}, ${(s.y + d.y) / 2}
             ${d.x}, ${(s.y + d.y) / 2}
