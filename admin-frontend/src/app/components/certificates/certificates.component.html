@@ -1,7 +1,13 @@
 <div class="p-card p-mt-4 p-mx-4 p-shadow-3">
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
-      <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+      <span class="p-d-flex p-ai-center">
+        <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+        <p-progressSpinner class="p-as-center"
+                           [style]="{width: '30px', height: '30px', 'margin-left': '1rem'}"
+                           *ngIf="loadingTab"
+        ></p-progressSpinner>
+      </span>
     </ng-template>
     <ng-template pTemplate="right">
       Current CA:
@@ -16,22 +22,22 @@
 
   </p-toolbar>
 
-  <p-tabView>
-    <p-tabPanel header="Table">
-      <app-table-view (openDetails)="openDetails($event)"
-                      (revokeCertificate)="revokeCertificate($event)"
-                      (switchCA)="switchCA($event)"
+  <p-tabMenu [model]="tabItems" [activeItem]="tabItems[activeIndex]"></p-tabMenu>
+  <div>
+    <div *ngIf="activeIndex === 0">
+      <app-table-view [templates]="templates"
                       [caAlias]="caAlias.getValue()"
-                      [templates]="templates"
+                      (switchCA)="this.switchCA($event)"
+                      (revokeCertificate)="this.revokeCertificate($event)"
+                      (openDetails)="this.openDetails($event)"
                       #table
-      ></app-table-view>
-    </p-tabPanel>
-    <p-tabPanel header="Tree" class="p-p-3">
-      <ng-template pTemplate="content">
-        <app-tree-view></app-tree-view>
-      </ng-template>
-    </p-tabPanel>
-  </p-tabView>
+      >
+      </app-table-view>
+    </div>
+    <div *ngIf="activeIndex === 1">
+      <app-tree-view></app-tree-view>
+    </div>
+  </div>
 
 </div>
 

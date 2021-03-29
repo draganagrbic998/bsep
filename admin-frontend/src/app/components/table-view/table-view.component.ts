@@ -3,6 +3,7 @@ import {Table} from 'primeng/table';
 import {CertificateService} from '../../core/services/certificate.service';
 import {LazyLoadEvent, MenuItem} from 'primeng/api';
 import {CertificateInfo} from '../../core/model/certificate-info';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-table-view',
@@ -33,9 +34,14 @@ export class TableViewComponent implements OnInit {
   @Output()
   switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
-  constructor(private certificateService: CertificateService) { }
+  constructor(private certificateService: CertificateService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.activatedRoute.data.subscribe(val => {
+      console.log('data');
+      console.log(val);
+    });
   }
 
   getCertificates(event: LazyLoadEvent): void {

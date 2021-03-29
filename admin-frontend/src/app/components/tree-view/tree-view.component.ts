@@ -1,13 +1,15 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as d3 from 'd3';
 import {CollapsibleNode} from '../../core/model/collapsible-node';
+import {CertificateService} from '../../core/services/certificate.service';
+import {CertificateInfo} from '../../core/model/certificate-info';
 
 @Component({
   selector: 'app-tree-view',
   templateUrl: './tree-view.component.html',
   styleUrls: ['./tree-view.component.scss']
 })
-export class TreeViewComponent implements AfterViewInit {
+export class TreeViewComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas')
   canvas: ElementRef;
@@ -19,26 +21,45 @@ export class TreeViewComponent implements AfterViewInit {
   g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
   root: CollapsibleNode;
   zoomBehavior: d3.ZoomBehavior<any, any>;
+  loading = false;
+  noChildren = false;
 
   // TODO
+  root2: CollapsibleNode;
   i = 0;
-  treeData = {
-    name: 'Top Level',
-    children: [
-      {
-        name: 'Level 2: A',
-        children: [
-          { name: 'Son of A', children: [] },
-          { name: 'Daughter of A', children: [] }
-        ]
-      },
-      { name: 'Level 2: B', children: [] }
-    ]
-  };
+  ca: CertificateInfo | null = null;
+  treeData =
+    {
+      name: 'Top Level',
+      children: [
+        {
+          name: 'Level 2: A',
+          children: [
+            { name: 'Son of A' },
+            { name: 'Daughter of A' }
+          ]
+        },
+        { name: 'Level 2: B' }
+      ]
+    };
 
-  constructor() { }
+  constructor(private certificateService: CertificateService) { }
+
+  ngOnInit(): void {
+    this.loading = true;
+  }
 
   ngAfterViewInit(): void {
+
+    this.certificateService.ca.subscribe(val => {
+      if (val.alias !== 'root') {
+        this.loading = true;
+        return;
+      }
+      this.ca = val;
+      this.loading = false;
+    });
+
     const rect: ClientRect = this.canvas.nativeElement.getBoundingClientRect();
     this.width = rect.width;
     this.height = rect.height;
@@ -60,10 +81,7 @@ export class TreeViewComponent implements AfterViewInit {
         this.g.selectAll('path')
           .attr('transform', event.transform);
         this.g.selectAll('circle')
-          .attr('transform', (node: any) => {
-            const transformed = event.transform;
-            return transformed;
-          });
+          .attr('transform', event.transform);
         this.g.selectAll('text')
           .attr('transform', event.transform);
       });
@@ -73,13 +91,16 @@ export class TreeViewComponent implements AfterViewInit {
 
   setupTree(): void {
     this.tree = d3.tree().size([this.height, this.width]);
-    this.root = d3.hierarchy(this.treeData, d => d.children) as d3.HierarchyRectangularNode<any>;
-    this.root.x0 = 0;
-    this.root.y0 = this.width / 2;
+    this.root = d3.hierarchy(this.ca, d => d.issued) as CollapsibleNode;
+
+    if (!this.root.children) {
+      this.noChildren = true;
+    }
+
 
     this.root.children.forEach(it => this.collapse(it));
 
-    this.update(this.root);
+    this.update();
 
   }
 
@@ -91,32 +112,36 @@ export class TreeViewComponent implements AfterViewInit {
     }
   }
 
-  update(source: any): void {
-    const duration = 750;
+  update(): void {
+    const duration = 100;
 
     const treeData = this.tree(this.root);
 
     const nodes = treeData.descendants();
-    const links = treeData.descendants().slice(1);
+    const links = treeData.links();
 
-    nodes.forEach(d => { d.y = d.depth * 210; });
+    nodes.forEach(n => { n.y = n.depth * 210; });
 
     // ****************** Nodes section ***************************
 
     // Update the nodes...
     const node = this.g.selectAll('g.node')
-      .data(nodes, (d: any) => d.id || (d.id = ++this.i) );
+      .data(nodes, (d: any) => `N${d.data.id}`);
 
     // // Enter any new modes at the parent's previous position.
     const nodeEnter = node.enter().append('g')
       .attr('class', 'node')
-      .attr('transform', () => `translate(${source.x0}, ${source.y0})`)
-      .on('click', (_, d) => this.click(d));
-    //
+      .attr('id', d => `N${d.data.id}`)
+      .attr('transform', d => {
+        return `translate(${d.x}, ${d.y})`;
+      })
+      .style('opacity', 0)
+      .on('click', (ev, d) => this.click(ev, d));
+
     // // Add Circle for the nodes
     nodeEnter.append('circle')
       .attr('class', 'node')
-      .attr('r', 1e-6)
+      .attr('r', 10)
       .style('fill', (d: CollapsibleNode) => d._children ? 'lightsteelblue' : '#fff');
 
     // // Add labels for the nodes
@@ -124,49 +149,54 @@ export class TreeViewComponent implements AfterViewInit {
       .attr('dy', '.35em')
       .attr('x', (d: CollapsibleNode) => d.children || d._children ? -13 : 13)
       .attr('text-anchor', (d: CollapsibleNode) => d.children || d._children ? 'end' : 'start')
-      .text(d =>  d.data.name);
-    //
+      .text(d =>  d.data.alias);
+
     // @ts-ignore
     const nodeUpdate = nodeEnter.merge(node);
-    //
     // Transition to the proper position for the node
     nodeUpdate.transition()
       .duration(duration)
-      .attr('transform', d => `translate(${d.x}, ${d.y})`);
+      .style('opacity', 1);
 
     // // Update the node attributes and style
     nodeUpdate.select('circle.node')
-      .attr('r', 10)
-      .style('fill', (d: CollapsibleNode) => d._children ? 'lightsteelblue' : '#fff')
+      .style('fill', (d: CollapsibleNode) => {
+        if (!d._children && !d.children && d.data.numIssued > 0) {
+          return 'lightsteelblue';
+        }
+        if (!!d._children && d._children.length > 0) {
+          return 'lightsteelblue';
+        }
+        return '#fff';
+      })
       .attr('cursor', 'pointer');
-    //
+
+    nodeUpdate.select('text')
+      .style('fill-opacity', 1);
+
 
     // // Remove any exiting nodes
     const nodeExit = node.exit().transition()
       .duration(duration)
-      .attr('transform', () => `translate(${source.x}, ${source.y})`);
-    //
-    // // On exit reduce the node circles size to 0
-    nodeExit.select('circle')
-      .attr('r', 1e-6);
+      .style('opacity', 0);
+
     //
     // // On exit reduce the opacity of text labels
     nodeExit.select('text')
-      .style('fill-opacity', 1e-6);
+      .style('fill-opacity', 0);
 
     // ****************** links section ***************************
 
     // Update the links...
     const link = this.g.selectAll('path.link')
-      // @ts-ignore
-      .data(links, d => d.id);
+      .data(links, (d: any) => `L${d.target.data.id}`);
 
     // Enter any new links at the parent's previous position.
     const linkEnter = link.enter().insert('path', 'g')
       .attr('class', 'link')
+      .style('opacity', 0)
       .attr('d', d => {
-        const o = {x: source.x0, y: source.y0};
-        return this.diagonal(o, o);
+        return this.diagonal(d.source, d.target);
       });
 
     // UPDATE
@@ -176,21 +206,13 @@ export class TreeViewComponent implements AfterViewInit {
     // Transition back to the parent element position
     linkUpdate.transition()
       .duration(duration)
-      .attr('d', d => this.diagonal(d, d.parent));
+      .style('opacity', 1);
 
     // Remove any exiting links
     const linkExit = link.exit().transition()
       .duration(duration)
-      .attr('d', d => {
-        const o = {x: source.x, y: source.y};
-        return this.diagonal(o, o);
-      });
+      .style('opacity', 0);
 
-    // Store the old positions for transition.
-    nodes.forEach((d: CollapsibleNode) => {
-      d.x0 = d.x;
-      d.y0 = d.y;
-    });
 
   }
 
@@ -201,14 +223,47 @@ export class TreeViewComponent implements AfterViewInit {
             ${d.x}, ${d.y}`;
   }
 
-  click(d: any): void {
-    if (d.children) {
+  click(ev: Event, d: any): void {
+    ev.preventDefault();
+    if (!!d.children) {
       d._children = d.children;
       d.children = null;
-    } else {
+      this.update();
+    } else if (!!d._children) {
       d.children = d._children;
       d._children = null;
+      this.update();
+    } else if (d.data.numIssued > 0) {
+      this.loadNode(d);
     }
-    this.update(d);
+  }
+
+  loadNode(d: CollapsibleNode): void {
+    const node = this.g.select(`#N${d.data.id} circle`);
+    node.transition().delay(50)
+      .attr('r', 12)
+      .style('fill', 'red');
+
+    this.certificateService.getByAlias(d.data.alias).subscribe(val => {
+      const children = val.issued.map(i => d3.hierarchy(i, j => j.issued));
+
+      for (const child of children) {
+        // @ts-ignore
+        child.depth = d.depth + 1;
+        child.parent = d;
+      }
+      d.children = children;
+      node.transition().delay(50)
+        .attr('r', 10)
+        .style('fill', '#fff');
+      this.update();
+    });
+  }
+
+  async animateNode(d: CollapsibleNode): void {
+
+    while (this.loading) {
+
+    }
   }
 }

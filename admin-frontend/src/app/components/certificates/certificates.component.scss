@@ -12,6 +12,10 @@
   border: 1px solid black;
 }
 
-:host::ng-deep .p-tabview-panels {
+:host::ng-deep .p-panel-content {
   padding: 0;
+}
+
+:host::ng-deep div.p-progress-spinner {
+  display: flex;
 }

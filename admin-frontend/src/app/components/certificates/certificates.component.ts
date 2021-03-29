@@ -7,6 +7,7 @@ import {Table} from 'primeng/table';
 import {TableViewComponent} from '../table-view/table-view.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-certificates',
@@ -22,13 +23,22 @@ export class CertificatesComponent implements OnInit {
   templates: any[];
   caAlias: BehaviorSubject<string> = new BehaviorSubject('root');
 
+  loadingTab = false;
+
+  tabItems: MenuItem[] = [
+    {label: 'Table', icon: 'pi pi-table', command: () => this.openTable()},
+    {label: 'Tree', icon: 'pi pi-sitemap', command: () => this.openTree()}
+  ];
+  activeIndex = 0;
+
   // table
   @ViewChild('table')
   table: TableViewComponent;
 
   constructor(private certificateService: CertificateService,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService) { }
+              private confirmationService: ConfirmationService,
+              private router: Router) { }
 
   ngOnInit(): void {
 
@@ -119,7 +129,26 @@ export class CertificatesComponent implements OnInit {
     this.caAlias.next('root');
     this.getCA();
     this.messageService.add({severity: 'success', summary: 'CA set back to root', detail: 'The CA has been changed back to root.'});
+  }
 
+  openTable(): void {
+    this.loadingTab = true;
+    this.caAlias.next('root');
+    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+      this.certificateService.ca.next(val);
+      this.activeIndex = 0;
+      this.loadingTab = false;
+    });
+  }
+
+  openTree(): void {
+    this.loadingTab = true;
+    this.caAlias.next('root');
+    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+      this.certificateService.ca.next(val);
+      this.activeIndex = 1;
+      this.loadingTab = false;
+    });
   }
 
   get certificates(): CertificateInfo[] {
