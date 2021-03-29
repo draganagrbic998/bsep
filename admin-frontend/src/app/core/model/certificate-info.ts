@@ -30,4 +30,8 @@ export class CertificateInfo {
   email: string;
 
   template: string;
+
+  numIssued: number;
+
+  issued: CertificateInfo[];
 }

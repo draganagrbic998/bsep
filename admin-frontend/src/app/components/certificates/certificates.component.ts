@@ -7,6 +7,8 @@ import {Table} from 'primeng/table';
 import {TableViewComponent} from '../table-view/table-view.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+import {Router} from '@angular/router';
+import {TreeViewComponent} from '../tree-view/tree-view.component';
 
 @Component({
   selector: 'app-certificates',
@@ -22,13 +24,24 @@ export class CertificatesComponent implements OnInit {
   templates: any[];
   caAlias: BehaviorSubject<string> = new BehaviorSubject('root');
 
+  loadingTab = false;
+
+  tabItems: MenuItem[] = [
+    {label: 'Table', icon: 'pi pi-table', command: () => this.openTable()},
+    {label: 'Tree', icon: 'pi pi-sitemap', command: () => this.openTree()}
+  ];
+  activeIndex = 0;
+
   // table
   @ViewChild('table')
   table: TableViewComponent;
+  @ViewChild('tree')
+  tree: TreeViewComponent;
 
   constructor(private certificateService: CertificateService,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService) { }
+              private confirmationService: ConfirmationService,
+              private router: Router) { }
 
   ngOnInit(): void {
 
@@ -79,7 +92,12 @@ export class CertificatesComponent implements OnInit {
         this.certificateService.revokeCertificate(certificate.id).subscribe(val => {
           if (val) {
             certificate.revoked = true;
-            this.table.reset();
+            if (!!this.table) {
+              this.table.reset();
+            }
+            if (!!this.tree) {
+              this.tree.reset();
+            }
             this.messageService.add({severity: 'success', summary: 'Success', detail: `${certificate.commonName} successfully revoked.`});
           }
           else {
@@ -96,7 +114,12 @@ export class CertificatesComponent implements OnInit {
     if (this.certificate.commonName.trim()) {
       this.certificate.issuerAlias = this.caAlias.getValue();
       this.certificateService.createCertificate(this.certificate).subscribe(val => {
-        this.table.reset();
+        if (!!this.table) {
+          this.table.reset();
+        }
+        if (!!this.tree) {
+          this.tree.reset();
+        }
         this.newDialog = false;
         this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
         this.certificate = new CertificateInfo();
@@ -119,7 +142,26 @@ export class CertificatesComponent implements OnInit {
     this.caAlias.next('root');
     this.getCA();
     this.messageService.add({severity: 'success', summary: 'CA set back to root', detail: 'The CA has been changed back to root.'});
+  }
 
+  openTable(): void {
+    this.loadingTab = true;
+    this.caAlias.next('root');
+    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+      this.certificateService.ca.next(val);
+      this.activeIndex = 0;
+      this.loadingTab = false;
+    });
+  }
+
+  openTree(): void {
+    this.loadingTab = true;
+    this.caAlias.next('root');
+    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+      this.certificateService.ca.next(val);
+      this.activeIndex = 1;
+      this.loadingTab = false;
+    });
   }
 
   get certificates(): CertificateInfo[] {

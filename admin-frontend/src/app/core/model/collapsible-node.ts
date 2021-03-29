@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
 export interface CollapsibleNode extends d3.HierarchyNode<any> {
-  _children?: this[];
+  _children?: CollapsibleNode[];
   x0?: number;
   y0?: number;
   x?: number;
