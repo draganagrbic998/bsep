@@ -84,28 +84,39 @@ export class CertificatesComponent implements OnInit {
   downloadCrt(certificate: CertificateInfo): void {
     this.certificateService.downloadCrt(certificate.alias).subscribe(val => {
       // download it
-
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        navigator.msSaveOrOpenBlob(val);
-        return;
-      }
-
-      // For other browsers:
-      // Create a link pointing to the ObjectURL containing the blob.
-      const data = URL.createObjectURL(val);
-
-      const link = document.createElement('a');
-      link.href = data;
-      link.download = 'certificate.crt';
-      // this is necessary as link.click() does not work on the latest firefox
-      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-
-      setTimeout(() => {
-        // For Firefox it is necessary to delay revoking the ObjectURL
-        URL.revokeObjectURL(data);
-        link.remove();
-      }, 100);
+      this.download(val, 'certificate.crt');
     });
+  }
+
+  downloadKey(certificate: CertificateInfo): void {
+    this.certificateService.downloadKey(certificate.alias).subscribe(val => {
+      // download it
+      this.download(val, 'certificate.key');
+    });
+  }
+
+
+  download(val: Blob, fileName: string): void {
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(val);
+      return;
+    }
+
+    // For other browsers:
+    // Create a link pointing to the ObjectURL containing the blob.
+    const data = URL.createObjectURL(val);
+
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = fileName;
+    // this is necessary as link.click() does not work on the latest firefox
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+    setTimeout(() => {
+      // For Firefox it is necessary to delay revoking the ObjectURL
+      URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
   }
 
   revokeCertificate(certificate: CertificateInfo): void {

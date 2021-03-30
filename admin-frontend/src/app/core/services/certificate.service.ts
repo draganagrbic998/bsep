@@ -23,6 +23,10 @@ export class CertificateService {
     return this.httpClient.get(`https://localhost:8080/api/certificates/download-crt/${alias}`, {responseType: 'blob'});
   }
 
+  downloadKey(alias: string): Observable<any> {
+    return this.httpClient.get(`https://localhost:8080/api/certificates/download-key/${alias}`, {responseType: 'blob'});
+  }
+
   createCertificate(certificate: CertificateInfo): Observable<any> {
     return this.httpClient.post('https://localhost:8080/api/certificates', certificate);
   }

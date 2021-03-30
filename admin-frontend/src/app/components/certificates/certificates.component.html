@@ -31,6 +31,7 @@
                       (revokeCertificate)="this.revokeCertificate($event)"
                       (openDetails)="this.openDetails($event)"
                       (downloadCrt)="this.downloadCrt($event)"
+                      (downloadKey)="this.downloadKey($event)"
                       #table
       >
       </app-table-view>
@@ -40,6 +41,8 @@
                      (switchCA)="this.switchCA($event)"
                      (revokeCertificate)="this.revokeCertificate($event)"
                      (openDetails)="this.openDetails($event)"
+                     (downloadCrt)="this.downloadCrt($event)"
+                     (downloadKey)="this.downloadKey($event)"
                      #tree
       ></app-tree-view>
     </div>

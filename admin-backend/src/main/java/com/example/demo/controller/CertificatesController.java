@@ -71,6 +71,14 @@ public class CertificatesController {
 		return ResponseEntity.ok().contentLength(length).body(resource);
 	}
 
+	@GetMapping(value = "/download-key/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<InputStreamResource> downloadKey(@PathVariable String alias) throws IOException {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(certificateService.getKey(alias).getBytes());
+		int length = inputStream.available();
+		InputStreamResource resource = new InputStreamResource(inputStream);
+		return ResponseEntity.ok().contentLength(length).body(resource);
+	}
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> revoke(@PathVariable long id) {
 		this.certificateService.revoke(id);

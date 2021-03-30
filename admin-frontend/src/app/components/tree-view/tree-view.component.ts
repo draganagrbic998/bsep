@@ -26,21 +26,27 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   context: CertificateInfo | null = null;
   menuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
-    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)}
+    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)},
+    {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
+    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
   oldMenuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
-    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)}
+    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)},
+    {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
+    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
 
   @Output()
   revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-
   @Output()
   openDetails: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-
   @Output()
   switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output()
+  downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output()
+  downloadKey: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
   @ViewChild('contextMenu')
   contextMenu!: ContextMenu;
