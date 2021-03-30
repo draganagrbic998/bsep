@@ -88,6 +88,7 @@ export class CertificatesComponent implements OnInit {
 
   openRequest(cert: CertificateRequest): void {
     this.certificate = new CertificateInfo();
+    this.certificate.id = cert.id;
     this.certificate.alias = cert.alias;
     this.certificate.commonName = cert.commonName;
     this.certificate.country = cert.country;

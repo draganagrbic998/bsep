@@ -13,6 +13,8 @@ import com.example.demo.model.CertificateRequest;
 @NoArgsConstructor
 public class CertificateRequestDTO {
 
+	private long id;
+
 	@NotBlank(message = "Alias cannot be empty")
 	private String alias;
 
@@ -37,6 +39,7 @@ public class CertificateRequestDTO {
 	private String template;
 
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {
+		this.id = certificateRequest.getId();
 		this.alias = certificateRequest.getAlias();
 		this.commonName = certificateRequest.getCommonName();
 		this.organization = certificateRequest.getOrganization();

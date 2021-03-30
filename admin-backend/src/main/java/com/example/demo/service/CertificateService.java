@@ -122,6 +122,8 @@ public class CertificateService {
 
 		this.keyStoreService.saveKeyStore();
 
+		if (createCertificateDto.getId() != 0)
+			this.certificateRequestRepository.deleteById(createCertificateDto.getId());
 	}
 
 	public static X500Name certificateNameFromData(CreateCertificateDTO createCertificateDto) {

@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CreateCertificateDTO {
 
+	private long id;
+	
     @NotBlank(message = "Issuer alias cannot be empty")
     private String issuerAlias;
 
