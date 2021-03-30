@@ -1,26 +1,13 @@
 @import "../../../../styles/theme";
 
-.header{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: $primary;
-    height: 60px;
-}
 
-.content{
-    padding: 40px;
-    padding-bottom: 30px;
-}
-
-.content div{
+div{
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.content div span{
+span{
     font-weight: bold;
     min-width: 130px;
 }

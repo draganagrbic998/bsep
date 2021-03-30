@@ -1,12 +1,12 @@
-<div class="header">
-    <h3>Create new alarm</h3>
-</div>
-
-<div class="content">
+<app-dialog-container title="Create new alarm" [pending]="savePending" 
+[disabled]="alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm">
         <mat-slide-toggle formControlName="status">
-            {{alarmForm.controls.status.value ? 'Alarm for tracking logs status' : 'Alarm for tracking logs description'}}
-        </mat-slide-toggle><br><br>
+            {{alarmForm.controls.status.value ? 
+                'Alarm for tracking logs status' : 
+                'Alarm for tracking logs description'}}
+        </mat-slide-toggle>
+        <br><br>
         <div>
             <span>Param: </span>
             <select
@@ -30,26 +30,16 @@
                 <option>Forbidden logs view</option>
                 <option>Forbidden alarms view</option>
             </select>    
-        </div><br>
+        </div>
+        <br>
         <div>
             <span>Counts: </span>
             <input
             appOnlyNumbers
             formControlName="counts"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter number of counts">     
         </div>
-    </form><br><br>
-    <app-spacer-container>
-        <span>
-            <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
-        </span>
-        <span>
-            <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="alarmForm.invalid">Confirm</button>
-            <app-spinner-button *ngIf="savePending"></app-spinner-button>
-        </span>
-    </app-spacer-container>    
-</div>
-
+    </form>
+    <br><br>
+</app-dialog-container>

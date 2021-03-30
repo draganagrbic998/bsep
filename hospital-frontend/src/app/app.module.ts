@@ -37,6 +37,7 @@ import { ReportComponent } from './components/report/report.component';
 import { LoginFormComponent } from './components/user/login-form/login-form.component';
 import { CertificateFormComponent } from './components/certificate-form/certificate-form.component';
 import { DetailsContainerComponent } from './components/containers/details-container/details-container.component';
+import { DialogContainerComponent } from './components/containers/dialog-container/dialog-container.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { DetailsContainerComponent } from './components/containers/details-conta
     ReportComponent,
     LoginFormComponent,
     CertificateFormComponent,
-    DetailsContainerComponent
+    DetailsContainerComponent,
+    DialogContainerComponent
   ],
   imports: [
     AppRoutingModule,

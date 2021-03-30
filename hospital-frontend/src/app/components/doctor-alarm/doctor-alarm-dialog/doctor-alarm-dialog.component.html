@@ -1,8 +1,5 @@
-<div class="header">
-    <h3>Create new alarm</h3>
-</div>
-
-<div class="content">
+<app-dialog-container title="Create new alarm" [pending]="savePending" 
+[disabled]="emptyForm || alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm">
         <div>
             <span>Pulse: </span>
@@ -10,76 +7,55 @@
             appOnlyNumbers
             formControlName="minPulse"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter min pulse">     
             <input
             appOnlyNumbers
             formControlName="maxPulse"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter max pulse">           
-        </div><br>
+        </div>
+        <br>
         <div>
             <span>Pressure: </span>
             <input
             appOnlyNumbers
             formControlName="minPressure"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter min pressure">     
             <input
             appOnlyNumbers
             formControlName="maxPressure"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter max pressure">           
-        </div><br>
+        </div>
+        <br>
         <div>
             <span>Temperature: </span>
             <input
             appOnlyNumbers
             formControlName="minTemperature"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter min temperature">     
             <input
             appOnlyNumbers
             formControlName="maxTemperature"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter max temperature">
-        </div><br>
+        </div>
+        <br>
         <div>
             <span>Oxygen level: </span>
             <input
             appOnlyNumbers
             formControlName="minOxygenLevel"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter min oxygen level">     
             <input
             appOnlyNumbers
             formControlName="maxOxygenLevel"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Enter max oxygen level">
         </div>
-    </form><br><br>
-    <app-spacer-container>
-        <span>
-            <button *ngIf="!savePending" mat-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
-        </span>
-        <span>
-            <button *ngIf="!savePending" mat-button (click)="confirm()" [disabled]="emptyForm || alarmForm.invalid">Confirm</button>
-            <app-spinner-button *ngIf="savePending"></app-spinner-button>
-        </span>
-    </app-spacer-container>    
-</div>
+    </form>
+    <br><br>
+</app-dialog-container>
