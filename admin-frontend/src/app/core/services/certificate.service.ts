@@ -33,4 +33,8 @@ export class CertificateService {
       catchError(() => of(false))
     );
   }
+
+  getCertificateRequests(page, size): Observable<any> {
+    return this.httpClient.get(`https://localhost:8080/api/certificates/requests?page=${page}&size=${size}`);
+  }
 }
