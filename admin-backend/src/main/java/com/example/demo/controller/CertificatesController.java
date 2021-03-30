@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,18 +22,17 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/api/certificates")
-@PreAuthorize("hasAuthority('SUPER_ADMIN')")	
+@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 public class CertificatesController {
 
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
 	private final CertificateInfoMapper infoMapper;
 	private final CertificateRequestMapper requestMapper;
+
 	@Autowired
-	public CertificatesController(CertificateService certificateService,
-								  CertificateInfoService certificateInfoService,
-								  CertificateInfoMapper certificateInfoMapper,
-								  CertificateRequestMapper requestMapper) {
+	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
+			CertificateInfoMapper certificateInfoMapper, CertificateRequestMapper requestMapper) {
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
 		this.infoMapper = certificateInfoMapper;
@@ -47,20 +45,23 @@ public class CertificatesController {
 		return ResponseEntity.created(URI.create("wontneedyou")).build();
 	}
 
-	@PostMapping(value = "/create_request", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("permitAll()")
+	@PostMapping(value = "/requests/create", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> createRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
 		this.certificateService.createCertificateRequest(certificateRequestDTO);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificateInfo -> this.infoMapper.mapToDto(certificateInfo, 0)));
+		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable)
+				.map(certificateInfo -> this.infoMapper.mapToDto(certificateInfo, 0)));
 	}
 
 	@GetMapping(value = "/requests")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable).map(certificateRequest -> this.requestMapper.map(certificateRequest)));
+		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable)
+				.map(certificateRequest -> this.requestMapper.map(certificateRequest)));
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

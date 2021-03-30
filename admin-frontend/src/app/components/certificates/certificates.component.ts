@@ -9,6 +9,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {TreeViewComponent} from '../tree-view/tree-view.component';
+import { RequestViewComponent } from '../request-view/request-view.component';
+import { CertificateRequest } from 'src/app/core/model/certificate-request';
 
 @Component({
   selector: 'app-certificates',
@@ -28,7 +30,8 @@ export class CertificatesComponent implements OnInit {
 
   tabItems: MenuItem[] = [
     {label: 'Table', icon: 'pi pi-table', command: () => this.openTable()},
-    {label: 'Tree', icon: 'pi pi-sitemap', command: () => this.openTree()}
+    {label: 'Tree', icon: 'pi pi-sitemap', command: () => this.openTree()},
+    {label: 'Requests Table', icon: 'pi pi-table', command: () => this.openRequestsTable()},
   ];
   activeIndex = 0;
 
@@ -37,6 +40,8 @@ export class CertificatesComponent implements OnInit {
   table: TableViewComponent;
   @ViewChild('tree')
   tree: TreeViewComponent;
+  @ViewChild('requestsTable')
+  requestsTable: RequestViewComponent;
 
   constructor(private certificateService: CertificateService,
               private messageService: MessageService,
@@ -79,6 +84,20 @@ export class CertificatesComponent implements OnInit {
   hideDetails(): void {
     this.detailsDialog = false;
     this.certificate = new CertificateInfo();
+  }
+
+  openRequest(cert: CertificateRequest): void {
+    this.certificate = new CertificateInfo();
+    this.certificate.alias = cert.alias;
+    this.certificate.commonName = cert.commonName;
+    this.certificate.country = cert.country;
+    this.certificate.email = cert.email;
+    this.certificate.template = cert.template;
+    this.certificate.organization = cert.organization;
+    this.certificate.organizationUnit = cert.organizationUnit;
+
+    this.submitted = false;
+    this.newDialog = true;
   }
 
   downloadCrt(certificate: CertificateInfo): void {
@@ -157,6 +176,9 @@ export class CertificatesComponent implements OnInit {
         if (!!this.tree) {
           this.tree.reset();
         }
+        if (!!this.requestsTable) {
+          this.requestsTable.reset();
+        }
         this.newDialog = false;
         this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
         this.certificate = new CertificateInfo();
@@ -201,6 +223,10 @@ export class CertificatesComponent implements OnInit {
     });
   }
 
+  openRequestsTable(): void {
+    this.activeIndex = 2;
+  }
+  
   get certificates(): CertificateInfo[] {
     return this.certificateService.certificates;
   }

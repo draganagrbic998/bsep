@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         MatProgressSpinnerModule,
         MatTableModule,
         MatPaginatorModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatRadioModule
     ]
 })
 export class MaterialModule { }

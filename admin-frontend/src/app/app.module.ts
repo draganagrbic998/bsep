@@ -39,6 +39,7 @@ import {BlockUIModule} from 'primeng/blockui';
 import {TabMenu, TabMenuModule} from 'primeng/tabmenu';
 import {PanelModule} from 'primeng/panel';
 import {ContextMenuModule} from 'primeng/contextmenu';
+import { RequestViewComponent } from './components/request-view/request-view.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {ContextMenuModule} from 'primeng/contextmenu';
     DashboardComponent,
     CertificatesComponent,
     TableViewComponent,
-    TreeViewComponent
+    TreeViewComponent,
+    RequestViewComponent
   ],
   imports: [
     BrowserModule,

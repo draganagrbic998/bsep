@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {CertificateInfo} from '../model/certificate-info';
 import {asLiteral} from '@angular/compiler/src/render3/view/util';
 import { catchError, map } from 'rxjs/operators';
+import { CertificateRequest } from '../model/certificate-request';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class CertificateService {
 
   ca: BehaviorSubject<CertificateInfo | null> = new BehaviorSubject<CertificateInfo>(null);
   certificates: CertificateInfo[] = [];
+  certificateRequests: CertificateRequest[] = [];
 
   constructor(private httpClient: HttpClient) { }
 

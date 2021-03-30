@@ -1,0 +1,53 @@
+<p-table [value]="certificateRequests"
+         [rows]="rows"
+         [lazy]="true"
+         (onLazyLoad)="getCertificateRequests($event)"
+         [paginator]="true"
+         [rowHover]="true"
+         dataKey="id"
+         [totalRecords]="totalRecords"
+         [loading]="loading"
+         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [showCurrentPageReport]="true"
+         #requestsTable
+>
+  <ng-template pTemplate="caption">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      <h5 class="p-m-0">Manage Certificate Requests</h5>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Common name</th>
+      <th>Alias</th>
+      <th>Country</th>
+      <th>Organization</th>
+      <th>Organization Unit</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-certReq>
+    <tr>
+      <td>{{certReq.commonName}}</td>
+      <td>{{certReq.alias}}</td>
+      <td>{{certReq.country}}</td>
+      <td>{{certReq.organization}}</td>
+      <td>{{certReq.organizationUnit}}</td>
+      <td>
+        <button type="button"
+                class="p-button-sm p-button-rounded p-button-outlined"
+                pButton
+                icon="pi pi-bars"
+                label="Options"
+                (click)="menu.toggle($event)"
+        ></button>
+        <p-menu #menu [popup]="true" [model]="getMenuItems(certReq)" appendTo="body"></p-menu>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      In total there are {{totalRecords}} certificate requests.
+    </div>
+  </ng-template>
+</p-table>

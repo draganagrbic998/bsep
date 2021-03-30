@@ -19,8 +19,6 @@ public class CertificateRequest {
 
 	private String alias;
 
-	private String issuerAlias;
-
 	private String commonName;
 
 	private String organization;
@@ -34,16 +32,13 @@ public class CertificateRequest {
 	@Enumerated(EnumType.STRING)
 	private Template template;
 
-	@Enumerated(EnumType.STRING)
-	private CertificateType type;
-
 	public CertificateRequest(CertificateRequestDTO certificateRequestDTO) {
 		this.alias = certificateRequestDTO.getAlias();
-		this.issuerAlias = certificateRequestDTO.getIssuerAlias();
 		this.organization = certificateRequestDTO.getOrganization();
 		this.organizationUnit = certificateRequestDTO.getOrganizationUnit();
 		this.commonName = certificateRequestDTO.getCommonName();
 		this.country = certificateRequestDTO.getCountry();
 		this.email = certificateRequestDTO.getEmail();
+		this.template = Template.valueOf(certificateRequestDTO.getTemplate());
 	}
 }

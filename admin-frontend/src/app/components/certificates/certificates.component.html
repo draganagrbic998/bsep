@@ -2,7 +2,7 @@
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
       <span class="p-d-flex p-ai-center">
-        <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+        <button *ngIf="activeIndex !== 2" pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
         <p-progressSpinner class="p-as-center"
                            [style]="{width: '30px', height: '30px', 'margin-left': '1rem'}"
                            *ngIf="loadingTab"
@@ -45,6 +45,13 @@
                      (downloadKey)="this.downloadKey($event)"
                      #tree
       ></app-tree-view>
+    </div>
+    <div *ngIf="activeIndex === 2">
+      <app-request-view [templates]="templates"
+                      (openRequest)="this.openRequest($event)"
+                      #requestsTable
+      >
+      </app-request-view>
     </div>
   </div>
 
