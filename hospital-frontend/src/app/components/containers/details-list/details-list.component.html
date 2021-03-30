@@ -1,6 +1,8 @@
 <div *ngIf="date" class="date" [class.warn]="warn">
-    <span></span>
-    <span class="bold">{{date | date: "dd/mm/yyyy HH:mm:ss"}}</span>
+    <app-spacer-container>
+        <span></span>
+        <span class="bold">{{date | date: "dd/mm/yyyy HH:mm:ss"}}</span>    
+    </app-spacer-container>
 </div>
 <div [class.padding]="padding">
     <div *ngFor="let detail of filteredDetails">
