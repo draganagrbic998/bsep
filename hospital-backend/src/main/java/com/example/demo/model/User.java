@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.demo.utils.Constants;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +15,7 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 public class User implements UserDetails {
 
-	private List<String> authorities;
+	private List<Authority.Authorities> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,11 +53,11 @@ public class User implements UserDetails {
 	}
 	
 	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Constants.ADMIN));
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.ADMIN));
 	}
 	
 	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Constants.DOCTOR));
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.DOCTOR));
 	}
 	
 }

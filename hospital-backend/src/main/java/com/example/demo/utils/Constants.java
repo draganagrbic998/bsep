@@ -13,7 +13,5 @@ public class Constants {
 	public static final String LAST_PAGE = "Last-Page";
 	
 	public static final String AUTH_HEADER = "Authorization";
-	public static final String ADMIN = "ADMIN";
-	public static final String DOCTOR = "DOCTOR";
 	
 }

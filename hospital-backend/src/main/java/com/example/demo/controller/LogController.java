@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +40,7 @@ public class LogController {
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, logs.isFirst() + "");
 		response.setHeader(Constants.LAST_PAGE, logs.isLast() + "");
-		return new ResponseEntity<>(this.logMapper.map(logs.toList()), HttpStatus.OK);
+		return ResponseEntity.ok(this.logMapper.map(logs.toList()));
 	}
 	
 }

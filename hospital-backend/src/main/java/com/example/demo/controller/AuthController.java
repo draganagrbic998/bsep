@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ public class AuthController {
 		
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
-		return new ResponseEntity<>(this.userService.login(loginDTO), HttpStatus.OK);
+		return ResponseEntity.ok(this.userService.login(loginDTO));
 	}
 	
 }

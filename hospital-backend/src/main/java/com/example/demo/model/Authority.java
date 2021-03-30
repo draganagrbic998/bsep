@@ -12,11 +12,15 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 public class Authority implements GrantedAuthority {
 
-	private String name;
+	public enum Authorities {
+		ADMIN, DOCTOR;
+	}
+
+	private Authorities name;
 		
 	@Override
 	public String getAuthority() {
-		return this.name;
+		return this.name.name();
 	}
 	
 }

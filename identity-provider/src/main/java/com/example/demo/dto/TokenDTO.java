@@ -2,16 +2,12 @@ package com.example.demo.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class MessageMeasureDTO {
-
-	@NotBlank(message = "Text can't be blank")
-	private String text;
-	
+public class TokenDTO {
+	@NotBlank(message = "Token can't be blank")
+	private String token;
 }

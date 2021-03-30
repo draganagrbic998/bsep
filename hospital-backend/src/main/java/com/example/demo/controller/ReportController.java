@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +23,7 @@ public class ReportController {
 	
 	@PostMapping
 	public ResponseEntity<ReportDTO> report(@RequestBody ReportSearchDTO searchDTO){
-		return new ResponseEntity<>(this.reportService.report(searchDTO), HttpStatus.OK);
+		return ResponseEntity.ok(this.reportService.report(searchDTO));
 	}
 	
 }

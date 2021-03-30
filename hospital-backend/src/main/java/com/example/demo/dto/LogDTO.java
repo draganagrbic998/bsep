@@ -3,6 +3,7 @@ package com.example.demo.dto;
 import java.util.Date;
 
 import com.example.demo.model.Log;
+import com.example.demo.model.LogStatus;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class LogDTO {
 	
 	private Date date;
-	private String status;
+	private LogStatus status;
 	private String description;
 	private String userName;
 	private String computerName;

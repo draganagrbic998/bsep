@@ -9,19 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogSearchDTO {
 	
-	@NotNull
+	@NotNull(message = "Status can't be null")
 	private String status;
 	
-	@NotNull
+	@NotNull(message = "Description can't be null")
 	private String description;
 	
-	@NotNull
+	@NotNull(message = "Username can't be null")
 	private String userName;
 	
-	@NotNull
+	@NotNull(message = "Computer name can't be null")
 	private String computerName;
 	
-	@NotNull
+	@NotNull(message = "Service name can't be null")
 	private String serviceName;
 
 }

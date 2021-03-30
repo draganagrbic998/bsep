@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import java.util.Date;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchDTO {
 
-	@NotNull
+	@NotNull(message = "Insured number can't be null")
 	private String insuredNumber;
 	
-	@NotNull
+	@NotNull(message = "First name can't be null")
 	private String firstName;
 	
-	@NotNull
+	@NotNull(message = "Last name can't be null")
 	private String lastName;
 	private Date date;
 		

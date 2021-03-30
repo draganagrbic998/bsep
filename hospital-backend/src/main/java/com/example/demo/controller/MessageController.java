@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,16 +42,16 @@ public class MessageController {
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, messages.isFirst() + "");
 		response.setHeader(Constants.LAST_PAGE, messages.isLast() + "");
-		return new ResponseEntity<>(this.messageMapper.map(messages.toList()), HttpStatus.OK);
+		return ResponseEntity.ok(this.messageMapper.map(messages.toList()));
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody MessageMeasureDTO messageDTO) throws ParseException{
+	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO) throws ParseException{
 		Message message = this.messageMapper.map(messageDTO);
 		if (message.getPatient() != null) {
 			this.messageService.save(this.messageMapper.map(messageDTO));			
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(messageDTO);
 	}
 	
 }

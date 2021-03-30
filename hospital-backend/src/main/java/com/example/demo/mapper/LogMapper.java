@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.LogDTO;
 import com.example.demo.model.Log;
+import com.example.demo.model.LogStatus;
 
 @Component
 public class LogMapper {
@@ -20,7 +21,7 @@ public class LogMapper {
 		String[] array = line.split("\\|");
 		log.setDate(DATE_FORMAT.parse(array[0].trim()));
 		log.setNormal(Boolean.parseBoolean(array[1].trim()));
-		log.setStatus(array[2].trim());
+		log.setStatus(LogStatus.valueOf(array[2].trim().toUpperCase()));
 		log.setDescription(array[3].trim());
 		log.setUserName(array[4].trim());
 		log.setComputerName(array[5].trim());

@@ -22,11 +22,10 @@ public class Authority implements GrantedAuthority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private Long id;
 
 	@NotBlank
-	@Column(name = "name", unique = true)
+	@Column(unique = true)
 	private String name;
 	
 	@Override

@@ -10,13 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.persistence.JoinColumn;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,36 +26,31 @@ import lombok.Data;
 @Data
 @SuppressWarnings("serial")
 @Entity
-@Table(name="user_table")
+@Table(name = "user_table")
 public class User implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private Long id;
 	
     @Email
 	@NotBlank
-	@Column(name = "email", unique = true)
+	@Column(unique = true)
 	private String email;
 	
 	@NotBlank
-	@Column(name = "password")
 	private String password;
 		
 	@NotBlank
-	@Column(name = "first_name")
 	private String firstName;
 	
 	@NotBlank
-	@Column(name = "last_name")
 	private String lastName;
 
-	@Column(name = "activation_link", unique = true)
+	@Column(unique = true)
 	private String activationLink;
 			
 	@NotNull
-	@Column(name = "enabled")
 	private boolean enabled;
 		
     @ManyToMany(fetch = FetchType.EAGER)

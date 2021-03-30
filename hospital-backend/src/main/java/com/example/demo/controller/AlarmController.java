@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,14 +52,14 @@ public class AlarmController {
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");
 		response.setHeader(Constants.LAST_PAGE, alarms.isLast() + "");
-		return new ResponseEntity<>(this.alarmMapper.adminMap(alarms.toList()), HttpStatus.OK);
+		return ResponseEntity.ok(this.alarmMapper.adminMap(alarms.toList()));
 	}
 
 	@PostMapping
 	@PreAuthorize("hasAuthority('ADMIN')")	
 	public ResponseEntity<AdminAlarmDTO> create(@Valid @RequestBody AdminAlarmDTO alarmDTO){
 		this.adminAlarmService.save(this.alarmMapper.map(alarmDTO));
-		return new ResponseEntity<>(alarmDTO, HttpStatus.CREATED);
+		return ResponseEntity.ok(alarmDTO);
 	}
 
 	@GetMapping(value = "/{patientId}")
@@ -70,14 +69,14 @@ public class AlarmController {
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");
 		response.setHeader(Constants.LAST_PAGE, alarms.isLast() + "");
-		return new ResponseEntity<>(this.alarmMapper.doctorMap(alarms.toList()), HttpStatus.OK);
+		return ResponseEntity.ok(this.alarmMapper.doctorMap(alarms.toList()));
 	}
 
 	@PostMapping(value = "/{patientId}")
 	@PreAuthorize("hasAuthority('DOCTOR')")	
 	public ResponseEntity<DoctorAlarmDTO> create(@PathVariable long patientId, @Valid @RequestBody DoctorAlarmDTO alarmDTO){
 		this.doctorAlarmService.save(this.alarmMapper.map(patientId, alarmDTO));
-		return new ResponseEntity<>(alarmDTO, HttpStatus.CREATED);
+		return ResponseEntity.ok(alarmDTO);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
@@ -89,7 +88,7 @@ public class AlarmController {
 		else {
 			this.doctorAlarmService.delete(id);
 		}
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

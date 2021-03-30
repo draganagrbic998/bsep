@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,25 +44,25 @@ public class PatientController {
 		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
 		response.setHeader(Constants.FIRST_PAGE, patients.isFirst() + "");
 		response.setHeader(Constants.LAST_PAGE, patients.isLast() + "");
-		return new ResponseEntity<>(this.patientMapper.map(patients.toList()), HttpStatus.OK);
+		return ResponseEntity.ok(this.patientMapper.map(patients.toList()));
 	}
 
 	@PostMapping
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
 		patientDTO.setId(null);
-		return new ResponseEntity<>(this.patientMapper.map(this.patientService.save(this.patientMapper.map(patientDTO))), HttpStatus.CREATED);
+		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(patientDTO))));
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
 		patientDTO.setId(id);
-		return new ResponseEntity<>(this.patientMapper.map(this.patientService.save(this.patientMapper.map(id, patientDTO))), HttpStatus.CREATED);
+		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(id, patientDTO))));
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		this.patientService.delete(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.noContent().build();
 	}
 
 }
