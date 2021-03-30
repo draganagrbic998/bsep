@@ -7,25 +7,13 @@
     </button>        
 </app-spacer-container>
 
-<app-preloader *ngIf="fetchPending"></app-preloader>
-<app-empty-container *ngIf="!fetchPending && !alarms.length" 
-[title]="'NO ALARMS'"></app-empty-container>    
-
-<div class="main" *ngIf="!fetchPending && alarms.length">
-    <div class="paginator">
-        <app-paginator
-        [small]="true"
-        [pending]="fetchPending"
-        [pagination]="pagination"
-        (changedPage)="changePage($event)"
-        ></app-paginator>
-    </div>    
-    <app-admin-alarm-details
-    *ngFor="let alarm of alarms; let i = index"
-    [alarm]="alarm"
-    [index]="i + 1"
-    ></app-admin-alarm-details>
-    <div *ngIf="alarms.length < 10">
-        <br><br><br><br><br>
-    </div>
+<div>
+    <app-list-container [pending]="fetchPending" [empty]="!alarms.length" 
+    title="NO ALARMS" [pagination]="pagination" (changedPage)="changePage($event)">
+        <app-admin-alarm-details
+        *ngFor="let alarm of alarms; let i = index"
+        [alarm]="alarm"
+        [index]="i + 1"
+        ></app-admin-alarm-details>
+    </app-list-container>
 </div>
