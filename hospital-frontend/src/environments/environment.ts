@@ -4,14 +4,6 @@
 
 export const environment = {
   production: false,
-  authApi: 'https://localhost:8081/auth',
-  patientsApi: 'https://localhost:8081/api/patients',
-  messagesApi: 'https://localhost:8081/api/messages',
-  logsApi: 'https://localhost:8081/api/logs',
-  alarmsApi: 'https://localhost:8081/api/alarms',
-  alarmTriggeringsApi: 'https://localhost:8081/api/alarm-triggerings',
-  reportApi: 'https://localhost:8081/api/report',
-
   loginRoute: 'login',
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',

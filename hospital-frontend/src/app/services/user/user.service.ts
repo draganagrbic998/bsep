@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Login } from 'src/app/models/login';
 import { User } from 'src/app/models/user';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +14,10 @@ export class UserService {
     private http: HttpClient
   ) { }
 
+  private readonly AUTH_PATH = 'auth';
+
   login(login: Login): Observable<User>{
-    return this.http.post<User>(`${environment.authApi}/login`, login).pipe(
+    return this.http.post<User>(`${this.AUTH_PATH}/login`, login).pipe(
       catchError(() => of(null))
     );
   }
