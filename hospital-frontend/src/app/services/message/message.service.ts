@@ -1,8 +1,8 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/constants/pagination';
+import { PAGE_SIZE } from 'src/app/constants/main';
 import { Message } from 'src/app/models/message';
 import { MessageSearch } from 'src/app/models/message-search';
 import { Page } from 'src/app/models/page';

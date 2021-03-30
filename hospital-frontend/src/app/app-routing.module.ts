@@ -10,7 +10,7 @@ import { PatientFormComponent } from './components/patient/patient-form/patient-
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/report/report.component';
 import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { ADMIN, DOCTOR } from './constants/authorities';
+import { ADMIN, DOCTOR } from './constants/main';
 import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
