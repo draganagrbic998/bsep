@@ -21,6 +21,10 @@ export class DetailsListComponent implements OnInit {
     return this.mainDetails.filter(x => x.value);
   }
 
+  isNumber(value: string | number): boolean{
+    return typeof value === 'number';
+  }
+
   ngOnInit(): void {
   }
 
