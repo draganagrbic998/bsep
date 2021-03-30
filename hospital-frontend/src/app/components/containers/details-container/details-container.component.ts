@@ -11,7 +11,6 @@ export class DetailsContainerComponent implements OnInit {
 
   @Input() delete: string;
   @Input() warn: boolean;
-  @Input() padding = true;
   @Input() date: Date;
   @Input() private details: Detail[] = [];
   @Input() private mainDetails: Detail[] = [];

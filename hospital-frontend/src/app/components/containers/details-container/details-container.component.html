@@ -1,5 +1,5 @@
-<div class="root mat-elevation-z24" [class.no-padding]="!padding">
-    <mat-card>
+<div class="root mat-elevation-z24">
+    <mat-card [class.no-padding]="date">
         <mat-card-content>
             <app-spacer-container *ngIf="delete">
                 <h5>{{delete}}</h5>
@@ -18,7 +18,8 @@
                     <span class="bold">{{date | date: "dd/mm/yyyy HH:mm:ss"}}</span>    
                 </app-spacer-container>
             </div>
-            <div [class.padding]="!padding">
+
+            <div [class.padding]="date">
                 <div *ngFor="let detail of filteredDetails">
                     <span class="bold">{{detail.key}}: </span>
                     <span *ngIf="!isNumber(detail.value)">{{detail.value}}</span>
