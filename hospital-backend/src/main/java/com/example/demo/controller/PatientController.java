@@ -1,8 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PatientDTO;
 import com.example.demo.mapper.PatientMapper;
-import com.example.demo.model.Patient;
 import com.example.demo.service.PatientService;
-import com.example.demo.utils.Constants;
 
 @RestController
 @RequestMapping(value = "/api/patients", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,24 +34,20 @@ public class PatientController {
 	private PatientMapper patientMapper;
 			
 	@GetMapping
-	public ResponseEntity<List<PatientDTO>> findAll(Pageable pageable, @RequestParam String search, HttpServletResponse response){
-		Page<Patient> patients = this.patientService.findAll(pageable, search);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
-		response.setHeader(Constants.FIRST_PAGE, patients.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE, patients.isLast() + "");
-		return ResponseEntity.ok(this.patientMapper.map(patients.toList()));
+	public ResponseEntity<Page<PatientDTO>> findAll(Pageable pageable, @RequestParam String search){
+		return ResponseEntity.ok(this.patientService.findAll(pageable, search).map(PatientDTO::new));
 	}
 
 	@PostMapping
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
 		patientDTO.setId(null);
-		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(patientDTO))));
+		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(patientDTO)));
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
 		patientDTO.setId(id);
-		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(id, patientDTO))));
+		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(id, patientDTO)));
 	}
 
 	@DeleteMapping(value = "/{id}")

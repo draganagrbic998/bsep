@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
 import java.text.ParseException;
-import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import com.example.demo.dto.SearchDTO;
 import com.example.demo.mapper.MessageMapper;
 import com.example.demo.model.Message;
 import com.example.demo.service.MessageService;
-import com.example.demo.utils.Constants;
 
 @RestController
 @RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,12 +34,8 @@ public class MessageController {
 
 	@PostMapping(value = "/search")
 	@PreAuthorize("hasAuthority('DOCTOR')")	
-	public ResponseEntity<List<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody SearchDTO searchDTO, HttpServletResponse response){
-		Page<Message> messages = this.messageService.findAll(pageable, searchDTO);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
-		response.setHeader(Constants.FIRST_PAGE, messages.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE, messages.isLast() + "");
-		return ResponseEntity.ok(this.messageMapper.map(messages.toList()));
+	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody SearchDTO searchDTO){
+		return ResponseEntity.ok(this.messageService.findAll(pageable, searchDTO).map(MessageDTO::new));
 	}
 
 	@PostMapping

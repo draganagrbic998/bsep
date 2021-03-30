@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { PAGE_SIZE } from 'src/app/constants/pagination';
 import { Message } from 'src/app/models/message';
 import { MessageSearch } from 'src/app/models/message-search';
+import { Page } from 'src/app/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,10 @@ export class MessageService {
 
   private readonly API_PATH = 'api/messages';
 
-  findAll(page: number, search: MessageSearch): Observable<HttpResponse<Message[]>>{
+  findAll(page: number, search: MessageSearch): Observable<Page<Message>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
-    return this.http.post<Message[]>(`${this.API_PATH}/search`, search, {observe: 'response', params}).pipe(
-      catchError(() => of(null))
+    return this.http.post<Page<Message>>(`${this.API_PATH}/search`, search, {params}).pipe(
+      catchError(() => of({content: [], first: true, last: true}))
     );
   }
 

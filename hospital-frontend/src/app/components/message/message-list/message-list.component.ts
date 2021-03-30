@@ -1,8 +1,7 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Message } from 'src/app/models/message';
 import { MessageSearch } from 'src/app/models/message-search';
+import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
 import { MessageService } from 'src/app/services/message/message.service';
 
@@ -35,19 +34,11 @@ export class MessageListComponent implements OnInit {
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.messageService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Message[]>) => {
+      (page: Page<Message>) => {
         this.fetchPending = false;
-        if (data){
-          this.messages = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.messages = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+        this.messages = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }

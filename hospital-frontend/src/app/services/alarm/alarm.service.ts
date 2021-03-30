@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { PAGE_SIZE } from 'src/app/constants/pagination';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
+import { Page } from 'src/app/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,10 @@ export class AlarmService {
   private refreshDoctorData: Subject<null> = new Subject();
   refreshDoctorData$: Observable<null> = this.refreshDoctorData.asObservable();
 
-  findAllAdmin(page: number): Observable<HttpResponse<AdminAlarm[]>>{
+  findAllAdmin(page: number): Observable<Page<AdminAlarm>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
-    return this.http.get<AdminAlarm[]>(this.API_PATH, {observe: 'response', params}).pipe(
-      catchError(() => of(null))
+    return this.http.get<Page<AdminAlarm>>(this.API_PATH, {params}).pipe(
+      catchError(() => of({content: [], first: true, last: true}))
     );
   }
 
@@ -35,10 +36,10 @@ export class AlarmService {
     );
   }
 
-  findAllDoctor(patientId: number, page: number): Observable<HttpResponse<DoctorAlarm[]>>{
+  findAllDoctor(patientId: number, page: number): Observable<Page<DoctorAlarm>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
-    return this.http.get<DoctorAlarm[]>(`${this.API_PATH}/${patientId}`, {observe: 'response', params}).pipe(
-      catchError(() => of(null))
+    return this.http.get<Page<DoctorAlarm>>(`${this.API_PATH}/${patientId}`, {params}).pipe(
+      catchError(() => of({content: [], first: true, last: true}))
     );
   }
 

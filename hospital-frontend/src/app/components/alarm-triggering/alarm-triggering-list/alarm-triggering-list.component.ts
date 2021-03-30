@@ -1,7 +1,6 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { AlarmTriggering } from 'src/app/models/alarm-triggering';
+import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
 import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
 
@@ -33,19 +32,11 @@ export class AlarmTriggeringListComponent implements OnInit {
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.alarmTriggeringService.findAll(this.pagination.pageNumber).subscribe(
-      (data: HttpResponse<AlarmTriggering[]>) => {
+      (page: Page<AlarmTriggering>) => {
         this.fetchPending = false;
-        if (data){
-          this.alarmTriggerings = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.alarmTriggerings = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+        this.alarmTriggerings = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }

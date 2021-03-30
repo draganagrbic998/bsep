@@ -2,13 +2,10 @@ package com.example.demo.mapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dto.MessageDTO;
 import com.example.demo.dto.MessageMeasureDTO;
 import com.example.demo.model.Message;
 import com.example.demo.service.PatientService;
@@ -32,9 +29,5 @@ public class MessageMapper {
 		message.setPatient(this.patientService.find(Long.parseLong(messageDTO.getText().split(" ")[1].split("=")[1].trim())));
 		return message;
 	}
-	
-	public List<MessageDTO> map(List<Message> messages){
-		return messages.stream().map(MessageDTO::new).collect(Collectors.toList());
-	}
-	
+		
 }

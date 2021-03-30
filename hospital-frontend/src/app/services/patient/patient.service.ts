@@ -4,6 +4,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { Patient } from 'src/app/models/patient';
 import { catchError, map } from 'rxjs/operators';
 import { PAGE_SIZE } from 'src/app/constants/pagination';
+import { Page } from 'src/app/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,10 @@ export class PatientService {
   private searchData: Subject<string> = new Subject();
   searchData$: Observable<string> = this.searchData.asObservable();
 
-  findAll(page: number, search: string): Observable<HttpResponse<Patient[]>>{
+  findAll(page: number, search: string): Observable<Page<Patient>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
-    return this.http.get<Patient[]>(this.API_PATH, {observe: 'response', params}).pipe(
-      catchError(() => of(null))
+    return this.http.get<Page<Patient>>(this.API_PATH, {params}).pipe(
+      catchError(() => of({content: [], first: true, last: true}))
     );
   }
 

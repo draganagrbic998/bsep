@@ -1,11 +1,10 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
+import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient/patient.service';
@@ -45,19 +44,11 @@ export class PatientListComponent implements OnInit {
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.patientService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Patient[]>) => {
+      (page: Page<Patient>) => {
         this.fetchPending = false;
-        if (data){
-          this.patients = new MatTableDataSource(data.body);
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.patients = new MatTableDataSource([]);
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+        this.patients = new MatTableDataSource(page.content);
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }

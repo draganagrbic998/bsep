@@ -1,8 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.AdminAlarmDTO;
 import com.example.demo.dto.DoctorAlarmDTO;
 import com.example.demo.mapper.AlarmMapper;
-import com.example.demo.model.AdminAlarm;
-import com.example.demo.model.DoctorAlarm;
 import com.example.demo.service.AdminAlarmService;
 import com.example.demo.service.DoctorAlarmService;
 import com.example.demo.service.UserService;
-import com.example.demo.utils.Constants;
 
 @RestController
 @RequestMapping(value = "/api/alarms", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,12 +41,8 @@ public class AlarmController {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMIN')")	
-	public ResponseEntity<List<AdminAlarmDTO>> findAll(Pageable pageable, HttpServletResponse response){
-		Page<AdminAlarm> alarms = this.adminAlarmService.findAll(pageable);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
-		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE, alarms.isLast() + "");
-		return ResponseEntity.ok(this.alarmMapper.adminMap(alarms.toList()));
+	public ResponseEntity<Page<AdminAlarmDTO>> findAll(Pageable pageable){
+		return ResponseEntity.ok(this.adminAlarmService.findAll(pageable).map(AdminAlarmDTO::new));
 	}
 
 	@PostMapping
@@ -64,12 +54,8 @@ public class AlarmController {
 
 	@GetMapping(value = "/{patientId}")
 	@PreAuthorize("hasAuthority('DOCTOR')")	
-	public ResponseEntity<List<DoctorAlarmDTO>> findAll(@PathVariable long patientId, Pageable pageable, HttpServletResponse response){
-		Page<DoctorAlarm> alarms = this.doctorAlarmService.findAll(patientId, pageable);
-		response.setHeader(Constants.ENABLE_HEADER, Constants.FIRST_PAGE + ", " + Constants.LAST_PAGE);
-		response.setHeader(Constants.FIRST_PAGE, alarms.isFirst() + "");
-		response.setHeader(Constants.LAST_PAGE, alarms.isLast() + "");
-		return ResponseEntity.ok(this.alarmMapper.doctorMap(alarms.toList()));
+	public ResponseEntity<Page<DoctorAlarmDTO>> findAll(@PathVariable long patientId, Pageable pageable){
+		return ResponseEntity.ok(this.doctorAlarmService.findAll(patientId, pageable).map(DoctorAlarmDTO::new));
 	}
 
 	@PostMapping(value = "/{patientId}")

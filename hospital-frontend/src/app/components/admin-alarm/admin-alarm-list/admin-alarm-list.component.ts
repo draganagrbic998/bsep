@@ -1,10 +1,9 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { Pagination } from 'src/app/models/pagination';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { AlarmService } from 'src/app/services/alarm/alarm.service';
+import { Page } from 'src/app/models/page';
 
 @Component({
   selector: 'app-admin-alarm-list',
@@ -35,19 +34,11 @@ export class AdminAlarmListComponent implements OnInit {
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.alarmService.findAllAdmin(this.pagination.pageNumber).subscribe(
-      (data: HttpResponse<AdminAlarm[]>) => {
+      (page: Page<AdminAlarm>) => {
         this.fetchPending = false;
-        if (data){
-          this.alarms = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.alarms = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+        this.alarms = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }

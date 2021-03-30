@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PAGE_SIZE } from 'src/app/constants/pagination';
 import { AlarmTriggering } from 'src/app/models/alarm-triggering';
+import { Page } from 'src/app/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,10 @@ export class AlarmTriggeringService {
 
   private readonly API_PATH = 'api/alarm-triggerings';
 
-  findAll(page: number): Observable<HttpResponse<AlarmTriggering[]>>{
+  findAll(page: number): Observable<Page<AlarmTriggering>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
-    return this.http.get<AlarmTriggering[]>(this.API_PATH, {observe: 'response', params}).pipe(
-      catchError(() => of(null))
+    return this.http.get<Page<AlarmTriggering>>(this.API_PATH, {params}).pipe(
+      catchError(() => of({content: [], first: true, last: true}))
     );
   }
 

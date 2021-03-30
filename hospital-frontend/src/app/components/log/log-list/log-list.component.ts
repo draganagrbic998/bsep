@@ -1,10 +1,9 @@
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FIRST_PAGE, LAST_PAGE } from 'src/app/constants/pagination';
 import { Log } from 'src/app/models/log';
 import { Pagination } from 'src/app/models/pagination';
 import { LogService } from 'src/app/services/log/log.service';
 import { LogSearch } from 'src/app/models/log-search';
+import { Page } from 'src/app/models/page';
 
 @Component({
   selector: 'app-log-list',
@@ -35,19 +34,11 @@ export class LogListComponent implements OnInit {
     this.fetchPending = true;
     // tslint:disable-next-line: deprecation
     this.logService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (data: HttpResponse<Log[]>) => {
+      (page: Page<Log>) => {
         this.fetchPending = false;
-        if (data){
-          this.logs = data.body;
-          const headers: HttpHeaders = data.headers;
-          this.pagination.firstPage = headers.get(FIRST_PAGE) === 'false' ? false : true;
-          this.pagination.lastPage = headers.get(LAST_PAGE) === 'false' ? false : true;
-        }
-        else{
-          this.logs = [];
-          this.pagination.firstPage = true;
-          this.pagination.lastPage = true;
-        }
+        this.logs = page.content;
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
       }
     );
   }
