@@ -1,5 +1,5 @@
 <app-spacer-container>
-    <span cdkFocusInitial></span>
+    <span></span>
     <button 
     mat-icon-button 
     (click)="dialogRef.close()">
@@ -7,7 +7,7 @@
     </button>        
 </app-spacer-container>
 
-<div>
+<div cdkFocusInitial>
     <app-list-container [pending]="fetchPending" [empty]="!alarms.length" 
     title="NO ALARMS" [pagination]="pagination" (changedPage)="changePage($event)">
         <app-admin-alarm-details
