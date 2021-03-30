@@ -69,7 +69,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "admin-frontend:build"
+            "browserTarget": "admin-frontend:build",
+            "sslCert": "ssl/certificate.crt",
+            "sslKey": "ssl/certificate.key",
+            "ssl": true
           },
           "configurations": {
             "production": {

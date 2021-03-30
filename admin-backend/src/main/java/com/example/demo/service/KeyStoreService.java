@@ -63,4 +63,9 @@ public class KeyStoreService {
 				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
+	public PrivateKey readPrivateKey(String alias){
+		return keyStoreReader.readPrivateKey(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword(), alias, pkiProperties.getKeystorePassword());
+	}
+
 }

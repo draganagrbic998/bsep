@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Authority implements GrantedAuthority {
 
 	public enum Authorities {
-		ADMIN, DOCTOR;
+		SUPER_ADMIN, ADMIN, DOCTOR
 	}
 
 	@Id
