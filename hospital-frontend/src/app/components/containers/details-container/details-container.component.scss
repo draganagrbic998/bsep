@@ -1,0 +1,12 @@
+@import "../../../../styles/theme";
+
+div{
+    border: 1px solid $gray;
+    border-radius: 5px;
+    margin: 10px;
+    text-align: left;
+}
+
+.no-padding .mat-card{
+    padding: 0;
+}

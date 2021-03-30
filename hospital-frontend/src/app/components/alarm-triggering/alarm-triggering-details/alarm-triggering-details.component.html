@@ -1,24 +1,20 @@
-<div class="root mat-elevation-z24">
-    <mat-card>
-        <mat-card-content>
-            <div class="details">
-                <span></span>
-                <app-bold-text>
-                    {{alarmTriggering.date | date: "dd/mm/yyyy HH:mm:ss"}}
-                </app-bold-text>
-            </div>
-            <div class="text">
-                <div *ngIf="alarmTriggering.patient">
-                    <app-bold-text>Patient: </app-bold-text>{{alarmTriggering.patient}}
-                </div>
-                <div *ngIf="alarmTriggering.insuredNumber">
-                    <app-bold-text>Insured number: </app-bold-text>{{alarmTriggering.insuredNumber}}
-                </div>
-                <br>
-                <div class="main">
-                    <app-bold-text>Message: </app-bold-text>{{alarmTriggering.message}}
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+<app-details-container [padding]="false">
+    <div class="details">
+        <span></span>
+        <app-bold-text>
+            {{alarmTriggering.date | date: "dd/mm/yyyy HH:mm:ss"}}
+        </app-bold-text>
+    </div>
+    <div class="text">
+        <div *ngIf="alarmTriggering.patient">
+            <app-bold-text>Patient: </app-bold-text>{{alarmTriggering.patient}}
+        </div>
+        <div *ngIf="alarmTriggering.insuredNumber">
+            <app-bold-text>Insured number: </app-bold-text>{{alarmTriggering.insuredNumber}}
+        </div>
+        <br>
+        <div class="main">
+            <app-bold-text>Message: </app-bold-text>{{alarmTriggering.message}}
+        </div>
+    </div>
+</app-details-container>

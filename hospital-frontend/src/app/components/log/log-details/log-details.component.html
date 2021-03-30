@@ -1,37 +1,33 @@
-<div class="root mat-elevation-z24">
-    <mat-card>
-        <mat-card-content>
-            <div class="details">
-                <span></span>
-                <app-bold-text>
-                    {{log.date | date: "dd/mm/yyyy HH:mm:ss"}}
-                </app-bold-text>
+<app-details-container [padding]="false">
+    <div class="details">
+        <span></span>
+        <app-bold-text>
+            {{log.date | date: "dd/mm/yyyy HH:mm:ss"}}
+        </app-bold-text>
+    </div>
+    <div class="text">
+        <div>
+            <app-bold-text>Status: </app-bold-text><app-bold-text
+            [class.info]="isStatus('info')"
+            [class.warning]="isStatus('warning')"
+            [class.error]="isStatus('error')"
+            [class.fatal]="isStatus('fatal')"
+            >{{log.status | uppercase}}</app-bold-text>
+        </div>
+        <div>
+            <app-bold-text>User: </app-bold-text>{{log.userName}}
+        </div>
+        <div>
+            <app-bold-text>Computer: </app-bold-text>{{log.computerName}}
+        </div>
+        <div>
+            <app-bold-text>Service: </app-bold-text>{{log.serviceName}}
+        </div>
+        <br>
+        <div class="main">
+            <div>
+                <app-bold-text>Description: </app-bold-text>{{log.description}}
             </div>
-            <div class="text">
-                <div>
-                    <app-bold-text>Status: </app-bold-text><app-bold-text
-                    [class.info]="isStatus('info')"
-                    [class.warning]="isStatus('warning')"
-                    [class.error]="isStatus('error')"
-                    [class.fatal]="isStatus('fatal')"
-                    >{{log.status | uppercase}}</app-bold-text>
-                </div>
-                <div>
-                    <app-bold-text>User: </app-bold-text>{{log.userName}}
-                </div>
-                <div>
-                    <app-bold-text>Computer: </app-bold-text>{{log.computerName}}
-                </div>
-                <div>
-                    <app-bold-text>Service: </app-bold-text>{{log.serviceName}}
-                </div>
-                <br>
-                <div class="main">
-                    <div>
-                        <app-bold-text>Description: </app-bold-text>{{log.description}}
-                    </div>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+        </div>
+    </div>
+</app-details-container>

@@ -1,40 +1,36 @@
-<div class="root mat-elevation-z24">
-    <mat-card>
-        <mat-card-content>
-            <app-spacer-container>
-                <h5>Alarm #{{index}}</h5>
-                <button 
-                matTooltip="Delete"
-                mat-icon-button 
-                color="warn"
-                (click)="delete()">
-                    <mat-icon>delete</mat-icon>
-                </button>  
-            </app-spacer-container>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.minPulse)">Min pulse: </app-bold-text>{{alarm.minPulse}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.maxPulse)">Max pulse: </app-bold-text>{{alarm.maxPulse}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.minPressure)">Min pressure: </app-bold-text>{{alarm.minPressure}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.maxPressure)">Max pressure: </app-bold-text>{{alarm.maxPressure}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.minTemperature)">Min temperature: </app-bold-text>{{alarm.minTemperature}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.maxTemperature)">Max temperature: </app-bold-text>{{alarm.maxTemperature}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.minOxygenLevel)">Min oxygen level: </app-bold-text>{{alarm.minOxygenLevel}}
-            </div>
-            <div>
-                <app-bold-text *ngIf="notEmpty(alarm.maxOxygenLevel)">Max oxygen level: </app-bold-text>{{alarm.maxOxygenLevel}}
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+<app-details-container>
+    <app-spacer-container>
+        <h5>Alarm #{{index}}</h5>
+        <button 
+        matTooltip="Delete"
+        mat-icon-button 
+        color="warn"
+        (click)="delete()">
+            <mat-icon>delete</mat-icon>
+        </button>  
+    </app-spacer-container>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.minPulse)">Min pulse: </app-bold-text>{{alarm.minPulse}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.maxPulse)">Max pulse: </app-bold-text>{{alarm.maxPulse}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.minPressure)">Min pressure: </app-bold-text>{{alarm.minPressure}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.maxPressure)">Max pressure: </app-bold-text>{{alarm.maxPressure}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.minTemperature)">Min temperature: </app-bold-text>{{alarm.minTemperature}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.maxTemperature)">Max temperature: </app-bold-text>{{alarm.maxTemperature}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.minOxygenLevel)">Min oxygen level: </app-bold-text>{{alarm.minOxygenLevel}}
+    </div>
+    <div>
+        <app-bold-text *ngIf="notEmpty(alarm.maxOxygenLevel)">Max oxygen level: </app-bold-text>{{alarm.maxOxygenLevel}}
+    </div>
+</app-details-container>

@@ -1,25 +1,21 @@
-<div class="root mat-elevation-z24">
-    <mat-card>
-        <mat-card-content>
-            <app-spacer-container>
-                <h5>Alarm #{{index}}</h5>
-                <button 
-                matTooltip="Delete"
-                mat-icon-button 
-                color="warn"
-                (click)="delete()">
-                    <mat-icon>delete</mat-icon>
-                </button>  
-            </app-spacer-container>
-            <div>
-                <app-bold-text>Tracking field: </app-bold-text>{{alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'}}
-            </div>
-            <div>
-                <app-bold-text>Search parameter: </app-bold-text>{{alarm.param}}
-            </div>
-            <div>
-                <app-bold-text>Minimum count of events: </app-bold-text>{{alarm.counts}}
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+<app-details-container>
+    <app-spacer-container>
+        <h5>Alarm #{{index}}</h5>
+        <button 
+        matTooltip="Delete"
+        mat-icon-button 
+        color="warn"
+        (click)="delete()">
+            <mat-icon>delete</mat-icon>
+        </button>  
+    </app-spacer-container>
+    <div>
+        <app-bold-text>Tracking field: </app-bold-text>{{alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'}}
+    </div>
+    <div>
+        <app-bold-text>Search parameter: </app-bold-text>{{alarm.param}}
+    </div>
+    <div>
+        <app-bold-text>Minimum count of events: </app-bold-text>{{alarm.counts}}
+    </div>
+</app-details-container>
