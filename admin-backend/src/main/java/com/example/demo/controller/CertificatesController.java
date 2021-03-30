@@ -8,6 +8,7 @@ import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -58,6 +61,14 @@ public class CertificatesController {
 	@GetMapping(value = "/requests")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable).map(certificateRequest -> this.requestMapper.map(certificateRequest)));
+	}
+
+	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<InputStreamResource> downloadCrt(@PathVariable String alias) throws IOException {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(certificateService.getCrt(alias).getBytes());
+		int length = inputStream.available();
+		InputStreamResource resource = new InputStreamResource(inputStream);
+		return ResponseEntity.ok().contentLength(length).body(resource);
 	}
 
 	@DeleteMapping(value = "/{id}")

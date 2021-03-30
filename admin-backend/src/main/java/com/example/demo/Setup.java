@@ -50,7 +50,8 @@ public class Setup implements ApplicationRunner {
 	public void run(ApplicationArguments args) {
 		this.keyStoreService.loadKeyStore();
 		Certificate root = this.keyStoreService.readCertificate("root");
-		if (root == null) {
+		CertificateInfo certificateInfo = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase("root");
+		if (root == null || certificateInfo == null) {
 			createRootCA();
 			this.keyStoreService.saveKeyStore();
 		}

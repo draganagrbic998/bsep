@@ -29,6 +29,9 @@ export class TableViewComponent {
   revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
   @Output()
+  downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+
+  @Output()
   openDetails: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
   @Output()
@@ -50,6 +53,7 @@ export class TableViewComponent {
   getMenuItems(certificate: CertificateInfo): MenuItem[] {
     const items = [
       {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(certificate)},
+      {icon: 'pi pi-download', label: 'Download', command: () => this.downloadCrt.emit(certificate)},
       {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(certificate)}
     ];
     if (!certificate.revoked && certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias) {

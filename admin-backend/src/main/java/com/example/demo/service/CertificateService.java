@@ -19,11 +19,16 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+import org.bouncycastle.util.io.pem.PemObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -240,4 +245,52 @@ public class CertificateService {
 		return this.certificateRequestRepository.findAll(pageable);
 	}
 
+	public ByteArrayOutputStream getCrtStream(String alias) throws IOException {
+		return this.getObjectStream(getCrt(alias).getBytes());
+	}
+
+	public ByteArrayOutputStream getKeyStream(String alias) throws IOException {
+		return this.getObjectStream(getKey(alias).getBytes());
+	}
+
+	public ByteArrayOutputStream getObjectStream(byte[] bytes) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		try {
+			outputStream.write(bytes);
+			outputStream.flush();
+			outputStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return outputStream;
+	}
+
+	public String getCrt(String alias) throws IOException {
+		Certificate[] chain = keyStoreService.readCertificateChain(alias);
+
+		StringBuilder chainBuilder = new StringBuilder();
+		for (Certificate c : chain) {
+			String pemCertificate = this.writePem((X509Certificate) c);
+			chainBuilder.append(pemCertificate);
+		}
+		return chainBuilder.toString();
+	}
+
+	public String getKey(String alias) throws IOException {
+		PrivateKey privateKey = keyStoreService.readPrivateKey(alias);
+		PemObject pemFile = new PemObject("PRIVATE KEY", privateKey.getEncoded());
+		return this.writePem(pemFile);
+	}
+
+
+	private String writePem(Object obj) throws IOException {
+		StringWriter writer = new StringWriter();
+		JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
+		pemWriter.writeObject(obj);
+		pemWriter.flush();
+		pemWriter.close();
+		return writer.toString();
+	}
 }
