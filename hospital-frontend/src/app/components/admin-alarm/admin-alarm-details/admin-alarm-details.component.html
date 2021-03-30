@@ -9,13 +9,8 @@
             <mat-icon>delete</mat-icon>
         </button>  
     </app-spacer-container>
-    <div>
-        <app-bold-text>Tracking field: </app-bold-text>{{alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'}}
-    </div>
-    <div>
-        <app-bold-text>Search parameter: </app-bold-text>{{alarm.param}}
-    </div>
-    <div>
-        <app-bold-text>Minimum count of events: </app-bold-text>{{alarm.counts}}
-    </div>
+    <app-details-list [details]="[
+        {key: 'Tracking field', value: alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'},
+        {key: 'Search parameter', value: alarm.param}, {key: 'Minimum count of events', value: alarm.counts}
+    ]"></app-details-list>
 </app-details-container>

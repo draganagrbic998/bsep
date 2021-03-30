@@ -5,16 +5,10 @@
             {{alarmTriggering.date | date: "dd/mm/yyyy HH:mm:ss"}}
         </app-bold-text>
     </div>
-    <div class="text">
-        <div *ngIf="alarmTriggering.patient">
-            <app-bold-text>Patient: </app-bold-text>{{alarmTriggering.patient}}
-        </div>
-        <div *ngIf="alarmTriggering.insuredNumber">
-            <app-bold-text>Insured number: </app-bold-text>{{alarmTriggering.insuredNumber}}
-        </div>
-        <br>
-        <div class="main">
-            <app-bold-text>Message: </app-bold-text>{{alarmTriggering.message}}
-        </div>
-    </div>
+    <app-details-list [padding]="true"
+    [details]="[
+        {key: 'Patient', value: alarmTriggering.patient},
+        {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
+    [mainDetails]="[{key: 'Message', value: alarmTriggering.message}]"
+    ></app-details-list>
 </app-details-container>

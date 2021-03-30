@@ -5,27 +5,14 @@
             {{message.date | date: "dd/mm/yyyy HH:mm:ss"}}
         </app-bold-text>
     </div>
-    <div class="text">
-        <div>
-            <app-bold-text>Patient: </app-bold-text>{{message.patient}}
-        </div>
-        <div>
-            <app-bold-text>Insured number: </app-bold-text>{{message.insuredNumber}}
-        </div>
-        <br>
-        <div class="main">
-            <div>
-                <app-bold-text>Pulse: </app-bold-text>{{message.pulse | number: '.2'}}
-            </div>
-            <div>
-                <app-bold-text>Pressure: </app-bold-text>{{message.pressure| number: '.2'}}
-            </div>
-            <div>
-                <app-bold-text>Temperature: </app-bold-text>{{message.temperature| number: '.2'}}
-            </div>
-            <div>
-                <app-bold-text>Oxygen level: </app-bold-text>{{message.oxygenLevel| number: '.2'}}
-            </div>    
-        </div>
-    </div>
+    <app-details-list [padding]="true"
+    [details]="[
+        {key: 'Patient', value: message.patient},
+        {key: 'Insured number', value: message.insuredNumber}]"
+    [mainDetails]="[
+        {key: 'Pulse', value: message.pulse},
+        {key: 'Pressure', value: message.pressure},
+        {key: 'Temperature', value: message.temperature},
+        {key: 'Oxygen level', value: message.oxygenLevel}]"
+    ></app-details-list>
 </app-details-container>
