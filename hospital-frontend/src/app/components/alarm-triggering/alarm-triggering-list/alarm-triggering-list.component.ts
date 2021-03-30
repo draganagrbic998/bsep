@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlarmTriggering } from 'src/app/models/alarm-triggering';
 import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
-import { AlarmTriggeringService } from 'src/app/services/alarm-triggering/alarm-triggering.service';
+import { AlarmTriggeringService } from 'src/app/services/alarm-triggering.service';
 
 @Component({
   selector: 'app-alarm-triggering-list',

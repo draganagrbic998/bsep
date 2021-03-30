@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/constants/main';
+import { PAGE_SIZE } from 'src/app/utils/constants';
 import { AlarmTriggering } from 'src/app/models/alarm-triggering';
 import { Page } from 'src/app/models/page';
 

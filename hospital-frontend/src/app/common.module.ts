@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { AuthInterceptor } from './utils/auth.interceptor';
 
 
 @NgModule({

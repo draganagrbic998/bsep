@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { Pagination } from 'src/app/models/pagination';
 import { DoctorAlarmDialogComponent } from '../doctor-alarm-dialog/doctor-alarm-dialog.component';
-import { AlarmService } from 'src/app/services/alarm/alarm.service';
+import { AlarmService } from 'src/app/services/alarm.service';
 import { Page } from 'src/app/models/page';
 
 @Component({

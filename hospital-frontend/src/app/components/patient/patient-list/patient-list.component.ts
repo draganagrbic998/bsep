@@ -3,12 +3,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
 import { Patient } from 'src/app/models/patient';
-import { PatientService } from 'src/app/services/patient/patient.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { PatientService } from 'src/app/services/patient.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

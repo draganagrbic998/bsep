@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 import { AdminAlarmDialogComponent } from '../../admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
 import { AdminAlarmListComponent } from '../../admin-alarm/admin-alarm-list/admin-alarm-list.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Log } from 'src/app/models/log';
 import { Pagination } from 'src/app/models/pagination';
-import { LogService } from 'src/app/services/log/log.service';
+import { LogService } from 'src/app/services/log.service';
 import { LogSearch } from 'src/app/models/log-search';
 import { Page } from 'src/app/models/page';
 

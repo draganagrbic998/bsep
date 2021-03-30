@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
-import { AlarmService } from 'src/app/services/alarm/alarm.service';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
+import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
   selector: 'app-admin-alarm-details',

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { PAGE_SIZE } from 'src/app/constants/main';
+import { PAGE_SIZE } from 'src/app/utils/constants';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { Page } from 'src/app/models/page';

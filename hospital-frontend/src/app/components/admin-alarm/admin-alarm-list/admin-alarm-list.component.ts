@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { Pagination } from 'src/app/models/pagination';
-import { AlarmService } from 'src/app/services/alarm/alarm.service';
+import { AlarmService } from 'src/app/services/alarm.service';
 import { Page } from 'src/app/models/page';
 
 @Component({

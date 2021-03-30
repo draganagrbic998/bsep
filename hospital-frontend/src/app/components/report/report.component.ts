@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Report } from 'src/app/models/report';
-import { ReportService } from 'src/app/services/report/report.service';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-report',

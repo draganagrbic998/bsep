@@ -4,7 +4,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { Patient } from 'src/app/models/patient';
 import { catchError, map } from 'rxjs/operators';
 import { Page } from 'src/app/models/page';
-import { PAGE_SIZE } from 'src/app/constants/main';
+import { PAGE_SIZE } from 'src/app/utils/constants';
 
 @Injectable({
   providedIn: 'root'

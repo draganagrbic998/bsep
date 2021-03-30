@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/constants/dialog';
+import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 import { Patient } from 'src/app/models/patient';
-import { PatientService } from 'src/app/services/patient/patient.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { PatientService } from 'src/app/services/patient.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-patient-form',

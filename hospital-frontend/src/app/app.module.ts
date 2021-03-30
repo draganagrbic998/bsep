@@ -10,7 +10,7 @@ import { SpinnerButtonComponent } from './components/loaders/spinner-button/spin
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { BoldTextComponent } from './components/containers/bold-text/bold-text.component';
-import { BlodTypePipe } from './pipes/blod-type.pipe';
+import { BlodTypePipe } from './utils/blod-type.pipe';
 import { EmptyContainerComponent } from './components/containers/empty-container/empty-container.component';
 import { PaginatorComponent } from './components/controls/paginator/paginator.component';
 import { DoctorToolbarComponent } from './components/toolbar/doctor-toolbar/doctor-toolbar.component';
@@ -23,7 +23,7 @@ import { MessageSearchComponent } from './components/message/message-search/mess
 import { DoctorAlarmDialogComponent } from './components/doctor-alarm/doctor-alarm-dialog/doctor-alarm-dialog.component';
 import { AlarmTriggeringDetailsComponent } from './components/alarm-triggering/alarm-triggering-details/alarm-triggering-details.component';
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
-import { OnlyNumbersDirective } from './directives/only-numbers.directive';
+import { OnlyNumbersDirective } from './utils/only-numbers.directive';
 import { CommonModule } from './common.module';
 import { MaterialModule } from './material.module';
 import { LogDetailsComponent } from './components/log/log-details/log-details.component';

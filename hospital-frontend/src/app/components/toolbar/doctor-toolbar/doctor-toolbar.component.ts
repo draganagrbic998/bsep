@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PatientService } from 'src/app/services/patient/patient.service';
-import { StorageService } from 'src/app/services/storage/storage.service';
+import { PatientService } from 'src/app/services/patient.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

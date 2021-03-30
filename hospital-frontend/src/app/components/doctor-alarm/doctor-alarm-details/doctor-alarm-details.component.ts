@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
-import { DIALOG_OPTIONS } from 'src/app/constants/dialog';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
-import { AlarmService } from 'src/app/services/alarm/alarm.service';
+import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
   selector: 'app-doctor-alarm-details',

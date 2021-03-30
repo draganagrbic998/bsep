@@ -3,7 +3,7 @@ import { Message } from 'src/app/models/message';
 import { MessageSearch } from 'src/app/models/message-search';
 import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
-import { MessageService } from 'src/app/services/message/message.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-message-list',
