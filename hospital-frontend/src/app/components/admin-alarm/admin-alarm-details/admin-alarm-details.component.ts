@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DeleteConfirmationComponent } from 'src/app/components/controls/delete-confirmation/delete-confirmation.component';
+import { DeleteConfirmationComponent } from 'src/app/components/common/delete-confirmation/delete-confirmation.component';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { AlarmService } from 'src/app/services/alarm.service';

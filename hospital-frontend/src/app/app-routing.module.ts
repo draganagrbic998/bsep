@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
-import { CertificateFormComponent } from './components/certificate-form/certificate-form.component';
+import { CertificateFormComponent } from './components/common/certificate-form/certificate-form.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
-import { ReportComponent } from './components/report/report.component';
-import { LoginFormComponent } from './components/user/login-form/login-form.component';
+import { ReportComponent } from './components/common/report/report.component';
+import { LoginFormComponent } from './components/common/login-form/login-form.component';
 import { ADMIN, DOCTOR } from './utils/constants';
 import { AuthGuard } from './utils/auth.guard';
 
