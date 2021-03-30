@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
-import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
@@ -37,15 +36,13 @@ public class CertificateService {
 	@Autowired
 	private CertificateGenerator certificateGenerator;
 
-	public CertificateInfo createCertificate(CreateCertificateDTO createCertificateDto)
-			throws CertificateNotFoundException, InvalidIssuerException, CertificateAuthorityException,
-			AliasExistsException {
-		keyStoreService.loadKeyStore();
+	public CertificateInfo createCertificate(CreateCertificateDTO createCertificateDto) {
+		this.keyStoreService.loadKeyStore();
 
 		String issuerAlias = createCertificateDto.getIssuerAlias();
 
-		Certificate[] issuerCertificateChain = keyStoreService.readCertificateChain(issuerAlias);
-		IssuerData issuerData = keyStoreService.readIssuerFromStore(issuerAlias);
+		Certificate[] issuerCertificateChain = this.keyStoreService.readCertificateChain(issuerAlias);
+		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
 
 		X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
 		CertificateInfo issuerInfo = certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
@@ -101,9 +98,9 @@ public class CertificateService {
 
 		Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
 
-		keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
+		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
 
-		keyStoreService.saveKeyStore();
+		this.keyStoreService.saveKeyStore();
 
 		return certInfo;
 
@@ -131,7 +128,7 @@ public class CertificateService {
 		for (int i = 0; i < chain.length; i++) {
 			x509cert = (X509Certificate) chain[i];
 
-			CertificateInfo certificateInfo = certificateInfoRepository.findById(x509cert.getSerialNumber().longValue())
+			CertificateInfo certificateInfo = this.certificateInfoRepository.findById(x509cert.getSerialNumber().longValue())
 					.orElse(null);
 
 			if (certificateInfo.isRevoked()) {
@@ -208,13 +205,13 @@ public class CertificateService {
 		certInfo.setRevocationReason("");
 		certInfo.setCA(isCA);
 		certInfo.setTemplate(template);
-		return certificateInfoRepository.save(certInfo);
+		return this.certificateInfoRepository.save(certInfo);
 	}
 
 	public void revoke(Long id) {
-		CertificateInfo ci = certificateInfoRepository.findById(id).get();
+		CertificateInfo ci = this.certificateInfoRepository.findById(id).get();
 		ci.setRevoked(true);
-		certificateInfoRepository.save(ci);
+		this.certificateInfoRepository.save(ci);
 	}
 
 }

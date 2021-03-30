@@ -31,13 +31,8 @@ public class CertificatesController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> create(@RequestBody CreateCertificateDTO createCertificateDto) {
-		try {
-			this.certificateService.createCertificate(createCertificateDto);
-			return ResponseEntity.created(URI.create("wontneedyou")).build();
-		}
-		catch(Exception e) {
-			return null;
-		}
+		this.certificateService.createCertificate(createCertificateDto);
+		return ResponseEntity.created(URI.create("wontneedyou")).build();
 	}
 
 	@GetMapping

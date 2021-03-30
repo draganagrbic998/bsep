@@ -94,7 +94,7 @@ public class Setup implements ApplicationRunner {
 		subjectData.setSerialNumber(certificateInfo.getId().toString());
 		Certificate rootCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData,
 				Template.SUB_CA, keyPair, true, null);
-		keyStoreService.savePrivateKey("root", new Certificate[] { rootCertificate }, keyPair.getPrivate());
+		this.keyStoreService.savePrivateKey("root", new Certificate[] { rootCertificate }, keyPair.getPrivate());
 	}
 
 	private CertificateInfo generateCertificateInfoEntity(SubjectData subjectData) {
