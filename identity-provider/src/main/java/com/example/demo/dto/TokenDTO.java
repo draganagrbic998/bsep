@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TokenDTO {
+	
 	@NotBlank(message = "Token can't be blank")
 	private String token;
+	
 }

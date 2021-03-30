@@ -18,7 +18,7 @@ public class MessageService {
 	private MessageRepository messageRepository;
 	
 	@Autowired
-	private MessageEventService resonerService;
+	private MessageEventService eventService;
 	
 	public Page<Message> findAll(Pageable pageable, SearchDTO searchDTO) {
 		return this.messageRepository.findAll(pageable, 
@@ -31,7 +31,7 @@ public class MessageService {
 	@Transactional(readOnly = false)
 	public Message save(Message message) {
 		message = this.messageRepository.save(message);
-		this.resonerService.checkAlarm(message);
+		this.eventService.checkAlarm(message);
 		return message;
 	}
 	
