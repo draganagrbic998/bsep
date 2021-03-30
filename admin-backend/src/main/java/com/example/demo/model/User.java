@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @SuppressWarnings("serial")
+@Data
+@NoArgsConstructor
 public class User implements UserDetails {
 
 	private List<String> authorities;
-
-	public User() {
-		super();
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

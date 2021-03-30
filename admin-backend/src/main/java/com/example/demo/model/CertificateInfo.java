@@ -8,8 +8,9 @@ import java.util.Date;
 import java.util.Set;
 
 @Data
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(name = "certificate_table")
 public class CertificateInfo {
 
     @Id

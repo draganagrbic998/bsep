@@ -211,7 +211,7 @@ public class CertificateService {
 		return certificateInfoRepository.save(certInfo);
 	}
 
-	public void revokeCertificate(Long id) {
+	public void revoke(Long id) {
 		CertificateInfo ci = certificateInfoRepository.findById(id).get();
 		ci.setRevoked(true);
 		certificateInfoRepository.save(ci);

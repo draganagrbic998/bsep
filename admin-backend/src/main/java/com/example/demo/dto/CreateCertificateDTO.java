@@ -1,12 +1,14 @@
 package com.example.demo.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
+@NoArgsConstructor
 public class CreateCertificateDTO {
 
     @NotBlank(message = "Issuer alias cannot be empty")

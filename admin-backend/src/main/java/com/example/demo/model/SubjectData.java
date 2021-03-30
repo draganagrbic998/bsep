@@ -12,9 +12,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubjectData {
+	
     private PublicKey publicKey;
     private X500Name x500name;
     private String serialNumber;
     private Date startDate;
     private Date endDate;
+    
 }

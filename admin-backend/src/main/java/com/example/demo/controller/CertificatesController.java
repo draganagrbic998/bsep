@@ -1,12 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.BooleanDTO;
 import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.dto.CreateCertificateDTO;
-import com.example.demo.exception.AliasExistsException;
-import com.example.demo.exception.CertificateAuthorityException;
-import com.example.demo.exception.CertificateNotFoundException;
-import com.example.demo.exception.InvalidIssuerException;
+import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping(path = "/api/certificates")
+@RequestMapping(value = "/api/certificates")
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")	
 public class CertificatesController {
 
@@ -30,27 +26,34 @@ public class CertificatesController {
 	@Autowired
 	private CertificateInfoService certificateInfoService;
 
+	@Autowired
+	private CertificateInfoMapper mapper;
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> createCertificate(@RequestBody CreateCertificateDTO createCertificateDto) throws CertificateNotFoundException,
-			CertificateAuthorityException, InvalidIssuerException, AliasExistsException {
-		this.certificateService.createCertificate(createCertificateDto);
-		return ResponseEntity.created(URI.create("wontneedyou")).build();
+	public ResponseEntity<Void> create(@RequestBody CreateCertificateDTO createCertificateDto) {
+		try {
+			this.certificateService.createCertificate(createCertificateDto);
+			return ResponseEntity.created(URI.create("wontneedyou")).build();
+		}
+		catch(Exception e) {
+			return null;
+		}
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<CertificateInfoDTO>> getCertificates(Pageable pageable) {
-		return ResponseEntity.ok(certificateInfoService.findAll(pageable));
-	}
-
-	@GetMapping(path = "/alias/{alias}")
-	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
-		return ResponseEntity.ok(certificateInfoService.findByAliasIgnoreCase(alias));
+	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
+		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificateInfo -> mapper.mapToDto(certificateInfo, 0)));
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<BooleanDTO> revokeCertificate(@PathVariable("id") Long id) {
-		this.certificateService.revokeCertificate(id);
-		return ResponseEntity.ok(new BooleanDTO(true));
+	public ResponseEntity<Void> revoke(@PathVariable Long id) {
+		this.certificateService.revoke(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping(value = "/alias/{alias}")
+	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
+		return ResponseEntity.ok(this.mapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
 	}
 
 }

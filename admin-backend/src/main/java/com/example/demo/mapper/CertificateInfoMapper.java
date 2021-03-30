@@ -22,7 +22,7 @@ public class CertificateInfoMapper {
         if (mappingLevel > 0) {
             certificateInfoDto.setIssued(certificateInfo.getIssued().stream()
                     .map(ci -> this.mapToDto(ci, mappingLevel - 1))
-                    .collect(Collectors.toSet()));
+                    .collect(Collectors.toList()));
         }
         certificateInfoDto.setNumIssued(certificateInfo.getIssued().size());
         certificateInfoDto.setAlias(certificateInfo.getAlias());
