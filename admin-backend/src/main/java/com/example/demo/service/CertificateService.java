@@ -1,14 +1,18 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
 import com.example.demo.exception.InvalidIssuerException;
+import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.model.CertificateInfo;
+import com.example.demo.model.CertificateRequest;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
 import com.example.demo.model.Template;
 import com.example.demo.repository.CertificateInfoRepository;
+import com.example.demo.repository.CertificateRequestRepository;
 import com.example.demo.utils.CertificateGenerator;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -16,6 +20,8 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.*;
@@ -33,6 +39,12 @@ public class CertificateService {
 	@Autowired
 	private CertificateInfoRepository certificateInfoRepository;
 
+	@Autowired
+	private CertificateRequestRepository certificateRequestRepository;
+
+	@Autowired
+	private CertificateRequestMapper certificateRequestMapper;
+	
 	@Autowired
 	private CertificateGenerator certificateGenerator;
 
@@ -216,6 +228,14 @@ public class CertificateService {
 		CertificateInfo ci = this.certificateInfoRepository.findById(id).get();
 		ci.setRevoked(true);
 		this.certificateInfoRepository.save(ci);
+	}
+
+	public void createCertificateRequest(CertificateRequestDTO certificateRequestDTO) {
+		this.certificateRequestRepository.save(this.certificateRequestMapper.map(certificateRequestDTO));
+	}
+
+	public Page<CertificateRequest> findAllRequests(Pageable pageable) {
+		return this.certificateRequestRepository.findAll(pageable);
 	}
 
 }
