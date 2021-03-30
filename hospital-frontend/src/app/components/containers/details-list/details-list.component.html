@@ -1,0 +1,11 @@
+<div [class.padding]="padding">
+    <div *ngFor="let detail of filteredDetails">
+        <span>{{detail.key}}: </span>{{detail.value}}
+    </div>
+    <br *ngIf="filteredMainDetails.length">
+    <div *ngIf="filteredMainDetails.length" class="main">
+        <div *ngFor="let detail of filteredMainDetails">
+            <span>{{detail.key}}: </span>{{detail.value}}
+        </div>    
+    </div>
+</div>
