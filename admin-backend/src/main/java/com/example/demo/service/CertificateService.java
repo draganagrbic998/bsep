@@ -33,11 +33,18 @@ import java.util.Date;
 @Service
 public class CertificateService {
 
-	@Autowired
-	private KeyStoreService keyStoreService;
+	private final KeyStoreService keyStoreService;
+	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateGenerator certificateGenerator;
 
 	@Autowired
-	private CertificateInfoRepository certificateInfoRepository;
+	public CertificateService(KeyStoreService keyStoreService,
+							  CertificateInfoRepository certificateInfoRepository,
+							  CertificateGenerator certificateGenerator) {
+		this.keyStoreService = keyStoreService;
+		this.certificateInfoRepository = certificateInfoRepository;
+		this.certificateGenerator = certificateGenerator;
+	}
 
 	@Autowired
 	private CertificateRequestRepository certificateRequestRepository;
@@ -45,10 +52,7 @@ public class CertificateService {
 	@Autowired
 	private CertificateRequestMapper certificateRequestMapper;
 	
-	@Autowired
-	private CertificateGenerator certificateGenerator;
-
-	public CertificateInfo createCertificate(CreateCertificateDTO createCertificateDto) {
+	public void createCertificate(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
 
 		String issuerAlias = createCertificateDto.getIssuerAlias();
@@ -77,7 +81,7 @@ public class CertificateService {
 		KeyPair keyPair = generateKeyPair();
 
 		if (keyPair == null)
-			return null;
+			return;
 
 		X500Name subjectName = certificateNameFromData(createCertificateDto);
 
@@ -112,8 +116,6 @@ public class CertificateService {
 		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
 
 		this.keyStoreService.saveKeyStore();
-
-		return certInfo;
 
 	}
 

@@ -14,17 +14,20 @@ import org.springframework.web.client.RestTemplate;
 public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = "https://localhost:8083/auth";
-	
+
+	private final RestTemplate restTemplate;
+
 	@Autowired
-	private RestTemplate restTemplate;
+	public UserService(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
 	@Override
 	public User loadUserByUsername(String token) {
 		return this.restTemplate.postForEntity(AUTH_API, new TokenDTO(token), User.class).getBody();
 	}
-	
+
 	public UserDTO login(LoginDTO loginDTO) {
 		return this.restTemplate.postForEntity(AUTH_API + "/login", loginDTO, UserDTO.class).getBody();
 	}
-
 }

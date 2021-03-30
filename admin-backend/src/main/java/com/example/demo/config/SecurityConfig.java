@@ -21,8 +21,12 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final UserService userService;
+
 	@Autowired
-	private UserService userService;
+	public SecurityConfig(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Bean
 	public CorsFilter corsFilter() {

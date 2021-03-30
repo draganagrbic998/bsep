@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @SuppressWarnings("serial")
 public class AuthToken extends AbstractAuthenticationToken{
 
-	private UserDetails user;
-	private String token;
+	private final UserDetails user;
+	private final String token;
 	
 	public AuthToken(UserDetails user, String token) {
 		super(user.getAuthorities());

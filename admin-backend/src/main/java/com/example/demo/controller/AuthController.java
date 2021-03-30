@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {
 
+	private final UserService userService;
+
 	@Autowired
-	private UserService userService;
-		
+	public AuthController(UserService userService) {
+		this.userService = userService;
+	}
+	
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
-		return new ResponseEntity<>(this.userService.login(loginDTO), HttpStatus.OK);
+		return ResponseEntity.ok(this.userService.login(loginDTO));
 	}
 }

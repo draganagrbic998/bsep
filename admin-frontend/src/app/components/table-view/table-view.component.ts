@@ -10,7 +10,7 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss']
 })
-export class TableViewComponent implements OnInit {
+export class TableViewComponent {
 
   rows = 10;
   totalRecords = 0;
@@ -34,15 +34,7 @@ export class TableViewComponent implements OnInit {
   @Output()
   switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
-  constructor(private certificateService: CertificateService,
-              private activatedRoute: ActivatedRoute) { }
-
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(val => {
-      console.log('data');
-      console.log(val);
-    });
-  }
+  constructor(private certificateService: CertificateService) { }
 
   getCertificates(event: LazyLoadEvent): void {
     this.loading = true;

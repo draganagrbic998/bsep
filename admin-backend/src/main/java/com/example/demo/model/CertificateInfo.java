@@ -53,7 +53,7 @@ public class CertificateInfo {
     private Template template;
 
     public void addIssued(CertificateInfo certificateInfo) {
-        if (certificateInfo.issuerAlias != this.alias) {
+        if (!certificateInfo.issuerAlias.equalsIgnoreCase(this.alias)) {
             certificateInfo.issuerAlias = this.alias;
         }
         this.issued.add(certificateInfo);

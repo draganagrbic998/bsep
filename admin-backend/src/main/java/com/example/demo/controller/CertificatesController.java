@@ -23,18 +23,21 @@ import java.net.URI;
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")	
 public class CertificatesController {
 
+	private final CertificateService certificateService;
+	private final CertificateInfoService certificateInfoService;
+	private final CertificateInfoMapper infoMapper;
+	private final CertificateRequestMapper requestMapper;
 	@Autowired
-	private CertificateService certificateService;
+	public CertificatesController(CertificateService certificateService,
+								  CertificateInfoService certificateInfoService,
+								  CertificateInfoMapper certificateInfoMapper,
+								  CertificateRequestMapper requestMapper) {
+		this.certificateService = certificateService;
+		this.certificateInfoService = certificateInfoService;
+		this.infoMapper = certificateInfoMapper;
+		this.requestMapper = requestMapper;
+	}
 
-	@Autowired
-	private CertificateInfoService certificateInfoService;
-
-	@Autowired
-	private CertificateInfoMapper infoMapper;
-
-	@Autowired
-	private CertificateRequestMapper requestMapper;
-	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> create(@RequestBody CreateCertificateDTO createCertificateDto) {
 		this.certificateService.createCertificate(createCertificateDto);
@@ -46,7 +49,7 @@ public class CertificatesController {
 		this.certificateService.createCertificateRequest(certificateRequestDTO);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificateInfo -> this.infoMapper.mapToDto(certificateInfo, 0)));
@@ -56,7 +59,7 @@ public class CertificatesController {
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable).map(certificateRequest -> this.requestMapper.map(certificateRequest)));
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> revoke(@PathVariable long id) {
 		this.certificateService.revoke(id);

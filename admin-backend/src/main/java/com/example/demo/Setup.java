@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.config.PkiProperties;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
@@ -13,12 +14,12 @@ import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.security.KeyPair;
 import java.security.cert.Certificate;
 import java.util.Date;
@@ -26,37 +27,28 @@ import java.util.Date;
 @Component
 public class Setup implements ApplicationRunner {
 
-	@Autowired
-	private KeyStoreService keyStoreService;
+	private final KeyStoreService keyStoreService;
+	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateService certificateService;
+	private final CertificateGenerator certificateGenerator;
+	private final PkiProperties pkiProperties;
 
 	@Autowired
-	private CertificateInfoRepository certificateInfoRepository;
-
-	@Autowired
-	private CertificateService certificateService;
-
-	@Autowired
-	private CertificateGenerator certificateGenerator;
-
-	@Value("${PKI.keystore_path}")
-	public String keystore_path;
-
-	@Value("${PKI.keystore_name}")
-	public String keystore_name;
+	public Setup(KeyStoreService keyStoreService,
+				 CertificateInfoRepository certificateInfoRepository,
+				 CertificateService certificateService,
+				 CertificateGenerator certificateGenerator,
+				 PkiProperties pkiProperties) {
+		this.keyStoreService = keyStoreService;
+		this.certificateInfoRepository = certificateInfoRepository;
+		this.certificateService = certificateService;
+		this.certificateGenerator = certificateGenerator;
+		this.pkiProperties = pkiProperties;
+	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		File keystore = new File(this.keystore_path + this.keystore_name);
-		CertificateInfo ci = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase("root");
-		if (ci == null) {
-			keystore.delete();
-		}
-		if (!keystore.exists()) {
-			this.keyStoreService.createKeyStore();
-		} 
-		else {
-			this.keyStoreService.loadKeyStore();
-		}
+	public void run(ApplicationArguments args) {
+		this.keyStoreService.loadKeyStore();
 		Certificate root = this.keyStoreService.readCertificate("root");
 		if (root == null) {
 			createRootCA();

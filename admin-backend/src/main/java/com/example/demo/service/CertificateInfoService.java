@@ -13,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CertificateInfoService {
 
+	private final CertificateInfoRepository certificateInfoRepository;
+
 	@Autowired
-	private CertificateInfoRepository certificateInfoRepository;
+	public CertificateInfoService(CertificateInfoRepository certificateInfoRepository) {
+		this.certificateInfoRepository = certificateInfoRepository;
+	}
 
 	public Page<CertificateInfo> findAll(Pageable pageable) {
 		return this.certificateInfoRepository.findAll(pageable);

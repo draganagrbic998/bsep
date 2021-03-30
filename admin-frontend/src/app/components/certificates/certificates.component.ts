@@ -56,7 +56,6 @@ export class CertificatesComponent implements OnInit {
 
   getCA(): void {
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
-      console.log(val);
       this.certificateService.ca.next(val);
     });
   }

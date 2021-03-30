@@ -18,11 +18,9 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
   width = 0;
   height = 0;
-  margin = {top: 20, right: 90, bottom: 30, left: 90};
   tree: d3.TreeLayout<any>;
   g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
   root: CollapsibleNode;
-  zoomBehavior: d3.ZoomBehavior<any, any>;
   loading = false;
   noChildren = false;
   context: CertificateInfo | null = null;
@@ -73,15 +71,19 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     const svg = d3.select('.canvas')
       .append('svg').on('contextmenu', ev => this.svgContextMenu(ev));
 
-    this.g = svg.attr('width', this.width)
+    const outerMain = svg.attr('width', this.width)
       .attr('height', this.height)
       .append('g')
+      .attr('id', 'outerMain');
+
+    this.g = outerMain.append('g')
       .attr('id', 'main')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+      .attr('transform', `translate(${Math.floor(this.height / 10)}, ${Math.floor(this.width / 10)})`);
+
 
     const zoom = d3.zoom().scaleExtent([.3, 5])
       .on('zoom', event => {
-        svg.select('#main')
+        svg.select('#outerMain')
           .attr('transform', event.transform);
       });
 

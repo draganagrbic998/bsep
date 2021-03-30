@@ -45,7 +45,7 @@ public class CertificateGenerator {
             JcaX509ExtensionUtils certificateExtensionUtils = new JcaX509ExtensionUtils();
             SubjectKeyIdentifier subjectKeyIdentifier = certificateExtensionUtils.createSubjectKeyIdentifier(keyPair.getPublic());
             certGen.addExtension(Extension.subjectKeyIdentifier, false, subjectKeyIdentifier);
-            AuthorityKeyIdentifier authorityKeyIdentifier = null;
+            AuthorityKeyIdentifier authorityKeyIdentifier;
             
             if (isSelfSigned) {
                 authorityKeyIdentifier = certificateExtensionUtils.createAuthorityKeyIdentifier(keyPair.getPublic());

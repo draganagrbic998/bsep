@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.config.PkiProperties;
 import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
@@ -15,49 +16,51 @@ import java.security.cert.Certificate;
 @Service
 public class KeyStoreService {
 
-	@Value("${PKI.keystore_path}")
-	public String keystore_path;
-
-	@Value("${PKI.keystore_name}")
-	public String keystore_name;
-
-	@Value("${PKI.keystore_password}")
-	public String keystore_password;
-
+	private final KeyStoreReader keyStoreReader;
+	private final KeyStoreWriter keyStoreWriter;
+	private final PkiProperties pkiProperties;
 	@Autowired
-	private KeyStoreReader keyStoreReader;
-
-	@Autowired
-	private KeyStoreWriter keyStoreWriter;
-
+	public KeyStoreService(KeyStoreReader keyStoreReader,
+						   KeyStoreWriter keyStoreWriter,
+						   PkiProperties pkiProperties) {
+		this.keyStoreReader = keyStoreReader;
+		this.keyStoreWriter = keyStoreWriter;
+		this.pkiProperties = pkiProperties;
+	}
 	public void createKeyStore() {
-		keyStoreWriter.createKeyStore(this.keystore_path, this.keystore_name, this.keystore_password.toCharArray());
+		keyStoreWriter.createKeyStore(pkiProperties.getKeystorePath(),
+				pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
 	public void loadKeyStore() {
-		keyStoreWriter.loadKeyStore(this.keystore_path + this.keystore_name, this.keystore_password.toCharArray());
+		keyStoreWriter.loadKeyStore(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
 	public void saveKeyStore() {
-		keyStoreWriter.saveKeyStore(this.keystore_path + this.keystore_name, this.keystore_password.toCharArray());
+		keyStoreWriter.saveKeyStore(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword().toCharArray());
 	}
 	
 	public void savePrivateKey(String alias, Certificate[] certificate, PrivateKey privateKey) {
-		keyStoreWriter.write(alias, privateKey, this.keystore_password.toCharArray(), certificate);
+		keyStoreWriter.write(alias, privateKey, pkiProperties.getKeystorePassword().toCharArray(), certificate);
 	}
 
 	public Certificate readCertificate(String alias) {
-		return keyStoreReader.readCertificate(this.keystore_path + this.keystore_name, this.keystore_password, alias);
+		return keyStoreReader.readCertificate(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword(), alias);
 	}
 
 	public Certificate[] readCertificateChain(String alias) {
-		return keyStoreReader.readCertificateChain(this.keystore_path + this.keystore_name, this.keystore_password,
-				alias);
+		return keyStoreReader.readCertificateChain(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				pkiProperties.getKeystorePassword(), alias);
 	}
 
 	public IssuerData readIssuerFromStore(String alias) throws CertificateNotFoundException {
-		return keyStoreReader.readIssuerFromStore(this.keystore_path + this.keystore_name, alias,
-				this.keystore_password.toCharArray(), this.keystore_password.toCharArray());
+		return keyStoreReader.readIssuerFromStore(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
+				alias, pkiProperties.getKeystorePassword().toCharArray(),
+				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
 }
