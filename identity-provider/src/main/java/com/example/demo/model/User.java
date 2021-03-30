@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.Data;
+
+@Data
 @SuppressWarnings("serial")
 @Entity
 @Table(name="user_table")
@@ -99,58 +102,6 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getActivationLink() {
-		return activationLink;
-	}
-
-	public void setActivationLink(String activationLink) {
-		this.activationLink = activationLink;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
 	}
 	
 }

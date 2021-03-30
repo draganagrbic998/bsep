@@ -7,14 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 
 import com.example.demo.model.User;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class UserDTO {
 
 	private String token;
 	private List<String> authorities;
-
-	public UserDTO() {
-		super();
-	}
 	
 	public UserDTO(User user, String token) {
 		super();
@@ -22,20 +23,4 @@ public class UserDTO {
 		this.authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public List<String> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(List<String> authorities) {
-		this.authorities = authorities;
-	}
-	
 }
