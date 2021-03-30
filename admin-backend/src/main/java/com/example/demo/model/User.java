@@ -10,12 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @Data
 @NoArgsConstructor
+@SuppressWarnings("serial")
 public class User implements UserDetails {
 
-	private List<String> authorities;
+	private List<Authority.Authorities> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,21 +34,30 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return false;
 	}
+	
+	public boolean isAdmin() {
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.ADMIN));
+	}
+	
+	public boolean isDoctor() {
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.DOCTOR));
+	}
+	
 }

@@ -1,6 +1,9 @@
 package com.example.demo.dto;
 
 import java.util.List;
+
+import com.example.demo.model.Authority;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 	
 	private String token;
-	private List<String> authorities;
+	private List<Authority.Authorities> authorities;
 	
 }
