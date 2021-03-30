@@ -9,15 +9,20 @@ import {TableViewComponent} from './components/table-view/table-view.component';
 import {TreeViewComponent} from './components/tree-view/tree-view.component';
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent, data: {roles: ['UNREGISTERED']}, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent},
   {path: '', component: MainViewComponent, children: [
-      {path: '', component: DashboardComponent, data: {roles: ['ROLE_ADMIN']}, canActivate: [AuthGuard]},
-      {path: 'certificates', component: CertificatesComponent, data: {roles: ['ROLE_ADMIN']}, canActivate: [AuthGuard], children: [
+      {path: '', component: DashboardComponent, data: {authorities: ['SUPER_ADMIN']}, canActivate: [AuthGuard]},
+      {path: 'certificates', component: CertificatesComponent, data: {authorities: ['SUPER_ADMIN']}, canActivate: [AuthGuard], children: [
           {path: '', component: TableViewComponent},
           {path: 'tree', component: TreeViewComponent}
         ]}
 
-    ]}
+    ]},
+    {
+      path: '**',
+      pathMatch: 'full',
+      redirectTo: 'login'
+    }
 ];
 
 @NgModule({

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import {Admin} from '../model/admin';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -14,32 +16,47 @@ export class AuthService {
   admin: BehaviorSubject<Admin | undefined>;
   token: BehaviorSubject<string | undefined>;
 
-  constructor(private httpClient: HttpClient,
-              private router: Router) {
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) {
     this.admin = new BehaviorSubject<Admin | undefined>(JSON.parse(localStorage.getItem('admin') as string));
-    this.token = new BehaviorSubject<string | undefined>(localStorage.getItem('token') as string);
   }
 
-  login(login: Login): Observable<any> {
-    return this.httpClient.post('/auth/login', login);
+  set(key: string, value: object): void{
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
-  loggedIn(token: string, admin: Admin): void {
+  remove(key: string): void{
+    localStorage.removeItem(key);
+  }
+
+  get(key: string): object{
+    return JSON.parse(localStorage.getItem(key));
+  }
+
+  login(login: Login): Observable<Admin> {
+    return this.httpClient.post<Admin>('https://localhost:8080/auth/login', login).pipe(
+      catchError(() => of(null))
+    );
+  }
+
+  loggedIn(admin: Admin): void {
     this.admin.next(admin);
-    this.token.next(token);
-    localStorage.setItem('admin', JSON.stringify(admin));
-    localStorage.setItem('token', token);
+    this.set('admin', admin);
   }
 
   logout(): void {
     this.admin.next(null);
-    this.token.next(null);
-    localStorage.removeItem('admin');
-    localStorage.removeItem('token');
+    this.remove('admin');
     this.router.navigateByUrl('/login');
   }
 
   isLoggedIn(): boolean {
     return !!this.admin.getValue();
+  }
+
+  getUser(): Admin{
+    return this.get('admin') as Admin;
   }
 }

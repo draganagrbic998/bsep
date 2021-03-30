@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,6 +22,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "/api/certificates")
+@PreAuthorize("hasAuthority('SUPER_ADMIN')")	
 public class CertificatesController {
 
 	@Autowired

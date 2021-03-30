@@ -10,7 +10,8 @@ import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
 import com.example.demo.model.Template;
 import com.example.demo.repository.CertificateInfoRepository;
-import com.example.demo.util.CertificateGenerator;
+import com.example.demo.utils.CertificateGenerator;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;

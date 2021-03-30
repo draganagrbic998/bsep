@@ -1,9 +1,15 @@
 package com.example.demo.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 @Data
 public class LoginDTO {
-    private String username;
+	
+	@NotBlank
+    private String email;
+	
+	@NotBlank
     private String password;
 }

@@ -5,7 +5,7 @@ import {MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {Login} from '../../core/model/login';
 import {log} from 'util';
-import {TokenResponse} from '../../core/model/token-response';
+import { Admin } from 'src/app/core/model/admin';
 
 @Component({
   selector: 'app-login',
@@ -37,20 +37,27 @@ export class LoginComponent implements OnInit {
     }
 
     const login = new Login();
-    login.username = this.loginForm.get('username').value;
+    login.email = this.loginForm.get('username').value;
     login.password = this.loginForm.get('password').value;
 
 
     this.loading = true;
+    // tslint:disable-next-line: deprecation
     this.authService.login(login).subscribe(
-      (val: TokenResponse) => {
-        this.authService.loggedIn(val.token, val.admin);
+      (user: Admin) => {
         this.loading = false;
-        this.router.navigate(['']);
-      },
-      () => {
-        this.loading = false;
-        this.messageService.add({severity: 'error', summary: 'Invalid credentials', detail: 'Please check your username and password.'});
+        if (user) {
+          if (user.authorities[0] === 'SUPER_ADMIN') {
+            this.authService.loggedIn(user);
+            this.router.navigate(['']);
+          }
+          else {
+            this.messageService.add({severity: 'error', summary: 'Invalid role', detail: 'Only superadmins permitted.'});
+          }
+        }
+        else {
+          this.messageService.add({severity: 'error', summary: 'Invalid credentials', detail: 'Please check your username and password.'});
+        }
       });
   }
 

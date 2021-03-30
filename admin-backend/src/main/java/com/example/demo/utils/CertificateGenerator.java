@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.utils;
 
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;

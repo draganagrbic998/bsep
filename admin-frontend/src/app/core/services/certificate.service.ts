@@ -16,19 +16,19 @@ export class CertificateService {
   constructor(private httpClient: HttpClient) { }
 
   getCertificates(page, size): Observable<any> {
-    return this.httpClient.get(`api/certificates?page=${page}&size=${size}`);
+    return this.httpClient.get(`https://localhost:8080/api/certificates?page=${page}&size=${size}`);
   }
 
   createCertificate(certificate: CertificateInfo): Observable<any> {
-    return this.httpClient.post('api/certificates', certificate);
+    return this.httpClient.post('https://localhost:8080/api/certificates', certificate);
   }
 
   getByAlias(alias: string): Observable<any> {
-    return this.httpClient.get(`/api/certificates/alias/${alias}`);
+    return this.httpClient.get(`https://localhost:8080/api/certificates/alias/${alias}`);
   }
 
   revokeCertificate(certificateId: number): Observable<boolean> {
-    return this.httpClient.delete(`/api/certificates/${certificateId}`).pipe(
+    return this.httpClient.delete(`https://localhost:8080/api/certificates/${certificateId}`).pipe(
       map((response: {value: boolean}) => response.value),
       catchError(() => of(false))
     );
