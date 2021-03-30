@@ -1,4 +1,4 @@
-.main{
+.root{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -14,8 +14,4 @@
 
 .right{
     width: 40%;
-}
-
-.scroller{
-    height: 620px;
 }

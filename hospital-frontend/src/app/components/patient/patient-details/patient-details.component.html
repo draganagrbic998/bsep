@@ -1,10 +1,11 @@
 <div class="root mat-elevation-z24">
     <mat-card>
         <mat-card-content>
-            <div class="main">
+            <div class="left">
                 <div>
-                    <app-bold-text>Insured number:<br> </app-bold-text>{{patient.insuredNumber}}
+                    <app-bold-text>Insured number: </app-bold-text>{{patient.insuredNumber}}
                 </div>
+                <br><br>
                 <div>
                     <div>
                         <app-bold-text>Patient: </app-bold-text>{{patient.firstName}} {{patient.lastName}}
@@ -13,6 +14,7 @@
                         <app-bold-text>Address: </app-bold-text>{{patient.address}}, {{patient.city}}
                     </div>        
                 </div>
+                <br><br>
                 <div>
                     <div>
                         <app-bold-text>Birth date: </app-bold-text>{{patient.birthDate | date: "dd MMM yyyy" }}
@@ -31,10 +33,9 @@
                     </div>        
                 </div>
             </div>
-            <div>
+            <div class="right">
                 <app-alarm-list [patientId]="patient.id"></app-alarm-list>    
-            </div>
+            </div>        
         </mat-card-content>
     </mat-card>
 </div>
-

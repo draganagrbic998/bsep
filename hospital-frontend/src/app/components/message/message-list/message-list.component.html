@@ -1,26 +1,16 @@
-<br>
-<div class="main">
+<div class="root">
     <div class="left">
-        <app-preloader *ngIf="fetchPending"></app-preloader>
-        <app-empty-container *ngIf="!fetchPending && !messages.length" 
-        [title]="'NO MESSAGES'" [transparent]="true"></app-empty-container>    
-        <div *ngIf="!fetchPending && messages.length">
-            <app-paginator
-            [refresh]="true"
-            [pending]="fetchPending"
-            [pagination]="pagination"
-            (changedPage)="changePage($event)"
-            ></app-paginator>
-            <cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
-                <app-message-details
-                *ngFor="let message of messages"
-                [message]="message"
-                ></app-message-details>            
-            </cdk-virtual-scroll-viewport>        
-        </div>
+        <app-list-container [refresh]="true" [pending]="fetchPending" [empty]="!messages.length" 
+        title="NO MESSAGES" [pagination]="pagination" (changedPage)="changePage($event)">
+            <app-message-details
+            *ngFor="let message of messages"
+            [message]="message"
+            ></app-message-details>            
+        </app-list-container>
     </div>
     <div class="right">
         <app-message-search [fetchPending]="fetchPending" 
         (searchTriggered)="search = $event; fetchMessages()"></app-message-search>
     </div>
 </div>
+

@@ -1,23 +1,12 @@
-<br>
-<div class="main">
+<div class="root">
     <div class="left">
-        <app-preloader *ngIf="fetchPending"></app-preloader>
-        <app-empty-container *ngIf="!fetchPending && !logs.length" 
-        [title]="'NO LOGS'" [transparent]="true"></app-empty-container>    
-        <div *ngIf="!fetchPending && logs.length">
-            <app-paginator
-            [refresh]="true"
-            [pending]="fetchPending"
-            [pagination]="pagination"
-            (changedPage)="changePage($event)"
-            ></app-paginator>
-            <cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
-                <app-log-details
-                *ngFor="let log of logs"
-                [log]="log"
-                ></app-log-details>            
-            </cdk-virtual-scroll-viewport>        
-        </div>
+        <app-list-container [refresh]="true" [pending]="fetchPending" [empty]="!logs.length" 
+        title="NO LOGS" [pagination]="pagination" (changedPage)="changePage($event)">
+            <app-log-details
+            *ngFor="let log of logs"
+            [log]="log"
+            ></app-log-details>            
+        </app-list-container>
     </div>
     <div class="right">
         <app-log-search [fetchPending]="fetchPending" 

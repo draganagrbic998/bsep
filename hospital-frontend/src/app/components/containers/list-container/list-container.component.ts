@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Pagination } from 'src/app/models/pagination';
 
 @Component({
   selector: 'app-list-container',
@@ -8,6 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class ListContainerComponent implements OnInit {
 
   constructor() { }
+
+  @Input() alarm: boolean;
+  @Input() refresh: boolean;
+  @Input() pending: boolean;
+  @Input() empty: boolean;
+  @Input() title: string;
+  @Input() pagination: Pagination;
+  @Output() changedPage: EventEmitter<number> = new EventEmitter();
+  @Output() alarmWanted: EventEmitter<number> = new EventEmitter();
 
   ngOnInit(): void {
   }
