@@ -1,5 +1,6 @@
 package com.example.demo.exception;
 
+@SuppressWarnings("serial")
 public class CertificateNotFoundException extends Exception {
 
     public CertificateNotFoundException(String id) {

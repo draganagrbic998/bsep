@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Data
 @Entity
 @NoArgsConstructor

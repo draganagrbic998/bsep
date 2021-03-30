@@ -18,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "/api/certificates")
@@ -32,10 +31,9 @@ public class CertificatesController {
 	private CertificateInfoService certificateInfoService;
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> createCertificate(Principal principal,
-			@RequestBody CreateCertificateDTO createCertificateDto) throws CertificateNotFoundException,
+	public ResponseEntity<Void> createCertificate(@RequestBody CreateCertificateDTO createCertificateDto) throws CertificateNotFoundException,
 			CertificateAuthorityException, InvalidIssuerException, AliasExistsException {
-		certificateService.createCertificate(createCertificateDto);
+		this.certificateService.createCertificate(createCertificateDto);
 		return ResponseEntity.created(URI.create("wontneedyou")).build();
 	}
 

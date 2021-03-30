@@ -10,10 +10,8 @@ import java.util.List;
 @Repository
 public interface CertificateInfoRepository extends JpaRepository<CertificateInfo, Long> {
 
-    List<CertificateInfo> findAllByEndDateBeforeAndRevoked(Date date, boolean isRevoked);
-
-    CertificateInfo findByAlias(String alias);
-
-    CertificateInfo findFirstByAliasContainingIgnoreCase(String alias);
+    public List<CertificateInfo> findAllByEndDateBeforeAndRevoked(Date date, boolean isRevoked);
+    public CertificateInfo findByAlias(String alias);
+    public CertificateInfo findFirstByAliasContainingIgnoreCase(String alias);
 
 }
