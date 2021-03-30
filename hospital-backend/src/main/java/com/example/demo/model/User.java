@@ -9,14 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.utils.Constants;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 @SuppressWarnings("serial")
 public class User implements UserDetails {
 
 	private List<String> authorities;
-
-	public User() {
-		super();
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

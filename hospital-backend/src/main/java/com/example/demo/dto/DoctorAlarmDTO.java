@@ -2,6 +2,11 @@ package com.example.demo.dto;
 
 import com.example.demo.model.DoctorAlarm;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class DoctorAlarmDTO {
 
 	private Long id;
@@ -14,10 +19,6 @@ public class DoctorAlarmDTO {
 	private Double minOxygenLevel;
 	private Double maxOxygenLevel;
 	
-	public DoctorAlarmDTO() {
-		super();
-	}
-
 	public DoctorAlarmDTO(DoctorAlarm alarm) {
 		super();
 		this.id = alarm.getId();
@@ -31,76 +32,4 @@ public class DoctorAlarmDTO {
 		this.maxOxygenLevel = alarm.getMaxOxygenLevel();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Double getMinPulse() {
-		return minPulse;
-	}
-
-	public void setMinPulse(Double minPulse) {
-		this.minPulse = minPulse;
-	}
-
-	public Double getMaxPulse() {
-		return maxPulse;
-	}
-
-	public void setMaxPulse(Double maxPulse) {
-		this.maxPulse = maxPulse;
-	}
-
-	public Double getMinPressure() {
-		return minPressure;
-	}
-
-	public void setMinPressure(Double minPressure) {
-		this.minPressure = minPressure;
-	}
-
-	public Double getMaxPressure() {
-		return maxPressure;
-	}
-
-	public void setMaxPressure(Double maxPressure) {
-		this.maxPressure = maxPressure;
-	}
-
-	public Double getMinTemperature() {
-		return minTemperature;
-	}
-
-	public void setMinTemperature(Double minTemperature) {
-		this.minTemperature = minTemperature;
-	}
-
-	public Double getMaxTemperature() {
-		return maxTemperature;
-	}
-
-	public void setMaxTemperature(Double maxTemperature) {
-		this.maxTemperature = maxTemperature;
-	}
-
-	public Double getMinOxygenLevel() {
-		return minOxygenLevel;
-	}
-
-	public void setMinOxygenLevel(Double minOxygenLevel) {
-		this.minOxygenLevel = minOxygenLevel;
-	}
-
-	public Double getMaxOxygenLevel() {
-		return maxOxygenLevel;
-	}
-
-	public void setMaxOxygenLevel(Double maxOxygenLevel) {
-		this.maxOxygenLevel = maxOxygenLevel;
-	}
-	
 }

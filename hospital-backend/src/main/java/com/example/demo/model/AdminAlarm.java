@@ -9,6 +9,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "admin_alarm_table")
 public class AdminAlarm {
@@ -30,40 +35,4 @@ public class AdminAlarm {
 	@Column(name = "counts")
 	private long counts;
 
-	public AdminAlarm() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public String getParam() {
-		return param;
-	}
-
-	public void setParam(String param) {
-		this.param = param;
-	}
-
-	public long getCounts() {
-		return counts;
-	}
-
-	public void setCounts(long counts) {
-		this.counts = counts;
-	}
-	
 }

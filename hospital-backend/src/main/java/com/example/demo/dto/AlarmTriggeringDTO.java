@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.example.demo.model.AlarmTriggering;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class AlarmTriggeringDTO {
 
 	private long id;
@@ -11,11 +16,7 @@ public class AlarmTriggeringDTO {
 	private String message;
 	private String patient;
 	private String insuredNumber;
-	
-	public AlarmTriggeringDTO() {
-		super();
-	}
-	
+		
 	public AlarmTriggeringDTO(AlarmTriggering alarmTriggering) {
 		super();
 		this.id = alarmTriggering.getId();
@@ -25,46 +26,6 @@ public class AlarmTriggeringDTO {
 			this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
 			this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();			
 		}
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getPatient() {
-		return patient;
-	}
-
-	public void setPatient(String patient) {
-		this.patient = patient;
-	}
-
-	public String getInsuredNumber() {
-		return insuredNumber;
-	}
-
-	public void setInsuredNumber(String insuredNumber) {
-		this.insuredNumber = insuredNumber;
 	}
 	
 }

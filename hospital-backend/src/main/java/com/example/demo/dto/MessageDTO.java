@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.example.demo.model.Message;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class MessageDTO {
 
 	private long id;
@@ -14,11 +19,7 @@ public class MessageDTO {
 	private double oxygenLevel;
 	private String patient;
 	private String insuredNumber;
-	
-	public MessageDTO() {
-		super();
-	}
-	
+		
 	public MessageDTO(Message message) {
 		super();
 		this.id = message.getId();
@@ -29,70 +30,6 @@ public class MessageDTO {
 		this.oxygenLevel = message.getOxygenLevel();
 		this.patient = message.getPatient().getFirstName() + " " + message.getPatient().getLastName();
 		this.insuredNumber = message.getPatient().getInsuredNumber();
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public double getPulse() {
-		return pulse;
-	}
-
-	public void setPulse(double pulse) {
-		this.pulse = pulse;
-	}
-
-	public double getPressure() {
-		return pressure;
-	}
-
-	public void setPressure(double pressure) {
-		this.pressure = pressure;
-	}
-
-	public double getTemperature() {
-		return temperature;
-	}
-
-	public void setTemperature(double temperature) {
-		this.temperature = temperature;
-	}
-
-	public double getOxygenLevel() {
-		return oxygenLevel;
-	}
-
-	public void setOxygenLevel(double oxygenLevel) {
-		this.oxygenLevel = oxygenLevel;
-	}
-
-	public String getPatient() {
-		return patient;
-	}
-
-	public void setPatient(String patient) {
-		this.patient = patient;
-	}
-
-	public String getInsuredNumber() {
-		return insuredNumber;
-	}
-
-	public void setInsuredNumber(String insuredNumber) {
-		this.insuredNumber = insuredNumber;
 	}
 	
 }

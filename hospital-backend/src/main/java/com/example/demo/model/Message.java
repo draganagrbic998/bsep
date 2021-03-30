@@ -12,6 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "message_table")
 public class Message {
@@ -45,65 +50,5 @@ public class Message {
 	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private Patient patient;
-	
-	public Message() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public double getPulse() {
-		return pulse;
-	}
-
-	public void setPulse(double pulse) {
-		this.pulse = pulse;
-	}
-
-	public double getPressure() {
-		return pressure;
-	}
-
-	public void setPressure(double pressure) {
-		this.pressure = pressure;
-	}
-
-	public double getTemperature() {
-		return temperature;
-	}
-
-	public void setTemperature(double temperature) {
-		this.temperature = temperature;
-	}
-
-	public double getOxygenLevel() {
-		return oxygenLevel;
-	}
-
-	public void setOxygenLevel(double oxygenLevel) {
-		this.oxygenLevel = oxygenLevel;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
 	
 }
