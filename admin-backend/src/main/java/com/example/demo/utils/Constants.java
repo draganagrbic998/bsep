@@ -4,6 +4,5 @@ public class Constants {
 
 	public static final String FRONTEND = "https://localhost:4200";
 	public static final String AUTH_HEADER = "Authorization";
-	public static final String AUTH_API = "https://localhost:8083/auth";
 	
 }
