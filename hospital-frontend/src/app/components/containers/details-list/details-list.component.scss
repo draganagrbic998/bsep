@@ -1,3 +1,5 @@
+@import "../../../../styles/theme";
+
 .bold{
     font-weight: bold;
 }
@@ -11,4 +13,19 @@
 
 .padding{
     padding: 15px;
+}
+
+.date{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $gray;
+    opacity: 0.8;
+    height: 30px;
+    padding: 5px;
+}
+
+.warn{
+    background-color: $warn;
 }

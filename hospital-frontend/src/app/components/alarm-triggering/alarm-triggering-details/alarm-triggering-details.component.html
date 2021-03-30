@@ -1,11 +1,5 @@
 <app-details-container [padding]="false">
-    <div class="details">
-        <span></span>
-        <app-bold-text>
-            {{alarmTriggering.date | date: "dd/mm/yyyy HH:mm:ss"}}
-        </app-bold-text>
-    </div>
-    <app-details-list [padding]="true"
+    <app-details-list [date]="alarmTriggering.date" [padding]="true" [warn]="true"
     [details]="[
         {key: 'Patient', value: alarmTriggering.patient},
         {key: 'Insured number', value: alarmTriggering.insuredNumber}]"

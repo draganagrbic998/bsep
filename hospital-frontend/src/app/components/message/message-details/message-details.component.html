@@ -1,11 +1,5 @@
 <app-details-container [padding]="false">
-    <div class="details">
-        <span></span>
-        <app-bold-text>
-            {{message.date | date: "dd/mm/yyyy HH:mm:ss"}}
-        </app-bold-text>
-    </div>
-    <app-details-list [padding]="true"
+    <app-details-list [date]="message.date" [padding]="true"
     [details]="[
         {key: 'Patient', value: message.patient},
         {key: 'Insured number', value: message.insuredNumber}]"

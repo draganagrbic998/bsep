@@ -9,9 +9,11 @@ export class DetailsListComponent implements OnInit {
 
   constructor() { }
 
+  @Input() warn: boolean;
   @Input() padding: boolean;
   @Input() private details: Detail[] = [];
   @Input() private mainDetails: Detail[] = [];
+  @Input() date: Date;
 
   get filteredDetails(): Detail[]{
     return this.details.filter(x => x.value);
