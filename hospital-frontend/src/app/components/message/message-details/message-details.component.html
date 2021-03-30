@@ -1,12 +1,11 @@
-<app-details-container [padding]="false">
-    <app-details-list [date]="message.date" [padding]="true"
-    [details]="[
-        {key: 'Patient', value: message.patient},
-        {key: 'Insured number', value: message.insuredNumber}]"
-    [mainDetails]="[
-        {key: 'Pulse', value: message.pulse},
-        {key: 'Pressure', value: message.pressure},
-        {key: 'Temperature', value: message.temperature},
-        {key: 'Oxygen level', value: message.oxygenLevel}]"
-    ></app-details-list>
-</app-details-container>
+<app-details-container 
+[date]="message.date" [padding]="false"
+[details]="[
+    {key: 'Patient', value: message.patient},
+    {key: 'Insured number', value: message.insuredNumber}]"
+[mainDetails]="[
+    {key: 'Pulse', value: message.pulse},
+    {key: 'Pressure', value: message.pressure},
+    {key: 'Temperature', value: message.temperature},
+    {key: 'Oxygen level', value: message.oxygenLevel}]"
+></app-details-container>

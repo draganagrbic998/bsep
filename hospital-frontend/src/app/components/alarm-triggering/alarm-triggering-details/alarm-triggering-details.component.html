@@ -1,8 +1,7 @@
-<app-details-container [padding]="false">
-    <app-details-list [date]="alarmTriggering.date" [padding]="true" [warn]="true"
-    [details]="[
-        {key: 'Patient', value: alarmTriggering.patient},
-        {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
-    [mainDetails]="[{key: 'Message', value: alarmTriggering.message}]"
-    ></app-details-list>
-</app-details-container>
+<app-details-container 
+[date]="alarmTriggering.date" [padding]="false" [warn]="true"
+[details]="[
+    {key: 'Patient', value: alarmTriggering.patient},
+    {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
+[mainDetails]="[{key: 'Message', value: alarmTriggering.message}]"
+></app-details-container>

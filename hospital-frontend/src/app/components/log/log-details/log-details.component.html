@@ -1,8 +1,7 @@
-<app-details-container [padding]="false">
-    <app-details-list [date]="log.date" [padding]="true"
-    [details]="[
-        {key: 'Status', value: log.status}, {key: 'User', value: log.userName},
-        {key: 'Computer', value: log.computerName}, {key: 'Service', value: log.serviceName}]"
-    [mainDetails]="[{key: 'Description', value: log.description}]"
-    ></app-details-list>
-</app-details-container>
+<app-details-container 
+[date]="log.date" [padding]="false"
+[details]="[
+    {key: 'Status', value: log.status}, {key: 'User', value: log.userName},
+    {key: 'Computer', value: log.computerName}, {key: 'Service', value: log.serviceName}]"
+[mainDetails]="[{key: 'Description', value: log.description}]"
+></app-details-container>
