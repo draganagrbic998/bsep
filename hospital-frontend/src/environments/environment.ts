@@ -11,7 +11,8 @@ export const environment = {
   messageListRoute: 'message-list',
   logListRoute: 'log-list',
   alarmTriggeringListRoute: 'alarm-triggering-list',
-  reportRoute: 'report'
+  reportRoute: 'report',
+  certificateFormRoute: 'certificate-form'
 };
 
 /*
