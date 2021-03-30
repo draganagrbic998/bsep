@@ -35,7 +35,6 @@ import { AdminAlarmListComponent } from './components/admin-alarm/admin-alarm-li
 import { AdminAlarmDialogComponent } from './components/admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
 import { ReportComponent } from './components/report/report.component';
 import { LoginFormComponent } from './components/user/login-form/login-form.component';
-import { CenterContainerComponent } from './components/containers/center-container/center-container.component';
 import { CertificateFormComponent } from './components/certificate-form/certificate-form.component';
 
 @NgModule({
@@ -72,7 +71,6 @@ import { CertificateFormComponent } from './components/certificate-form/certific
     AdminAlarmDialogComponent,
     ReportComponent,
     LoginFormComponent,
-    CenterContainerComponent,
     CertificateFormComponent
   ],
   imports: [

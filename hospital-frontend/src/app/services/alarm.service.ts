@@ -20,6 +20,7 @@ export class AlarmService {
 
   private refreshAdminData: Subject<null> = new Subject();
   refreshAdminData$: Observable<null> = this.refreshAdminData.asObservable();
+
   private refreshDoctorData: Subject<null> = new Subject();
   refreshDoctorData$: Observable<null> = this.refreshDoctorData.asObservable();
 
