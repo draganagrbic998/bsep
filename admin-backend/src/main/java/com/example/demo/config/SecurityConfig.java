@@ -38,8 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-				.authenticationEntryPoint(new AuthEntryPoint()).and().authorizeRequests().antMatchers("/auth/**")
-				.permitAll().and().cors().and()
+				.authenticationEntryPoint(new AuthEntryPoint())
+				.and().authorizeRequests()
+				.antMatchers("/auth/**").permitAll()
+				.and().cors().and()
 				.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
 		http.csrf().disable();
 	}

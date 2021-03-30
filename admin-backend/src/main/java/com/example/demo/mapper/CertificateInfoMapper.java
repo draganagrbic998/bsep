@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class CertificateInfoMapper {
-
+	
     public CertificateInfoDTO mapToDto(CertificateInfo certificateInfo) {
         return this.mapToDto(certificateInfo, 1);
     }
@@ -19,11 +19,6 @@ public class CertificateInfoMapper {
         }
         CertificateInfoDTO certificateInfoDto = new CertificateInfoDTO();
         certificateInfoDto.setId(certificateInfo.getId());
-        if (mappingLevel > 0) {
-            certificateInfoDto.setIssued(certificateInfo.getIssued().stream()
-                    .map(ci -> this.mapToDto(ci, mappingLevel - 1))
-                    .collect(Collectors.toList()));
-        }
         certificateInfoDto.setNumIssued(certificateInfo.getIssued().size());
         certificateInfoDto.setAlias(certificateInfo.getAlias());
         certificateInfoDto.setIssuerAlias(certificateInfo.getIssuerAlias());
@@ -40,6 +35,11 @@ public class CertificateInfoMapper {
         certificateInfoDto.setCA(certificateInfo.isCA());
         certificateInfoDto.setEmail(certificateInfo.getEmail());
         certificateInfoDto.setTemplate(certificateInfo.getTemplate());
+        if (mappingLevel > 0) {
+            certificateInfoDto.setIssued(certificateInfo.getIssued().stream()
+                    .map(ci -> this.mapToDto(ci, mappingLevel - 1))
+                    .collect(Collectors.toList()));
+        }
         return certificateInfoDto;
     }
 

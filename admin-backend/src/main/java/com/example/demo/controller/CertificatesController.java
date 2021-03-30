@@ -37,11 +37,11 @@ public class CertificatesController {
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificateInfo -> mapper.mapToDto(certificateInfo, 0)));
+		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificateInfo -> this.mapper.mapToDto(certificateInfo, 0)));
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> revoke(@PathVariable Long id) {
+	public ResponseEntity<Void> revoke(@PathVariable long id) {
 		this.certificateService.revoke(id);
 		return ResponseEntity.ok().build();
 	}

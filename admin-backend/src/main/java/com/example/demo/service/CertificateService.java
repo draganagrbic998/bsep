@@ -45,22 +45,21 @@ public class CertificateService {
 		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
 
 		X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
-		CertificateInfo issuerInfo = certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
+		CertificateInfo issuerInfo = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
 		if (!isCertificateValid(issuerAlias))
 			throw new InvalidIssuerException();
 
 		try {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
-				// Sertifikat nije CA
-				// https://stackoverflow.com/questions/12092457/how-to-check-if-x509certificate-is-ca-certificate
 				throw new CertificateAuthorityException();
 			}
-		} catch (NullPointerException ignored) {
+		} 
+		catch (NullPointerException e) {
 		}
 
 		String alias = createCertificateDto.getAlias();
 
-		if (certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias) != null)
+		if (this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias) != null)
 			throw new AliasExistsException();
 
 		KeyPair keyPair = generateKeyPair();
@@ -117,7 +116,7 @@ public class CertificateService {
 	}
 
 	private boolean isCertificateValid(String alias) {
-		Certificate[] chain = keyStoreService.readCertificateChain(alias);
+		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 
 		if (chain == null) {
 			return false;
@@ -145,9 +144,11 @@ public class CertificateService {
 				}
 				X509Certificate issuer = (X509Certificate) chain[i + 1];
 				x509cert.verify(issuer.getPublicKey());
-			} catch (SignatureException | InvalidKeyException e) {
+			} 
+			catch (SignatureException | InvalidKeyException e) {
 				return false;
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -158,9 +159,11 @@ public class CertificateService {
 		try {
 			cert.verify(cert.getPublicKey());
 			return true;
-		} catch (SignatureException | InvalidKeyException e) {
+		} 
+		catch (SignatureException | InvalidKeyException e) {
 			return false;
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -171,7 +174,8 @@ public class CertificateService {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 			keyGen.initialize(2048, random);
 			return keyGen.generateKeyPair();
-		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -208,7 +212,7 @@ public class CertificateService {
 		return this.certificateInfoRepository.save(certInfo);
 	}
 
-	public void revoke(Long id) {
+	public void revoke(long id) {
 		CertificateInfo ci = this.certificateInfoRepository.findById(id).get();
 		ci.setRevoked(true);
 		this.certificateInfoRepository.save(ci);

@@ -53,7 +53,8 @@ public class Setup implements ApplicationRunner {
 		}
 		if (!keystore.exists()) {
 			this.keyStoreService.createKeyStore();
-		} else {
+		} 
+		else {
 			this.keyStoreService.loadKeyStore();
 		}
 		Certificate root = this.keyStoreService.readCertificate("root");
@@ -61,11 +62,6 @@ public class Setup implements ApplicationRunner {
 			createRootCA();
 			this.keyStoreService.saveKeyStore();
 		}
-//        Certificate PKI = keyStoreService.readCertificate("PKI");
-//        if(PKI == null){
-//            createPKI();
-//            keyStoreService.saveKeyStore();
-//        }
 	}
 
 	private void createRootCA() {
@@ -99,7 +95,6 @@ public class Setup implements ApplicationRunner {
 
 	private CertificateInfo generateCertificateInfoEntity(SubjectData subjectData) {
 		CertificateInfo certInfo = new CertificateInfo();
-
 		certInfo.setCommonName("root");
 		certInfo.setAlias("root");
 		certInfo.setStartDate(subjectData.getStartDate());
