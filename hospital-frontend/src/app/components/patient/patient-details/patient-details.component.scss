@@ -14,6 +14,11 @@ span{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 100%;
+}
+
+.mat-card{
+    height: 100%;
 }
 
 .left{
