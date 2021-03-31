@@ -6,8 +6,7 @@
         <mat-icon matTooltip="close">close</mat-icon>
     </button>        
 </app-spacer-container>
-
-<div cdkFocusInitial>
+<div class="list">
     <app-list-container [pending]="fetchPending" [empty]="!alarms.length" 
     title="NO ALARMS" [pagination]="pagination" (changedPage)="changePage($event)">
         <app-admin-alarm-details

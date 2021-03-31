@@ -1,16 +1,18 @@
-<app-paginator
-[alarm]="alarm"
-(alarmWanted)="alarmWanted.emit()"
-[refresh]="refresh"
-[pending]="pending"
-[pagination]="pagination"
-(changedPage)="changedPage.emit($event)"
-></app-paginator>
-
-<cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
+<div [class.temp]="empty || pending">
+    <app-paginator
+    [alarm]="alarm"
+    (alarmWanted)="alarmWanted.emit()"
+    [refresh]="refresh"
+    [pending]="pending"
+    [pagination]="pagination"
+    (changedPage)="changedPage.emit($event)"
+    ></app-paginator>
     <app-preloader *ngIf="pending"></app-preloader>
     <app-empty-container *ngIf="!pending && empty" 
-    [title]="title"></app-empty-container>    
+    [title]="title"></app-empty-container>                
+</div>
+
+<cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
     <div *ngIf="!pending" class="content">
         <ng-content></ng-content>
     </div>

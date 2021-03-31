@@ -17,6 +17,7 @@
     </span>
     <span *ngIf="alarm">
         <button 
+        *ngIf="!pending"
         mat-icon-button 
         (click)="alarmWanted.emit()">
             <mat-icon color="accent" matTooltip="Add alarm">alarm_on</mat-icon>
