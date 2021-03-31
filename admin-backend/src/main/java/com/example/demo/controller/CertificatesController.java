@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/api/certificates")
+@RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 public class CertificatesController {
 
@@ -39,14 +39,14 @@ public class CertificatesController {
 		this.requestMapper = requestMapper;
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping
 	public ResponseEntity<Void> create(@RequestBody CreateCertificateDTO createCertificateDto) {
 		this.certificateService.createCertificate(createCertificateDto);
 		return ResponseEntity.created(URI.create("wontneedyou")).build();
 	}
 
 	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/requests/create")
 	public ResponseEntity<Void> createRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
 		this.certificateService.createCertificateRequest(certificateRequestDTO);
 		return ResponseEntity.ok().build();
