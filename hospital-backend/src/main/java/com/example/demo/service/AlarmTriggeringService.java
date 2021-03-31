@@ -16,11 +16,11 @@ public class AlarmTriggeringService {
 	private AlarmTriggeringRepository alarmTriggeringRepository;
 	
 	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable) {
-		return this.alarmTriggeringRepository.findByPatientIdNull(pageable);
+		return this.alarmTriggeringRepository.findByPatientIdNullOrderByDateDesc(pageable);
 	}
 	
 	public Page<AlarmTriggering> findAllForDoctor(Pageable pageable) {
-		return this.alarmTriggeringRepository.findByPatientIdNotNull(pageable);
+		return this.alarmTriggeringRepository.findByPatientIdNotNullOrderByDateDesc(pageable);
 	}
 
 	@Transactional(readOnly = false)

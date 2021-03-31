@@ -10,7 +10,6 @@ export class EmptyContainerComponent implements OnInit {
   constructor() { }
 
   @Input() title = 'NO ITEMS';
-  @Input() transparent: boolean;
 
   ngOnInit(): void {
   }

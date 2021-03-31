@@ -41,7 +41,7 @@ export class LoginFormComponent implements OnInit {
         if (user){
           this.storageService.setUser(user);
           if (user.authorities[0] === ADMIN){
-            this.router.navigate([environment.logListRoute]);
+            this.router.navigate([environment.reportRoute]);
           }
           else if (user.authorities[0] === DOCTOR){
             this.router.navigate([environment.patientListRoute]);

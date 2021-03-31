@@ -1,31 +1,33 @@
+.root{
+    width: 1000px;
+    margin: 0 auto;
+    height: 600px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+span{
+    font-weight: bold;
+}
+
 .mat-card-content{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    max-height: 520px;
 }
-
-.root{
-    padding: 10px;
-    width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-}
-
 
 .left{
     width: 48%;
     border: 2px inset rgba(200, 200, 200, 0.3);
     border-radius: 5px;
     padding: 20px;
-    text-align: left;
     font-size: 20px;
-
+    padding-top: 80px;
 }
 
 .right{
+    padding-top: 30px;
     width: 48%;
     border: 2px inset rgba(200, 200, 200, 0.3);
     border-radius: 5px;
-
 }

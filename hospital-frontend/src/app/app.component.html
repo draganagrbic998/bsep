@@ -1,4 +1,4 @@
-<app-admin-toolbar *ngIf="authority === 'ADMIN'"></app-admin-toolbar>
+<app-admin-toolbar *ngIf="authority === 'ADMIN' || !authority"></app-admin-toolbar>
 <app-doctor-toolbar *ngIf="authority === 'DOCTOR'"></app-doctor-toolbar>
 <div></div>
 <router-outlet></router-outlet>

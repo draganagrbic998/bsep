@@ -14,7 +14,7 @@ div{
 
 span{
     font-weight: bold;
-    min-width: 130px;
+    width: 100px;
 }
 
 span + input{
@@ -22,5 +22,5 @@ span + input{
 }
 
 input, select{
-    width: 250px;
+    width: 200px;
 }

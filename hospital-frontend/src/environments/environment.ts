@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  loginRoute: 'login',
+  loginRoute: 'login-form',
   patientFormRoute: 'patient-form',
   patientListRoute: 'patient-list',
   patientDetailsRoute: 'patient-details',
   messageListRoute: 'message-list',
-  logListRoute: 'log-list',
   alarmTriggeringListRoute: 'alarm-triggering-list',
+  logListRoute: 'log-list',
   reportRoute: 'report',
   certificateFormRoute: 'certificate-form'
 };

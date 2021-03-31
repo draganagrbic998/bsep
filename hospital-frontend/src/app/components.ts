@@ -30,7 +30,6 @@ import { PreloaderComponent } from './components/loaders/preloader/preloader.com
 import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
-import { BoldTextComponent } from './components/containers/bold-text/bold-text.component';
 
 export const components = [
     PatientFormComponent,
@@ -40,7 +39,6 @@ export const components = [
     SpinnerButtonComponent,
     PatientDetailsComponent,
     PatientListComponent,
-    BoldTextComponent,
     EmptyContainerComponent,
     PaginatorComponent,
     DoctorToolbarComponent,

@@ -2,14 +2,14 @@
     <span>
         <button
         matTooltip="List all logs"
-        *ngIf="!onRoute('log-list')"
+        *ngIf="!onRoute('log-list') && !onRoute('form')"
         mat-button
         [routerLink]="'log-list'">
             Logs
         </button>
         <button
         matTooltip="List all alarms"
-        *ngIf="!onRoute('alarm-triggering-list')"
+        *ngIf="!onRoute('alarm-triggering-list') && !onRoute('form')"
         mat-button
         [routerLink]="'alarm-triggering-list'">
             Alarms
@@ -30,19 +30,21 @@
         </button>
         <button
         matTooltip="Report"
+        *ngIf="!onRoute('login') && !onRoute('report') && !onRoute('alarm-triggering-list')"
         mat-button
         [routerLink]="'report'">
             Report
         </button>
         <button
         matTooltip="Certificate request"
+        *ngIf="onRoute('report')"
         mat-button
         [routerLink]="'certificate-form'">
             Certificate request
         </button>
     </span>
     <span>
-        <button mat-icon-button [matMenuTriggerFor]="more">
+        <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
             <mat-icon matTooltip="More">more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">

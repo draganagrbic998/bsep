@@ -2,39 +2,16 @@
     <mat-card>
         <mat-card-content>
             <div class="left">
-                <div>
-                    <app-bold-text>Insured number: </app-bold-text>{{patient.insuredNumber}}
-                </div>
-                <br><br>
-                <div>
-                    <div>
-                        <app-bold-text>Patient: </app-bold-text>{{patient.firstName}} {{patient.lastName}}
-                    </div>
-                    <div>
-                        <app-bold-text>Address: </app-bold-text>{{patient.address}}, {{patient.city}}
-                    </div>        
-                </div>
-                <br><br>
-                <div>
-                    <div>
-                        <app-bold-text>Birth date: </app-bold-text>{{patient.birthDate | date: "dd MMM yyyy" }}
-                    </div>
-                    <div>
-                        <app-bold-text>Gender: </app-bold-text>{{patient.gender | lowercase}}
-                    </div>
-                    <div>
-                        <app-bold-text>Blod type: </app-bold-text>{{patient.blodType | blodType}}
-                    </div>
-                    <div>
-                        <app-bold-text>Height: </app-bold-text>{{patient.height | number: '.2'}}
-                    </div>
-                    <div>
-                        <app-bold-text>Weight: </app-bold-text>{{patient.weight | number: '.2'}}
-                    </div>        
-                </div>
+                <span>Insured number: </span>{{patient.insuredNumber}}<br><br><br>
+                <span>Patient: </span>{{patient.firstName}} {{patient.lastName}}<br>
+                <span>Address: </span>{{patient.address}}, {{patient.city}}<br>
+                <span>Birth date: </span>{{patient.birthDate | date: "dd MMM yyyy" }}<br><br><br>
+                <span>Gender: </span>{{patient.gender | lowercase}}<br>
+                <span>Blod type: </span>{{patient.blodType | blodType}}<br>
+                <span>Height: </span>{{patient.height | number: '.2'}}<br>
+                <span>Weight: </span>{{patient.weight | number: '.2'}}<br>
             </div>
             <div class="right">
-                <br>
                 <app-alarm-list [patientId]="patient.id"></app-alarm-list>    
             </div>        
         </mat-card-content>

@@ -1,7 +1,8 @@
 <app-form-container>
     <form [formGroup]="searchForm">
         <div [class.disabled]="fetchPending">
-            <h2>Search</h2><br><br>
+            <h2>Search</h2>
+            <br><br>
             <mat-form-field>
                 <mat-label>Patient insured number</mat-label>
                 <input 
@@ -37,7 +38,8 @@
                 <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
                 <mat-datepicker #date></mat-datepicker>
             </mat-form-field>
-        </div><br><br>
+        </div>
+        <br><br>
         <app-spacer-container>
             <span></span>
             <span>

@@ -14,18 +14,19 @@ th, td{
     height: 75px;
 }
 
-.main{
+.root{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    margin: 70px;
-    margin-left: 120px;
-    margin-right: 0;
+    margin: 0 auto;
+    height: 85%;
+    width: 100%;
 }
 
 .left{
     width: 45%;
+    margin-left: 120px;
 }
 
 .right{

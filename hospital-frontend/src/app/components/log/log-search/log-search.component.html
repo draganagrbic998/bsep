@@ -1,7 +1,8 @@
 <app-form-container>
     <form [formGroup]="searchForm">
         <div [class.disabled]="fetchPending">
-            <h2>Log Search</h2><br><br>
+            <h2>Log Search</h2>
+            <br><br>
             <mat-form-field>
                 <mat-label>Status</mat-label>
                 <input 
@@ -42,7 +43,8 @@
                 autocomplete="off"
                 placeholder="Enter service name">
             </mat-form-field>
-        </div><br><br>
+        </div>
+        <br><br>
         <app-spacer-container>
             <span></span>
             <span>

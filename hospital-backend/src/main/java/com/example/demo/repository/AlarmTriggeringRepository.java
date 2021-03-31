@@ -11,8 +11,8 @@ import com.example.demo.model.AlarmTriggering;
 
 public interface AlarmTriggeringRepository extends JpaRepository<AlarmTriggering, Long> {
 
-	public Page<AlarmTriggering> findByPatientIdNull(Pageable pageable);
-	public Page<AlarmTriggering> findByPatientIdNotNull(Pageable pageable);
+	public Page<AlarmTriggering> findByPatientIdNullOrderByDateDesc(Pageable pageable);
+	public Page<AlarmTriggering> findByPatientIdNotNullOrderByDateDesc(Pageable pageable);
 	
 	@Query("select count(m) from AlarmTriggering m where "
 			+ "(cast(:start as date) is null or m.date >= :start) and "

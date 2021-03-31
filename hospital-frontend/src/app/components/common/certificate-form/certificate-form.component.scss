@@ -1,3 +1,5 @@
+@import "../../../../styles/theme";
+
 .error {
-    color: red;
+    color: $warn;
 }

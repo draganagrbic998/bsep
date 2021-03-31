@@ -1,7 +1,8 @@
 <app-form-container>
-    <h2>{{patient.id ? 'Edit' : 'New'}} Patient</h2><br><br>
+    <h2>{{patient.id ? 'Edit' : 'New'}} Patient</h2>
+    <br><br>
     <form [formGroup]="patientForm">
-        <div [class.disabled]="savePending" class="main">
+        <div class="root" [class.disabled]="savePending">
             <div>
                 <mat-form-field>
                     <mat-label>First name</mat-label>

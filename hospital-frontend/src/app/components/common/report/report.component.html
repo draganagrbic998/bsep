@@ -1,7 +1,7 @@
-<div class="main">
+<div class="root">
   <div class="left">
-    <app-preloader *ngIf="fetchPending"></app-preloader>
 
+    <app-preloader *ngIf="fetchPending"></app-preloader>
     <app-empty-container *ngIf="!fetchPending && !report" 
     [title]="'ERROR LOADING REPORT'"></app-empty-container>
 
@@ -43,7 +43,8 @@
     <app-form-container>
       <form [formGroup]="searchForm">
           <div [class.disabled]="fetchPending">
-              <h2>Search</h2><br><br>
+              <h2>Search</h2>
+              <br><br>
               <mat-form-field> 
                   <mat-label>Start date</mat-label>
                   <input 
@@ -66,7 +67,8 @@
                 <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
                 <mat-datepicker #endDate></mat-datepicker>
             </mat-form-field>
-          </div><br><br>
+          </div>
+          <br><br>
           <app-spacer-container>
               <span></span>
               <span>
@@ -81,5 +83,4 @@
       </form>
     </app-form-container>
   </div>
-
 </div>
