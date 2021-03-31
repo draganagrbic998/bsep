@@ -27,22 +27,22 @@ public class DeviceService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					monitorPatients();
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
+				monitorPatients();
 			}
 		}).start();
 	}
 	
-	private void monitorPatients() throws InterruptedException {
+	private void monitorPatients() {
 		while (true) {
-			String text = String.format("Timestamp=%s patient=%d pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
-					DATE_FORMAT.format(this.getTimestamp()), PATIENT_ID, this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
-			this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
-			Thread.sleep(SLEEP_INTERVAL);
+			try {
+				String text = String.format("Timestamp=%s patient=%d pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
+						DATE_FORMAT.format(this.getTimestamp()), PATIENT_ID, this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
+				this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
+				Thread.sleep(SLEEP_INTERVAL);
+			}
+			catch(Exception e) {
+				;
+			}
 		}
 	}
 	
