@@ -21,12 +21,13 @@ public class MessageMapper {
 	public Message map(MessageMeasureDTO messageDTO) throws ParseException {
 		Message message = new Message();
 		messageDTO.setText(messageDTO.getText().replace(',', '.'));
-		message.setDate(DATE_FORMAT.parse(messageDTO.getText().split(" ")[0].split("=")[1].trim()));
-		message.setPulse(Double.parseDouble(messageDTO.getText().split(" ")[2].split("=")[1].trim()));
-		message.setPressure(Double.parseDouble(messageDTO.getText().split(" ")[3].split("=")[1].trim()));
-		message.setTemperature(Double.parseDouble(messageDTO.getText().split(" ")[4].split("=")[1].trim()));
-		message.setOxygenLevel(Double.parseDouble(messageDTO.getText().split(" ")[5].split("=")[1].trim()));
-		message.setPatient(this.patientService.find(Long.parseLong(messageDTO.getText().split(" ")[1].split("=")[1].trim())));
+		String[] array = messageDTO.getText().split(" ");
+		message.setDate(DATE_FORMAT.parse(array[0].split("=")[1].trim()));
+		message.setPatient(this.patientService.find(Long.parseLong(array[1].trim().split("=")[1].trim())));
+		message.setPulse(Double.parseDouble(array[2].split("=")[1].trim()));
+		message.setPressure(Double.parseDouble(array[3].split("=")[1].trim()));
+		message.setTemperature(Double.parseDouble(array[4].split("=")[1].trim()));
+		message.setOxygenLevel(Double.parseDouble(array[5].split("=")[1].trim()));
 		return message;
 	}
 		

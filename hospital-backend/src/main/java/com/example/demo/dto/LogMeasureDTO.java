@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MessageMeasureDTO {
-
+public class LogMeasureDTO {
+	
 	@NotBlank(message = "Text can't be blank")
 	private String text;
-	
+
 }

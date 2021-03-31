@@ -1,19 +1,23 @@
 package com.example.demo.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.dto.LogMeasureDTO;
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Log;
@@ -36,6 +40,9 @@ public class LogService {
 	@Autowired
 	private LogEventService eventService;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	@PostConstruct
 	public void init() {
 		try {
@@ -47,7 +54,12 @@ public class LogService {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
+						try {
+							readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
+						} 
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}).start();
 			}
@@ -67,37 +79,17 @@ public class LogService {
 	}
 
 	@Transactional(readOnly = false)
-	public Log save(Log log) {
-		return this.logRepository.save(log);
+	public List<Log> save(List<Log> logs) {
+		return this.logRepository.saveAll(logs);
 	}
 	
-	private void readLogs(String path, long interval, String regExp) {
-		BufferedReader reader = null;
-		String line;
+	private void readLogs(String path, long interval, String regExp) throws InterruptedException {
 		while (true) {
-			try {
-				reader = new BufferedReader(new FileReader(path));
-				while ((line = reader.readLine()) != null) {
-					System.out.println(line);
-					Log log = this.logMapper.map(line);
-					this.save(log);
-					this.eventService.addLog(log);
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					reader.close();
-					FileWriter writer = new FileWriter(path);
-					writer.close();
-					Thread.sleep(interval);	
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
+			List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
+			List<Log> logs = logsDTO.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
+			logs = this.save(logs);
+			logs.forEach(x -> this.eventService.addLog(x));
+			Thread.sleep(interval);	
 		}
 	}
 	
