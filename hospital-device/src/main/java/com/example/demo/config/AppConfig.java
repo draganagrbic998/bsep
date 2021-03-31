@@ -34,11 +34,11 @@ public class AppConfig {
 
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(keystore);
-			keyStore.load(inputStream, "lozinka".toCharArray());
+			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
 					new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy())
-							.loadKeyMaterial(keyStore, "lozinka".toCharArray()).build(),
+							.loadKeyMaterial(keyStore, this.pkiProperties.getKeystorePassword().toCharArray()).build(),
 					NoopHostnameVerifier.INSTANCE);
 
 			HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)

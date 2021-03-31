@@ -18,12 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@EnableAsync
 @EnableTransactionManagement
 public class AppConfig {
 
@@ -45,11 +43,11 @@ public class AppConfig {
 
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(keystore);
-			keyStore.load(inputStream, "lozinka".toCharArray());
+			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
 					new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy())
-							.loadKeyMaterial(keyStore, "lozinka".toCharArray()).build(),
+							.loadKeyMaterial(keyStore, this.pkiProperties.getKeystorePassword().toCharArray()).build(),
 					NoopHostnameVerifier.INSTANCE);
 
 			HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
@@ -65,6 +63,7 @@ public class AppConfig {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return restTemplate;
 	}
 
