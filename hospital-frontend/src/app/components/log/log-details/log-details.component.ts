@@ -12,10 +12,6 @@ export class LogDetailsComponent implements OnInit {
 
   @Input() log: Log = {} as Log;
 
-  isStatus(status: string): boolean{
-    return this.log.status.toLowerCase().trim() === status.toLowerCase().trim();
-  }
-
   ngOnInit(): void {
   }
 

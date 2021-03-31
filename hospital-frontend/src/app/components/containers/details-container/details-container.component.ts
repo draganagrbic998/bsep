@@ -9,19 +9,19 @@ export class DetailsContainerComponent implements OnInit {
 
   constructor() { }
 
-  @Input() delete: string;
   @Input() warn: boolean;
+  @Input() delete: string;
   @Input() date: Date;
   @Input() private details: Detail[] = [];
   @Input() private mainDetails: Detail[] = [];
   @Output() deleted: EventEmitter<null> = new EventEmitter();
 
   get filteredDetails(): Detail[]{
-    return this.details.filter(x => x.value);
+    return this.details.filter(x => x.value !== undefined && x.value !== null);
   }
 
   get filteredMainDetails(): Detail[]{
-    return this.mainDetails.filter(x => x.value);
+    return this.mainDetails.filter(x => x.value !== undefined && x.value !== null);
   }
 
   isNumber(value: string | number): boolean{

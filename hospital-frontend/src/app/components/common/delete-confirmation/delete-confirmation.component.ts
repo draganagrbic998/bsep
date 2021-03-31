@@ -23,9 +23,9 @@ export class DeleteConfirmationComponent implements OnInit {
     this.deletePending = true;
     // tslint:disable-next-line: deprecation
     this.deleteFunction().subscribe(
-      (param: boolean) => {
+      (response: boolean) => {
         this.deletePending = false;
-        if (param){
+        if (response){
           this.snackBar.open(DELETE_SUCCESS, SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close(true);
         }

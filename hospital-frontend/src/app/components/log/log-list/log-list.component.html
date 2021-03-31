@@ -1,7 +1,7 @@
 <div class="root">
     <div class="left">
-        <app-list-container [refresh]="true" [pending]="fetchPending" [empty]="!logs.length" 
-        title="NO LOGS" [pagination]="pagination" (changedPage)="changePage($event)">
+        <app-list-container title="NO LOGS" [pending]="fetchPending" [empty]="!logs.length" 
+        [refresh]="true" [pagination]="pagination" (changedPage)="changePage($event)">
             <app-log-details
             *ngFor="let log of logs"
             [log]="log"

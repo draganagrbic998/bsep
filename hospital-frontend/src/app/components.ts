@@ -31,7 +31,7 @@ import { SpinnerButtonComponent } from './components/loaders/spinner-button/spin
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 
-export const components = [
+export const COMPONENTS = [
     PatientFormComponent,
     FormContainerComponent,
     SpacerContainerComponent,

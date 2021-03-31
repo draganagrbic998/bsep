@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
+
 import { Routes, RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { AuthGuard } from './utils/auth.guard';
+import { ADMIN, DOCTOR } from './utils/constants';
+
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
 import { CertificateFormComponent } from './components/common/certificate-form/certificate-form.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
@@ -10,8 +14,6 @@ import { PatientFormComponent } from './components/patient/patient-form/patient-
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
-import { ADMIN, DOCTOR } from './utils/constants';
-import { AuthGuard } from './utils/auth.guard';
 
 const routes: Routes = [
   {
@@ -43,16 +45,16 @@ const routes: Routes = [
     data: {authorities: [DOCTOR]}
   },
   {
-    path: environment.logListRoute,
-    component: LogListComponent,
-    canActivate: [AuthGuard],
-    data: {authorities: [ADMIN]}
-  },
-  {
     path: environment.alarmTriggeringListRoute,
     component: AlarmTriggeringListComponent,
     canActivate: [AuthGuard],
     data: {authorities: [DOCTOR, ADMIN]}
+  },
+  {
+    path: environment.logListRoute,
+    component: LogListComponent,
+    canActivate: [AuthGuard],
+    data: {authorities: [ADMIN]}
   },
   {
     path: environment.reportRoute,

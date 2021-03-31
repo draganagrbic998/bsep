@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CertificateRequest } from 'src/app/models/certificate-request';
-import { CertificateServiceService } from 'src/app/services/certificate-service.service';
+import { CertificateService } from 'src/app/services/certificate.service';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 
 @Component({
@@ -14,30 +14,29 @@ import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCES
 export class CertificateFormComponent implements OnInit {
 
   constructor(
-    private certificateService: CertificateServiceService,
+    private certificateService: CertificateService,
     private snackBar: MatSnackBar,
-    public location: Location,
+    private location: Location
   ) { }
 
-  @Input() savePending: boolean;
-
-  certificateRequestForm: FormGroup = new FormGroup({
+  savePending = false;
+  certificateForm: FormGroup = new FormGroup({
     alias: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     commonName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     organization: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     organizationUnit: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     country: new FormControl('', [Validators.required, Validators.pattern(new RegExp('[A-Z]{2}'))]),
-    email: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
+    email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')]),
     template: new FormControl('', [Validators.required])
   });
 
   sendRequest(): void {
-    if (this.certificateRequestForm.invalid){
+    if (this.certificateForm.invalid){
       return;
     }
     this.savePending = true;
     // tslint:disable-next-line: deprecation
-    this.certificateService.sendRequest(this.certificateRequestForm.value).subscribe(
+    this.certificateService.sendRequest(this.certificateForm.value).subscribe(
       (certificateRequest: CertificateRequest) => {
         this.savePending = false;
         if (certificateRequest){

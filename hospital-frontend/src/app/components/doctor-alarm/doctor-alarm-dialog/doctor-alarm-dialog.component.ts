@@ -54,7 +54,7 @@ export class DoctorAlarmDialogComponent implements OnInit {
 
   minMaxValidator(): ValidatorFn{
     return (control: AbstractControl): ValidationErrors => {
-      const params = ['Pulse', 'Pressure', 'Temperature', 'OxygenLevel'];
+      const params: string[] = ['Pulse', 'Pressure', 'Temperature', 'OxygenLevel'];
       for (const param of params){
         if (parseInt(control.get('min' + param).value, 10) >= parseInt(control.get('max' + param).value, 10)){
           return {error: true};

@@ -28,6 +28,11 @@ export class DoctorAlarmListComponent implements OnInit {
     lastPage: true
   };
 
+  addAlarm(): void{
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patientId}};
+    this.dialog.open(DoctorAlarmDialogComponent, options);
+  }
+
   changePage(value: number): void{
     this.pagination.pageNumber += value;
     this.fetchAlarms();
@@ -44,11 +49,6 @@ export class DoctorAlarmListComponent implements OnInit {
         this.pagination.lastPage = page.last;
       }
     );
-  }
-
-  addAlarm(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patientId}};
-    this.dialog.open(DoctorAlarmDialogComponent, options);
   }
 
   ngOnInit(): void {

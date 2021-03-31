@@ -10,10 +10,10 @@ export class ListContainerComponent implements OnInit {
 
   constructor() { }
 
-  @Input() alarm: boolean;
-  @Input() refresh: boolean;
   @Input() pending: boolean;
   @Input() empty: boolean;
+  @Input() refresh: boolean;
+  @Input() alarm: boolean;
   @Input() title: string;
   @Input() pagination: Pagination;
   @Output() changedPage: EventEmitter<number> = new EventEmitter();

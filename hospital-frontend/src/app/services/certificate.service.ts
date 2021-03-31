@@ -7,7 +7,7 @@ import { CertificateRequest } from '../models/certificate-request';
 @Injectable({
   providedIn: 'root'
 })
-export class CertificateServiceService {
+export class CertificateService {
 
   constructor(
     private http: HttpClient
@@ -15,8 +15,8 @@ export class CertificateServiceService {
 
   private readonly API_PATH = 'api/certificates';
 
-  sendRequest(certificateRequest: CertificateRequest): Observable<CertificateRequest>{
-    return this.http.post<CertificateRequest>(`${this.API_PATH}/requests/send`, certificateRequest).pipe(
+  sendRequest(request: CertificateRequest): Observable<CertificateRequest>{
+    return this.http.post<CertificateRequest>(this.API_PATH, request).pipe(
       catchError(() => of(null))
     );
   }

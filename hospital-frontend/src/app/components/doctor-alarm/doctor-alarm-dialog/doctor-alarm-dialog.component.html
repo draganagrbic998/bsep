@@ -1,6 +1,6 @@
 <app-dialog-container title="Create new alarm" [pending]="savePending" 
 [disabled]="emptyForm || alarmForm.invalid" (confirmed)="confirm()">
-    <form [formGroup]="alarmForm">
+    <form [formGroup]="alarmForm" [class.disabled]="savePending">
         <div>
             <span>Pulse: </span>
             <input

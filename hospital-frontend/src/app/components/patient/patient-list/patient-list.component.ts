@@ -35,24 +35,6 @@ export class PatientListComponent implements OnInit {
   };
   search = '';
 
-  changePage(value: number): void{
-    this.pagination.pageNumber += value;
-    this.fetchPatients();
-  }
-
-  fetchPatients(): void{
-    this.fetchPending = true;
-    // tslint:disable-next-line: deprecation
-    this.patientService.findAll(this.pagination.pageNumber, this.search).subscribe(
-      (page: Page<Patient>) => {
-        this.fetchPending = false;
-        this.patients = new MatTableDataSource(page.content);
-        this.pagination.firstPage = page.first;
-        this.pagination.lastPage = page.last;
-      }
-    );
-  }
-
   edit(patient: Patient): void{
     this.storageService.set(this.storageService.PATIENT_KEY, patient);
     this.router.navigate([`${environment.patientFormRoute}/edit`]);
@@ -71,6 +53,24 @@ export class PatientListComponent implements OnInit {
   openDetails(patient: Patient): void{
     this.storageService.set(this.storageService.PATIENT_KEY, patient);
     this.router.navigate([environment.patientDetailsRoute]);
+  }
+
+  changePage(value: number): void{
+    this.pagination.pageNumber += value;
+    this.fetchPatients();
+  }
+
+  fetchPatients(): void{
+    this.fetchPending = true;
+    // tslint:disable-next-line: deprecation
+    this.patientService.findAll(this.pagination.pageNumber, this.search).subscribe(
+      (page: Page<Patient>) => {
+        this.fetchPending = false;
+        this.patients = new MatTableDataSource(page.content);
+        this.pagination.firstPage = page.first;
+        this.pagination.lastPage = page.last;
+      }
+    );
   }
 
   ngOnInit(): void {

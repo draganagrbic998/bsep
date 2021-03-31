@@ -1,43 +1,43 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
     <span>
         <button
-        matTooltip="List all logs"
         *ngIf="!onRoute('log-list') && !onRoute('form')"
+        matTooltip="Logs"
         mat-button
         [routerLink]="'log-list'">
             Logs
         </button>
         <button
-        matTooltip="List all alarms"
         *ngIf="!onRoute('alarm-triggering-list') && !onRoute('form')"
+        matTooltip="Alarms"
         mat-button
         [routerLink]="'alarm-triggering-list'">
             Alarms
         </button>
         <button
-        matTooltip="Add alarm"
         *ngIf="onRoute('alarm-triggering-list')"
+        matTooltip="Add alarm"
         mat-button
         (click)="addAlarm()">
             Add alarm
         </button>
         <button
-        matTooltip="List alarms"
         *ngIf="onRoute('alarm-triggering-list')"
+        matTooltip="Alarms list"
         mat-button
         (click)="listAlarms()">
-            List alarms
+            Alarms list
         </button>
         <button
-        matTooltip="Report"
         *ngIf="!onRoute('login') && !onRoute('report') && !onRoute('alarm-triggering-list')"
+        matTooltip="Report"
         mat-button
         [routerLink]="'report'">
             Report
         </button>
         <button
-        matTooltip="Certificate request"
         *ngIf="onRoute('report')"
+        matTooltip="Certificate request"
         mat-button
         [routerLink]="'certificate-form'">
             Certificate request

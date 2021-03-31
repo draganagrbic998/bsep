@@ -1,29 +1,29 @@
 <mat-toolbar color="primary" class="mat-elevation-z24">
     <span>
         <button
-        matTooltip="Register new patient"
         *ngIf="onRoute('patient-list')"
+        matTooltip="New Patient"
         mat-button
         (click)="createPatient()">
             New Patient
         </button>
         <button
-        matTooltip="List all patients"
         *ngIf="!onRoute('patient-list') && !onRoute('form')"
+        matTooltip="Patients"
         mat-button
         [routerLink]="'patient-list'">
             Patients
         </button>
         <button
-        matTooltip="List all messages"
         *ngIf="onRoute('patient-list') || onRoute('alarm-triggering-list')"
+        matTooltip="Messages"
         mat-button
         [routerLink]="'message-list'">
             Messages
         </button>
         <button
-        matTooltip="List all alarms"
         *ngIf="onRoute('patient-list') || onRoute('message-list')"
+        matTooltip="Alarms"
         mat-button
         [routerLink]="'alarm-triggering-list'">
             Alarms
@@ -34,8 +34,6 @@
             <input
             [formControl]="search"
             [classList]="'form-control'"
-            matInput 
-            autocomplete="off"
             placeholder="Search...">   
         </form>
         <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">

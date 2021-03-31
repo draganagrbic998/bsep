@@ -1,5 +1,5 @@
 <app-form-container>
-    <form [formGroup]="certificateRequestForm">
+    <form [formGroup]="certificateForm">
         <div [class.disabled]="savePending">
             <h2>Certificate Request</h2>
             <br><br>
@@ -10,7 +10,6 @@
                         <input 
                         formControlName="commonName" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter common name">
                         <mat-error>
                             Valid common name is required!
@@ -21,7 +20,6 @@
                         <input 
                         formControlName="organization" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter organization">
                         <mat-error>
                             Valid organization is required!
@@ -32,7 +30,6 @@
                         <input 
                         formControlName="country" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter country code">
                         <mat-error>
                             Valid country code is required!
@@ -45,7 +42,6 @@
                         <input 
                         formControlName="alias" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter alias">
                         <mat-error>
                             Valid alias is required!
@@ -56,7 +52,6 @@
                         <input 
                         formControlName="organizationUnit" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter organization unit">
                         <mat-error>
                             Valid organization unit is required!
@@ -67,7 +62,6 @@
                         <input 
                         formControlName="email" 
                         matInput 
-                        autocomplete="off"
                         placeholder="Enter email">
                         <mat-error>
                             Valid email is required!
@@ -76,7 +70,8 @@
                 </div>
             </app-spacer-container>
             <br><br>
-            <h6>Template:</h6><br>
+            <h6>Template:</h6>
+            <br>
             <div>
                 <mat-radio-group formControlName="template">
                     <app-spacer-container>
@@ -91,7 +86,7 @@
                         </mat-radio-button>
                     </app-spacer-container>
                 </mat-radio-group>
-                <div *ngIf="certificateRequestForm.get('template').hasError('required')" class="error">
+                <div *ngIf="certificateForm.get('template').hasError('required')" class="error">
                     Template is required!
                 </div>
             </div>

@@ -1,27 +1,13 @@
 @import "../../../../styles/theme";
 
-
-table{
-    background-color: whitesmoke;
-}
-
-thead > tr > th, td{
-    text-align: center;
-}
-
-th, td{
-    width: 50%;
-    height: 75px;
-}
-
 .root{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
     height: 85%;
     width: 100%;
+    margin: 0 auto;
 }
 
 .left{
@@ -31,4 +17,17 @@ th, td{
 
 .right{
     width: 55%;
+}
+
+table{
+    background-color: white;
+}
+
+thead th, td{
+    text-align: center;
+}
+
+th, td{
+    width: 50%;
+    height: 75px;
 }

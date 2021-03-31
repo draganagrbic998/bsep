@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogDTO {
 	
+	private long id;
 	private Date date;
 	private LogStatus status;
 	private String description;
@@ -21,6 +22,7 @@ public class LogDTO {
 	
 	public LogDTO(Log log) {
 		super();
+		this.id = log.getId();
 		this.date = log.getDate();
 		this.status = log.getStatus();
 		this.description = log.getDescription();

@@ -5,15 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class BlodTypePipe implements PipeTransform {
 
-  private convertToOperator(value: string): string{
-    if (value === 'PLUS'){
-      return '+';
-    }
-    return '-';
-  }
-
   transform(value: string): string {
-    return value.split('_')[0] + this.convertToOperator(value.split('_')[1]);
+    return value.split('_')[0] + (value.split('_')[1] === 'PLUS' ? '+' : '-');
   }
 
 }
