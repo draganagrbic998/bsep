@@ -44,7 +44,7 @@ export class PatientService {
   delete(id: number): Observable<boolean>{
     return this.http.delete<null>(`${this.API_PATH}/${id}`).pipe(
       map(() => true),
-      catchError(() => of(null))
+      catchError(() => of(false))
     );
   }
 
