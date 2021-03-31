@@ -54,12 +54,7 @@ public class LogService {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						try {
-							readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
-						} 
-						catch (Exception e) {
-							e.printStackTrace();
-						}
+						readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
 					}
 				}).start();
 			}
@@ -83,13 +78,18 @@ public class LogService {
 		return this.logRepository.saveAll(logs);
 	}
 	
-	private void readLogs(String path, long interval, String regExp) throws InterruptedException {
+	private void readLogs(String path, long interval, String regExp) {
 		while (true) {
-			List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
-			List<Log> logs = logsDTO.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
-			logs = this.save(logs);
-			logs.forEach(x -> this.eventService.addLog(x));
-			Thread.sleep(interval);	
+			try {
+				List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
+				List<Log> logs = logsDTO.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
+				logs = this.save(logs);
+				logs.forEach(x -> this.eventService.addLog(x));
+				Thread.sleep(interval);	
+			}
+			catch(Exception e) {
+				;
+			}
 		}
 	}
 	
