@@ -38,8 +38,8 @@ export class CertificateService {
   }
 
   revokeCertificate(certificateId: number): Observable<boolean> {
-    return this.httpClient.delete(`https://localhost:8080/api/certificates/${certificateId}`).pipe(
-      map((response: {value: boolean}) => response.value),
+    return this.httpClient.delete<boolean>(`https://localhost:8080/api/certificates/${certificateId}`).pipe(
+      map(() => true),
       catchError(() => of(false))
     );
   }
