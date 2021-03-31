@@ -15,6 +15,7 @@ public interface AlarmTriggeringRepository extends JpaRepository<AlarmTriggering
 	public Page<AlarmTriggering> findByPatientIdNotNullOrderByDateDesc(Pageable pageable);
 	
 	@Query("select count(m) from AlarmTriggering m where "
+			+ "m.patient is null and "
 			+ "(cast(:start as date) is null or m.date >= :start) and "
 			+ "(cast(:end as date) is null or m.date <= :end)")
 	public long report(Date start, Date end);
