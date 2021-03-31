@@ -6,6 +6,7 @@ import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
+import com.example.demo.utils.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ public class KeyStoreService {
 	private final KeyStoreReader keyStoreReader;
 	private final KeyStoreWriter keyStoreWriter;
 	private final PkiProperties pkiProperties;
-	private final String REQUESTED_CERT_FOLDER = "requested-certificates/";
 
 	@Autowired
 	public KeyStoreService(KeyStoreReader keyStoreReader, KeyStoreWriter keyStoreWriter, PkiProperties pkiProperties) {
@@ -68,10 +68,10 @@ public class KeyStoreService {
 				pkiProperties.getKeystorePassword(), alias, pkiProperties.getKeystorePassword());
 	}
 
-	public void saveSeperateKeyStore(CertificateInfo issuer, CertificateInfo certInfo, PrivateKey privateKey,
+	public void saveSeperateKeyStore(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
 			Certificate[] newCertificateChain) {
-		String filename = pkiProperties.getKeystorePath() + REQUESTED_CERT_FOLDER + issuer.getOrganizationUnit()
-				+ "_to_" + certInfo.getOrganizationUnit() + ".jks";
+		String filename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER + issuerInfo.getAlias()
+				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());
 		keyStoreWriter.write(certInfo.getOrganizationUnit(), privateKey,
 				pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);

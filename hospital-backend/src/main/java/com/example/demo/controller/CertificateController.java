@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CertificateRequestDTO;
+import com.example.demo.dto.CreatedCertificateDTO;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,10 +17,16 @@ public class CertificateController {
 	@Autowired
 	private CertificateService certificateService;
 
-	@PostMapping
+	@PostMapping(value = "/request")
 	public ResponseEntity<CertificateRequestDTO> sendRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
 		this.certificateService.sendCertificateRequest(certificateRequestDTO);
 		return ResponseEntity.ok(certificateRequestDTO);
 	}
 
+	@PreAuthorize("permitAll()")
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CreatedCertificateDTO> save(@RequestBody CreatedCertificateDTO createdCertificateDTO) {
+		this.certificateService.saveCertificate(createdCertificateDTO);
+		return ResponseEntity.ok(createdCertificateDTO);
+	}
 }

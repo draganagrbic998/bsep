@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
+import com.example.demo.dto.CreatedCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
 import com.example.demo.exception.InvalidIssuerException;
@@ -14,7 +15,9 @@ import com.example.demo.model.Template;
 import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.repository.CertificateRequestRepository;
 import com.example.demo.utils.CertificateGenerator;
+import com.example.demo.utils.Constants;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -22,16 +25,22 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -55,6 +64,9 @@ public class CertificateService {
 
 	@Autowired
 	private CertificateRequestMapper certificateRequestMapper;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public void createCertificate(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
@@ -116,8 +128,7 @@ public class CertificateService {
 
 		Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
 
-		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain,
-				keyPair.getPrivate());
+		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
 		this.keyStoreService.saveKeyStore();
 
 		// cuvamo ga u nov keystore da bi mogli posle da ga saljemo kome treba
@@ -125,9 +136,35 @@ public class CertificateService {
 
 		// sertifikat napravljen po zahtevu -> saljemo traziocu i brisemo zahtev
 		if (createCertificateDto.getId() != 0) {
-			
-			
-			this.certificateRequestRepository.deleteById(createCertificateDto.getId());
+			byte[] returnValue = null;
+			String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
+			InputStream in = null;
+
+			try {
+				// ovo ako ne prodje znaci da ovi fajlovi ne postoje
+				ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
+				ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
+				in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
+				returnValue = IOUtils.toByteArray(in);
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			try {
+				CreatedCertificateDTO dto = new CreatedCertificateDTO();
+				dto.setIssuerAlias(issuerInfo.getAlias());
+				dto.setAlias(certInfo.getAlias());
+				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
+				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
+				
+				this.restTemplate.postForEntity(
+						this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null).getPath(),
+						dto, CreatedCertificateDTO.class).getBody();
+				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
+			} catch (RestClientException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

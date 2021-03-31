@@ -31,6 +31,8 @@ public class CertificateRequest {
 
 	@Enumerated(EnumType.STRING)
 	private Template template;
+	
+	private String path;
 
 	public CertificateRequest(CertificateRequestDTO certificateRequestDTO) {
 		this.alias = certificateRequestDTO.getAlias();
@@ -40,5 +42,6 @@ public class CertificateRequest {
 		this.country = certificateRequestDTO.getCountry();
 		this.email = certificateRequestDTO.getEmail();
 		this.template = Template.valueOf(certificateRequestDTO.getTemplate());
+		this.path = certificateRequestDTO.getPath();
 	}
 }

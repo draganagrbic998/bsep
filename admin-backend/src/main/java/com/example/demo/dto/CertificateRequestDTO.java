@@ -38,6 +38,9 @@ public class CertificateRequestDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
+	@NotBlank(message = "Path cannot be empty")
+	private String path;
+	
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {
 		this.id = certificateRequest.getId();
 		this.alias = certificateRequest.getAlias();
@@ -47,6 +50,7 @@ public class CertificateRequestDTO {
 		this.country = certificateRequest.getCountry();
 		this.email = certificateRequest.getEmail();
 		this.template = certificateRequest.getTemplate().toString();
+		this.path = certificateRequest.getPath();
 	}
 
 }
