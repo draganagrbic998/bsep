@@ -131,7 +131,7 @@ public class CertificateService {
 		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
 		this.keyStoreService.saveKeyStore();
 
-		// cuvamo ga u nov keystore da bi mogli posle da ga saljemo kome treba
+		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
 		this.keyStoreService.saveSeperateKeyStore(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
 
 		// sertifikat napravljen po zahtevu -> saljemo traziocu i brisemo zahtev
