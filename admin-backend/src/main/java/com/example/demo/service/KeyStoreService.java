@@ -4,10 +4,10 @@ import com.example.demo.config.PkiProperties;
 import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
+import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
@@ -19,17 +19,17 @@ public class KeyStoreService {
 	private final KeyStoreReader keyStoreReader;
 	private final KeyStoreWriter keyStoreWriter;
 	private final PkiProperties pkiProperties;
+	private final String REQUESTED_CERT_FOLDER = "requested-certificates/";
+
 	@Autowired
-	public KeyStoreService(KeyStoreReader keyStoreReader,
-						   KeyStoreWriter keyStoreWriter,
-						   PkiProperties pkiProperties) {
+	public KeyStoreService(KeyStoreReader keyStoreReader, KeyStoreWriter keyStoreWriter, PkiProperties pkiProperties) {
 		this.keyStoreReader = keyStoreReader;
 		this.keyStoreWriter = keyStoreWriter;
 		this.pkiProperties = pkiProperties;
 	}
+
 	public void createKeyStore() {
-		keyStoreWriter.createKeyStore(pkiProperties.getKeystorePath(),
-				pkiProperties.getKeystoreName(),
+		keyStoreWriter.createKeyStore(pkiProperties.getKeystorePath(), pkiProperties.getKeystoreName(),
 				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
@@ -42,7 +42,7 @@ public class KeyStoreService {
 		keyStoreWriter.saveKeyStore(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
 				pkiProperties.getKeystorePassword().toCharArray());
 	}
-	
+
 	public void savePrivateKey(String alias, Certificate[] certificate, PrivateKey privateKey) {
 		keyStoreWriter.write(alias, privateKey, pkiProperties.getKeystorePassword().toCharArray(), certificate);
 	}
@@ -63,9 +63,18 @@ public class KeyStoreService {
 				pkiProperties.getKeystorePassword().toCharArray());
 	}
 
-	public PrivateKey readPrivateKey(String alias){
+	public PrivateKey readPrivateKey(String alias) {
 		return keyStoreReader.readPrivateKey(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
 				pkiProperties.getKeystorePassword(), alias, pkiProperties.getKeystorePassword());
 	}
 
+	public void saveSeperateKeyStore(CertificateInfo issuer, CertificateInfo certInfo, PrivateKey privateKey,
+			Certificate[] newCertificateChain) {
+		String filename = pkiProperties.getKeystorePath() + REQUESTED_CERT_FOLDER + issuer.getOrganizationUnit()
+				+ "_to_" + certInfo.getOrganizationUnit() + ".jks";
+		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());
+		keyStoreWriter.write(certInfo.getOrganizationUnit(), privateKey,
+				pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);
+		keyStoreWriter.saveKeyStore(filename, pkiProperties.getKeystorePassword().toCharArray());
+	}
 }

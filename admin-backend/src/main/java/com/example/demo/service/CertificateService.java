@@ -43,9 +43,8 @@ public class CertificateService {
 	private final CertificateGenerator certificateGenerator;
 
 	@Autowired
-	public CertificateService(KeyStoreService keyStoreService,
-							  CertificateInfoRepository certificateInfoRepository,
-							  CertificateGenerator certificateGenerator) {
+	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
+			CertificateGenerator certificateGenerator) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
@@ -56,7 +55,7 @@ public class CertificateService {
 
 	@Autowired
 	private CertificateRequestMapper certificateRequestMapper;
-	
+
 	public void createCertificate(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
 
@@ -74,8 +73,7 @@ public class CertificateService {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
 				throw new CertificateAuthorityException();
 			}
-		} 
-		catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 		}
 
 		String alias = createCertificateDto.getAlias();
@@ -118,12 +116,19 @@ public class CertificateService {
 
 		Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
 
-		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
-
+		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain,
+				keyPair.getPrivate());
 		this.keyStoreService.saveKeyStore();
 
-		if (createCertificateDto.getId() != 0)
+		// cuvamo ga u nov keystore da bi mogli posle da ga saljemo kome treba
+		this.keyStoreService.saveSeperateKeyStore(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+
+		// sertifikat napravljen po zahtevu -> saljemo traziocu i brisemo zahtev
+		if (createCertificateDto.getId() != 0) {
+			
+			
 			this.certificateRequestRepository.deleteById(createCertificateDto.getId());
+		}
 	}
 
 	public static X500Name certificateNameFromData(CreateCertificateDTO createCertificateDto) {
@@ -148,8 +153,8 @@ public class CertificateService {
 		for (int i = 0; i < chain.length; i++) {
 			x509cert = (X509Certificate) chain[i];
 
-			CertificateInfo certificateInfo = this.certificateInfoRepository.findById(x509cert.getSerialNumber().longValue())
-					.orElse(null);
+			CertificateInfo certificateInfo = this.certificateInfoRepository
+					.findById(x509cert.getSerialNumber().longValue()).orElse(null);
 
 			if (certificateInfo.isRevoked()) {
 				return false;
@@ -165,11 +170,9 @@ public class CertificateService {
 				}
 				X509Certificate issuer = (X509Certificate) chain[i + 1];
 				x509cert.verify(issuer.getPublicKey());
-			} 
-			catch (SignatureException | InvalidKeyException e) {
+			} catch (SignatureException | InvalidKeyException e) {
 				return false;
-			} 
-			catch (Exception e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -180,11 +183,9 @@ public class CertificateService {
 		try {
 			cert.verify(cert.getPublicKey());
 			return true;
-		} 
-		catch (SignatureException | InvalidKeyException e) {
+		} catch (SignatureException | InvalidKeyException e) {
 			return false;
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -195,8 +196,7 @@ public class CertificateService {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 			keyGen.initialize(2048, random);
 			return keyGen.generateKeyPair();
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -285,7 +285,6 @@ public class CertificateService {
 		PemObject pemFile = new PemObject("PRIVATE KEY", privateKey.getEncoded());
 		return this.writePem(pemFile);
 	}
-
 
 	private String writePem(Object obj) throws IOException {
 		StringWriter writer = new StringWriter();
