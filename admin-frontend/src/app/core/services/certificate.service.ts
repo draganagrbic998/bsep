@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { CertificateInfo } from '../model/certificate-info';
 import { catchError, map } from 'rxjs/operators';
 import { CertificateRequest } from '../model/certificate-request';
+import { Page } from '../model/page';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,14 @@ export class CertificateService {
 
   private readonly API_PATH = 'api/certificates';
 
-  getCertificates(page: number, size: number): Observable<any> {
+  getCertificates(page: number, size: number): Observable<Page<CertificateInfo>> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');
-    return this.httpClient.get(this.API_PATH, {params});
+    return this.httpClient.get<Page<CertificateInfo>>(this.API_PATH, {params});
+  }
+
+  getCertificateRequests(page: number, size: number): Observable<Page<CertificateRequest>> {
+    const params = new HttpParams().set('page', page + '').set('size', size + '');
+    return this.httpClient.get<Page<CertificateRequest>>(`${this.API_PATH}/requests`, {params});
   }
 
   downloadCrt(alias: string): Observable<any> {
@@ -38,7 +44,7 @@ export class CertificateService {
   }
 
   getByAlias(alias: string): Observable<any> {
-    return this.httpClient.get(`${this.API_PATH}/alias/${alias}`);
+    return this.httpClient.get<any>(`${this.API_PATH}/alias/${alias}`);
   }
 
   revokeCertificate(certificateId: number): Observable<boolean> {
@@ -48,8 +54,4 @@ export class CertificateService {
     );
   }
 
-  getCertificateRequests(page: number, size: number): Observable<any> {
-    const params = new HttpParams().set('page', page + '').set('size', size + '');
-    return this.httpClient.get(`${this.API_PATH}/requests`, {params});
-  }
 }
