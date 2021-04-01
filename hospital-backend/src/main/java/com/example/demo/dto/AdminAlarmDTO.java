@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import javax.validation.constraints.NotBlank;
+
 import com.example.demo.model.AdminAlarm;
 
 import lombok.Data;
@@ -11,6 +13,8 @@ public class AdminAlarmDTO {
 
 	private Long id;
 	private boolean status;
+	
+	@NotBlank(message = "Param can't be blank")
 	private String param;
 	private long counts;
 		

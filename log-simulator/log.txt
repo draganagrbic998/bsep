@@ -1,0 +1,1 @@
+01/04/2021-19:37:08|true|WARNING|Forbidden logs view|Perica|Comp1|PatientService
