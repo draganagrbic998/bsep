@@ -9,6 +9,7 @@ import com.example.demo.model.User;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -61,8 +62,12 @@ public class UserService implements UserDetailsService {
 		this.restTemplate.delete(USERS_API + "/" + id);
 	}
 
-	public List<UserDTO> read() {
+	public List<UserDTO> read(Pageable pageable) {
 		ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
-		return this.restTemplate.exchange(USERS_API, HttpMethod.GET, null, responseType).getBody();
+		return this.restTemplate.exchange(
+				String.format("%s?page=%d&size=%d", USERS_API, pageable.getPageNumber(), pageable.getPageSize()),
+				HttpMethod.GET,
+				null,
+				responseType).getBody();
 	}
 }

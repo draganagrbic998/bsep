@@ -14,11 +14,9 @@ export class CertificateService {
   certificates: CertificateInfo[] = [];
   certificateRequests: CertificateRequest[] = [];
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
-
   private readonly API_PATH = 'api/certificates';
+
+  constructor(private httpClient: HttpClient) { }
 
   getCertificates(page: number, size: number): Observable<any> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');

@@ -4,7 +4,7 @@ import {AuthService} from '../../core/services/auth.service';
 import {MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {Login} from '../../core/model/login';
-import {AuthToken} from 'src/app/core/model/authToken';
+import {AuthToken} from 'src/app/core/model/auth-token';
 
 @Component({
   selector: 'app-login',

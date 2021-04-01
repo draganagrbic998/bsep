@@ -61,7 +61,7 @@ public class CertificatesController {
 	@GetMapping(value = "/requests")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable)
-				.map(certificateRequest -> this.requestMapper.map(certificateRequest)));
+				.map(this.requestMapper::map));
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

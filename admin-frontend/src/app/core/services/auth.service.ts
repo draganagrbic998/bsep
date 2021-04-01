@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { AuthToken } from '../model/authToken';
+import { AuthToken } from '../model/auth-token';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Login } from '../model/login';

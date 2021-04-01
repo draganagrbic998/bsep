@@ -10,6 +10,7 @@ import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,8 +47,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<UserDTO>> readAll() {
-		return ResponseEntity.ok(this.userService.read());
+	public ResponseEntity<List<UserDTO>> readAll(Pageable pageable) {
+		return ResponseEntity.ok(this.userService.read(pageable));
 	}
 
 }
