@@ -2,7 +2,7 @@
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
       <span class="p-d-flex p-ai-center">
-        <button *ngIf="activeIndex !== 2" pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+        <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
         <p-progressSpinner class="p-as-center"
                            [style]="{width: '30px', height: '30px', 'margin-left': '1rem'}"
                            *ngIf="loadingTab"
@@ -45,13 +45,6 @@
                      (downloadKey)="this.downloadKey($event)"
                      #tree
       ></app-tree-view>
-    </div>
-    <div *ngIf="activeIndex === 2">
-      <app-request-view [templates]="templates"
-                      (openRequest)="this.openRequest($event)"
-                      #requestsTable
-      >
-      </app-request-view>
     </div>
   </div>
 
@@ -130,7 +123,7 @@
 <p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="header">
     <span class="p-text-left p-align-center p-d-flex">
-      <img src="../../../assets/certificate-icon.png" alt="certificate" height="30" width="30">
+      <img src="../../../../assets/certificate-icon.png" alt="certificate" height="30" width="30">
       <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.alias}}</span></span>
     </span>
   </ng-template>

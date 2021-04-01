@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CertificateService } from '../../core/services/certificate.service';
-import { CertificateInfo } from '../../core/model/certificate-info';
-import { MenuItem, MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
-import { TableViewComponent } from '../table-view/table-view.component';
-import { ConfirmationService } from 'primeng/api';
-import { TreeViewComponent } from '../tree-view/tree-view.component';
-import { RequestViewComponent } from '../request-view/request-view.component';
-import { CertificateRequest } from 'src/app/core/model/certificate-request';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {CertificateService} from '../../../core/services/certificate.service';
+import {CertificateInfo} from '../../../core/model/certificate-info';
+import {LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
+import {BehaviorSubject} from 'rxjs';
+import {Table} from 'primeng/table';
+import {TableViewComponent} from '../table-view/table-view.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import {Router} from '@angular/router';
+import {TreeViewComponent} from '../tree-view/tree-view.component';
 
 @Component({
   selector: 'app-certificates',
