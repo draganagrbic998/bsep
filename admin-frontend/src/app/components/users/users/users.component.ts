@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CertificateInfo} from '../../../core/model/certificate-info';
+import { CertificateInfo } from '../../../core/model/certificate-info';
 
 @Component({
   selector: 'app-users',
