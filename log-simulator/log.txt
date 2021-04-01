@@ -1,0 +1,1 @@
+01/04/2021-19:29:07|false|WARNING|Forbidden messages view|Zikica|Comp2|AlarmService

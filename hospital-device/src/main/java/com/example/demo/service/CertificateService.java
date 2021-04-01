@@ -16,6 +16,8 @@ public class CertificateService {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	private final static String HOSPITAL_API = "https://localhost:8081/api/certificates";
+
 	public void save(CertificateDTO certificateDTO) {
 		byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());
 		String fileName = certificateDTO.getIssuerAlias() + "_" + certificateDTO.getAlias() + "_"
@@ -25,11 +27,9 @@ public class CertificateService {
 			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
 			out.write(decryptedCertificate);
 			out.close();
-
-			// cuvamo i kod bolnice da bi mogli i za njega da pravimo zahtev za povlacenje
-			this.restTemplate.postForEntity(Constants.HOSPITAL_LOCATION, certificateDTO, CertificateDTO.class)
-					.getBody();
-		} catch (Exception e) {
+			this.restTemplate.postForEntity(HOSPITAL_API, certificateDTO, CertificateDTO.class);
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
