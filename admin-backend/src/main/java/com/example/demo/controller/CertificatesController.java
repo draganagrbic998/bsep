@@ -46,7 +46,7 @@ public class CertificatesController {
 	}
 
 	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests/create")
+	@PostMapping(value = "/requests")
 	public ResponseEntity<Void> createRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
 		this.certificateService.createCertificateRequest(certificateRequestDTO);
 		return ResponseEntity.ok().build();

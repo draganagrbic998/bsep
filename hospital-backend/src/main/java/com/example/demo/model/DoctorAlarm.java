@@ -19,6 +19,11 @@ public class DoctorAlarm {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn
+	private Patient patient;
 
 	private Double minPulse;
 	private Double maxPulse;
@@ -28,10 +33,5 @@ public class DoctorAlarm {
 	private Double maxTemperature;
 	private Double minOxygenLevel;
 	private Double maxOxygenLevel;
-	
-	@NotNull
-	@ManyToOne
-	@JoinColumn
-	private Patient patient;
 
 }

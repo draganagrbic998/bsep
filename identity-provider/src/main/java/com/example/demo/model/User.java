@@ -23,8 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
 
-@Data
 @SuppressWarnings("serial")
+@Data
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {

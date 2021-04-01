@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dto.SearchDTO;
+import com.example.demo.dto.MessageSearchDTO;
 import com.example.demo.model.Message;
 import com.example.demo.repository.MessageRepository;
 
@@ -20,7 +20,7 @@ public class MessageService {
 	@Autowired
 	private MessageEventService eventService;
 	
-	public Page<Message> findAll(Pageable pageable, SearchDTO searchDTO) {
+	public Page<Message> findAll(Pageable pageable, MessageSearchDTO searchDTO) {
 		return this.messageRepository.findAll(pageable, 
 			searchDTO.getInsuredNumber(), 
 			searchDTO.getFirstName(), 
@@ -31,7 +31,7 @@ public class MessageService {
 	@Transactional(readOnly = false)
 	public Message save(Message message) {
 		message = this.messageRepository.save(message);
-		this.eventService.checkAlarm(message);
+		this.eventService.checkAlarms(message);
 		return message;
 	}
 	

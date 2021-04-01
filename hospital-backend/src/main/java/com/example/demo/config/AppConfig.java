@@ -29,7 +29,7 @@ public class AppConfig {
 	private PkiProperties pkiProperties;
 
 	@Bean
-	public KieContainer kieContainer() {
+	public KieContainer getKieContainer() {
 		return KieServices.Factory.get().getKieClasspathContainer();
 	}
 
@@ -39,7 +39,6 @@ public class AppConfig {
 
 		try {
 			File file = ResourceUtils.getFile(this.pkiProperties.getKeystore());
-
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
@@ -52,8 +51,7 @@ public class AppConfig {
 			HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
 					.setMaxConnTotal(5).setMaxConnPerRoute(5).build();
 
-			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(
-					httpClient);
+			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);

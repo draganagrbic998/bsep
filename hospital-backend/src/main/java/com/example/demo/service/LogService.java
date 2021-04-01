@@ -23,7 +23,6 @@ import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Log;
 import com.example.demo.repository.LogRepository;
 import com.example.demo.utils.Configuration;
-import com.example.demo.utils.Constants;
 import com.example.demo.utils.LogConfiguration;
 import com.google.gson.Gson;
 
@@ -47,7 +46,7 @@ public class LogService {
 	public void init() {
 		try {
 			Gson gson = new Gson();
-            File file = ResourceUtils.getFile("classpath:" + Constants.CONFIGURATION);
+            File file = ResourceUtils.getFile("classpath:configuration.json");
 			Configuration configuration = gson.fromJson(new FileReader(file), Configuration.class);
 		
 			for (LogConfiguration lc: configuration.getConfigurations()) {
@@ -81,7 +80,8 @@ public class LogService {
 	private void readLogs(String path, long interval, String regExp) {
 		while (true) {
 			try {
-				List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
+				List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, 
+					new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
 				List<Log> logs = logsDTO.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
 				logs = this.save(logs);
 				logs.forEach(x -> this.eventService.addLog(x));

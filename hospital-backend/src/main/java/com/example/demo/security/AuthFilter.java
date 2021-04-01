@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.utils.Constants;
-
 public class AuthFilter extends OncePerRequestFilter {
 	
 	private UserDetailsService userService;
@@ -27,7 +25,7 @@ public class AuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		String token = request.getHeader(Constants.AUTH_HEADER);
+		String token = request.getHeader("Authorization");
 		if (token != null) {
 			UserDetails user = this.userService.loadUserByUsername(token);
 			if (user != null) {

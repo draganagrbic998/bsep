@@ -14,10 +14,10 @@ import com.example.demo.dto.MessageDTO;
 @Service
 public class DeviceService {
 
-	private static final long PATIENT_ID = 1;
 	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	private static final long SLEEP_INTERVAL = 5000;
+	private static final long PATIENT_ID = 1;
 	
 	@Autowired
 	private RestTemplate restTemplate;

@@ -41,23 +41,23 @@ public class LogService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					generateLogs();
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
+				generateLogs();
 			}
 		}).start();
 	}
 	
-	private void generateLogs() throws InterruptedException {
+	private void generateLogs() {
 		while (true) {
-			String text = String.format("%s|%s|%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
-				this.getMode(), this.getStatus(), this.getDescription(), 
-				this.getUserName(), this.getComputerName(), this.getServiceName());
-			this.logRepository.save(new Log(text));
-			Thread.sleep(SLEEP_INTERVAL);
+			try {
+				String text = String.format("%s|%s|%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
+					this.getMode(), this.getStatus(), this.getDescription(), 
+					this.getUserName(), this.getComputerName(), this.getServiceName());
+				this.logRepository.save(new Log(text));
+				Thread.sleep(SLEEP_INTERVAL);
+			}
+			catch(Exception e) {
+				;
+			}
 		}
 	}
 	

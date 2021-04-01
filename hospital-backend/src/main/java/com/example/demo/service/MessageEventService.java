@@ -20,7 +20,7 @@ public class MessageEventService {
 	@Autowired
 	private KieContainer kieContainer;
 	
-	public void checkAlarm(Message message) {
+	public void checkAlarms(Message message) {
 		KieSession kieSession = this.kieContainer.newKieSession(Constants.DOCTOR_ALARMS);
 		kieSession.getAgenda().getAgendaGroup(Constants.DOCTOR_ALARMS).setFocus();
 		kieSession.setGlobal("alarmService", this.alarmService);

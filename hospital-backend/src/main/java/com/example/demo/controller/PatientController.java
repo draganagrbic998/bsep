@@ -40,13 +40,11 @@ public class PatientController {
 
 	@PostMapping
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
-		patientDTO.setId(null);
 		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(patientDTO)));
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
-		patientDTO.setId(id);
 		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(id, patientDTO)));
 	}
 

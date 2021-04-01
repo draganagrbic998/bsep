@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -25,14 +25,14 @@ public class Patient {
 	@Column(unique = true)
 	private String insuredNumber;
 
+	@NotNull
+	private Date birthDate;
+
 	@NotBlank
 	private String firstName;
 	
 	@NotBlank
 	private String lastName;
-
-	@NotNull
-	private LocalDate birthDate;
 
 	@NotNull
 	private Gender gender;

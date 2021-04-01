@@ -16,7 +16,7 @@ export class CertificateService {
   private readonly API_PATH = 'api/certificates';
 
   sendRequest(request: CertificateRequest): Observable<CertificateRequest>{
-    return this.http.post<CertificateRequest>(this.API_PATH + '/request', request).pipe(
+    return this.http.post<CertificateRequest>(`${this.API_PATH}/request`, request).pipe(
       catchError(() => of(null))
     );
   }

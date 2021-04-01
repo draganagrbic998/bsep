@@ -25,7 +25,6 @@ public class AlarmMapper {
 
 	public DoctorAlarm map(long patientId, DoctorAlarmDTO alarmDTO) {
 		DoctorAlarm alarm = new DoctorAlarm();
-		alarm.setPatient(this.patientService.find(patientId));
 		alarm.setMinPulse(alarmDTO.getMinPulse());
 		alarm.setMaxPulse(alarmDTO.getMaxPulse());
 		alarm.setMinPressure(alarmDTO.getMinPressure());
@@ -34,6 +33,7 @@ public class AlarmMapper {
 		alarm.setMaxTemperature(alarmDTO.getMaxTemperature());
 		alarm.setMinOxygenLevel(alarmDTO.getMinOxygenLevel());
 		alarm.setMaxOxygenLevel(alarmDTO.getMaxOxygenLevel());
+		alarm.setPatient(this.patientService.find(patientId));
 		return alarm;
 	}
 	

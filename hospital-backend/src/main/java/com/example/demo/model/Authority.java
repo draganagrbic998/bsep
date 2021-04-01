@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("serial")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
 public class Authority implements GrantedAuthority {
 
 	public enum Authorities {

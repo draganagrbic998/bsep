@@ -31,10 +31,10 @@ public class PatientMapper {
 		patient.setBirthDate(patientDTO.getBirthDate());
 		patient.setGender(patientDTO.getGender());
 		patient.setBlodType(patientDTO.getBlodType());
-		patient.setHeight(patientDTO.getHeight());
-		patient.setWeight(patientDTO.getWeight());
 		patient.setAddress(patientDTO.getAddress());
 		patient.setCity(patientDTO.getCity());
+		patient.setHeight(patientDTO.getHeight());
+		patient.setWeight(patientDTO.getWeight());
 	}
 	
 }

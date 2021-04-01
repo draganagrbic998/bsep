@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CertificateRequestDTO;
-import com.example.demo.dto.CreatedCertificateDTO;
+import com.example.demo.dto.CertificateDTO;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CertificateController {
 
 	@Autowired
 	private CertificateService certificateService;
 
-	@PostMapping(value = "/request")
-	public ResponseEntity<CertificateRequestDTO> sendRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
-		this.certificateService.sendCertificateRequest(certificateRequestDTO);
-		return ResponseEntity.ok(certificateRequestDTO);
+	@PostMapping
+	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO) {
+		this.certificateService.save(certificateDTO);
+		return ResponseEntity.ok(certificateDTO);
 	}
 
-	@PreAuthorize("permitAll()")
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CreatedCertificateDTO> save(@RequestBody CreatedCertificateDTO createdCertificateDTO) {
-		this.certificateService.saveCertificate(createdCertificateDTO);
-		return ResponseEntity.ok(createdCertificateDTO);
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping(value = "/request")
+	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
+		this.certificateService.sendRequest(requestDTO);
+		return ResponseEntity.ok(requestDTO);
 	}
+	
 }

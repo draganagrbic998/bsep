@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SearchDTO {
+public class MessageSearchDTO {
 
 	@NotNull(message = "Insured number can't be null")
 	private String insuredNumber;
@@ -19,6 +19,7 @@ public class SearchDTO {
 	
 	@NotNull(message = "Last name can't be null")
 	private String lastName;
+	
 	private Date date;
 		
 }

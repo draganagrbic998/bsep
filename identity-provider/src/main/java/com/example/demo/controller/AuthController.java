@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,12 +34,17 @@ public class AuthController {
 	
 	@PostMapping
 	public ResponseEntity<UserDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
-		String token = tokenDTO.getToken();
-		User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getUsername(token));
-		if (user != null && this.tokenUtils.validateToken(token, user)) {
-			return ResponseEntity.ok(new UserDTO(user, token));
+		try {
+			String token = tokenDTO.getToken();
+			User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
+			if (user != null && this.tokenUtils.validateToken(user, token)) {
+				return ResponseEntity.ok(new UserDTO(user, token));
+			}
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		catch(Exception e) {
+			;
+		}
+		return ResponseEntity.ok(null);
 	}
 	
 	@PostMapping(value = "/login")
@@ -50,8 +54,9 @@ public class AuthController {
 			return ResponseEntity.ok(new UserDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 		}
 		catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			;
 		}
+		return ResponseEntity.ok(null);
 	}
 	
 }

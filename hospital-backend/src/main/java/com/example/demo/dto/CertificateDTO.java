@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreatedCertificateDTO {
+public class CertificateDTO {
 	
 	@NotBlank(message = "Issuer alias cannot be empty")
 	private String issuerAlias;

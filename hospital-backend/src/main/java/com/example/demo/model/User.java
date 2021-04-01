@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("serial")
 @Data
 @NoArgsConstructor
-@SuppressWarnings("serial")
 public class User implements UserDetails {
 
 	private List<Authority.Authorities> authorities;
