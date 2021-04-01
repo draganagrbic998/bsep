@@ -12,7 +12,8 @@ export const environment = {
   alarmTriggeringListRoute: 'alarm-triggering-list',
   logListRoute: 'log-list',
   reportRoute: 'report',
-  certificateFormRoute: 'certificate-form'
+  certificateFormRoute: 'certificate-form',
+  revokeFormRoute: 'revoke-form'
 };
 
 /*

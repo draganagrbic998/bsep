@@ -91,7 +91,7 @@ public class CertificatesController {
 	
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@RequestBody RevokeRequestDTO revokeRequestDTO) {
+	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO) {
 		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
 			return ResponseEntity.badRequest().build();
 		this.certificateService.revoke(revokeRequestDTO.getSerial());

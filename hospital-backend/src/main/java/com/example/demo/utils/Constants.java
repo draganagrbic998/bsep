@@ -13,5 +13,6 @@ public class Constants {
 
 	public final static String CERTIFICATES_FOLDER = "." + File.separator + "src" + File.separator + "main"
 			+ File.separator + "resources" + File.separator + "certificates" + File.separator;
+	public static final String CERTIFICATES_PATH = Constants.ADMIN_BACKEND + "/api/certificates/requests";
 
 }

@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CertificateRequestDTO;
-import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.dto.CertificateDTO;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +28,11 @@ public class CertificateController {
 		this.certificateService.sendRequest(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
-	
+
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@DeleteMapping
-	public ResponseEntity<RevokeRequestDTO> revoke(@RequestBody RevokeRequestDTO revokeRequestDTO) {
-		this.certificateService.sendRevokeRequest(revokeRequestDTO);
-		return ResponseEntity.ok(revokeRequestDTO);
+	@DeleteMapping(value = "/{certFileName}")
+	public ResponseEntity<String> revoke(@PathVariable String certFileName) {
+		this.certificateService.sendRevokeRequest(certFileName);
+		return ResponseEntity.noContent().build();
 	}
 }

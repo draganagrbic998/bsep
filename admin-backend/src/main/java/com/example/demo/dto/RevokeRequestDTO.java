@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class RevokeRequestDTO {
 
-	@NotBlank(message = "Serial number cannot be empty")
 	private long serial;
 
 	@NotBlank(message = "Path cannot be empty")

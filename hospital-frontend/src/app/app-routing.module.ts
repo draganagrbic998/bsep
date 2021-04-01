@@ -14,6 +14,7 @@ import { PatientFormComponent } from './components/patient/patient-form/patient-
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
+import { RevokeFormComponent } from './components/common/revoke-form/revoke-form.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,12 @@ const routes: Routes = [
   {
     path: environment.certificateFormRoute,
     component: CertificateFormComponent,
+    canActivate: [AuthGuard],
+    data: {authorities: [ADMIN]}
+  },
+  {
+    path: environment.revokeFormRoute,
+    component: RevokeFormComponent,
     canActivate: [AuthGuard],
     data: {authorities: [ADMIN]}
   },
