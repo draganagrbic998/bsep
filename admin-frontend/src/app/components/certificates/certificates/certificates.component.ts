@@ -5,6 +5,8 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { TableViewComponent } from '../table-view/table-view.component';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
+import { CertificateRequest } from '../../../core/model/certificate-request';
+import { RequestViewComponent } from '../request-view/request-view.component';
 
 @Component({
   selector: 'app-certificates',

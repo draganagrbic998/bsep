@@ -7,6 +7,7 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
 import { CertificatesComponent } from './components/certificates/certificates/certificates.component';
 import { TableViewComponent } from './components/certificates/table-view/table-view.component';
 import { TreeViewComponent } from './components/certificates/tree-view/tree-view.component';
+import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
 
 const routes: Routes = [
   {
