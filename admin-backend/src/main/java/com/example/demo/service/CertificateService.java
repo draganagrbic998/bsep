@@ -157,7 +157,7 @@ public class CertificateService {
 				dto.setAlias(certInfo.getAlias());
 				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
 				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
-				
+
 				this.restTemplate.postForEntity(
 						this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null).getPath(),
 						dto, CreatedCertificateDTO.class).getBody();

@@ -3,21 +3,13 @@ package com.example.demo.service;
 import java.io.FileOutputStream;
 import java.util.Base64;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.dto.CertificateRequestDTO;
-import com.example.demo.utils.Constants;
 import com.example.demo.dto.CertificateDTO;
+import com.example.demo.utils.Constants;
 
 @Service
 public class CertificateService {
-
-	@Autowired
-	private RestTemplate restTemplate;
-
-	private static final String CERTIFICATES_PATH = Constants.ADMIN_BACKEND + "/api/certificates/requests";
 
 	public void save(CertificateDTO certificateDTO) {
 		byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());
@@ -32,11 +24,6 @@ public class CertificateService {
 			e.printStackTrace();
 		}
 
-	}
-
-	public void sendRequest(CertificateRequestDTO requestDTO) {
-		requestDTO.setPath("https://" + requestDTO.getPath() + "/api/certificates");
-		this.restTemplate.postForEntity(CERTIFICATES_PATH, requestDTO, CertificateRequestDTO.class);
 	}
 
 }

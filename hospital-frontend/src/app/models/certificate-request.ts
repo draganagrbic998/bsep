@@ -6,4 +6,5 @@ export interface CertificateRequest {
   country: string;
   email: string;
   template: string;
+  path: string;
 }

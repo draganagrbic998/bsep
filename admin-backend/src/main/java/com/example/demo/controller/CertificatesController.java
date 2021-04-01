@@ -48,6 +48,10 @@ public class CertificatesController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
 	public ResponseEntity<Void> createRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
+		if (!certificateRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates")
+				&& !certificateRequestDTO.getPath().equalsIgnoreCase("https://localhost:8082/api/certificates"))
+			return ResponseEntity.badRequest().build();
+
 		this.certificateService.createCertificateRequest(certificateRequestDTO);
 		return ResponseEntity.ok().build();
 	}
