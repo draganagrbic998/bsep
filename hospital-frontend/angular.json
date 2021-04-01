@@ -67,7 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "bolnica-frontend:build",
-            "proxyConfig": "proxy.config.json"
+            "proxyConfig": "proxy.config.json",
+            "sslCert": "ssl/certificate.crt",
+            "sslKey": "ssl/certificate.key",
+            "ssl": true
           },
           "configurations": {
             "production": {
