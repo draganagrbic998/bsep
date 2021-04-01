@@ -4,7 +4,6 @@ import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
-import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,13 @@ public class CertificatesController {
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
 	private final CertificateInfoMapper infoMapper;
-	private final CertificateRequestMapper requestMapper;
 
 	@Autowired
 	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
-			CertificateInfoMapper certificateInfoMapper, CertificateRequestMapper requestMapper) {
+			CertificateInfoMapper certificateInfoMapper) {
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
 		this.infoMapper = certificateInfoMapper;
-		this.requestMapper = requestMapper;
 	}
 
 	@PostMapping
@@ -65,7 +62,7 @@ public class CertificatesController {
 	@GetMapping(value = "/requests")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable)
-				.map(certificateRequest -> this.requestMapper.map(certificateRequest)));
+				.map(certificateRequest -> new CertificateRequestDTO(certificateRequest)));
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.config.PkiProperties;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
@@ -29,19 +28,16 @@ public class Setup implements ApplicationRunner {
 	private final CertificateInfoRepository certificateInfoRepository;
 	private final CertificateService certificateService;
 	private final CertificateGenerator certificateGenerator;
-	private final PkiProperties pkiProperties;
 
 	@Autowired
 	public Setup(KeyStoreService keyStoreService,
 				 CertificateInfoRepository certificateInfoRepository,
 				 CertificateService certificateService,
-				 CertificateGenerator certificateGenerator,
-				 PkiProperties pkiProperties) {
+				 CertificateGenerator certificateGenerator) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateService = certificateService;
 		this.certificateGenerator = certificateGenerator;
-		this.pkiProperties = pkiProperties;
 	}
 
 	@Override

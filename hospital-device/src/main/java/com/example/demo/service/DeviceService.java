@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +16,7 @@ import com.example.demo.dto.MessageDTO;
 public class DeviceService {
 
 	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
+	private static final Random RANDOM = new Random();
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	private static final long SLEEP_INTERVAL = 5000;
 	private static final long PATIENT_ID = 1;
@@ -59,7 +61,7 @@ public class DeviceService {
 	}
 	
 	private double getTemperature() {
-		return Math.random();
+		return 30 + (45 - 35) * RANDOM.nextDouble();
 	}
 	
 	private double getOxygenLevel() {
