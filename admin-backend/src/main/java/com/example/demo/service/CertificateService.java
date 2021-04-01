@@ -25,7 +25,6 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,25 +49,24 @@ public class CertificateService {
 	private final KeyStoreService keyStoreService;
 	private final CertificateInfoRepository certificateInfoRepository;
 	private final CertificateGenerator certificateGenerator;
+	private CertificateRequestRepository certificateRequestRepository;
+	private CertificateRequestMapper certificateRequestMapper;
 
 	@Autowired
 	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
-			CertificateGenerator certificateGenerator) {
+			CertificateGenerator certificateGenerator, CertificateRequestRepository certificateRequestRepository, CertificateRequestMapper certificateRequestMapper) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
+		this.certificateRequestRepository = certificateRequestRepository;
+		this.certificateRequestMapper = certificateRequestMapper;
+		
 	}
-
-	@Autowired
-	private CertificateRequestRepository certificateRequestRepository;
-
-	@Autowired
-	private CertificateRequestMapper certificateRequestMapper;
 
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public void createCertificate(CreateCertificateDTO createCertificateDto) {
+	public void create(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
 
 		String issuerAlias = createCertificateDto.getIssuerAlias();
@@ -141,8 +139,6 @@ public class CertificateService {
 
 		try {
 			// ovo ako ne prodje znaci da ovi fajlovi ne postoje
-			ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
-			ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
 			in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
@@ -278,20 +274,12 @@ public class CertificateService {
 		this.certificateInfoRepository.save(ci);
 	}
 
-	public void createCertificateRequest(CertificateRequestDTO certificateRequestDTO) {
+	public void createRequest(CertificateRequestDTO certificateRequestDTO) {
 		this.certificateRequestRepository.save(this.certificateRequestMapper.map(certificateRequestDTO));
 	}
 
 	public Page<CertificateRequest> findAllRequests(Pageable pageable) {
 		return this.certificateRequestRepository.findAll(pageable);
-	}
-
-	public ByteArrayOutputStream getCrtStream(String alias) throws IOException {
-		return this.getObjectStream(getCrt(alias).getBytes());
-	}
-
-	public ByteArrayOutputStream getKeyStream(String alias) throws IOException {
-		return this.getObjectStream(getKey(alias).getBytes());
 	}
 
 	public ByteArrayOutputStream getObjectStream(byte[] bytes) {

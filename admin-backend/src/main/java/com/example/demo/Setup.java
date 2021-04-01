@@ -30,10 +30,8 @@ public class Setup implements ApplicationRunner {
 	private final CertificateGenerator certificateGenerator;
 
 	@Autowired
-	public Setup(KeyStoreService keyStoreService,
-				 CertificateInfoRepository certificateInfoRepository,
-				 CertificateService certificateService,
-				 CertificateGenerator certificateGenerator) {
+	public Setup(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
+				 CertificateService certificateService, CertificateGenerator certificateGenerator) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateService = certificateService;

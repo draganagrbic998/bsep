@@ -21,19 +21,6 @@ public class KeyStoreWriter {
 		}
 	}
 
-	public void createKeyStore(String filepath, String filename, char[] password) {
-		try {
-			this.keyStore.load(null, password);
-			FileOutputStream fileOutputStream = new FileOutputStream(filepath + filename);
-			this.keyStore.store(fileOutputStream, password);
-			fileOutputStream.close();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public void loadKeyStore(String fileName, char[] password) {
 		try {
 			if (fileName != null) {

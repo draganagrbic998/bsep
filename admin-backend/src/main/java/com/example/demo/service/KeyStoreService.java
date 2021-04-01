@@ -28,11 +28,6 @@ public class KeyStoreService {
 		this.pkiProperties = pkiProperties;
 	}
 
-	public void createKeyStore() {
-		keyStoreWriter.createKeyStore(pkiProperties.getKeystorePath(), pkiProperties.getKeystoreName(),
-				pkiProperties.getKeystorePassword().toCharArray());
-	}
-
 	public void loadKeyStore() {
 		keyStoreWriter.loadKeyStore(pkiProperties.getKeystorePath() + pkiProperties.getKeystoreName(),
 				pkiProperties.getKeystorePassword().toCharArray());

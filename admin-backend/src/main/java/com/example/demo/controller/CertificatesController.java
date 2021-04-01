@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URI;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,37 +29,36 @@ public class CertificatesController {
 
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
-	private final CertificateInfoMapper infoMapper;
+	private final CertificateInfoMapper certificateInfoMapper;
 
 	@Autowired
-	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
-			CertificateInfoMapper certificateInfoMapper) {
+	public CertificatesController(CertificateService certificateService, 
+			CertificateInfoService certificateInfoService, CertificateInfoMapper certificateInfoMapper) {
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
-		this.infoMapper = certificateInfoMapper;
+		this.certificateInfoMapper = certificateInfoMapper;
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody CreateCertificateDTO createCertificateDto) {
-		this.certificateService.createCertificate(createCertificateDto);
-		return ResponseEntity.created(URI.create("wontneedyou")).build();
+	public ResponseEntity<Void> create(@Valid @RequestBody CreateCertificateDTO certificateDTO) {
+		this.certificateService.create(certificateDTO);
+		return ResponseEntity.ok().build();
 	}
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@RequestBody CertificateRequestDTO certificateRequestDTO) {
-		if (!certificateRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates")
-				&& !certificateRequestDTO.getPath().equalsIgnoreCase("https://localhost:8082/api/certificates"))
+	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO) {
+		if (!requestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates")
+				&& !requestDTO.getPath().equalsIgnoreCase("https://localhost:8082/api/certificates"))
 			return ResponseEntity.badRequest().build();
-
-		this.certificateService.createCertificateRequest(certificateRequestDTO);
+		this.certificateService.createRequest(requestDTO);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable)
-				.map(certificateInfo -> this.infoMapper.mapToDto(certificateInfo, 0)));
+				.map(certificateInfo -> this.certificateInfoMapper.mapToDto(certificateInfo, 0)));
 	}
 
 	@GetMapping(value = "/requests")
@@ -84,9 +84,9 @@ public class CertificatesController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> revoke(@RequestBody RevokeDTO revokeDTO) {
+	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
 		this.certificateService.revoke(revokeDTO.getId());
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("permitAll()")
@@ -94,14 +94,13 @@ public class CertificatesController {
 	public ResponseEntity<Void> revokeRequest(@RequestBody RevokeRequestDTO revokeRequestDTO) {
 		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
 			return ResponseEntity.badRequest().build();
-
 		this.certificateService.revoke(revokeRequestDTO.getSerial());
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping(value = "/alias/{alias}")
 	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
-		return ResponseEntity.ok(this.infoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
+		return ResponseEntity.ok(this.certificateInfoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
 	}
 
 }
