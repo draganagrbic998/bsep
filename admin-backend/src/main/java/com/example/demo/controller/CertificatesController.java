@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.CertificateInfoDTO;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
+import com.example.demo.dto.RevokeDTO;
+import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
@@ -82,8 +84,18 @@ public class CertificatesController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> revoke(@PathVariable long id) {
-		this.certificateService.revoke(id);
+	public ResponseEntity<Void> revoke(@RequestBody RevokeDTO revokeDTO) {
+		this.certificateService.revoke(revokeDTO.getId());
+		return ResponseEntity.ok().build();
+	}
+	
+	@PreAuthorize("permitAll()")
+	@PostMapping(value = "/requests/revoke")
+	public ResponseEntity<Void> revokeRequest(@RequestBody RevokeRequestDTO revokeRequestDTO) {
+		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
+			return ResponseEntity.badRequest().build();
+
+		this.certificateService.revoke(revokeRequestDTO.getSerial());
 		return ResponseEntity.ok().build();
 	}
 
