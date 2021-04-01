@@ -25,7 +25,7 @@ public class CertificateInfoService {
 	}
 
 	public CertificateInfo findByAlias(String alias) {
-		return this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias);
+		return this.certificateInfoRepository.findByAliasIgnoreCase(alias);
 	}
 
 	@Transactional(readOnly = false)

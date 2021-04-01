@@ -56,10 +56,10 @@ export class TableViewComponent {
       {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(certificate)},
       {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(certificate)},
       {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(certificate)},
-      {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(certificate)}
     ];
-    if ((certificate.template === 'SUB_CA' && certificate.alias === this.caAlias) || certificate.revoked) {
-      items.splice(3, 1);
+
+    if (certificate.alias !== this.caAlias && !certificate.revoked && certificate.alias !== 'root') {
+      items.push({icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(certificate)});
     }
     if (!certificate.revoked && certificate.template === 'SUB_CA' && certificate.alias !== this.caAlias) {
       items.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(certificate)});

@@ -77,7 +77,7 @@ public class CertificateService {
 		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
 
 		X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
-		CertificateInfo issuerInfo = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
+		CertificateInfo issuerInfo = this.certificateInfoRepository.findByAliasIgnoreCase(issuerAlias);
 		if (!isCertificateValid(issuerAlias))
 			throw new InvalidIssuerException();
 
@@ -90,7 +90,7 @@ public class CertificateService {
 
 		String alias = createCertificateDto.getAlias();
 
-		if (this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias) != null)
+		if (this.certificateInfoRepository.findByAliasIgnoreCase(alias) != null)
 			throw new AliasExistsException();
 
 		KeyPair keyPair = generateKeyPair();

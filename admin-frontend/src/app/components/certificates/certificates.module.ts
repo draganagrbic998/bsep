@@ -24,6 +24,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { RequestViewComponent } from './request-view/request-view.component';
+import {InputTextModule} from 'primeng/inputtext';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { RequestViewComponent } from './request-view/request-view.component';
     ReactiveFormsModule,
     BadgeModule,
     ChipModule,
+    InputTextModule,
     TabViewModule,
     BlockUIModule,
     TabMenuModule,
