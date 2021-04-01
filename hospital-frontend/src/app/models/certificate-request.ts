@@ -1,4 +1,4 @@
-export class CertificateRequest {
+export interface CertificateRequest {
   alias: string;
   commonName: string;
   organization: string;
