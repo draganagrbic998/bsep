@@ -6,7 +6,7 @@ import { AuthGuard } from './utils/auth.guard';
 import { ADMIN, DOCTOR } from './utils/constants';
 
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
-import { CertificateFormComponent } from './components/common/certificate-form/certificate-form.component';
+import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
@@ -14,7 +14,7 @@ import { PatientFormComponent } from './components/patient/patient-form/patient-
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
-import { RevokeFormComponent } from './components/common/revoke-form/revoke-form.component';
+import { RevokeFormComponent } from './components/certificate/revoke-form/revoke-form.component';
 
 const routes: Routes = [
   {

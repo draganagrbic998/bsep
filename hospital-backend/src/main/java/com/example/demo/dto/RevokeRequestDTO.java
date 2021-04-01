@@ -13,4 +13,5 @@ public class RevokeRequestDTO {
 
 	@NotBlank(message = "Path cannot be empty")
 	private String path;
+	
 }

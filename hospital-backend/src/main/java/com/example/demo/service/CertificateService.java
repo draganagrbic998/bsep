@@ -17,10 +17,10 @@ import com.example.demo.dto.CertificateDTO;
 public class CertificateService {
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private KeyStoreService keyStoreService;
 
 	@Autowired
-	private KeyStoreService keystoreService;
+	private RestTemplate restTemplate;
 
 	public void save(CertificateDTO certificateDTO) {
 		byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());
@@ -31,9 +31,11 @@ public class CertificateService {
 			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
 			out.write(decryptedCertificate);
 			out.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void sendRequest(CertificateRequestDTO requestDTO) {
@@ -42,15 +44,11 @@ public class CertificateService {
 	}
 
 	public void sendRevokeRequest(String certFileName) {
-		X509Certificate cert = (X509Certificate) keystoreService
-				.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName);
-
-		RevokeRequestDTO revokeRequestDTO = new RevokeRequestDTO();
-		revokeRequestDTO.setSerial(cert.getSerialNumber().longValue());
-		revokeRequestDTO.setPath(Constants.BACKEND);
-		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", revokeRequestDTO,
-				RevokeRequestDTO.class);
-
+		X509Certificate cert = (X509Certificate) this.keyStoreService.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName);
+		RevokeRequestDTO requestDTO = new RevokeRequestDTO();
+		requestDTO.setSerial(cert.getSerialNumber().longValue());
+		requestDTO.setPath(Constants.BACKEND);
+		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", requestDTO, RevokeRequestDTO.class);
 	}
 
 }

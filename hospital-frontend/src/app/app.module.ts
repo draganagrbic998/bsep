@@ -13,14 +13,13 @@ import { AuthInterceptor } from './utils/auth.interceptor';
 import { BlodTypePipe } from './utils/blod-type.pipe';
 import { OnlyNumbersDirective } from './utils/only-numbers.directive';
 import { COMPONENTS } from './components';
-import { RevokeFormComponent } from './components/common/revoke-form/revoke-form.component';
 
 @NgModule({
   declarations: [...COMPONENTS, ...[
     AppComponent,
     BlodTypePipe,
     OnlyNumbersDirective,
-  ], RevokeFormComponent],
+  ]],
   imports: [
     AppRoutingModule,
     NgbModule,

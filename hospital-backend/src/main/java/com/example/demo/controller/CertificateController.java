@@ -31,7 +31,7 @@ public class CertificateController {
 
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping(value = "/{certFileName}")
-	public ResponseEntity<String> revoke(@PathVariable String certFileName) {
+	public ResponseEntity<Void> revoke(@PathVariable String certFileName) {
 		this.certificateService.sendRevokeRequest(certFileName);
 		return ResponseEntity.noContent().build();
 	}

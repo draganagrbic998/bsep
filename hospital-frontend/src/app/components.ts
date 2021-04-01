@@ -7,7 +7,7 @@ import { AdminAlarmListComponent } from './components/admin-alarm/admin-alarm-li
 import { AdminAlarmDialogComponent } from './components/admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
-import { CertificateFormComponent } from './components/common/certificate-form/certificate-form.component';
+import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
 import { DetailsContainerComponent } from './components/containers/details-container/details-container.component';
 import { DialogContainerComponent } from './components/containers/dialog-container/dialog-container.component';
 import { ListContainerComponent } from './components/containers/list-container/list-container.component';
@@ -30,6 +30,7 @@ import { PreloaderComponent } from './components/loaders/preloader/preloader.com
 import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
 import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
+import { RevokeFormComponent } from './components/certificate/revoke-form/revoke-form.component';
 
 export const COMPONENTS = [
     PatientFormComponent,
@@ -63,5 +64,6 @@ export const COMPONENTS = [
     CertificateFormComponent,
     DetailsContainerComponent,
     DialogContainerComponent,
-    ListContainerComponent
+    ListContainerComponent,
+    RevokeFormComponent
 ];
