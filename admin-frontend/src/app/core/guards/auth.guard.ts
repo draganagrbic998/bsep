@@ -13,13 +13,20 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const authorities = route.data.authorities as string[];
+    const isLoggedIn: boolean = this.authService.isLoggedIn();
+    const authorities = !route.data.authorities ? [] : route.data.authorities as string[];
+
     for (const authority of authorities){
       if (this.authService.getUser()?.authorities.includes(authority)){
         return true;
       }
     }
-    this.router.navigate(['login']);
+
+    if (isLoggedIn) {
+      this.router.navigate(['']);
+    } else {
+      this.router.navigate(['login']);
+    }
     return false;
   }
 }

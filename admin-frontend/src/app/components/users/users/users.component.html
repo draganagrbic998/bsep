@@ -2,178 +2,192 @@
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
       <span class="p-d-flex p-ai-center">
-        <button pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
-        <p-progressSpinner class="p-as-center"
-                           [style]="{width: '30px', height: '30px', 'margin-left': '1rem'}"
-                           *ngIf="loadingTab"
-        ></p-progressSpinner>
+        <button pButton label="New" icon="pi pi-plus" class="p-button-success" (click)="openNew()"></button>
       </span>
     </ng-template>
-    <ng-template pTemplate="right">
-      Current CA:
-      <button pButton [label]="!!ca ? ca.commonName : 'Details'" class="p-button p-button-outlined p-ml-3" (click)="openDetails(ca)"></button>
-      <button *ngIf="caAlias.getValue() !== 'root'"
-              pButton
-              label="Reset"
-              class="p-button p-button-warning p-ml-3"
-              (click)="resetCA()"
-      ></button>
-    </ng-template>
-
   </p-toolbar>
 
-  <p-tabMenu [model]="tabItems" [activeItem]="tabItems[activeIndex]"></p-tabMenu>
-  <div>
-    <div *ngIf="activeIndex === 0">
-      <app-table-view [templates]="templates"
-                      [caAlias]="caAlias.getValue()"
-                      (switchCA)="this.switchCA($event)"
-                      (revokeCertificate)="this.revokeCertificate($event)"
-                      (openDetails)="this.openDetails($event)"
-                      (downloadCrt)="this.downloadCrt($event)"
-                      (downloadKey)="this.downloadKey($event)"
-                      #table
-      >
-      </app-table-view>
-    </div>
-    <div *ngIf="activeIndex === 1">
-      <app-tree-view [caAlias]="caAlias.getValue()"
-                     (switchCA)="this.switchCA($event)"
-                     (revokeCertificate)="this.revokeCertificate($event)"
-                     (openDetails)="this.openDetails($event)"
-                     (downloadCrt)="this.downloadCrt($event)"
-                     (downloadKey)="this.downloadKey($event)"
-                     #tree
-      ></app-tree-view>
-    </div>
-  </div>
-
+  <p-table [value]="users"
+           [lazy]="true"
+           (onLazyLoad)="getCertificates($event)"
+           [rows]="10"
+           [paginator]="true"
+           [rowHover]="true"
+           [totalRecords]="totalRecords"
+           [loading]="loading"
+           dataKey="id"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [showCurrentPageReport]="true"
+           #table
+  >
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <h5 class="p-m-0">Manage Users</h5>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+        <th>Image</th>
+        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+        <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
+        <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
+        <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="product"></p-tableCheckbox>
+        </td>
+        <td>{{product.name}}</td>
+        <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="p-shadow-4" /></td>
+        <td>{{product.price | currency:'USD'}}</td>
+        <td>{{product.category}}</td>
+        <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
+        <td><span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td>
+        <td>
+          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editProduct(product)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        In total there are {{products ? products.length : 0 }} products.
+      </div>
+    </ng-template>
+  </p-table>
 </div>
 
-<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <div class="p-grid">
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="common-name">Common name</label>
-          <input type="text" pInputText id="common-name" [(ngModel)]="certificate.commonName" required autofocus/>
-          <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="alias">Alias</label>
-          <input type="text" pInputText id="alias" [(ngModel)]="certificate.alias" required autofocus/>
-          <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="organization">Organization</label>
-          <input type="text" pInputText id="organization" [(ngModel)]="certificate.organization" required autofocus />
-          <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="organization-unit">Organization unit</label>
-          <input type="text" pInputText id="organization-unit" [(ngModel)]="certificate.organizationUnit" required autofocus />
-          <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is required.</small>
-        </div>
-      </div>
-    </div>
+<!--<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">-->
+<!--  <ng-template pTemplate="content">-->
+<!--    <div class="p-grid">-->
+<!--      <div class="p-sm-12 p-md-6">-->
+<!--        <div class="p-field">-->
+<!--          <label for="common-name">Common name</label>-->
+<!--          <input type="text" pInputText id="common-name" [(ngModel)]="certificate.commonName" required autofocus/>-->
+<!--          <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="p-sm-12 p-md-6">-->
+<!--        <div class="p-field">-->
+<!--          <label for="alias">Alias</label>-->
+<!--          <input type="text" pInputText id="alias" [(ngModel)]="certificate.alias" required autofocus/>-->
+<!--          <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="p-sm-12 p-md-6">-->
+<!--        <div class="p-field">-->
+<!--          <label for="organization">Organization</label>-->
+<!--          <input type="text" pInputText id="organization" [(ngModel)]="certificate.organization" required autofocus />-->
+<!--          <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="p-sm-12 p-md-6">-->
+<!--        <div class="p-field">-->
+<!--          <label for="organization-unit">Organization unit</label>-->
+<!--          <input type="text" pInputText id="organization-unit" [(ngModel)]="certificate.organizationUnit" required autofocus />-->
+<!--          <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is required.</small>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div class="p-field">
-      <label for="country">Country code</label>
-      <input type="text" pInputText id="country" [(ngModel)]="certificate.country" required autofocus />
-      <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>
-    </div>
+<!--    <div class="p-field">-->
+<!--      <label for="country">Country code</label>-->
+<!--      <input type="text" pInputText id="country" [(ngModel)]="certificate.country" required autofocus />-->
+<!--      <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>-->
+<!--    </div>-->
 
-    <div class="p-field">
-      <label for="email">Email</label>
-      <input type="email" pInputText id="email" [(ngModel)]="certificate.email" required autofocus />
-      <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
-    </div>
+<!--    <div class="p-field">-->
+<!--      <label for="email">Email</label>-->
+<!--      <input type="email" pInputText id="email" [(ngModel)]="certificate.email" required autofocus />-->
+<!--      <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>-->
+<!--    </div>-->
 
-    <div class="p-field">
-      <label class="p-mb-3">Template</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton id="template1" name="template" value="SUB_CA" [(ngModel)]="certificate.template" #t1></p-radioButton>
-          <label (click)="t1.select(null)" for="template1">Subordinate CA</label>
-        </div>
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton id="template2" name="template" value="TLS" [(ngModel)]="certificate.template" #t2></p-radioButton>
-          <label (click)="t2.select(null)" for="template2">TLS Server</label>
-        </div>
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton id="template3" name="template" value="USER" [(ngModel)]="certificate.template" #t3></p-radioButton>
-          <label (click)="t3.select(null)" for="template3">User</label>
-        </div>
-      </div>
-    </div>
-  </ng-template>
+<!--    <div class="p-field">-->
+<!--      <label class="p-mb-3">Template</label>-->
+<!--      <div class="p-formgrid p-grid">-->
+<!--        <div class="p-field-radiobutton p-col-4">-->
+<!--          <p-radioButton id="template1" name="template" value="SUB_CA" [(ngModel)]="certificate.template" #t1></p-radioButton>-->
+<!--          <label (click)="t1.select(null)" for="template1">Subordinate CA</label>-->
+<!--        </div>-->
+<!--        <div class="p-field-radiobutton p-col-4">-->
+<!--          <p-radioButton id="template2" name="template" value="TLS" [(ngModel)]="certificate.template" #t2></p-radioButton>-->
+<!--          <label (click)="t2.select(null)" for="template2">TLS Server</label>-->
+<!--        </div>-->
+<!--        <div class="p-field-radiobutton p-col-4">-->
+<!--          <p-radioButton id="template3" name="template" value="USER" [(ngModel)]="certificate.template" #t3></p-radioButton>-->
+<!--          <label (click)="t3.select(null)" for="template3">User</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ng-template>-->
 
-  <ng-template pTemplate="footer">
-    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>
-    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCertificate()"></button>
-  </ng-template>
-</p-dialog>
+<!--  <ng-template pTemplate="footer">-->
+<!--    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>-->
+<!--    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCertificate()"></button>-->
+<!--  </ng-template>-->
+<!--</p-dialog>-->
 
-<p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">
-  <ng-template pTemplate="header">
-    <span class="p-text-left p-align-center p-d-flex">
-      <img src="../../../../assets/certificate-icon.png" alt="certificate" height="30" width="30">
-      <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.alias}}</span></span>
-    </span>
-  </ng-template>
-  <ng-template pTemplate="content">
-    <div class="p-m-2 p-p-2 details-content">
-      <div class="p-grid">
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Common name: </span> <span class="p-text-bold">{{certificate.commonName}}</span>
-        </div>
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Alias: </span> <span class="p-text-bold">{{certificate.alias}}</span>
-        </div>
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Organization: </span> <span class="p-text-bold">{{certificate.organization}}</span>
-        </div>
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Organization unit: </span> <span
-          class="p-text-bold">{{certificate.organizationUnit}}</span>
-        </div>
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Country code:</span> <span class="p-text-bold">{{certificate.country}}</span>
-        </div>
-        <div class="p-col-12 p-lg-6">
-          <span class="p-text-light">Email: </span> <span class="p-text-bold">{{certificate.email}}</span>
-        </div>
-      </div>
-      <hr>
-      <div class="p-grid p-justify-around p-mt-3">
-        <div class="p-col p-text-left p-as-center">
-          <span class="p-text-light">Issued by: </span> <span class="p-text-bold">{{certificate.issuerAlias}}</span>
-        </div>
-        <div class="p-col p-d-flex p-ai-center">
-          <p-chip *ngIf="caAlias.getValue() === certificate.alias; else noBadge"
-                  [label]="getTemplate(certificate.template).label" [icon]="getTemplate(certificate.template).icon"
-                  pBadge></p-chip>
-          <ng-template #noBadge>
-            <p-chip [label]="getTemplate(certificate.template).label"
-                    [icon]="getTemplate(certificate.template).icon"></p-chip>
-          </ng-template>
-          <p-badge class="p-ml-4" [value]="certificate.revoked ? 'REVOKED' : 'VALID'"
-                   [severity]="certificate.revoked ? 'danger' : 'success'"></p-badge>
-        </div>
-      </div>
-    </div>
+<!--<p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">-->
+<!--  <ng-template pTemplate="header">-->
+<!--    <span class="p-text-left p-align-center p-d-flex">-->
+<!--      <img src="../../../../assets/certificate-icon.png" alt="certificate" height="30" width="30">-->
+<!--      <span class="p-ml-3">Certificate: <span class="p-text-bold">{{certificate.alias}}</span></span>-->
+<!--    </span>-->
+<!--  </ng-template>-->
+<!--  <ng-template pTemplate="content">-->
+<!--    <div class="p-m-2 p-p-2 details-content">-->
+<!--      <div class="p-grid">-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Common name: </span> <span class="p-text-bold">{{certificate.commonName}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Alias: </span> <span class="p-text-bold">{{certificate.alias}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Organization: </span> <span class="p-text-bold">{{certificate.organization}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Organization unit: </span> <span-->
+<!--          class="p-text-bold">{{certificate.organizationUnit}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Country code:</span> <span class="p-text-bold">{{certificate.country}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col-12 p-lg-6">-->
+<!--          <span class="p-text-light">Email: </span> <span class="p-text-bold">{{certificate.email}}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <hr>-->
+<!--      <div class="p-grid p-justify-around p-mt-3">-->
+<!--        <div class="p-col p-text-left p-as-center">-->
+<!--          <span class="p-text-light">Issued by: </span> <span class="p-text-bold">{{certificate.issuerAlias}}</span>-->
+<!--        </div>-->
+<!--        <div class="p-col p-d-flex p-ai-center">-->
+<!--          <p-chip *ngIf="caAlias.getValue() === certificate.alias; else noBadge"-->
+<!--                  [label]="getTemplate(certificate.template).label" [icon]="getTemplate(certificate.template).icon"-->
+<!--                  pBadge></p-chip>-->
+<!--          <ng-template #noBadge>-->
+<!--            <p-chip [label]="getTemplate(certificate.template).label"-->
+<!--                    [icon]="getTemplate(certificate.template).icon"></p-chip>-->
+<!--          </ng-template>-->
+<!--          <p-badge class="p-ml-4" [value]="certificate.revoked ? 'REVOKED' : 'VALID'"-->
+<!--                   [severity]="certificate.revoked ? 'danger' : 'success'"></p-badge>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-  </ng-template>
+<!--  </ng-template>-->
 
-  <ng-template pTemplate="footer">
-    <button pButton  label="Close" icon="pi pi-times" class="p-button p-button-text" (click)="hideDetails()"></button>
-  </ng-template>
-</p-dialog>
+<!--  <ng-template pTemplate="footer">-->
+<!--    <button pButton  label="Close" icon="pi pi-times" class="p-button p-button-text" (click)="hideDetails()"></button>-->
+<!--  </ng-template>-->
+<!--</p-dialog>-->
 
 

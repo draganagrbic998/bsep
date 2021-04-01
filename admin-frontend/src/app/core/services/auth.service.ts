@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { User } from '../model/user';
+import { AuthToken } from '../model/authToken';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Login } from '../model/login';
@@ -12,14 +12,13 @@ import { Login } from '../model/login';
 })
 export class AuthService {
 
-  admin: BehaviorSubject<User | undefined>;
-  token: BehaviorSubject<string | undefined>;
+  authToken: BehaviorSubject<AuthToken | undefined>;
 
   constructor(
     private httpClient: HttpClient,
     private router: Router
   ) {
-    this.admin = new BehaviorSubject<User | undefined>(JSON.parse(localStorage.getItem('admin') as string));
+    this.authToken = new BehaviorSubject<AuthToken | undefined>(JSON.parse(localStorage.getItem('auth-token') as string));
   }
 
   set(key: string, value: object): void{
@@ -34,29 +33,29 @@ export class AuthService {
     return JSON.parse(localStorage.getItem(key));
   }
 
-  getUser(): User{
-    return this.get('admin') as User;
+  getUser(): AuthToken{
+    return this.get('auth-token') as AuthToken;
   }
 
-  login(login: Login): Observable<User> {
-    return this.httpClient.post<User>('auth/login', login).pipe(
+  login(login: Login): Observable<AuthToken> {
+    return this.httpClient.post<AuthToken>('auth/login', login).pipe(
       catchError(() => of(null))
     );
   }
 
-  loggedIn(admin: User): void {
-    this.admin.next(admin);
-    this.set('admin', admin);
+  loggedIn(admin: AuthToken): void {
+    this.authToken.next(admin);
+    this.set('auth-token', admin);
   }
 
   logout(): void {
-    this.admin.next(null);
-    this.remove('admin');
+    this.authToken.next(null);
+    this.remove('auth-token');
     this.router.navigateByUrl('/login');
   }
 
   isLoggedIn(): boolean {
-    return !!this.admin.getValue();
+    return !!this.authToken.getValue();
   }
 
 }
