@@ -42,6 +42,13 @@
         [routerLink]="'certificate-form'">
             Certificate request
         </button>
+        <button
+        *ngIf="onRoute('report')"
+        matTooltip="Revoke certificate request"
+        mat-button
+        [routerLink]="'revoke-form'">
+            Revoke certificate request
+        </button>
     </span>
     <span>
         <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
