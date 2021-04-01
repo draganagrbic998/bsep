@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {CertificatesComponent} from './certificates/certificates.component';
 import {TableViewComponent} from './table-view/table-view.component';
 import {TreeViewComponent} from './tree-view/tree-view.component';
@@ -23,14 +23,15 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {BrowserModule} from '@angular/platform-browser';
 import {MenuModule} from 'primeng/menu';
 import {MenubarModule} from 'primeng/menubar';
-
+import {RequestViewComponent} from './request-view/request-view.component';
 
 
 @NgModule({
   declarations: [
     CertificatesComponent,
     TableViewComponent,
-    TreeViewComponent
+    TreeViewComponent,
+    RequestViewComponent
   ],
   imports: [
     CommonModule,

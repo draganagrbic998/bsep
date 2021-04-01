@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import * as d3 from 'd3';
 import {CollapsibleNode} from '../../../core/model/collapsible-node';
 import {CertificateService} from '../../../core/services/certificate.service';
