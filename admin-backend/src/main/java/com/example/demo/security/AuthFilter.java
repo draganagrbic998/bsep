@@ -1,7 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.utils.Constants;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +26,7 @@ public class AuthFilter extends OncePerRequestFilter {
 									FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String token = request.getHeader(Constants.AUTH_HEADER);
+		String token = request.getHeader("Authorization");
 		if (token != null) {
 			UserDetails user = this.userService.loadUserByUsername(token);
 			if (user != null) {

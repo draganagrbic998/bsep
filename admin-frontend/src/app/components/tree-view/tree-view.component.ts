@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import {CollapsibleNode} from '../../core/model/collapsible-node';
-import {CertificateService} from '../../core/services/certificate.service';
-import {CertificateInfo} from '../../core/model/certificate-info';
-import {MenuItem} from 'primeng/api';
-import {ContextMenu} from 'primeng/contextmenu';
+import { CollapsibleNode } from '../../core/model/collapsible-node';
+import { CertificateService } from '../../core/services/certificate.service';
+import { CertificateInfo } from '../../core/model/certificate-info';
+import { MenuItem } from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-tree-view',
@@ -51,7 +51,9 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   @ViewChild('contextMenu')
   contextMenu!: ContextMenu;
 
-  constructor(private certificateService: CertificateService) { }
+  constructor(
+    private certificateService: CertificateService
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -59,6 +61,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.certificateService.ca.getValue().alias !== 'root') {
+      // tslint:disable-next-line: deprecation
       this.certificateService.getByAlias('root').subscribe(val => {
         this.switchCA.emit(val);
       });
@@ -260,6 +263,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       .attr('r', 12)
       .style('fill', 'red');
 
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias(d.data.alias).subscribe(val => {
       const children = val.issued.map(i => d3.hierarchy(i, j => j.issued));
 
@@ -301,12 +305,14 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     if (val === this.certificateService.ca.getValue().alias) {
       return;
     }
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias(val).subscribe(v => {
       this.certificateService.ca.next(v);
     });
   }
 
   reset(): void {
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias('root').subscribe(val => {
       this.certificateService.ca.next(val);
       this.switchCA.emit(val);

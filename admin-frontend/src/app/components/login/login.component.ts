@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../core/services/auth.service';
-import {MessageService} from 'primeng/api';
-import {Router} from '@angular/router';
-import {Login} from '../../core/model/login';
-import {log} from 'util';
-import { Admin } from 'src/app/core/model/admin';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { Login } from '../../core/model/login';
+import { User } from 'src/app/core/model/user';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +16,12 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
 
-  constructor(private authService: AuthService,
-              private formBuilder: FormBuilder,
-              private messageService: MessageService,
-              private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private messageService: MessageService,
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', Validators.required]
@@ -40,11 +41,10 @@ export class LoginComponent implements OnInit {
     login.email = this.loginForm.get('username').value;
     login.password = this.loginForm.get('password').value;
 
-
     this.loading = true;
     // tslint:disable-next-line: deprecation
     this.authService.login(login).subscribe(
-      (user: Admin) => {
+      (user: User) => {
         this.loading = false;
         if (user) {
           if (user.authorities[0] === 'SUPER_ADMIN') {
@@ -60,6 +60,5 @@ export class LoginComponent implements OnInit {
         }
       });
   }
-
 
 }

@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Table} from 'primeng/table';
-import {CertificateService} from '../../core/services/certificate.service';
-import {LazyLoadEvent, MenuItem} from 'primeng/api';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
+import { CertificateService } from '../../core/services/certificate.service';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { CertificateRequest } from 'src/app/core/model/certificate-request';
 
 @Component({
@@ -24,12 +24,15 @@ export class RequestViewComponent {
   @Output()
   openRequest: EventEmitter<CertificateRequest> = new EventEmitter<CertificateRequest>();
 
-  constructor(private certificateService: CertificateService) { }
+  constructor(
+    private certificateService: CertificateService
+  ) { }
 
   getCertificateRequests(event: LazyLoadEvent): void {
     this.loading = true;
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
+    // tslint:disable-next-line: deprecation
     this.certificateService.getCertificateRequests(page, size).subscribe(val => {
       this.certificateService.certificateRequests = val.content;
       this.totalRecords = val.totalElements;

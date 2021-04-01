@@ -20,10 +20,6 @@ export class DoctorAlarmDetailsComponent implements OnInit {
   @Input() alarm: DoctorAlarm = {} as DoctorAlarm;
   @Input() index = 0;
 
-  notEmpty(field: number): boolean{
-    return field !== undefined && field !== null;
-  }
-
   delete(): void{
     const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.alarmService.delete(this.alarm.id)}};
     // tslint:disable-next-line: deprecation

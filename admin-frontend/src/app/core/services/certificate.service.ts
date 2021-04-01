@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, of, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
-import {CertificateInfo} from '../model/certificate-info';
-import {asLiteral} from '@angular/compiler/src/render3/view/util';
+import { BehaviorSubject, of, Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { CertificateInfo } from '../model/certificate-info';
 import { catchError, map } from 'rxjs/operators';
 import { CertificateRequest } from '../model/certificate-request';
 
@@ -15,36 +14,42 @@ export class CertificateService {
   certificates: CertificateInfo[] = [];
   certificateRequests: CertificateRequest[] = [];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
-  getCertificates(page, size): Observable<any> {
-    return this.httpClient.get(`https://localhost:8080/api/certificates?page=${page}&size=${size}`);
+  private readonly API_PATH = 'api/certificates';
+
+  getCertificates(page: number, size: number): Observable<any> {
+    const params = new HttpParams().set('page', page + '').set('size', size + '');
+    return this.httpClient.get(this.API_PATH, {params});
   }
 
   downloadCrt(alias: string): Observable<any> {
-    return this.httpClient.get(`https://localhost:8080/api/certificates/download-crt/${alias}`, {responseType: 'blob'});
+    return this.httpClient.get(`${this.API_PATH}/download-crt/${alias}`, {responseType: 'blob'});
   }
 
   downloadKey(alias: string): Observable<any> {
-    return this.httpClient.get(`https://localhost:8080/api/certificates/download-key/${alias}`, {responseType: 'blob'});
+    return this.httpClient.get(`${this.API_PATH}/download-key/${alias}`, {responseType: 'blob'});
   }
 
   createCertificate(certificate: CertificateInfo): Observable<any> {
-    return this.httpClient.post('https://localhost:8080/api/certificates', certificate);
+    return this.httpClient.post(this.API_PATH, certificate);
   }
 
   getByAlias(alias: string): Observable<any> {
-    return this.httpClient.get(`https://localhost:8080/api/certificates/alias/${alias}`);
+    return this.httpClient.get(`${this.API_PATH}/alias/${alias}`);
   }
 
   revokeCertificate(certificateId: number): Observable<boolean> {
-    return this.httpClient.delete<boolean>(`https://localhost:8080/api/certificates/${certificateId}`).pipe(
+    return this.httpClient.delete<boolean>(`${this.API_PATH}/${certificateId}`).pipe(
       map(() => true),
       catchError(() => of(false))
     );
   }
 
-  getCertificateRequests(page, size): Observable<any> {
-    return this.httpClient.get(`https://localhost:8080/api/certificates/requests?page=${page}&size=${size}`);
+  getCertificateRequests(page: number, size: number): Observable<any> {
+    const params = new HttpParams().set('page', page + '').set('size', size + '');
+    return this.httpClient.get(`${this.API_PATH}/requests`, {params});
   }
 }

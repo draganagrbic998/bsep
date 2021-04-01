@@ -51,13 +51,5 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return false;
 	}
-	
-	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.ADMIN));
-	}
-	
-	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.DOCTOR));
-	}
-	
+		
 }

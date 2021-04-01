@@ -23,7 +23,6 @@ import java.security.KeyPair;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 
-
 @Component
 @NoArgsConstructor
 public class CertificateGenerator {

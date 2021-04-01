@@ -1,4 +1,4 @@
-export class Admin {
+export class User {
   token: string;
   authorities: string[];
 }

@@ -1,9 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Table} from 'primeng/table';
-import {CertificateService} from '../../core/services/certificate.service';
-import {LazyLoadEvent, MenuItem} from 'primeng/api';
-import {CertificateInfo} from '../../core/model/certificate-info';
-import {ActivatedRoute} from '@angular/router';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
+import { CertificateService } from '../../core/services/certificate.service';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { CertificateInfo } from '../../core/model/certificate-info';
 
 @Component({
   selector: 'app-table-view',
@@ -36,12 +35,15 @@ export class TableViewComponent {
   @Output()
   switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
-  constructor(private certificateService: CertificateService) { }
+  constructor(
+    private certificateService: CertificateService
+  ) { }
 
   getCertificates(event: LazyLoadEvent): void {
     this.loading = true;
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
+    // tslint:disable-next-line: deprecation
     this.certificateService.getCertificates(page, size).subscribe(val => {
       this.certificateService.certificates = val.content;
       this.totalRecords = val.totalElements;
@@ -69,7 +71,7 @@ export class TableViewComponent {
     return this.templates.find(t => t.value === value);
   }
 
-  reset(): any {
+  reset(): void {
     this.table.reset();
   }
 

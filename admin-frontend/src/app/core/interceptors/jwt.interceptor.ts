@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Admin } from '../model/admin';
-import {AuthService} from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -12,14 +11,14 @@ export class JwtInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const user: Admin = this.authService.getUser();
-    if (!user){
+    const token = this.authService.getUser()?.token;
+    if (!token){
       return next.handle(request);
     }
 
     request = request.clone({
       setHeaders: {
-        Authorization: user.token
+        Authorization: token
       }
     });
     return next.handle(request);

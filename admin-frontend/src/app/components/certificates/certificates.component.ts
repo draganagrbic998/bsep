@@ -1,14 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {CertificateService} from '../../core/services/certificate.service';
-import {CertificateInfo} from '../../core/model/certificate-info';
-import {LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
-import {BehaviorSubject} from 'rxjs';
-import {Table} from 'primeng/table';
-import {TableViewComponent} from '../table-view/table-view.component';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
-import {Router} from '@angular/router';
-import {TreeViewComponent} from '../tree-view/tree-view.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CertificateService } from '../../core/services/certificate.service';
+import { CertificateInfo } from '../../core/model/certificate-info';
+import { MenuItem, MessageService } from 'primeng/api';
+import { BehaviorSubject } from 'rxjs';
+import { TableViewComponent } from '../table-view/table-view.component';
+import { ConfirmationService } from 'primeng/api';
+import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { RequestViewComponent } from '../request-view/request-view.component';
 import { CertificateRequest } from 'src/app/core/model/certificate-request';
 
@@ -35,7 +32,6 @@ export class CertificatesComponent implements OnInit {
   ];
   activeIndex = 0;
 
-  // table
   @ViewChild('table')
   table: TableViewComponent;
   @ViewChild('tree')
@@ -43,10 +39,11 @@ export class CertificatesComponent implements OnInit {
   @ViewChild('requestsTable')
   requestsTable: RequestViewComponent;
 
-  constructor(private certificateService: CertificateService,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService,
-              private router: Router) { }
+  constructor(
+    private certificateService: CertificateService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
 
@@ -60,6 +57,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   getCA(): void {
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
     });
@@ -102,15 +100,15 @@ export class CertificatesComponent implements OnInit {
   }
 
   downloadCrt(certificate: CertificateInfo): void {
+    // tslint:disable-next-line: deprecation
     this.certificateService.downloadCrt(certificate.alias).subscribe(val => {
-      // download it
       this.download(val, 'certificate.crt');
     });
   }
 
   downloadKey(certificate: CertificateInfo): void {
+    // tslint:disable-next-line: deprecation
     this.certificateService.downloadKey(certificate.alias).subscribe(val => {
-      // download it
       this.download(val, 'certificate.key');
     });
   }
@@ -146,6 +144,7 @@ export class CertificatesComponent implements OnInit {
       message: `Are you sure that you want to revoke ${certificate.commonName}?`,
       defaultFocus: 'reject',
       accept: () => {
+        // tslint:disable-next-line: deprecation
         this.certificateService.revokeCertificate(certificate.id).subscribe(val => {
           if (val) {
             certificate.revoked = true;
@@ -170,7 +169,8 @@ export class CertificatesComponent implements OnInit {
 
     if (this.certificate.commonName.trim()) {
       this.certificate.issuerAlias = this.caAlias.getValue();
-      this.certificateService.createCertificate(this.certificate).subscribe(val => {
+      // tslint:disable-next-line: deprecation
+      this.certificateService.createCertificate(this.certificate).subscribe(() => {
         if (!!this.table) {
           this.table.reset();
         }
@@ -207,6 +207,7 @@ export class CertificatesComponent implements OnInit {
   openTable(): void {
     this.loadingTab = true;
     this.caAlias.next('root');
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
       this.activeIndex = 0;
@@ -217,6 +218,7 @@ export class CertificatesComponent implements OnInit {
   openTree(): void {
     this.loadingTab = true;
     this.caAlias.next('root');
+    // tslint:disable-next-line: deprecation
     this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
       this.activeIndex = 1;
@@ -227,7 +229,7 @@ export class CertificatesComponent implements OnInit {
   openRequestsTable(): void {
     this.activeIndex = 2;
   }
-  
+
   get certificates(): CertificateInfo[] {
     return this.certificateService.certificates;
   }

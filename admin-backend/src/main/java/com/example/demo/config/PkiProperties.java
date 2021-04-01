@@ -13,5 +13,4 @@ public class PkiProperties {
     private String keystoreName;
     private String keystorePassword;
 
-
 }

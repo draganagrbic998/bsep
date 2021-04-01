@@ -2,25 +2,24 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import {Admin} from '../model/admin';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {Login} from '../model/login';
-import {log} from 'util';
+import { User } from '../model/user';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Login } from '../model/login';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  admin: BehaviorSubject<Admin | undefined>;
+  admin: BehaviorSubject<User | undefined>;
   token: BehaviorSubject<string | undefined>;
 
   constructor(
     private httpClient: HttpClient,
     private router: Router
   ) {
-    this.admin = new BehaviorSubject<Admin | undefined>(JSON.parse(localStorage.getItem('admin') as string));
+    this.admin = new BehaviorSubject<User | undefined>(JSON.parse(localStorage.getItem('admin') as string));
   }
 
   set(key: string, value: object): void{
@@ -35,13 +34,17 @@ export class AuthService {
     return JSON.parse(localStorage.getItem(key));
   }
 
-  login(login: Login): Observable<Admin> {
-    return this.httpClient.post<Admin>('https://localhost:8080/auth/login', login).pipe(
+  getUser(): User{
+    return this.get('admin') as User;
+  }
+
+  login(login: Login): Observable<User> {
+    return this.httpClient.post<User>('auth/login', login).pipe(
       catchError(() => of(null))
     );
   }
 
-  loggedIn(admin: Admin): void {
+  loggedIn(admin: User): void {
     this.admin.next(admin);
     this.set('admin', admin);
   }
@@ -56,7 +59,4 @@ export class AuthService {
     return !!this.admin.getValue();
   }
 
-  getUser(): Admin{
-    return this.get('admin') as Admin;
-  }
 }

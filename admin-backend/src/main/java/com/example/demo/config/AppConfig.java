@@ -16,12 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@EnableAsync
 @EnableTransactionManagement
 public class AppConfig {
 
@@ -37,11 +35,9 @@ public class AppConfig {
 		RestTemplate restTemplate = new RestTemplate();
 
 		try {
-			File keystore = new File(Path.of(this.pkiProperties.getKeystorePath(),
-					this.pkiProperties.getKeystoreName()).toString());
-
+			File file = new File(Path.of(this.pkiProperties.getKeystorePath(), this.pkiProperties.getKeystoreName()).toString());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
-			InputStream inputStream = new FileInputStream(keystore);
+			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
@@ -52,8 +48,7 @@ public class AppConfig {
 			HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory)
 					.setMaxConnTotal(5).setMaxConnPerRoute(5).build();
 
-			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(
-					httpClient);
+			HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
@@ -62,6 +57,7 @@ public class AppConfig {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return restTemplate;
 	}
 

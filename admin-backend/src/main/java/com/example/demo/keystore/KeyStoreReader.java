@@ -5,10 +5,8 @@ import com.example.demo.model.IssuerData;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import org.bouncycastle.asn1.x500.X500Name;
@@ -67,9 +65,6 @@ public class KeyStoreReader {
 		return this.readCertificateChain(keyStoreFile, keyStorePass, alias)[0];
 	}
 
-	/**
-	 * Ucitava privatni kljuc is KS fajla
-	 */
 	public PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass) {
 		try {
 			KeyStore ks = KeyStore.getInstance("JKS", "SUN");
@@ -79,14 +74,11 @@ public class KeyStoreReader {
 			if(ks.isKeyEntry(alias)) {
 				return (PrivateKey) ks.getKey(alias, pass.toCharArray());
 			}
-		} catch (UnrecoverableKeyException |
-				KeyStoreException |
-				NoSuchProviderException |
-				NoSuchAlgorithmException |
-				CertificateException |
-				IOException e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 

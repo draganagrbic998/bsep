@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../../core/services/auth.service';
-import {Router} from '@angular/router';
-import {MenuItem} from 'primeng/api';
+import { Component } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-main-view',
@@ -23,15 +23,13 @@ export class MainViewComponent {
     {
       label: 'Users',
       routerLink: '/users'
-    },
-    {
-      label: 'Logs',
-      routerLink: '/logs'
     }
   ];
 
-  constructor(public authService: AuthService,
-              private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   logout(): void {
     this.authService.logout();

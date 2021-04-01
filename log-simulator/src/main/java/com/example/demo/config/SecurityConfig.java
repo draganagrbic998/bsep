@@ -5,13 +5,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.demo.security.AuthEntryPoint;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebMvc
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
