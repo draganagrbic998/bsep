@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.CertificateRequestDTO;
+import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.utils.Constants;
 import com.example.demo.dto.CertificateDTO;
 
@@ -37,6 +38,11 @@ public class CertificateService {
 	public void sendRequest(CertificateRequestDTO requestDTO) {
 		requestDTO.setPath("https://" + requestDTO.getPath() + "/api/certificates");
 		this.restTemplate.postForEntity(CERTIFICATES_PATH, requestDTO, CertificateRequestDTO.class);
+	}
+
+	public void sendRevokeRequest(RevokeRequestDTO revokeRequestDTO) {
+		revokeRequestDTO.setPath("https://" + revokeRequestDTO.getPath());
+		this.restTemplate.postForEntity(CERTIFICATES_PATH + "/revoke", revokeRequestDTO, RevokeRequestDTO.class);
 	}
 
 }
