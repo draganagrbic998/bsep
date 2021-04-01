@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, of, Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { CertificateInfo } from '../model/certificate-info';
-import { catchError, map } from 'rxjs/operators';
-import { CertificateRequest } from '../model/certificate-request';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {CertificateInfo} from '../model/certificate-info';
+import {catchError, map} from 'rxjs/operators';
+import {CertificateRequest} from '../model/certificate-request';
 
 @Injectable({
   providedIn: 'root'

@@ -1,9 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Table} from 'primeng/table';
 import {CertificateService} from '../../../core/services/certificate.service';
 import {LazyLoadEvent, MenuItem} from 'primeng/api';
 import {CertificateInfo} from '../../../core/model/certificate-info';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-table-view',
