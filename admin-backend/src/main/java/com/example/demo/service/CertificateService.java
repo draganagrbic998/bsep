@@ -134,37 +134,39 @@ public class CertificateService {
 		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
 		this.keyStoreService.saveSeperateKeyStore(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
 
-		// sertifikat napravljen po zahtevu -> saljemo traziocu i brisemo zahtev
-		if (createCertificateDto.getId() != 0) {
-			byte[] returnValue = null;
-			String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
-			InputStream in = null;
+		// saljemo traziocu i brisemo zahtev ako je sertifikat napravljen po zahtevu
+		byte[] returnValue = null;
+		String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
+		InputStream in = null;
 
-			try {
-				// ovo ako ne prodje znaci da ovi fajlovi ne postoje
-				ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
-				ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
-				in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
-				returnValue = IOUtils.toByteArray(in);
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			// ovo ako ne prodje znaci da ovi fajlovi ne postoje
+			ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
+			ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
+			in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
+			returnValue = IOUtils.toByteArray(in);
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-			try {
-				CreatedCertificateDTO dto = new CreatedCertificateDTO();
-				dto.setIssuerAlias(issuerInfo.getAlias());
-				dto.setAlias(certInfo.getAlias());
-				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
-				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
+		try {
+			CreatedCertificateDTO dto = new CreatedCertificateDTO();
+			dto.setIssuerAlias(issuerInfo.getAlias());
+			dto.setAlias(certInfo.getAlias());
+			dto.setOrganizationUnit(certInfo.getOrganizationUnit());
+			dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
 
+			if (createCertificateDto.getId() != 0) {
 				this.restTemplate.postForEntity(
 						this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null).getPath(),
 						dto, CreatedCertificateDTO.class).getBody();
+
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
-			} catch (RestClientException | IllegalArgumentException e) {
-				e.printStackTrace();
-			}
+			} else
+				this.restTemplate.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH, dto, CreatedCertificateDTO.class).getBody();
+		} catch (RestClientException | IllegalArgumentException e) {
+			e.printStackTrace();
 		}
 	}
 

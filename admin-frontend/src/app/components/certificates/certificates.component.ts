@@ -94,6 +94,8 @@ export class CertificatesComponent implements OnInit {
     this.certificate.template = cert.template;
     this.certificate.organization = cert.organization;
     this.certificate.organizationUnit = cert.organizationUnit;
+    this.certificate.path = cert.path;
+    console.log(this.certificate.path);
 
     this.submitted = false;
     this.newDialog = true;

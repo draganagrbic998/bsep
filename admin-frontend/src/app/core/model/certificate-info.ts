@@ -17,4 +17,5 @@ export class CertificateInfo {
     template: string;
     numIssued: number;
     issued: CertificateInfo[];
+    path: string;
 }

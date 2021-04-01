@@ -12,31 +12,34 @@ import javax.validation.constraints.Size;
 public class CreateCertificateDTO {
 
 	private long id;
-	
-    @NotBlank(message = "Issuer alias cannot be empty")
-    private String issuerAlias;
 
-    @NotBlank(message = "Alias cannot be empty")
-    private String alias;
+	@NotBlank(message = "Issuer alias cannot be empty")
+	private String issuerAlias;
 
-    @NotBlank(message = "Common name cannot be empty")
-    private String commonName;
+	@NotBlank(message = "Alias cannot be empty")
+	private String alias;
 
-    @NotBlank(message = "Organization cannot be empty")
-    private String organization;
+	@NotBlank(message = "Common name cannot be empty")
+	private String commonName;
 
-    @NotBlank(message = "Organization unit cannot be empty")
-    private String organizationUnit;
+	@NotBlank(message = "Organization cannot be empty")
+	private String organization;
 
-    @NotBlank(message = "Country cannot be empty")
-    @Size(min=2, max=2)
-    private String country;
+	@NotBlank(message = "Organization unit cannot be empty")
+	private String organizationUnit;
 
-    @NotBlank(message = "Email cannot be empty")
-    @Email
-    private String email;
+	@NotBlank(message = "Country cannot be empty")
+	@Size(min = 2, max = 2)
+	private String country;
 
-    @NotBlank(message = "Template cannot be empty")
-    private String template;
+	@NotBlank(message = "Email cannot be empty")
+	@Email
+	private String email;
+
+	@NotBlank(message = "Template cannot be empty")
+	private String template;
+
+	@NotBlank(message = "Path cannot be empty")
+	private String path;
 
 }
