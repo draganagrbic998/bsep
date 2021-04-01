@@ -1,17 +1,43 @@
 package com.example.demo.dto;
 
-import java.util.List;
-
 import com.example.demo.model.Authority;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class UserDTO {
-	
-	private String token;
-	private List<Authority.Authorities> authorities;
-	
+
+    private Long id;
+
+    @NotBlank
+    @Email
+    private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private boolean enabled;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String activationLink;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Instant activationExpiration;
+
+    private Set<Authority> authorities;
+
 }

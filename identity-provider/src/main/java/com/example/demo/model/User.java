@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -18,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.persistence.JoinColumn;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -49,7 +53,9 @@ public class User implements UserDetails {
 
 	@Column(unique = true)
 	private String activationLink;
-			
+
+	private Instant activationExpiration;
+
 	@NotNull
 	private boolean enabled;
 		
@@ -62,10 +68,11 @@ public class User implements UserDetails {
 	public User() {
 		super();
 		this.activationLink = UUID.randomUUID().toString();
+		this.activationExpiration = Instant.now().plus(48, ChronoUnit.HOURS);
 	}
-	
+
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Set<Authority> getAuthorities() {
 		return this.authorities;
 	}
 

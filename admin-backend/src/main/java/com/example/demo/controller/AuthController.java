@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LoginDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.AuthTokenDTO;
 import com.example.demo.service.UserService;
 
 import javax.validation.Valid;
@@ -26,7 +26,7 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
+	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 		return ResponseEntity.ok(this.userService.login(loginDTO));
 	}
 }

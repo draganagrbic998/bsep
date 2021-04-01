@@ -8,6 +8,7 @@ import { CertificatesComponent } from './components/certificates/certificates/ce
 import { TableViewComponent } from './components/certificates/table-view/table-view.component';
 import { TreeViewComponent } from './components/certificates/tree-view/tree-view.component';
 import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
+import {UsersComponent} from './components/users/users/users.component';
 
 const routes: Routes = [
   {
@@ -30,11 +31,26 @@ const routes: Routes = [
         data: {authorities: ['SUPER_ADMIN']},
         canActivate: [AuthGuard],
         children: [
-            {path: '', component: TableViewComponent},
-            {path: 'tree', component: TreeViewComponent},
-            {path: 'requests', component: RequestViewComponent}
+            {
+              path: '',
+              component: TableViewComponent
+            },
+            {
+              path: 'tree',
+              component: TreeViewComponent
+            },
+            {
+              path: 'requests',
+              component: RequestViewComponent
+            }
           ]
-        }
+        },
+      {
+        path: 'users',
+        component: UsersComponent,
+        data: {authorities: ['SUPER_ADMIN']},
+        canActivate: [AuthGuard],
+      }
     ]},
     {
       path: '**',
