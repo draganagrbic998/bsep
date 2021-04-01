@@ -1,18 +1,12 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.Log;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class LogDTO {
-	
-	private String text;
-	
-	public LogDTO(Log log) {
-		this.text = log.getText();
-	}
-	
+	private String text;	
 }

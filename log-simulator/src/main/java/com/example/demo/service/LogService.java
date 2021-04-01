@@ -1,6 +1,12 @@
 package com.example.demo.service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -8,32 +14,29 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.model.Log;
-import com.example.demo.repository.LogRepository;
+import com.example.demo.dto.LogDTO;
 
 @Service
-@Transactional(readOnly = false)
 public class LogService {
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+    private static final String FILE_PATH = "log.txt";
 	private static final long SLEEP_INTERVAL = 5000;
     private static Random RAND = new Random();
-
-	@Autowired
-	private LogRepository logRepository;
-	
-	public Log save(Log log) {
-		return this.logRepository.save(log);
-	}
-	
-	public List<Log> findAll(){
-		List<Log> logs = this.logRepository.findAll();
-		this.logRepository.deleteAll();
-		return logs;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+		
+	public List<LogDTO> findAll() throws IOException {
+		List<LogDTO> logsDTO = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			logsDTO.add(new LogDTO(line));
+		}
+		reader.close();
+		FileWriter writer = new FileWriter(FILE_PATH);
+		writer.close();
+		return logsDTO;
 	}
 
 	@PostConstruct
@@ -49,10 +52,12 @@ public class LogService {
 	private void generateLogs() {
 		while (true) {
 			try {
-				String text = String.format("%s|%s|%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
+				PrintWriter writer = new PrintWriter(FILE_PATH);
+				String line = String.format("%s|%s|%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
 					this.getMode(), this.getStatus(), this.getDescription(), 
 					this.getUserName(), this.getComputerName(), this.getServiceName());
-				this.logRepository.save(new Log(text));
+				writer.println(line);
+				writer.close();
 				Thread.sleep(SLEEP_INTERVAL);
 			}
 			catch(Exception e) {

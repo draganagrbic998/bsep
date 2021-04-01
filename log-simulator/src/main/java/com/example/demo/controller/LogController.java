@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,8 +21,8 @@ public class LogController {
 	private LogService logService;
 	
 	@GetMapping
-	public ResponseEntity<List<LogDTO>> findAll(){
-		return ResponseEntity.ok(this.logService.findAll().stream().map(LogDTO::new).collect(Collectors.toList()));
+	public ResponseEntity<List<LogDTO>> findAll() throws IOException {
+		return ResponseEntity.ok(this.logService.findAll());
 	}
 	
 }
