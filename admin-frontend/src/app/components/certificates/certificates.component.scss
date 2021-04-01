@@ -19,3 +19,10 @@
 :host::ng-deep div.p-progress-spinner {
   display: flex;
 }
+
+.reason {
+  max-height: 80%;
+  min-height: 65%;
+  max-width: 100%;
+  min-width: 100%;
+}

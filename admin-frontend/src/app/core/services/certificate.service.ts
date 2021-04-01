@@ -5,6 +5,7 @@ import { CertificateInfo } from '../model/certificate-info';
 import { catchError, map } from 'rxjs/operators';
 import { CertificateRequest } from '../model/certificate-request';
 import { Page } from '../model/page';
+import { Revoke } from '../model/revoke';
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +48,8 @@ export class CertificateService {
     return this.httpClient.get<any>(`${this.API_PATH}/alias/${alias}`);
   }
 
-  revokeCertificate(certificateId: number): Observable<boolean> {
-    return this.httpClient.delete<boolean>(`${this.API_PATH}/${certificateId}`).pipe(
+  revokeCertificate(revoke: Revoke): Observable<boolean> {
+    return this.httpClient.put<boolean>(this.API_PATH, revoke).pipe(
       map(() => true),
       catchError(() => of(false))
     );

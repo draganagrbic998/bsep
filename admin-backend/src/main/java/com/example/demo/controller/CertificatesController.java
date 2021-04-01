@@ -83,7 +83,7 @@ public class CertificatesController {
 		return ResponseEntity.ok().contentLength(length).body(resource);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@PutMapping
 	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
 		this.certificateService.revoke(revokeDTO.getId());
 		return ResponseEntity.noContent().build();

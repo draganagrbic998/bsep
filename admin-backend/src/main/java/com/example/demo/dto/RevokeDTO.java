@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class RevokeDTO {
 
-	@NotBlank(message = "Id cannot be empty")
 	private long id;
 
 	@NotBlank(message = "Reason cannot be empty")

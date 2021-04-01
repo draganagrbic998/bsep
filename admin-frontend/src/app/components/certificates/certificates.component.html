@@ -28,7 +28,7 @@
       <app-table-view [templates]="templates"
                       [caAlias]="caAlias.getValue()"
                       (switchCA)="this.switchCA($event)"
-                      (revokeCertificate)="this.revokeCertificate($event)"
+                      (revokeCertificate)="this.openRevoke($event)"
                       (openDetails)="this.openDetails($event)"
                       (downloadCrt)="this.downloadCrt($event)"
                       (downloadKey)="this.downloadKey($event)"
@@ -39,7 +39,7 @@
     <div *ngIf="activeIndex === 1">
       <app-tree-view [caAlias]="caAlias.getValue()"
                      (switchCA)="this.switchCA($event)"
-                     (revokeCertificate)="this.revokeCertificate($event)"
+                     (revokeCertificate)="this.openRevoke($event)"
                      (openDetails)="this.openDetails($event)"
                      (downloadCrt)="this.downloadCrt($event)"
                      (downloadKey)="this.downloadKey($event)"
@@ -189,4 +189,18 @@
   </ng-template>
 </p-dialog>
 
+<p-dialog [(visible)]="revokeDialog" [style]="{width: '600px'}" header="Revoke certificate" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field reason">
+      <label for="reason">Reason</label>
+      <textarea class="reason" pInputText id="reason" [(ngModel)]="revoke.reason" required autofocus></textarea>
+      <small class="p-error" *ngIf="submitted && !revoke.reason">Reason for revocation is required.</small>
+    </div>
+    <hr>
+  </ng-template>
 
+  <ng-template pTemplate="footer">
+    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideRevoke()"></button>
+    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="revokeCertificate()"></button>
+  </ng-template>
+</p-dialog>

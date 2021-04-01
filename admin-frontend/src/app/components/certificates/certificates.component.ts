@@ -8,6 +8,7 @@ import { ConfirmationService } from 'primeng/api';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { RequestViewComponent } from '../request-view/request-view.component';
 import { CertificateRequest } from 'src/app/core/model/certificate-request';
+import { Revoke } from 'src/app/core/model/revoke';
 
 @Component({
   selector: 'app-certificates',
@@ -17,9 +18,11 @@ import { CertificateRequest } from 'src/app/core/model/certificate-request';
 export class CertificatesComponent implements OnInit {
 
   certificate: CertificateInfo = new CertificateInfo();
+  revoke: Revoke = new Revoke();
   submitted = false;
   newDialog = false;
   detailsDialog = false;
+  revokeDialog = false;
   templates: any[];
   caAlias: BehaviorSubject<string> = new BehaviorSubject('root');
 
@@ -84,6 +87,17 @@ export class CertificatesComponent implements OnInit {
     this.certificate = new CertificateInfo();
   }
 
+  openRevoke(cert: CertificateInfo): void {
+    this.certificate = cert;
+    this.revoke.id = cert.id;
+    this.revokeDialog = true;
+  }
+
+  hideRevoke(): void {
+    this.revokeDialog = false;
+    this.revoke = new Revoke();
+  }
+
   openRequest(cert: CertificateRequest): void {
     this.certificate = new CertificateInfo();
     this.certificate.id = cert.id;
@@ -138,31 +152,29 @@ export class CertificatesComponent implements OnInit {
     }, 100);
   }
 
-  revokeCertificate(certificate: CertificateInfo): void {
-    this.confirmationService.confirm({
-      icon: 'pi pi-exclamation-triangle',
-      header: 'Confirm Revocation',
-      message: `Are you sure that you want to revoke ${certificate.commonName}?`,
-      defaultFocus: 'reject',
-      accept: () => {
-        // tslint:disable-next-line: deprecation
-        this.certificateService.revokeCertificate(certificate.id).subscribe(val => {
-          if (val) {
-            certificate.revoked = true;
-            if (!!this.table) {
-              this.table.reset();
-            }
-            if (!!this.tree) {
-              this.tree.reset();
-            }
-            this.messageService.add({severity: 'success', summary: 'Success', detail: `${certificate.commonName} successfully revoked.`});
+  revokeCertificate(): void {
+    this.submitted = true;
+
+    if (this.revoke.reason.trim()) {
+      // tslint:disable-next-line: deprecation
+      this.certificateService.revokeCertificate(this.revoke).subscribe(val => {
+        if (val) {
+          this.certificate.revoked = true;
+          if (!!this.table) {
+            this.table.reset();
           }
-          else {
-            this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
+          if (!!this.tree) {
+            this.tree.reset();
           }
-        });
-       }
-    });
+          this.revokeDialog = false;
+          this.messageService.add({
+            severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully revoked.`});
+        }
+        else {
+          this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
+        }
+      });
+    }
   }
 
   saveCertificate(): void {
