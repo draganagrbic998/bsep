@@ -37,6 +37,7 @@ export class UsersComponent implements OnInit {
     const size = this.rows;
     // tslint:disable-next-line: deprecation
     this.userService.get(page, size).subscribe(val => {
+      console.log(val);
       this.userService.users = val.content;
       this.totalRecords = val.totalElements;
       this.loading = false;

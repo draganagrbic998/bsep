@@ -14,6 +14,7 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    data: {unauthorized: true},
     canActivate: [AuthGuard]
   },
   {

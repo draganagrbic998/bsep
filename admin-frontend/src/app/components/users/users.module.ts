@@ -17,10 +17,13 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 
 @NgModule({
-  declarations: [UsersComponent],
+  declarations: [
+    UsersComponent
+  ],
   imports: [
     CommonModule,
     CommonModule,
@@ -40,7 +43,8 @@ import { MenubarModule } from 'primeng/menubar';
     InputNumberModule,
     ProgressSpinnerModule,
     MenuModule,
-    MenubarModule
+    MenubarModule,
+    OverlayPanelModule
   ]
 })
 export class UsersModule { }

@@ -19,6 +19,7 @@ public class UserMapper {
     public UserDTO mapToDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         userDTO.setAuthorities(user.getAuthorities());
         userDTO.setActivationLink(user.getActivationLink());

@@ -6,6 +6,7 @@ import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -65,8 +66,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public List<UserDTO> read(Pageable pageable) {
-	    return userRepository.findAll(pageable).stream().map(userMapper::mapToDTO).collect(Collectors.toList());
+    public Page<UserDTO> read(Pageable pageable) {
+	    return userRepository.findAll(pageable).map(userMapper::mapToDTO);
     }
 
 	@Override

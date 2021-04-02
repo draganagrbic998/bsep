@@ -29,20 +29,31 @@
       <tr>
         <th>First name</th>
         <th>Last name</th>
-        <th>Email</th>
+        <th class="responsive-column">Email</th>
         <th>Status</th>
+        <th>Authorities</th>
         <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
       <tr>
-        <td>
-          <p-tableCheckbox [value]="user"></p-tableCheckbox>
-        </td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
-        <td>{{user.email}}</td>
+        <td class="responsive-column">{{user.email}}</td>
         <td><p-badge [value]="user.enabled ? 'ENABLED' : 'DISABLED'" [severity]="user.enabled ? 'success' : 'danger'"></p-badge></td>
+        <td>
+          <p-overlayPanel appendTo="body" #op>
+            <ng-template pTemplate>
+              <p-chip *ngFor="let authority of user.authorities" [label]="authority.name"></p-chip>
+            </ng-template>
+          </p-overlayPanel>
+          <button pButton
+                  class="p-button-sm p-button-rounded p-button-outlined p-button-warning"
+                  icon="pi pi-star-o"
+                  label="Authorities"
+                  (click)="op.toggle($event)"
+          ></button>
+        </td>
         <td></td>
       </tr>
     </ng-template>
@@ -53,6 +64,8 @@
     </ng-template>
   </p-table>
 </div>
+
+
 
 <!--<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">-->
 <!--  <ng-template pTemplate="content">-->

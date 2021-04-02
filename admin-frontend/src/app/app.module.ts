@@ -22,6 +22,7 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CertificatesModule } from './components/certificates/certificates.module';
+import {UsersModule} from './components/users/users.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { CertificatesModule } from './components/certificates/certificates.modul
     MenuModule,
     MenubarModule,
     ButtonModule,
-    CertificatesModule
+    CertificatesModule,
+    UsersModule
   ],
   providers: [
     {

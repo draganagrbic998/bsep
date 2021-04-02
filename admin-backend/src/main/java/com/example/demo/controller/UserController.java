@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PageDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 public class UserController {
 
@@ -39,7 +41,7 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<UserDTO>> readAll(Pageable pageable) {
+	public ResponseEntity<PageDTO<UserDTO>> readAll(Pageable pageable) {
 		return ResponseEntity.ok(this.userService.read(pageable));
 	}
 

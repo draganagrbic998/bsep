@@ -15,29 +15,13 @@ import java.util.Set;
 public class UserDTO {
 
     private Long id;
-
-    @NotBlank
-    @Email
     private String email;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean enabled;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String activationLink;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Instant activationExpiration;
-
     private Set<Authority> authorities;
 
 }

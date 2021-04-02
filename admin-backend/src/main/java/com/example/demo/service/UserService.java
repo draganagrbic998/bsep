@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LoginDTO;
-import com.example.demo.dto.TokenDTO;
-import com.example.demo.dto.AuthTokenDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.*;
 import com.example.demo.model.User;
 
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = "https://localhost:8083/auth";
-	private static final String USERS_API = "https://localhost:8083/users";
+	private static final String USERS_API = "https://localhost:8083/api/users";
 
 
 	private final RestTemplate restTemplate;
@@ -62,12 +60,13 @@ public class UserService implements UserDetailsService {
 		this.restTemplate.delete(USERS_API + "/" + id);
 	}
 
-	public List<UserDTO> read(Pageable pageable) {
-		ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
+	public PageDTO<UserDTO> read(Pageable pageable) {
+		ParameterizedTypeReference<PageDTO<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
+
 		return this.restTemplate.exchange(
 				String.format("%s?page=%d&size=%d", USERS_API, pageable.getPageNumber(), pageable.getPageSize()),
 				HttpMethod.GET,
-				null,
+				new HttpEntity<>(null),
 				responseType).getBody();
 	}
 }
