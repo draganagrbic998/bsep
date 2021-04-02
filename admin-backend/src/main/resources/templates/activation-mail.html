@@ -10,6 +10,7 @@
         <!-- use the font -->
         <style type="text/css">
             body {
+                box-sizing: border-box;
                 font-family: 'Roboto', sans-serif;
                 background-color: #afe0e0;
             }
@@ -123,10 +124,11 @@
                 Now it's your task to activate your account and to set up your password.
             </p>
             <p><small>The activation link will expire in 48 hours.</small></p>
-        </div>
-
-        <div class="container">
-            <a th:href="${link}" class="btn effect01" target="_blank"><span>Hover</span></a>
+            <div class="buttons">
+                <div class="container">
+                    <a th:href="${link}" class="btn effect01" target="_blank"><span>Hover</span></a>
+                </div>
+            </div>
         </div>
         <p><small><a th:href="${link}" th:text="${link}"></a></small></p></div>
     </body>
