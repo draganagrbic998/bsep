@@ -6,6 +6,7 @@ import com.example.demo.dto.TokenDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.UserDoesNotExistException;
+import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
@@ -51,4 +52,8 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.read(pageable));
 	}
 
+	@GetMapping(value = "/authorities")
+	public ResponseEntity<List<Authority>> getAuthorities() {
+		return ResponseEntity.ok(this.userService.getAuthorities());
+	}
 }

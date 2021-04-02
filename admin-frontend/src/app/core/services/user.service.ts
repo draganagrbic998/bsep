@@ -3,6 +3,7 @@ import {CertificateInfo} from '../model/certificate-info';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {User} from '../model/user';
 import {Observable} from 'rxjs';
+import {Authority} from '../model/authority';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {Observable} from 'rxjs';
 export class UserService {
 
   users: User[] = [];
+  authorities: Authority[];
 
   private readonly API_PATH = 'api/users';
 
@@ -30,5 +32,9 @@ export class UserService {
 
   delete(user: User): Observable<any> {
     return this.httpClient.delete(`${this.API_PATH}/${user.id}`);
+  }
+
+  getAuthorities(): Observable<any> {
+    return this.httpClient.get(`${this.API_PATH}/authorities`);
   }
 }

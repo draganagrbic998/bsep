@@ -4,7 +4,9 @@ import com.example.demo.dto.UserDTO;
 import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.Authority;
 import com.example.demo.model.User;
+import com.example.demo.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,9 @@ public class UserService implements UserDetailsService {
 	@Autowired
     private UserMapper userMapper;
 
+	@Autowired
+    private AuthorityRepository authorityRepository;
+
 	public UserDTO create(UserDTO userDTO) throws EmailAlreadyExistsException {
 
         if (userRepository.findByEmail(userDTO.getEmail()) != null) {
@@ -40,7 +45,9 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userMapper.mapFromDTO(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        if (userDTO.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
 
         user = userRepository.save(user);
 
@@ -68,6 +75,10 @@ public class UserService implements UserDetailsService {
 
     public Page<UserDTO> read(Pageable pageable) {
 	    return userRepository.findAll(pageable).map(userMapper::mapToDTO);
+    }
+
+    public List<Authority> getAuthorities() {
+	    return this.authorityRepository.findAll();
     }
 
 	@Override

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.*;
+import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 
 import com.google.gson.reflect.TypeToken;
@@ -65,6 +66,15 @@ public class UserService implements UserDetailsService {
 
 		return this.restTemplate.exchange(
 				String.format("%s?page=%d&size=%d", USERS_API, pageable.getPageNumber(), pageable.getPageSize()),
+				HttpMethod.GET,
+				new HttpEntity<>(null),
+				responseType).getBody();
+	}
+
+	public List<Authority> getAuthorities() {
+		ParameterizedTypeReference<List<Authority>> responseType = new ParameterizedTypeReference<>() {};
+		return this.restTemplate.exchange(
+				String.format("%s/authorities", USERS_API),
 				HttpMethod.GET,
 				new HttpEntity<>(null),
 				responseType).getBody();

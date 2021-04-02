@@ -18,6 +18,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {InputTextModule} from 'primeng/inputtext';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    InputTextModule,
     BadgeModule,
     ChipModule,
     ContextMenuModule,
@@ -44,7 +47,8 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
     ProgressSpinnerModule,
     MenuModule,
     MenubarModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    MultiSelectModule
   ]
 })
 export class UsersModule { }

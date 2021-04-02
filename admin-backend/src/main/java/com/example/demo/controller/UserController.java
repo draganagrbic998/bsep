@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.PageDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.model.Authority;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,4 +46,8 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.read(pageable));
 	}
 
+	@GetMapping(value = "/authorities")
+	public ResponseEntity<List<Authority>> getAuthorities() {
+		return ResponseEntity.ok(this.userService.getAuthorities());
+	}
 }

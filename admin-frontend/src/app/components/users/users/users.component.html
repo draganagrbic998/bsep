@@ -65,40 +65,76 @@
   </p-table>
 </div>
 
+<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New user" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="userForm">
+      <div class="p-grid">
+        <div class="p-sm-12 p-md-6">
+          <div class="p-field">
+            <label for="first-name">First name</label>
+            <input type="text"
+                   formControlName="firstName"
+                   pInputText
+                   id="first-name"
+                   required
+                   autofocus
+            />
+            <small class="p-error" *ngIf="userForm.get('firstName').dirty && !userForm.get('firstName').valid">First name is required.</small>
+          </div>
+        </div>
+        <div class="p-sm-12 p-md-6">
+          <div class="p-field">
+            <label for="last-name">Last name</label>
+            <input type="text"
+                   formControlName="lastName"
+                   pInputText
+                   id="last-name"
+                   required
+                   autofocus/>
+            <small class="p-error" *ngIf="userForm.get('lastName').dirty && !userForm.get('lastName').valid">Last name is required.</small>
+          </div>
+        </div>
+        <div class="p-col-12">
+          <div class="p-field">
+            <label for="authorities">Authorities</label>
+            <p-multiSelect inputId="authorities"
+                           formControlName="authorities"
+                           [options]="authorities"
+                           optionLabel="name"
+                           display="chip"
+            ></p-multiSelect>
+            <small class="p-error"
+                   *ngIf="userForm.get('authorities').dirty && !userForm.get('authorities').valid"
+            >
+              Authorities are required.
+            </small>
 
-
-<!--<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">-->
-<!--  <ng-template pTemplate="content">-->
-<!--    <div class="p-grid">-->
-<!--      <div class="p-sm-12 p-md-6">-->
-<!--        <div class="p-field">-->
-<!--          <label for="common-name">Common name</label>-->
-<!--          <input type="text" pInputText id="common-name" [(ngModel)]="certificate.commonName" required autofocus/>-->
-<!--          <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="p-sm-12 p-md-6">-->
-<!--        <div class="p-field">-->
-<!--          <label for="alias">Alias</label>-->
-<!--          <input type="text" pInputText id="alias" [(ngModel)]="certificate.alias" required autofocus/>-->
-<!--          <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="p-sm-12 p-md-6">-->
-<!--        <div class="p-field">-->
-<!--          <label for="organization">Organization</label>-->
-<!--          <input type="text" pInputText id="organization" [(ngModel)]="certificate.organization" required autofocus />-->
-<!--          <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="p-sm-12 p-md-6">-->
-<!--        <div class="p-field">-->
-<!--          <label for="organization-unit">Organization unit</label>-->
-<!--          <input type="text" pInputText id="organization-unit" [(ngModel)]="certificate.organizationUnit" required autofocus />-->
-<!--          <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is required.</small>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+          </div>
+        </div>
+        <div class="p-col-12">
+          <div class="p-field">
+            <label for="email">Email</label>
+            <input type="email"
+                   formControlName="email"
+                   pInputText
+                   id="email"
+                   required
+                   autofocus
+            />
+            <small class="p-error" *ngIf="userForm.get('email').dirty && !userForm.get('email').valid">Email is required.</small>
+          </div>
+        </div>
+        <div class="p-col-12">
+          <div [style]="{height: '30px'}"></div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>
+    <button pButton label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+  </ng-template>
+</p-dialog>
 
 <!--    <div class="p-field">-->
 <!--      <label for="country">Country code</label>-->
@@ -131,10 +167,7 @@
 <!--    </div>-->
 <!--  </ng-template>-->
 
-<!--  <ng-template pTemplate="footer">-->
-<!--    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>-->
-<!--    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCertificate()"></button>-->
-<!--  </ng-template>-->
+
 <!--</p-dialog>-->
 
 <!--<p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">-->
