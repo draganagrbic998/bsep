@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.List;
@@ -28,10 +29,13 @@ public class UserService implements UserDetailsService {
 
 
 	private final RestTemplate restTemplate;
+	private final EmailService emailService;
 
 	@Autowired
-	public UserService(RestTemplate restTemplate) {
+	public UserService(RestTemplate restTemplate,
+					   EmailService emailService) {
 		this.restTemplate = restTemplate;
+		this.emailService = emailService;
 	}
 
 	@Override
@@ -44,8 +48,25 @@ public class UserService implements UserDetailsService {
 	}
 
 	public UserDTO create(UserDTO userDTO) {
-		return this.restTemplate.postForEntity(USERS_API, userDTO, UserDTO.class).getBody();
+		UserDTO created = this.restTemplate.postForEntity(USERS_API, userDTO, UserDTO.class).getBody();
+		if (created == null) return null;
+
+		String link = created.getActivationLink();
+		String to = created.getEmail();
+		String firstName = created.getFirstName();
+
+		try {
+			this.emailService.sendActivationLink(to, firstName, link);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
+		return created;
 	}
+
+//	public void sendActivationEmail(long id) {
+//
+//	}
 
 	public UserDTO update(UserDTO userDTO) {
 		HttpEntity<UserDTO> userDTOHttpEntity = new HttpEntity<>(userDTO);
