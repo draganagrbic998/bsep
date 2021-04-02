@@ -14,6 +14,7 @@ export class UserService {
   authorities: Authority[];
 
   private readonly API_PATH = 'api/users';
+  private readonly AUTH_PATH = 'auth';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -36,5 +37,9 @@ export class UserService {
 
   getAuthorities(): Observable<any> {
     return this.httpClient.get(`${this.API_PATH}/authorities`);
+  }
+
+  getDisabled(uuid: string): Observable<any> {
+    return this.httpClient.get(`${this.AUTH_PATH}/disabled/${uuid}`);
   }
 }

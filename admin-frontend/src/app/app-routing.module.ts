@@ -9,11 +9,18 @@ import { TableViewComponent } from './components/certificates/table-view/table-v
 import { TreeViewComponent } from './components/certificates/tree-view/tree-view.component';
 import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
 import {UsersComponent} from './components/users/users/users.component';
+import {ActivateComponent} from './components/users/activate/activate.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    data: {unauthorized: true},
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'activate',
+    component: ActivateComponent,
     data: {unauthorized: true},
     canActivate: [AuthGuard]
   },

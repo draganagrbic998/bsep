@@ -20,11 +20,15 @@ import { MenubarModule } from 'primeng/menubar';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {InputTextModule} from 'primeng/inputtext';
 import {MultiSelectModule} from 'primeng/multiselect';
+import { ActivateComponent } from './activate/activate.component';
+import {CardModule} from 'primeng/card';
+import {PasswordModule} from 'primeng/password';
 
 
 @NgModule({
   declarations: [
-    UsersComponent
+    UsersComponent,
+    ActivateComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +52,9 @@ import {MultiSelectModule} from 'primeng/multiselect';
     MenuModule,
     MenubarModule,
     OverlayPanelModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CardModule,
+    PasswordModule
   ]
 })
 export class UsersModule { }
