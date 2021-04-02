@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ActivationDTO;
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.AuthTokenDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
 
 import javax.validation.Valid;
@@ -27,5 +29,13 @@ public class AuthController {
 		return ResponseEntity.ok(this.userService.login(loginDTO));
 	}
 
-	@GetMapping(value = "")
+	@GetMapping(value = "/disabled/{uuid}")
+	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
+		return ResponseEntity.ok(this.userService.getDisabled(uuid));
+	}
+
+	@PostMapping(value = "activate")
+	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
+		return ResponseEntity.ok(this.userService.activate(activationDTO));
+	}
 }

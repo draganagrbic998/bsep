@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ActivationDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.exception.ActivationExpiredException;
 import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.repository.UserRepository;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,6 +93,27 @@ public class UserService implements UserDetailsService {
 
     public List<Authority> getAuthorities() {
 	    return this.authorityRepository.findAll();
+    }
+
+    public UserDTO getDisabled(String uuid) {
+	    return this.userMapper.mapToDTO(this.userRepository.findByEnabledFalseAndActivationLink(uuid));
+    }
+
+    public UserDTO activate(ActivationDTO activationDTO) throws UserDoesNotExistException, ActivationExpiredException {
+        User found = this.userRepository.findByEnabledFalseAndActivationLink(activationDTO.getUuid());
+
+        if (found == null) {
+            throw new UserDoesNotExistException();
+        }
+
+        if (found.getActivationExpiration().isAfter(Instant.now())) {
+            throw new ActivationExpiredException();
+        }
+
+        found.setEnabled(true);
+        found.setPassword(passwordEncoder.encode(activationDTO.getPassword()));
+
+        this.userRepository.save(found);
     }
 
 	@Override

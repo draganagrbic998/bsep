@@ -68,6 +68,15 @@ public class UserService implements UserDetailsService {
 //
 //	}
 
+	public UserDTO getDisabled(String uuid) {
+		return this.restTemplate.getForEntity(String.format("%s/disabled/%s", AUTH_API, uuid), UserDTO.class).getBody();
+	}
+
+	public UserDTO activate(ActivationDTO activationDTO) {
+		return this.restTemplate.postForEntity(String.format("%s/activate", AUTH_API), activationDTO, UserDTO.class)
+				.getBody();
+	}
+
 	public UserDTO update(UserDTO userDTO) {
 		HttpEntity<UserDTO> userDTOHttpEntity = new HttpEntity<>(userDTO);
 		return this.restTemplate.exchange(

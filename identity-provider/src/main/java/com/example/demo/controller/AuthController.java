@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.*;
+import com.example.demo.exception.ActivationExpiredException;
+import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.model.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dto.LoginDTO;
-import com.example.demo.dto.TokenDTO;
-import com.example.demo.dto.AuthTokenDTO;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
@@ -57,5 +56,16 @@ public class AuthController {
 		catch(Exception ignored) {
 		}
 		return ResponseEntity.ok(null);
+	}
+
+	@GetMapping(value = "/disabled/{uuid}")
+	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
+		return ResponseEntity.ok(this.userService.getDisabled(uuid));
+	}
+
+	@PostMapping(value = "activate")
+	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) throws ActivationExpiredException, UserDoesNotExistException {
+		this.userService.activate(activationDTO);
+		return ResponseEntity.ok().build();
 	}
 }

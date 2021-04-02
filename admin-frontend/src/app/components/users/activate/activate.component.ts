@@ -13,6 +13,8 @@ export class ActivateComponent implements OnInit {
 
   user: User;
   activateForm: FormGroup;
+  loading = false;
+  expired = true;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -21,7 +23,7 @@ export class ActivateComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.formBuilder.group({
+    this.activateForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
       repeat: ['', [Validators.required]]
     });
@@ -34,11 +36,17 @@ export class ActivateComponent implements OnInit {
 
       this.userService.getDisabled(params.q).subscribe(val => {
           this.user = val;
+          console.log(this.user);
+          this.expired = new Date(this.user.activationExpiration).getTime() <= new Date().getTime();
         },
         () => {
           this.router.navigate(['login']);
         });
     });
+  }
+
+  activate(): void {
+    this.loading = true;
   }
 
 }

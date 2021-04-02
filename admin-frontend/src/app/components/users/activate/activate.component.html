@@ -6,13 +6,13 @@
     <p-card class="login-card">
       <div class="p-card-header">
         <div class="p-d-flex p-justify-center">
-          <h1 class="p-mt-1 p-mb-3 p-text-light">Login</h1>
+          <h1 class="p-mt-1 p-mb-3 p-text-light">Activation</h1>
         </div>
       </div>
-      <form [formGroup]="activateForm" (ngSubmit)="activate()">
+      <form [formGroup]="activateForm" (ngSubmit)="activate()" *ngIf="!expired; else isExpired">
         <div class="p-card-content">
           <div class="p-grid p-px-5">
-            <div class="p-col-12 p-mt-2 p-text-center">
+            <div class="p-col-12 p-text-center">
               <h1 class="p-text-light">Welcome, {{user.firstName}}</h1>
               <p>Activate your account by providing a password you plan on using while accessing it.</p>
             </div>
@@ -57,6 +57,17 @@
           </ng-template>
         </div>
       </form>
+      <ng-template #isExpired>
+        <div class="p-card-content">
+          <div class="p-card-content">
+            <div class="p-grid p-px-5">
+              <div class="p-col-12 p-mt-2 p-text-center">
+                We apologize, but your activation link has expired.
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </p-card>
   </div>
 </div>

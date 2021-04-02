@@ -1,6 +1,7 @@
 package com.example.demo.advice;
 
 import com.example.demo.dto.ErrorDTO;
+import com.example.demo.exception.ActivationExpiredException;
 import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.UserDoesNotExistException;
 import org.springframework.http.HttpStatus;
@@ -25,4 +26,18 @@ public class ErrorHandlingAdvice {
         return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "NO_USER"),
                 HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ActivationExpiredException.class)
+    @ResponseBody
+    ResponseEntity<ErrorDTO> onActivationExpiredException(ActivationExpiredException e) {
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ACTIVATION_EXPIRED"),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Void> handleException(Exception exception){
+        exception.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
