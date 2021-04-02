@@ -14,24 +14,24 @@
                 font-family: 'Roboto', sans-serif;
                 background-color: #afe0e0;
             }
+            
             .buttons {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-                justify-content: center;
-                text-align: center;
+                justify-content: center !important;
+                text-align: center !important;
                 width: 100%;
                 height: 100%;
                 margin: 0 auto;
-                /*   padding: 2em 0em; */
             }
 
             .container {
-                align-items: center;
+                align-items: center !important;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-                text-align: center;
+                justify-content: center !important;
+                text-align: center !important;
                 background-color: #FFF;
                 padding:  40px 0px;
                 width: 240px;
@@ -68,7 +68,6 @@
                 box-shadow:0 0 0 4px #EEE inset;
             }
 
-            /*btn_text*/
             .effect01 span {
                 transition: all 0.2s ease-out;
                 z-index: 2;
@@ -78,7 +77,6 @@
                 color: #333;
             }
 
-            /*highlight*/
             .effect01:after {
                 background: #FFF;
                 border: 0 solid #000;
@@ -103,30 +101,31 @@
                 transform: rotate(40deg);
             }
             .content {
-                text-align: center;
-                align-content: center;
-                align-items: center;
-                justify-content: center;
-                justify-items: center;
+                text-align: center !important;
+                align-content: center !important;
+                align-items: center !important;
+                justify-content: center !important;
+                justify-items: center !important;
             }
         </style>
     </head>
     <body>
-    <div class="content">
-        <div>
-            <p th:text="${'Hello Dear ' + firstName}"></p>
+        <div class="content">
+            <div>
+                <p th:text="${'Hello Dear ' + firstName}"></p>
 
-            <p>
-                Your account has been successfully created by a super admin.
-            </p>
+                <p>
+                    Your account has been successfully created by a super admin.
+                </p>
 
-            <p>
-                Now it's your task to activate your account and to set up your password.
-            </p>
-            <p><small>The activation link will expire in 48 hours.</small></p>
-            <div class="buttons">
-                <div class="container">
-                    <a th:href="${link}" class="btn effect01" target="_blank"><span>Hover</span></a>
+                <p>
+                    Now it's your task to activate your account and to set up your password.
+                </p>
+                <p><small>The activation link will expire in 48 hours.</small></p>
+                <div class="buttons">
+                    <div class="container">
+                        <a th:href="${link}" class="btn effect01" target="_blank"><span>Activate</span></a>
+                    </div>
                 </div>
             </div>
         </div>
