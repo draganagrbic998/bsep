@@ -65,9 +65,15 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New user" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="newDialog"
+          [style]="{width: '600px'}"
+          header="New user"
+          [modal]="true"
+          styleClass="p-fluid"
+          (onHide)="userForm.reset()"
+>
   <ng-template pTemplate="content">
-    <form [formGroup]="userForm">
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()">
       <div class="p-grid">
         <div class="p-sm-12 p-md-6">
           <div class="p-field">

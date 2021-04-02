@@ -42,7 +42,6 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String email;
 	
-	@NotBlank
 	private String password;
 		
 	@NotBlank

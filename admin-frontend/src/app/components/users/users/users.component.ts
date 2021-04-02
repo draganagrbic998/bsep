@@ -64,6 +64,8 @@ export class UsersComponent implements OnInit {
   }
 
   hideNew(): void {
+    this.user = new User();
+    this.userForm.reset();
     this.newDialog = false;
     this.submitted = false;
   }
@@ -80,6 +82,7 @@ export class UsersComponent implements OnInit {
         if (!!this.table) {
           this.table.reset();
         }
+        this.userForm.reset();
         this.newDialog = false;
         this.messageService.add(
           {
@@ -88,7 +91,7 @@ export class UsersComponent implements OnInit {
             detail: `The account for ${this.user.firstName} ${this.user.lastName} successfully created.
             An activation link was sent to ${this.user.email}.`
           });
-
+        this.user = new User();
       });
     }
   }

@@ -20,6 +20,8 @@ import static org.bouncycastle.asn1.iana.IANAObjectIdentifiers.mail;
 @Service
 public class EmailService {
 
+    private final String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
+
     @Autowired
     private JavaMailSender emailSender;
 
@@ -34,7 +36,8 @@ public class EmailService {
                 StandardCharsets.UTF_8.name());
         Context context = new Context();
 
-        Map<String, Object> variables = Map.of("firstName", firstName, "link", link);
+        Map<String, Object> variables =
+                Map.of("firstName", firstName, "link", String.format(this.ACTIVATE_URL, link));
         context.setVariables(variables);
 
         String html = templateEngine.process("activation-mail", context);

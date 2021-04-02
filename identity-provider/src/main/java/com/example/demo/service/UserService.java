@@ -19,11 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserService implements UserDetailsService {
 
 	@Autowired
@@ -45,6 +46,12 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userMapper.mapFromDTO(userDTO);
+
+        List<Authority> authorities = authorityRepository.findAllById(userDTO.getAuthorities()
+                .stream().map(Authority::getId).collect(Collectors.toList()));
+
+        user.setAuthorities(new HashSet<>(authorities));
+
         if (userDTO.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         }
@@ -60,7 +67,11 @@ public class UserService implements UserDetailsService {
 	    user.setEmail(userDTO.getEmail());
 	    user.setFirstName(userDTO.getFirstName());
 	    user.setLastName(userDTO.getLastName());
-	    user.setAuthorities(userDTO.getAuthorities());
+
+        List<Authority> authorities = authorityRepository.findAllById(userDTO.getAuthorities()
+                .stream().map(Authority::getId).collect(Collectors.toList()));
+
+        user.setAuthorities(new HashSet<>(authorities));
 
 	    user = userRepository.save(user);
 

@@ -32,8 +32,9 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) throws EmailAlreadyExistsException {
-		return ResponseEntity.created(URI.create(this.userService.create(userDTO).getId().toString())).build();
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) throws EmailAlreadyExistsException {
+		UserDTO created = this.userService.create(userDTO);
+		return ResponseEntity.created(URI.create(created.getId().toString())).body(created);
 	}
 
 	@PutMapping
