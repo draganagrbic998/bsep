@@ -23,7 +23,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 	public Page<Log> findAll(Pageable pageable, String mode, String status, String ipAddress, String description, Date date);
 	
 	@Query("select count(m) from Log m where "
-			+ "m.status = :status and "
+			+ "lower(m.status) like lower(concat('%', :status, '%')) and "
 			+ "(cast(:start as date) is null or m.date >= :start) and "
 			+ "(cast(:end as date) is null or m.date <= :end)")
 	public long report(String status, Date start, Date end);

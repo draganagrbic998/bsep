@@ -3,7 +3,7 @@
 		{
 			"path": "https://localhost:8084/api/logs",
 			"interval": 5000,
-			"regExp": ""
+			"regExp": ".*"
 		}
 	]
 }

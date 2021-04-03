@@ -26,7 +26,7 @@ rule "Alarm for log status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($count + " logs with " + $logList.get(0) + " status appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($count + " number of logs with " + $logList.get(0) + " status appeared in the last minute!!"));
 
 end
 
@@ -47,6 +47,6 @@ rule "Alarm for log description"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($count + " attempts on '" + $logList.get(0) + "' action appeared in the last minute from the same user/computer!"));
+        alarmTriggeringService.save(new AlarmTriggering($count + " number of attempts on '" + $logList.get(0) + "' action appeared in the last minute from the same IP address!"));
 
 end

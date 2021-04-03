@@ -82,7 +82,7 @@ public class LogService {
 			try {
 				List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, 
 					new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
-				List<Log> logs = logsDTO.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
+				List<Log> logs = logsDTO.stream().filter(x -> x.getText().matches(regExp)).map(x -> this.logMapper.map(x)).collect(Collectors.toList());
 				logs = this.save(logs);
 				logs.forEach(x -> this.eventService.addLog(x));
 				Thread.sleep(interval);	
