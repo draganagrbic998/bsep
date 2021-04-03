@@ -46,12 +46,9 @@ public class CertificateService {
 	private final RestTemplate restTemplate;
 
 	@Autowired
-	public CertificateService(KeyStoreService keyStoreService,
-							  CertificateInfoRepository certificateInfoRepository,
-							  CertificateGenerator certificateGenerator,
-							  CertificateRequestRepository certificateRequestRepository,
-							  CertificateRequestMapper certificateRequestMapper,
-							  RestTemplate restTemplate) {
+	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
+			CertificateGenerator certificateGenerator, CertificateRequestRepository certificateRequestRepository,
+			CertificateRequestMapper certificateRequestMapper, RestTemplate restTemplate) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
@@ -59,8 +56,6 @@ public class CertificateService {
 		this.certificateRequestMapper = certificateRequestMapper;
 		this.restTemplate = restTemplate;
 	}
-
-
 
 	public void create(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
@@ -126,7 +121,10 @@ public class CertificateService {
 		this.keyStoreService.saveKeyStore();
 
 		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
-		this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+		String filename = this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+
+		// i u truststore
+		this.keyStoreService.addToTruststore(issuerInfo, certInfo, createdCertificate, filename);
 
 		// saljemo traziocu i brisemo zahtev ako je sertifikat napravljen po zahtevu
 		byte[] returnValue = null;
@@ -156,7 +154,10 @@ public class CertificateService {
 
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
 			} else
-				this.restTemplate.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH, dto, CreatedCertificateDTO.class).getBody();
+				this.restTemplate
+						.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH,
+								dto, CreatedCertificateDTO.class)
+						.getBody();
 		} catch (RestClientException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
