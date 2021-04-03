@@ -10,6 +10,7 @@ import { TreeViewComponent } from './components/certificates/tree-view/tree-view
 import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
 import { UsersComponent } from './components/users/users/users.component';
 import { ActivateComponent } from './components/users/activate/activate.component';
+import {ConfigurationComponent} from './components/configuration/configuration/configuration.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,12 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        data: {authorities: ['SUPER_ADMIN']},
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'configuration',
+        component: ConfigurationComponent,
         data: {authorities: ['SUPER_ADMIN']},
         canActivate: [AuthGuard],
       }
