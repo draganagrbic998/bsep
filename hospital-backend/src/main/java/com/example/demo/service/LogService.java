@@ -88,7 +88,7 @@ public class LogService {
 				Thread.sleep(interval);	
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				;
 			}
 		}
 	}

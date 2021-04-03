@@ -182,7 +182,12 @@ export class CertificatesComponent implements OnInit {
     if (this.certificate.commonName.trim()) {
       this.certificate.issuerAlias = this.caAlias.getValue();
       // tslint:disable-next-line: deprecation
-      this.certificateService.createCertificate(this.certificate).subscribe(() => {
+      this.certificateService.createCertificate(this.certificate).subscribe((response: CertificateInfo) => {
+        if (!response){
+          this.messageService.add({severity: 'error',
+          summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
+          return;
+        }
         if (!!this.table) {
           this.table.reset();
         }

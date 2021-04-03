@@ -23,14 +23,18 @@ export class CertificateService {
   private readonly API_PATH = 'api/certificates';
 
 
-  getCertificates(page: number, size: number): Observable<any> {
+  getCertificates(page: number, size: number): Observable<Page<CertificateInfo>> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');
-    return this.httpClient.get(this.API_PATH, {params});
+    return this.httpClient.get<Page<CertificateInfo>>(this.API_PATH, {params}).pipe(
+      catchError(() => of({content: [], totalElements: 0}))
+    );
   }
 
   getCertificateRequests(page: number, size: number): Observable<Page<CertificateRequest>> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');
-    return this.httpClient.get<Page<CertificateRequest>>(`${this.API_PATH}/requests`, {params});
+    return this.httpClient.get<Page<CertificateRequest>>(`${this.API_PATH}/requests`, {params}).pipe(
+      catchError(() => of({content: [], totalElements: 0}))
+    );
   }
 
   downloadCrt(alias: string): Observable<any> {
@@ -41,11 +45,14 @@ export class CertificateService {
     return this.httpClient.get(`${this.API_PATH}/download-key/${alias}`, {responseType: 'blob'});
   }
 
-  createCertificate(certificate: CertificateInfo): Observable<any> {
-    return this.httpClient.post(this.API_PATH, certificate);
+  createCertificate(certificate: CertificateInfo): Observable<CertificateInfo> {
+    return this.httpClient.post<CertificateInfo>(this.API_PATH, certificate).pipe(
+      catchError(() => of(null))
+    );
   }
 
   getByAlias(alias: string): Observable<any> {
+    // nmg gospodinu da ovde stavim CertificateIngo jer onda onaj child[depth] ne radi, nmp sta je gospodin raido
     return this.httpClient.get<any>(`${this.API_PATH}/alias/${alias}`);
   }
 
