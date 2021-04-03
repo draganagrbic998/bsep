@@ -14,6 +14,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -28,15 +29,18 @@ import org.thymeleaf.templatemode.TemplateMode;
 public class AppConfig {
 
 	private final PkiProperties pkiProperties;
+	private final RestTemplateBuilder restTemplateBuilder;
 
 	@Autowired
-	public AppConfig(PkiProperties pkiProperties) {
+	public AppConfig(PkiProperties pkiProperties,
+					 RestTemplateBuilder restTemplateBuilder) {
 		this.pkiProperties = pkiProperties;
+		this.restTemplateBuilder = restTemplateBuilder;
 	}
 
 	@Bean
 	public RestTemplate getRestTemplate() {
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
 			File file = new File(Path.of(this.pkiProperties.getKeystorePath(), this.pkiProperties.getKeystoreName()).toString());

@@ -14,11 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthTokenDTO {
 
+	private long id;
 	private String token;
 	private List<String> authorities;
 	
 	public AuthTokenDTO(User user, String token) {
 		super();
+		this.id = user.getId();
 		this.token = token;
 		this.authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 	}

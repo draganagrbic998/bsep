@@ -22,8 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.repository.UserRepository;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,8 +89,18 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public Page<UserDTO> read(Pageable pageable) {
+    public Page<UserDTO> readAll(Pageable pageable) {
 	    return userRepository.findAll(pageable).map(userMapper::mapToDTO);
+    }
+
+    public UserDTO resetActivationLink(long id) throws UserDoesNotExistException {
+	    User u = this.userRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
+	    u.setActivationExpiration(Instant.now().plus(48, ChronoUnit.HOURS));
+	    u.setActivationLink(UUID.randomUUID().toString());
+
+	    u = this.userRepository.save(u);
+
+	    return this.userMapper.mapToDTO(u);
     }
 
     public List<Authority> getAuthorities() {
@@ -106,14 +118,16 @@ public class UserService implements UserDetailsService {
             throw new UserDoesNotExistException();
         }
 
-        if (found.getActivationExpiration().isAfter(Instant.now())) {
+        if (found.getActivationExpiration().isBefore(Instant.now())) {
             throw new ActivationExpiredException();
         }
 
         found.setEnabled(true);
         found.setPassword(passwordEncoder.encode(activationDTO.getPassword()));
 
-        this.userRepository.save(found);
+        User saved = this.userRepository.save(found);
+
+        return this.userMapper.mapToDTO(saved);
     }
 
 	@Override

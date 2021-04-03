@@ -9,38 +9,38 @@
           <h1 class="p-mb-2 p-text-light">Activation</h1>
         </div>
       </div>
-      <form [formGroup]="activateForm" (ngSubmit)="activate()" *ngIf="!expired; else isExpired">
+      <form [formGroup]="activateForm" (ngSubmit)="activate()" *ngIf="!expired && !activated">
         <div class="p-card-content">
           <div class="p-grid p-px-5">
             <div class="p-col-12 p-text-center">
               <h1 class="p-text-light">Welcome, {{user.firstName}}</h1>
               <p>Activate your account by providing a password you plan on using while accessing it.</p>
             </div>
-            <div class="p-col-12">
+            <div class="p-col-12 p-field">
               <span class="p-float-label">
-                <input type="password"
-                       id="password"
-                       name="password"
-                       autocomplete="off"
-                       [feedback]="true"
+                <input id="password"
+                       type="password"
+                       [feedback]="false"
                        formControlName="password"
+                       [style]="{width: '100%'}"
                        pPassword
                 >
                 <label for="password">Password</label>
               </span>
+              <small class="p-error" *ngIf="activateForm.get('password').dirty && !activateForm.get('password').valid">Password is not valid.</small>
             </div>
-            <div class="p-col-12 p-mt-2">
+            <div class="p-col-12 p-mt-2 p-field">
               <span class="p-float-label">
-                <input type="password"
-                       id="repeat"
-                       name="repeat"
-                       autocomplete="off"
+                <input id="repeat"
+                       type="password"
                        [feedback]="false"
                        formControlName="repeat"
+                       [style]="{width: '100%'}"
                        pPassword
                 >
                 <label for="repeat">Repeat password</label>
               </span>
+              <small class="p-error" *ngIf="activateForm.get('repeat').dirty && !activateForm.get('repeat').valid">Passwords should match.</small>
             </div>
           </div>
         </div>
@@ -56,17 +56,24 @@
           </ng-template>
         </div>
       </form>
-      <ng-template #isExpired>
+      <div class="p-card-content" *ngIf="!expired && activated">
         <div class="p-card-content">
-          <div class="p-card-content">
-            <div class="p-grid p-px-5">
-              <div class="p-col-12 p-mt-2 p-text-center">
-                We apologize, but your activation link has expired.
-              </div>
+          <div class="p-grid p-px-5">
+            <div class="p-col-12 p-mt-2 p-text-center">
+              Your account was successfully activated.
             </div>
           </div>
         </div>
-      </ng-template>
+      </div>
+      <div class="p-card-content" *ngIf="expired">
+        <div class="p-card-content">
+          <div class="p-grid p-px-5">
+            <div class="p-col-12 p-mt-2 p-text-center">
+              We apologize, but your activation link has expired.
+            </div>
+          </div>
+        </div>
+      </div>
     </p-card>
   </div>
 </div>

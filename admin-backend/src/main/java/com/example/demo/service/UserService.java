@@ -47,26 +47,32 @@ public class UserService implements UserDetailsService {
 		return this.restTemplate.postForEntity(AUTH_API + "/login", loginDTO, AuthTokenDTO.class).getBody();
 	}
 
-	public UserDTO create(UserDTO userDTO) {
+	public UserDTO create(UserDTO userDTO) throws MessagingException {
 		UserDTO created = this.restTemplate.postForEntity(USERS_API, userDTO, UserDTO.class).getBody();
 		if (created == null) return null;
 
-		String link = created.getActivationLink();
-		String to = created.getEmail();
-		String firstName = created.getFirstName();
-
-		try {
-			this.emailService.sendActivationLink(to, firstName, link);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		this.sendActivationMail(created);
 
 		return created;
 	}
 
-//	public void sendActivationEmail(long id) {
-//
-//	}
+	public void sendActivationMail(long id) throws MessagingException {
+		UserDTO userDTO = this.restTemplate
+				.getForEntity(String.format("%s/send/%d", USERS_API, id), UserDTO.class).getBody();
+
+		if (userDTO == null) return;
+
+		this.sendActivationMail(userDTO);
+	}
+
+	private void sendActivationMail(UserDTO userDTO) throws MessagingException {
+		String link = userDTO.getActivationLink();
+		String to = userDTO.getEmail();
+		String firstName = userDTO.getFirstName();
+
+		this.emailService.sendActivationLink(to, firstName, link);
+	}
+
 
 	public UserDTO getDisabled(String uuid) {
 		return this.restTemplate.getForEntity(String.format("%s/disabled/%s", AUTH_API, uuid), UserDTO.class).getBody();

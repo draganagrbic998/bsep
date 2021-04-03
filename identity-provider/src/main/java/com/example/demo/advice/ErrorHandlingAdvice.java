@@ -34,6 +34,12 @@ public class ErrorHandlingAdvice {
                 HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Void> handleException(NullPointerException exception){
+        exception.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler
     public ResponseEntity<Void> handleException(Exception exception){
         exception.printStackTrace();

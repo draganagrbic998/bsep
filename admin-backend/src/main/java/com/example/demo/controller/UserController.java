@@ -7,11 +7,13 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -27,7 +29,11 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) {
-		return ResponseEntity.created(URI.create(this.userService.create(userDTO).getId().toString())).build();
+		try {
+			return ResponseEntity.created(URI.create(this.userService.create(userDTO).getId().toString())).build();
+		} catch (MessagingException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PutMapping
@@ -50,4 +56,16 @@ public class UserController {
 	public ResponseEntity<List<Authority>> getAuthorities() {
 		return ResponseEntity.ok(this.userService.getAuthorities());
 	}
+
+	@PostMapping(value = "/send/{id}")
+	public ResponseEntity<Void> sendActivationMail(@PathVariable long id) {
+		try {
+			this.userService.sendActivationMail(id);
+			return ResponseEntity.ok().build();
+
+		} catch (MessagingException e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
 }

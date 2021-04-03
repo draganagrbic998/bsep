@@ -41,12 +41,9 @@
           </div>
         </div>
         <div class="p-card-footer p-px-5">
-          <button class="p-button-secondary p-d-inline-block p-mr-auto"
-                  type="button"
-                  label="Sign up"
-                  [routerLink]="'/signup'"
-                  pButton
-          ></button>
+          <div class="p-d-inline-block p-mr-auto p-ai-center" [style]="{width: '160px'}">
+            <small class="p-text-light">Only a super admin can register new accounts.</small>
+          </div>
           <button class="p-d-inline-block login-btn"
                   *ngIf="!loading; else loadingSpinner"
                   type="submit"

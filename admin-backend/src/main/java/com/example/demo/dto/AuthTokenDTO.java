@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AuthTokenDTO {
-	
+	private long id;
 	private String token;
 	private List<Authority.Authorities> authorities;
 	

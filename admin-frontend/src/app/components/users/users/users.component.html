@@ -44,7 +44,7 @@
         <td>
           <p-overlayPanel appendTo="body" #op>
             <ng-template pTemplate>
-              <p-chip *ngFor="let authority of user.authorities" [label]="authority.name"></p-chip>
+              <p-chip *ngFor="let authority of user.authorities" class="p-mx-1" [label]="authority.name"></p-chip>
             </ng-template>
           </p-overlayPanel>
           <button pButton
@@ -54,7 +54,16 @@
                   (click)="op.toggle($event)"
           ></button>
         </td>
-        <td></td>
+        <td>
+          <button type="button"
+                  class="p-button-sm p-button-rounded p-button-outlined"
+                  pButton
+                  icon="pi pi-bars"
+                  label="Options"
+                  (click)="menu.toggle($event)"
+          ></button>
+          <p-menu #menu [popup]="true" [model]="getMenuItems(user)" appendTo="body"></p-menu>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">

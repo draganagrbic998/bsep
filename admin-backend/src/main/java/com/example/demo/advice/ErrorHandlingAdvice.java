@@ -1,15 +1,14 @@
 package com.example.demo.advice;
 
 import com.example.demo.dto.ErrorDTO;
-import com.example.demo.exception.AliasExistsException;
-import com.example.demo.exception.CertificateAuthorityException;
-import com.example.demo.exception.CertificateNotFoundException;
-import com.example.demo.exception.InvalidIssuerException;
+import com.example.demo.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.mail.MessagingException;
 
 @ControllerAdvice
 public class ErrorHandlingAdvice {
@@ -40,6 +39,18 @@ public class ErrorHandlingAdvice {
     ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasExistsException e){
         return new ResponseEntity<>(new ErrorDTO("The alias specified already exists", "ALIAS_EXISTS"),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RestTemplateVoidException.class)
+    @ResponseBody
+    ResponseEntity<Void> onRestTemplateVoidException(RestTemplateVoidException e){
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RestTemplateMessageException.class)
+    @ResponseBody
+    ResponseEntity<ErrorDTO> onRestTemplateMessageException(RestTemplateMessageException e){
+        return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
     }
 
 }

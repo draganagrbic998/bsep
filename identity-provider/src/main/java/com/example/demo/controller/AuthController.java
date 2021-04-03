@@ -65,7 +65,6 @@ public class AuthController {
 
 	@PostMapping(value = "activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) throws ActivationExpiredException, UserDoesNotExistException {
-		this.userService.activate(activationDTO);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(this.userService.activate(activationDTO));
 	}
 }
