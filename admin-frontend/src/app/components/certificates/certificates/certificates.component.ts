@@ -7,7 +7,6 @@ import { TableViewComponent } from '../table-view/table-view.component';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { CertificateRequest } from '../../../core/model/certificate-request';
 import { RequestViewComponent } from '../request-view/request-view.component';
-import { CertificateRequest } from 'src/app/core/model/certificate-request';
 import { Revoke } from 'src/app/core/model/revoke';
 
 @Component({

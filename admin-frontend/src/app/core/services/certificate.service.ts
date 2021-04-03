@@ -32,7 +32,7 @@ export class CertificateService {
     const params = new HttpParams().set('page', page + '').set('size', size + '');
     return this.httpClient.get<Page<CertificateRequest>>(`${this.API_PATH}/requests`, {params});
   }
-  
+
   downloadCrt(alias: string): Observable<any> {
     return this.httpClient.get(`${this.API_PATH}/download-crt/${alias}`, {responseType: 'blob'});
   }
