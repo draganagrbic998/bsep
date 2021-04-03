@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {UserService} from '../../../core/services/user.service';
-import {User} from '../../../core/model/user';
-import {ConfirmationService, LazyLoadEvent, MenuItem, MessageService} from 'primeng/api';
-import {Authority} from '../../../core/model/authority';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Table} from 'primeng/table';
-import {AuthService} from '../../../core/services/auth.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UserService } from '../../../core/services/user.service';
+import { User } from '../../../core/model/user';
+import { ConfirmationService, LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
+import { Authority } from '../../../core/model/authority';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Table } from 'primeng/table';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-users',
