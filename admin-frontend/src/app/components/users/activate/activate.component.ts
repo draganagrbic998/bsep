@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {UserService} from '../../../core/services/user.service';
-import {User} from '../../../core/model/user';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Activation} from '../../../core/model/activation';
-import {MessageService} from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { UserService } from '../../../core/services/user.service';
+import { User } from '../../../core/model/user';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Activation } from '../../../core/model/activation';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-activate',

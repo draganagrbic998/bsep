@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {Table} from 'primeng/table';
-import {CertificateService} from '../../../core/services/certificate.service';
-import {LazyLoadEvent, MenuItem} from 'primeng/api';
-import {CertificateRequest} from 'src/app/core/model/certificate-request';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
+import { CertificateService } from '../../../core/services/certificate.service';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { CertificateRequest } from 'src/app/core/model/certificate-request';
 
 @Component({
   selector: 'app-request-view',

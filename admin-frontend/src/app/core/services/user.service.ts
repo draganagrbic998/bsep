@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {User} from '../model/user';
-import {Observable} from 'rxjs';
-import {Authority} from '../model/authority';
-import {Activation} from '../model/activation';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { User } from '../model/user';
+import { Observable } from 'rxjs';
+import { Authority } from '../model/authority';
+import { Activation } from '../model/activation';
 
 @Injectable({
   providedIn: 'root'

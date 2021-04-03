@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {AuthService} from '../../../core/services/auth.service';
-import {Router} from '@angular/router';
-import {MenuItem} from 'primeng/api';
+import { Component } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-main-view',
