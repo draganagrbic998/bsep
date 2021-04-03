@@ -8,6 +8,8 @@ import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
+import com.example.demo.utils.Constants;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -84,17 +87,17 @@ public class CertificatesController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
-		this.certificateService.revoke(revokeDTO.getId());
+	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) throws MessagingException {
+		this.certificateService.revoke(revokeDTO.getId(), revokeDTO.getReason());
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO) {
+	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO) throws MessagingException {
 		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
 			return ResponseEntity.badRequest().build();
-		this.certificateService.revoke(revokeRequestDTO.getSerial());
+		this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
 		return ResponseEntity.ok().build();
 	}
 

@@ -20,7 +20,7 @@ export class RevokeFormComponent implements OnInit {
 
   savePending = false;
   revokeForm: FormGroup = new FormGroup({
-    certFileName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
+    certFileName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('.+_.+_.+\.jks'))]),
   });
 
   sendRequest(): void {

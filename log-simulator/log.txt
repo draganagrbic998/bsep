@@ -1,1 +1,1 @@
-03/04/2021-22:26:35|NORMAL|FATAL|98.80.133.71|Forbidden patients view
+03/04/2021-23:39:11|ATTACK|SUCCESS|167.5.16.158|Forbidden messages view

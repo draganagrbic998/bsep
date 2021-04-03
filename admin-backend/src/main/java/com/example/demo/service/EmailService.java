@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import org.apache.tools.ant.taskdefs.Java;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,36 +16,51 @@ import java.util.Map;
 @Service
 public class EmailService {
 
-    private final String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
+	private final String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
 
-    private JavaMailSender emailSender;
-    private SpringTemplateEngine templateEngine;
+	private JavaMailSender emailSender;
+	private SpringTemplateEngine templateEngine;
 
-    @Autowired
-    public EmailService(JavaMailSender emailSender,
-                        SpringTemplateEngine templateEngine) {
-        this.emailSender = emailSender;
-        this.templateEngine = templateEngine;
-    }
+	@Autowired
+	public EmailService(JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
+		this.emailSender = emailSender;
+		this.templateEngine = templateEngine;
+	}
 
-    @Async
-    public void sendActivationLink(String to, String firstName, String link) throws MessagingException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message,
-                MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                StandardCharsets.UTF_8.name());
-        Context context = new Context();
+	@Async
+	public void sendActivationLink(String to, String firstName, String link) throws MessagingException {
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+				StandardCharsets.UTF_8.name());
+		Context context = new Context();
 
-        Map<String, Object> variables =
-                Map.of("firstName", firstName, "link", String.format(this.ACTIVATE_URL, link));
-        context.setVariables(variables);
+		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(this.ACTIVATE_URL, link));
+		context.setVariables(variables);
 
-        String html = templateEngine.process("activation-mail", context);
-        helper.setTo(to);
-        helper.setText(html, true);
-        helper.setSubject("Activation email - Bezbednost");
-        helper.setFrom("bezbednost.ftn@gmail.com");
-        emailSender.send(message);
-    }
+		String html = templateEngine.process("activation-mail", context);
+		helper.setTo(to);
+		helper.setText(html, true);
+		helper.setSubject("Activation email - Bezbednost");
+		helper.setFrom("bezbednost.ftn@gmail.com");
+		emailSender.send(message);
+	}
+
+	@Async
+	public void sendInfoMail(String to, String certFileName, String secondVariable, String subject, String template) throws MessagingException {
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+				StandardCharsets.UTF_8.name());
+		Context context = new Context();
+
+		Map<String, Object> variables = Map.of("certFileName", certFileName, "secondVariable", secondVariable);
+		context.setVariables(variables);
+
+		String html = templateEngine.process(template, context);
+		helper.setTo(to);
+		helper.setText(html, true);
+		helper.setSubject(subject);
+		helper.setFrom("bezbednost.ftn@gmail.com");
+		emailSender.send(message);
+	}
 
 }

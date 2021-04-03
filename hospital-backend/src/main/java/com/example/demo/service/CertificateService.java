@@ -44,7 +44,7 @@ public class CertificateService {
 	}
 
 	public void sendRevokeRequest(String certFileName) {
-		X509Certificate cert = (X509Certificate) this.keyStoreService.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName);
+		X509Certificate cert = (X509Certificate) this.keyStoreService.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName, certFileName.split("_")[1]);
 		RevokeRequestDTO requestDTO = new RevokeRequestDTO();
 		requestDTO.setSerial(cert.getSerialNumber().longValue());
 		requestDTO.setPath(Constants.BACKEND);

@@ -58,7 +58,7 @@ public class KeyStoreWriter {
 		try {
 			KeyStore issuerTrustStore = KeyStore.getInstance("JKS", "SUN");
 			issuerTrustStore.load(new FileInputStream(issuerFilename), keyStorePassword.toCharArray());
-			issuerTrustStore.setCertificateEntry(certInfo.getOrganizationUnit(), newCertificate);
+			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
 			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class KeyStoreWriter {
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
 			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			subjectTrustStore.setCertificateEntry(issuerInfo.getOrganizationUnit(), issuerCert);
+			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
 			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
 		} catch (Exception e) {
 			e.printStackTrace();

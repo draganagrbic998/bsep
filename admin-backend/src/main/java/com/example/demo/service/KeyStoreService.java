@@ -68,7 +68,7 @@ public class KeyStoreService {
 		String filename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER + issuerInfo.getAlias()
 				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());
-		keyStoreWriter.write(certInfo.getOrganizationUnit(), privateKey,
+		keyStoreWriter.write(certInfo.getAlias(), privateKey,
 				pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);
 		keyStoreWriter.saveKeyStore(filename, pkiProperties.getKeystorePassword().toCharArray());
 		return filename;
