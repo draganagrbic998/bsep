@@ -4,7 +4,6 @@ import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +19,15 @@ public class Authority implements GrantedAuthority {
 		SUPER_ADMIN, ADMIN, DOCTOR
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	private Authorities name;
+
+	public Authority(Authorities name) {
+		this.name = name;
+	}
 		
 	@Override
 	public String getAuthority() {

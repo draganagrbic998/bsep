@@ -1,27 +1,16 @@
 package com.example.demo.model;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import lombok.Data;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.persistence.JoinColumn;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.Data;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Set;
+import java.util.UUID;
 
 @SuppressWarnings("serial")
 @Data
@@ -38,7 +27,6 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String email;
 	
-	@NotBlank
 	private String password;
 		
 	@NotBlank
@@ -49,23 +37,24 @@ public class User implements UserDetails {
 
 	@Column(unique = true)
 	private String activationLink;
-			
+
+	private Instant activationExpiration;
+
 	@NotNull
 	private boolean enabled;
 		
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private Set<Authority> authorities;
 
 	public User() {
 		super();
 		this.activationLink = UUID.randomUUID().toString();
+		this.activationExpiration = Instant.now().plus(48, ChronoUnit.HOURS);
 	}
-	
+
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Set<Authority> getAuthorities() {
 		return this.authorities;
 	}
 

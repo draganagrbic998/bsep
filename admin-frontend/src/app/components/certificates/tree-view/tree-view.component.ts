@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { CollapsibleNode } from '../../core/model/collapsible-node';
-import { CertificateService } from '../../core/services/certificate.service';
-import { CertificateInfo } from '../../core/model/certificate-info';
+import { CollapsibleNode } from '../../../core/model/collapsible-node';
+import { CertificateService } from '../../../core/services/certificate.service';
+import { CertificateInfo } from '../../../core/model/certificate-info';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
 
@@ -26,13 +26,11 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   context: CertificateInfo | null = null;
   menuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
-    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
     {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
   oldMenuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
-    {icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
     {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
@@ -96,7 +94,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
           .attr('transform', event.transform);
       });
 
-    svg.call(zoom);
+    svg.call(zoom).on('dblclick.zoom', null);
   }
 
   setupTree(): void {
@@ -284,11 +282,15 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     ev.preventDefault();
     ev.stopPropagation();
     this.context = d.data;
-    if (!!this.context && !this.context.revoked && this.context.template === 'SUB_CA' && this.context.alias !== this.ca.alias) {
-      this.menuItems.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(this.context)});
+    if (this.context.alias !== this.certificateService.ca.getValue().alias &&
+      !this.context.revoked &&
+      this.context.alias !== 'root') {
+      this.menuItems.push({icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)});
     }
-    if (!!this.context && this.context.revoked) {
-      this.menuItems.splice(1, 1);
+    if (!this.context.revoked &&
+      this.context.template === 'SUB_CA' &&
+      this.context.alias !== this.certificateService.ca.getValue().alias) {
+      this.menuItems.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(this.context)});
     }
     this.contextMenu.show(ev);
   }

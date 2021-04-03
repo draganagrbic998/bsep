@@ -1,13 +1,12 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.CertificateRequest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import com.example.demo.model.CertificateRequest;
 
 @Data
 @NoArgsConstructor

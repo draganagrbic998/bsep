@@ -1,26 +1,43 @@
 package com.example.demo.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.security.core.GrantedAuthority;
-
-import com.example.demo.model.User;
-
+import com.example.demo.model.Authority;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class UserDTO {
 
-	private String token;
-	private List<String> authorities;
-	
-	public UserDTO(User user, String token) {
-		super();
-		this.token = token;
-		this.authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-	}
+    private Long id;
+
+    @NotBlank
+    @Email
+    private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private boolean enabled;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String activationLink;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant activationExpiration;
+
+    private Set<Authority> authorities;
 
 }

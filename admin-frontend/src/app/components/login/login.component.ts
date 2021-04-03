@@ -4,7 +4,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Login } from '../../core/model/login';
-import { User } from 'src/app/core/model/user';
+import { AuthToken } from 'src/app/core/model/auth-token';
 
 @Component({
   selector: 'app-login',
@@ -44,10 +44,10 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     // tslint:disable-next-line: deprecation
     this.authService.login(login).subscribe(
-      (user: User) => {
+      (user: AuthToken) => {
         this.loading = false;
         if (user) {
-          if (user.authorities[0] === 'SUPER_ADMIN') {
+          if (user.authorities.includes('SUPER_ADMIN')) {
             this.authService.loggedIn(user);
             this.router.navigate(['']);
           }

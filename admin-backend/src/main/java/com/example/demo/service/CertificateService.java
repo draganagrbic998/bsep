@@ -5,18 +5,14 @@ import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.dto.CreatedCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
+import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.mapper.CertificateRequestMapper;
-import com.example.demo.model.CertificateInfo;
-import com.example.demo.model.CertificateRequest;
-import com.example.demo.model.IssuerData;
-import com.example.demo.model.SubjectData;
-import com.example.demo.model.Template;
+import com.example.demo.model.*;
 import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.repository.CertificateRequestRepository;
 import com.example.demo.utils.CertificateGenerator;
 import com.example.demo.utils.Constants;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -31,11 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -49,22 +41,26 @@ public class CertificateService {
 	private final KeyStoreService keyStoreService;
 	private final CertificateInfoRepository certificateInfoRepository;
 	private final CertificateGenerator certificateGenerator;
-	private CertificateRequestRepository certificateRequestRepository;
-	private CertificateRequestMapper certificateRequestMapper;
+	private final CertificateRequestRepository certificateRequestRepository;
+	private final CertificateRequestMapper certificateRequestMapper;
+	private final RestTemplate restTemplate;
 
 	@Autowired
-	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
-			CertificateGenerator certificateGenerator, CertificateRequestRepository certificateRequestRepository, CertificateRequestMapper certificateRequestMapper) {
+	public CertificateService(KeyStoreService keyStoreService,
+							  CertificateInfoRepository certificateInfoRepository,
+							  CertificateGenerator certificateGenerator,
+							  CertificateRequestRepository certificateRequestRepository,
+							  CertificateRequestMapper certificateRequestMapper,
+							  RestTemplate restTemplate) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
 		this.certificateRequestRepository = certificateRequestRepository;
 		this.certificateRequestMapper = certificateRequestMapper;
-		
+		this.restTemplate = restTemplate;
 	}
 
-	@Autowired
-	private RestTemplate restTemplate;
+
 
 	public void create(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
@@ -75,7 +71,7 @@ public class CertificateService {
 		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
 
 		X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
-		CertificateInfo issuerInfo = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(issuerAlias);
+		CertificateInfo issuerInfo = this.certificateInfoRepository.findByAliasIgnoreCase(issuerAlias);
 		if (!isCertificateValid(issuerAlias))
 			throw new InvalidIssuerException();
 
@@ -83,12 +79,12 @@ public class CertificateService {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
 				throw new CertificateAuthorityException();
 			}
-		} catch (NullPointerException e) {
+		} catch (NullPointerException ignored) {
 		}
 
 		String alias = createCertificateDto.getAlias();
 
-		if (this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase(alias) != null)
+		if (this.certificateInfoRepository.findByAliasIgnoreCase(alias) != null)
 			throw new AliasExistsException();
 
 		KeyPair keyPair = generateKeyPair();
@@ -130,7 +126,7 @@ public class CertificateService {
 		this.keyStoreService.saveKeyStore();
 
 		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
-		this.keyStoreService.saveSeperateKeyStore(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+		this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
 
 		// saljemo traziocu i brisemo zahtev ako je sertifikat napravljen po zahtevu
 		byte[] returnValue = null;
@@ -190,6 +186,10 @@ public class CertificateService {
 
 			CertificateInfo certificateInfo = this.certificateInfoRepository
 					.findById(x509cert.getSerialNumber().longValue()).orElse(null);
+
+			if (certificateInfo == null) {
+				return false;
+			}
 
 			if (certificateInfo.isRevoked()) {
 				return false;
@@ -269,7 +269,10 @@ public class CertificateService {
 	}
 
 	public void revoke(long id) {
-		CertificateInfo ci = this.certificateInfoRepository.findById(id).get();
+		CertificateInfo ci = this.certificateInfoRepository.findById(id).orElse(null);
+		if (ci == null) {
+			throw new CertificateNotFoundException(String.valueOf(id));
+		}
 		ci.setRevoked(true);
 		this.certificateInfoRepository.save(ci);
 	}
@@ -282,26 +285,12 @@ public class CertificateService {
 		return this.certificateRequestRepository.findAll(pageable);
 	}
 
-	public ByteArrayOutputStream getObjectStream(byte[] bytes) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-		try {
-			outputStream.write(bytes);
-			outputStream.flush();
-			outputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return outputStream;
-	}
-
 	public String getCrt(String alias) throws IOException {
 		Certificate[] chain = keyStoreService.readCertificateChain(alias);
 
 		StringBuilder chainBuilder = new StringBuilder();
 		for (Certificate c : chain) {
-			String pemCertificate = this.writePem((X509Certificate) c);
+			String pemCertificate = this.writePem(c);
 			chainBuilder.append(pemCertificate);
 		}
 		return chainBuilder.toString();

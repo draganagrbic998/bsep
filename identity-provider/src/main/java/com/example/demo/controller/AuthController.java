@@ -1,23 +1,19 @@
 package com.example.demo.controller;
 
-import javax.validation.Valid;
-
+import com.example.demo.dto.*;
+import com.example.demo.exception.ActivationExpiredException;
+import com.example.demo.exception.UserDoesNotExistException;
+import com.example.demo.model.User;
+import com.example.demo.security.TokenUtils;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.dto.LoginDTO;
-import com.example.demo.dto.TokenDTO;
-import com.example.demo.dto.UserDTO;
-import com.example.demo.model.User;
-import com.example.demo.security.TokenUtils;
-import com.example.demo.service.UserService;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,30 +29,37 @@ public class AuthController {
 	private AuthenticationManager authManager;
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
+	public ResponseEntity<AuthTokenDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
 		try {
 			String token = tokenDTO.getToken();
 			User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
 			if (user != null && this.tokenUtils.validateToken(user, token)) {
-				return ResponseEntity.ok(new UserDTO(user, token));
+				return ResponseEntity.ok(new AuthTokenDTO(user, token));
 			}
 		}
-		catch(Exception e) {
-			;
+		catch(Exception ignored) {
 		}
 		return ResponseEntity.ok(null);
 	}
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
+	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 		try {
 			User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
-			return ResponseEntity.ok(new UserDTO(user, this.tokenUtils.generateToken(user.getEmail())));
+			return ResponseEntity.ok(new AuthTokenDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 		}
-		catch(Exception e) {
-			;
+		catch(Exception ignored) {
 		}
 		return ResponseEntity.ok(null);
 	}
-	
+
+	@GetMapping(value = "/disabled/{uuid}")
+	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
+		return ResponseEntity.ok(this.userService.getDisabled(uuid));
+	}
+
+	@PostMapping(value = "activate")
+	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) throws ActivationExpiredException, UserDoesNotExistException {
+		return ResponseEntity.ok(this.userService.activate(activationDTO));
+	}
 }

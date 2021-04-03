@@ -8,7 +8,6 @@ import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.KeyStoreService;
 import com.example.demo.utils.CertificateGenerator;
-
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -42,7 +41,7 @@ public class Setup implements ApplicationRunner {
 	public void run(ApplicationArguments args) {
 		this.keyStoreService.loadKeyStore();
 		Certificate root = this.keyStoreService.readCertificate("root");
-		CertificateInfo certificateInfo = this.certificateInfoRepository.findFirstByAliasContainingIgnoreCase("root");
+		CertificateInfo certificateInfo = this.certificateInfoRepository.findByAliasIgnoreCase("root");
 		if (root == null || certificateInfo == null) {
 			createRootCA();
 			this.keyStoreService.saveKeyStore();

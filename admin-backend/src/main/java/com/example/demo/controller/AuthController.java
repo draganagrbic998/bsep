@@ -1,18 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ActivationDTO;
+import com.example.demo.dto.AuthTokenDTO;
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,7 +24,17 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){
+	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 		return ResponseEntity.ok(this.userService.login(loginDTO));
+	}
+
+	@GetMapping(value = "/disabled/{uuid}")
+	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
+		return ResponseEntity.ok(this.userService.getDisabled(uuid));
+	}
+
+	@PostMapping(value = "activate")
+	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
+		return ResponseEntity.ok(this.userService.activate(activationDTO));
 	}
 }

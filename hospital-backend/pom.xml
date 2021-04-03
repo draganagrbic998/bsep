@@ -76,7 +76,7 @@
 			<artifactId>drools-templates</artifactId>
 			<version>6.0.0.Final</version>
 		</dependency>
-				
+		
 		<dependency>
         	<groupId>org.eclipse.jdt.core.compiler</groupId>
         	<artifactId>ecj</artifactId>
@@ -93,6 +93,12 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.64</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 	</dependencies>
