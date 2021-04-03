@@ -1,0 +1,1 @@
+03/04/2021-22:26:35|NORMAL|FATAL|98.80.133.71|Forbidden patients view
