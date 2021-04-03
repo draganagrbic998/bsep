@@ -1,11 +1,10 @@
 package com.example.demo.dto;
 
-import java.util.List;
-
 import com.example.demo.model.Authority;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor

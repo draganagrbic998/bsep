@@ -9,6 +9,7 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.repository.AuthorityRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.example.demo.repository.UserRepository;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

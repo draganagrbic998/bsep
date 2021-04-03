@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth.guard';
-import { LoginComponent } from './components/login/login.component';
-import { MainViewComponent } from './components/main-views/main-view/main-view.component';
-import { DashboardComponent } from './components/main-views/dashboard/dashboard.component';
-import { CertificatesComponent } from './components/certificates/certificates/certificates.component';
-import { TableViewComponent } from './components/certificates/table-view/table-view.component';
-import { TreeViewComponent } from './components/certificates/tree-view/tree-view.component';
-import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from './core/guards/auth.guard';
+import {LoginComponent} from './components/login/login.component';
+import {MainViewComponent} from './components/main-views/main-view/main-view.component';
+import {DashboardComponent} from './components/main-views/dashboard/dashboard.component';
+import {CertificatesComponent} from './components/certificates/certificates/certificates.component';
+import {TableViewComponent} from './components/certificates/table-view/table-view.component';
+import {TreeViewComponent} from './components/certificates/tree-view/tree-view.component';
+import {RequestViewComponent} from './components/certificates/request-view/request-view.component';
 import {UsersComponent} from './components/users/users/users.component';
 import {ActivateComponent} from './components/users/activate/activate.component';
 

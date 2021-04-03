@@ -1,17 +1,16 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ActivationDTO;
-import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.AuthTokenDTO;
+import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)

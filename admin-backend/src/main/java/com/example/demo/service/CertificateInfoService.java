@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

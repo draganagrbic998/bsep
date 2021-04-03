@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import {CertificateInfo} from '../model/certificate-info';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {User} from '../model/user';
 import {Observable} from 'rxjs';

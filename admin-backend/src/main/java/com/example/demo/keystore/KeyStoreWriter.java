@@ -1,11 +1,12 @@
 package com.example.demo.keystore;
 
-import java.io.*;
+import org.springframework.stereotype.Component;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class KeyStoreWriter {

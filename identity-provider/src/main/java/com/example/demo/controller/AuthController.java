@@ -1,24 +1,19 @@
 package com.example.demo.controller;
 
-import javax.validation.Valid;
-
 import com.example.demo.dto.*;
 import com.example.demo.exception.ActivationExpiredException;
 import com.example.demo.exception.UserDoesNotExistException;
-import com.example.demo.model.Authority;
+import com.example.demo.model.User;
+import com.example.demo.security.TokenUtils;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.model.User;
-import com.example.demo.security.TokenUtils;
-import com.example.demo.service.UserService;
-
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)

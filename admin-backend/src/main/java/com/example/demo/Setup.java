@@ -9,7 +9,6 @@ import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.KeyStoreService;
 import com.example.demo.utils.CertificateGenerator;
-
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;

@@ -1,11 +1,10 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.CertificateRequestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.example.demo.dto.CertificateRequestDTO;
 
 @Data
 @NoArgsConstructor
