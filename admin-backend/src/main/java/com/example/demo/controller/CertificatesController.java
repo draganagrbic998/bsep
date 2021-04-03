@@ -5,6 +5,7 @@ import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.dto.RevokeDTO;
 import com.example.demo.dto.RevokeRequestDTO;
+import com.example.demo.dto.ValidationRequestDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
@@ -106,4 +107,11 @@ public class CertificatesController {
 		return ResponseEntity.ok(this.certificateInfoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
 	}
 
+	@PreAuthorize("permitAll()")
+	@GetMapping(value = "/validate")
+	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
+		if (!validationRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates"))
+			return ResponseEntity.badRequest().build();
+		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getAlias()));
+	}
 }

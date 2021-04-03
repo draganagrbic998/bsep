@@ -1,1 +1,1 @@
-03/04/2021-23:39:11|ATTACK|SUCCESS|167.5.16.158|Forbidden messages view
+03/04/2021-23:41:02|NORMAL|ERROR|188.248.134.101|Forbidden alarms view
