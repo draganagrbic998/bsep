@@ -38,8 +38,8 @@ export class ActivateComponent implements OnInit {
         return;
       }
 
-      this.userService.getDisabled(params.q).subscribe(val => {
-          this.user = val;
+      this.userService.getDisabled(params.q).subscribe((user: User) => {
+          this.user = user;
           this.expired = new Date(this.user.activationExpiration).getTime() <= new Date().getTime();
         },
         () => {
@@ -69,7 +69,7 @@ export class ActivateComponent implements OnInit {
     activate.password = this.activateForm.get('password').value;
     activate.uuid = this.user.activationLink;
 
-    this.userService.activate(activate).subscribe(val => {
+    this.userService.activate(activate).subscribe(() => {
       this.activated = true;
       this.messageService.add({severity: 'success', summary: 'Successful activation', detail: 'You can now log into our services.'});
     });

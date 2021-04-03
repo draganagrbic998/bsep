@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../model/user';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Authority } from '../model/authority';
 import { Activation } from '../model/activation';
+import { Page } from '../model/page';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +20,11 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(page: number, size: number): Observable<any> {
+  get(page: number, size: number): Observable<Page<User>> {
     const params = new HttpParams().set('page', String(page)).set('size', String(size));
-    return this.httpClient.get(this.USERS_PATH, {params});
+    return this.httpClient.get<Page<User>>(this.USERS_PATH, {params}).pipe(
+      catchError(() => of({content: [], totalElements: 0}))
+    );
   }
 
   create(user: User): Observable<any> {
@@ -31,23 +35,28 @@ export class UserService {
     return this.httpClient.put(this.USERS_PATH, user);
   }
 
-  delete(user: User): Observable<any> {
-    return this.httpClient.delete(`${this.USERS_PATH}/${user.id}`);
+  delete(user: User): Observable<boolean> {
+    return this.httpClient.delete(`${this.USERS_PATH}/${user.id}`).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 
-  getAuthorities(): Observable<any> {
-    return this.httpClient.get(`${this.USERS_PATH}/authorities`);
+  getAuthorities(): Observable<Authority[]> {
+    return this.httpClient.get<Authority[]>(`${this.USERS_PATH}/authorities`).pipe(
+      catchError(() => of([]))
+    );
   }
 
-  getDisabled(uuid: string): Observable<any> {
-    return this.httpClient.get(`${this.AUTH_PATH}/disabled/${uuid}`);
+  getDisabled(uuid: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.AUTH_PATH}/disabled/${uuid}`);
   }
 
-  activate(activation: Activation): Observable<any> {
-    return this.httpClient.post(`${this.AUTH_PATH}/activate`, activation);
+  activate(activation: Activation): Observable<User> {
+    return this.httpClient.post<User>(`${this.AUTH_PATH}/activate`, activation);
   }
 
-  sendActivationMail(id: number): Observable<any> {
-    return this.httpClient.post(`${this.USERS_PATH}/send/${id}`, null);
+  sendActivationMail(id: number): Observable<null> {
+    return this.httpClient.post<null>(`${this.USERS_PATH}/send/${id}`, null);
   }
 }

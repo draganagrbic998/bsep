@@ -193,7 +193,16 @@ export class UsersComponent implements OnInit {
   }
 
   confirmDeletion(user: User): void {
-    this.userService.delete(user).subscribe(() => {
+    this.userService.delete(user).subscribe((response: boolean) => {
+      if (!response){
+        this.messageService.add(
+          {
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error while deleting'
+          });
+        return;
+      }
       if (!!this.table) {
         this.table.reset();
       }
