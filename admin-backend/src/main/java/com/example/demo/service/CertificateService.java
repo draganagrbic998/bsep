@@ -35,6 +35,8 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.mail.MessagingException;
+
 @Service
 public class CertificateService {
 
@@ -44,23 +46,20 @@ public class CertificateService {
 	private final CertificateRequestRepository certificateRequestRepository;
 	private final CertificateRequestMapper certificateRequestMapper;
 	private final RestTemplate restTemplate;
+	private final EmailService emailService;
 
 	@Autowired
-	public CertificateService(KeyStoreService keyStoreService,
-							  CertificateInfoRepository certificateInfoRepository,
-							  CertificateGenerator certificateGenerator,
-							  CertificateRequestRepository certificateRequestRepository,
-							  CertificateRequestMapper certificateRequestMapper,
-							  RestTemplate restTemplate) {
+	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
+			CertificateGenerator certificateGenerator, CertificateRequestRepository certificateRequestRepository,
+			CertificateRequestMapper certificateRequestMapper, RestTemplate restTemplate, EmailService emailService) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
 		this.certificateRequestRepository = certificateRequestRepository;
 		this.certificateRequestMapper = certificateRequestMapper;
 		this.restTemplate = restTemplate;
+		this.emailService = emailService;
 	}
-
-
 
 	public void create(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
@@ -126,7 +125,11 @@ public class CertificateService {
 		this.keyStoreService.saveKeyStore();
 
 		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
-		this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+		String filename = this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(),
+				newCertificateChain);
+
+		// i u truststore
+		this.keyStoreService.addToTruststore(issuerInfo, certInfo, createdCertificate, filename);
 
 		// saljemo traziocu i brisemo zahtev ako je sertifikat napravljen po zahtevu
 		byte[] returnValue = null;
@@ -156,8 +159,16 @@ public class CertificateService {
 
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
 			} else
-				this.restTemplate.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH, dto, CreatedCertificateDTO.class).getBody();
-		} catch (RestClientException | IllegalArgumentException e) {
+				this.restTemplate
+						.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH,
+								dto, CreatedCertificateDTO.class)
+						.getBody();
+
+			String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
+					+ certInfo.getOrganizationUnit() + ".jks";
+			this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, certInfo.getOrganizationUnit(),
+					Constants.CERTIFICATE_ISSUED, Constants.ISSUED_TEMPLATE);
+		} catch (RestClientException | IllegalArgumentException | MessagingException e) {
 			e.printStackTrace();
 		}
 	}
@@ -172,7 +183,7 @@ public class CertificateService {
 		return builder.build();
 	}
 
-	private boolean isCertificateValid(String alias) {
+	public boolean isCertificateValid(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 
 		if (chain == null) {
@@ -268,13 +279,18 @@ public class CertificateService {
 		return this.certificateInfoRepository.save(certInfo);
 	}
 
-	public void revoke(long id) {
+	public void revoke(long id, String revokeReason) throws MessagingException {
 		CertificateInfo ci = this.certificateInfoRepository.findById(id).orElse(null);
 		if (ci == null) {
 			throw new CertificateNotFoundException(String.valueOf(id));
 		}
 		ci.setRevoked(true);
+		ci.setRevocationReason(revokeReason);
+		ci.setRevocationDate(new Date());
 		this.certificateInfoRepository.save(ci);
+		String certFileName = ci.getIssuerAlias() + "_" + ci.getAlias() + "_" + ci.getOrganizationUnit() + ".jks";
+		this.emailService.sendInfoMail(ci.getEmail(), certFileName, revokeReason,
+				Constants.CERTIFICATE_REVOKED, Constants.REVOKED_TEMPLATE);
 	}
 
 	public void createRequest(CertificateRequestDTO certificateRequestDTO) {

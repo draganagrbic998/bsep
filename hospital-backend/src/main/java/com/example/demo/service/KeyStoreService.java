@@ -13,8 +13,8 @@ public class KeyStoreService {
 	@Autowired
 	private KeyStoreReader keyStoreReader;
 
-	public Certificate readCertificate(String path) {
-		return keyStoreReader.readCertificate(path, "XSecret");
+	public Certificate readCertificate(String path, String alias) {
+		return keyStoreReader.readCertificate(path, "XSecret", alias);
 	}
 	
 }

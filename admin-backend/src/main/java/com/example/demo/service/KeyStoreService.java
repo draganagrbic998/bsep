@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
 @Service
 public class KeyStoreService {
@@ -62,13 +63,23 @@ public class KeyStoreService {
 				pkiProperties.getKeystorePassword(), alias, pkiProperties.getKeystorePassword());
 	}
 
-	public void saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
-								 Certificate[] newCertificateChain) {
+	public String saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
+			Certificate[] newCertificateChain) {
 		String filename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER + issuerInfo.getAlias()
 				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());
-		keyStoreWriter.write(certInfo.getOrganizationUnit(), privateKey,
+		keyStoreWriter.write(certInfo.getAlias(), privateKey,
 				pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);
 		keyStoreWriter.saveKeyStore(filename, pkiProperties.getKeystorePassword().toCharArray());
+		return filename;
+	}
+
+	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo, X509Certificate newCertificate,
+			String subjectFilename) {
+		String issuerFilename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER
+				+ issuerInfo.getIssuerAlias() + "_" + issuerInfo.getAlias() + "_" + issuerInfo.getOrganizationUnit()
+				+ ".jks";
+		keyStoreWriter.addToTruststore(issuerInfo, certInfo, newCertificate, issuerFilename, subjectFilename,
+				pkiProperties.getKeystorePassword());
 	}
 }

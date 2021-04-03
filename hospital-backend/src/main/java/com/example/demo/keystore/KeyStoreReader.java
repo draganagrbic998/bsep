@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class KeyStoreReader {
 
-	public Certificate readCertificate(String keyStoreFile, String keyStorePass) {
+	public Certificate readCertificate(String keyStoreFile, String keyStorePass, String alias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
 			keyStore.load(in, keyStorePass.toCharArray());
 
-			String alias = keyStore.aliases().nextElement();
 			if (keyStore.isKeyEntry(alias)) {
 				return keyStore.getCertificateChain(alias)[0];
 			}
