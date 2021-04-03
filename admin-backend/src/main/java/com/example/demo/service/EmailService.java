@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import org.apache.tools.ant.taskdefs.Java;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,11 +19,15 @@ public class EmailService {
 
     private final String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
 
-    @Autowired
     private JavaMailSender emailSender;
+    private SpringTemplateEngine templateEngine;
 
     @Autowired
-    private SpringTemplateEngine templateEngine;
+    public EmailService(JavaMailSender emailSender,
+                        SpringTemplateEngine templateEngine) {
+        this.emailSender = emailSender;
+        this.templateEngine = templateEngine;
+    }
 
     @Async
     public void sendActivationLink(String to, String firstName, String link) throws MessagingException {

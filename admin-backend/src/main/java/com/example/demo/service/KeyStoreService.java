@@ -67,8 +67,8 @@ public class KeyStoreService {
 				pkiProperties.getKeystorePassword(), alias, pkiProperties.getKeystorePassword());
 	}
 
-	public void saveSeperateKeyStore(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
-			Certificate[] newCertificateChain) {
+	public void saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
+								 Certificate[] newCertificateChain) {
 		String filename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER + issuerInfo.getAlias()
 				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());

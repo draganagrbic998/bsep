@@ -13,35 +13,35 @@ public class ErrorHandlingAdvice {
 
     @ExceptionHandler(CertificateNotFoundException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onCertificateNotFoundException(CertificateNotFoundException e){
+    ResponseEntity<ErrorDTO> onCertificateNotFoundException(){
         return new ResponseEntity<>(new ErrorDTO("The certificate was not found", "CERT_NOT_FOUND"),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CertificateAuthorityException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onIssuerNotCAException(CertificateAuthorityException e){
+    ResponseEntity<ErrorDTO> onIssuerNotCAException(){
         return new ResponseEntity<>(new ErrorDTO("The certificate is not a CA", "NOT_CA"),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidIssuerException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onIssuerNotValidException(InvalidIssuerException e){
+    ResponseEntity<ErrorDTO> onIssuerNotValidException(){
         return new ResponseEntity<>(new ErrorDTO("The issuer is not valid", "INVALID_ISSUER"),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AliasExistsException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasExistsException e){
+    ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(){
         return new ResponseEntity<>(new ErrorDTO("The alias specified already exists", "ALIAS_EXISTS"),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RestTemplateVoidException.class)
     @ResponseBody
-    ResponseEntity<Void> onRestTemplateVoidException(RestTemplateVoidException e){
+    ResponseEntity<Void> onRestTemplateVoidException(){
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

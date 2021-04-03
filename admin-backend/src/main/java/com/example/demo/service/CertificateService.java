@@ -5,6 +5,7 @@ import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.dto.CreatedCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
+import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.model.*;
@@ -20,7 +21,6 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,23 +41,25 @@ public class CertificateService {
 	private final KeyStoreService keyStoreService;
 	private final CertificateInfoRepository certificateInfoRepository;
 	private final CertificateGenerator certificateGenerator;
-
+	private final CertificateRequestRepository certificateRequestRepository;
+	private final CertificateRequestMapper certificateRequestMapper;
+	private final RestTemplate restTemplate;
 	@Autowired
-	public CertificateService(KeyStoreService keyStoreService, CertificateInfoRepository certificateInfoRepository,
-			CertificateGenerator certificateGenerator) {
+	public CertificateService(KeyStoreService keyStoreService,
+							  CertificateInfoRepository certificateInfoRepository,
+							  CertificateGenerator certificateGenerator,
+							  CertificateRequestRepository certificateRequestRepository,
+							  CertificateRequestMapper certificateRequestMapper,
+							  RestTemplate restTemplate) {
 		this.keyStoreService = keyStoreService;
 		this.certificateInfoRepository = certificateInfoRepository;
 		this.certificateGenerator = certificateGenerator;
+		this.certificateRequestRepository = certificateRequestRepository;
+		this.certificateRequestMapper = certificateRequestMapper;
+		this.restTemplate = restTemplate;
 	}
 
-	@Autowired
-	private CertificateRequestRepository certificateRequestRepository;
 
-	@Autowired
-	private CertificateRequestMapper certificateRequestMapper;
-
-	@Autowired
-	private RestTemplate restTemplate;
 
 	public void createCertificate(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
@@ -76,7 +78,7 @@ public class CertificateService {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
 				throw new CertificateAuthorityException();
 			}
-		} catch (NullPointerException e) {
+		} catch (NullPointerException ignored) {
 		}
 
 		String alias = createCertificateDto.getAlias();
@@ -123,18 +125,18 @@ public class CertificateService {
 		this.keyStoreService.saveKeyStore();
 
 		// cuvamo ga i u nov keystore da bi mogli posle da ga saljemo kome treba
-		this.keyStoreService.saveSeperateKeyStore(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
+		this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
 
 		// sertifikat napravljen po zahtevu -> saljemo traziocu i brisemo zahtev
 		if (createCertificateDto.getId() != 0) {
 			byte[] returnValue = null;
 			String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
-			InputStream in = null;
+			InputStream in;
 
 			try {
 				// ovo ako ne prodje znaci da ovi fajlovi ne postoje
-				ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
-				ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
+//				ClassPathResource targetKeystore = new ClassPathResource("keystore/" + fileName + ".jks");
+//				ClassPathResource commonKeystore = new ClassPathResource("keystore/keystore.jks");
 				in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
 				returnValue = IOUtils.toByteArray(in);
 				in.close();
@@ -148,9 +150,15 @@ public class CertificateService {
 				dto.setAlias(certInfo.getAlias());
 				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
 				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
-				
+
+
+				CertificateRequest certificateRequest = this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null);
+
+				if (certificateRequest == null) {
+					return;
+				}
 				this.restTemplate.postForEntity(
-						this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null).getPath(),
+						certificateRequest.getPath(),
 						dto, CreatedCertificateDTO.class).getBody();
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
 			} catch (RestClientException | IllegalArgumentException e) {
@@ -183,6 +191,10 @@ public class CertificateService {
 
 			CertificateInfo certificateInfo = this.certificateInfoRepository
 					.findById(x509cert.getSerialNumber().longValue()).orElse(null);
+
+			if (certificateInfo == null) {
+				return false;
+			}
 
 			if (certificateInfo.isRevoked()) {
 				return false;
@@ -262,7 +274,10 @@ public class CertificateService {
 	}
 
 	public void revoke(long id) {
-		CertificateInfo ci = this.certificateInfoRepository.findById(id).get();
+		CertificateInfo ci = this.certificateInfoRepository.findById(id).orElse(null);
+		if (ci == null) {
+			throw new CertificateNotFoundException(String.valueOf(id));
+		}
 		ci.setRevoked(true);
 		this.certificateInfoRepository.save(ci);
 	}
@@ -275,34 +290,12 @@ public class CertificateService {
 		return this.certificateRequestRepository.findAll(pageable);
 	}
 
-	public ByteArrayOutputStream getCrtStream(String alias) throws IOException {
-		return this.getObjectStream(getCrt(alias).getBytes());
-	}
-
-	public ByteArrayOutputStream getKeyStream(String alias) throws IOException {
-		return this.getObjectStream(getKey(alias).getBytes());
-	}
-
-	public ByteArrayOutputStream getObjectStream(byte[] bytes) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-		try {
-			outputStream.write(bytes);
-			outputStream.flush();
-			outputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return outputStream;
-	}
-
 	public String getCrt(String alias) throws IOException {
 		Certificate[] chain = keyStoreService.readCertificateChain(alias);
 
 		StringBuilder chainBuilder = new StringBuilder();
 		for (Certificate c : chain) {
-			String pemCertificate = this.writePem((X509Certificate) c);
+			String pemCertificate = this.writePem(c);
 			chainBuilder.append(pemCertificate);
 		}
 		return chainBuilder.toString();

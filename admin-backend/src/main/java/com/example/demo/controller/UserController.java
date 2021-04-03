@@ -21,9 +21,12 @@ import java.util.List;
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 public class UserController {
 
+	private UserService userService;
 
 	@Autowired
-	private UserService userService;
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) {

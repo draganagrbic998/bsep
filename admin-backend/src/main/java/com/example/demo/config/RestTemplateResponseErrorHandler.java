@@ -34,8 +34,7 @@ public class RestTemplateResponseErrorHandler
 
     @Override
     @SneakyThrows
-    public void handleError(ClientHttpResponse httpResponse)
-            throws IOException {
+    public void handleError(ClientHttpResponse httpResponse) {
 
         Gson g = new Gson();
         InputStream bodyStream = httpResponse.getBody();
