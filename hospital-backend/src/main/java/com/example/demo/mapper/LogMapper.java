@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.example.demo.dto.LogMeasureDTO;
 import com.example.demo.exception.MyException;
 import com.example.demo.model.Log;
+import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
 
 @Component
@@ -17,14 +18,13 @@ public class LogMapper {
 	public Log map(LogMeasureDTO logDTO) {
 		try {
 			Log log = new Log();
+			logDTO.setText(logDTO.getText().replace(',', '.'));
 			String[] array = logDTO.getText().split("\\|");
 			log.setDate(DATE_FORMAT.parse(array[0].trim()));
-			log.setNormal(Boolean.parseBoolean(array[1].trim()));
+			log.setMode(LogMode.valueOf(array[1].trim().toUpperCase()));
 			log.setStatus(LogStatus.valueOf(array[2].trim().toUpperCase()));
-			log.setDescription(array[3].trim());
-			log.setUserName(array[4].trim());
-			log.setComputerName(array[5].trim());
-			log.setServiceName(array[6].trim());
+			log.setIpAddress(array[3].trim());
+			log.setDescription(array[4].trim());
 			return log;
 		}
 		catch(Exception e) {

@@ -22,6 +22,7 @@ public class ReportService {
 		
 	public ReportDTO report(ReportSearchDTO searchDTO) {
 		return new ReportDTO(
+			this.logRepository.report(LogStatus.SUCCESS.name(), searchDTO.getStart(), searchDTO.getEnd()),
 			this.logRepository.report(LogStatus.INFO.name(), searchDTO.getStart(), searchDTO.getEnd()),
 			this.logRepository.report(LogStatus.WARNING.name(), searchDTO.getStart(), searchDTO.getEnd()),
 			this.logRepository.report(LogStatus.ERROR.name(), searchDTO.getStart(), searchDTO.getEnd()),

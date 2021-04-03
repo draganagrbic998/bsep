@@ -30,9 +30,9 @@ export class RevokeFormComponent implements OnInit {
     this.savePending = true;
     // tslint:disable-next-line: deprecation
     this.certificateService.sendRevokeRequest(this.revokeForm.value.certFileName).subscribe(
-      (val: boolean) => {
+      (response: boolean) => {
         this.savePending = false;
-        if (val){
+        if (response){
           this.snackBar.open('Certificate succesfully revoked!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.location.back();
         }

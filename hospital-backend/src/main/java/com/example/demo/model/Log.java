@@ -32,22 +32,17 @@ public class Log {
 	private Date date;
 
 	@NotNull
-	private boolean normal;
+    @Enumerated(EnumType.STRING)
+	private LogMode mode;
 	
 	@NotNull
     @Enumerated(EnumType.STRING)
 	private LogStatus status;
 	
 	@NotBlank
+	private String ipAddress;
+
+	@NotBlank
 	private String description;
-
-	@NotBlank
-	private String userName;
-
-	@NotBlank
-	private String computerName;
-
-	@NotBlank
-	private String serviceName;
 
 }

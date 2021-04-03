@@ -1,6 +1,4 @@
 <app-details-container [date]="log.date"
-[details]="[
-    {key: 'Status', value: log.status}, {key: 'User', value: log.userName},
-    {key: 'Computer', value: log.computerName}, {key: 'Service', value: log.serviceName}]"
+[details]="[{key: 'Mode', value: log.mode}, {key: 'Status', value: log.status}, {key: 'IP address', value: log.ipAddress}]"
 [mainDetails]="[{key: 'Description', value: log.description}]"
 ></app-details-container>

@@ -53,9 +53,8 @@ public class LogService {
 		while (true) {
 			try {
 				PrintWriter writer = new PrintWriter(FILE_PATH);
-				String line = String.format("%s|%s|%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
-					this.getMode(), this.getStatus(), this.getDescription(), 
-					this.getUserName(), this.getComputerName(), this.getServiceName());
+				String line = String.format("%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), 
+					this.getMode(), this.getStatus(), this.getIpAddress(), this.getDescription());
 				writer.println(line);
 				writer.close();
 				Thread.sleep(SLEEP_INTERVAL);
@@ -70,35 +69,21 @@ public class LogService {
 		return new Date();
 	}
 
-	public String getMode() {
-	    List<String> temp = Arrays.asList("true", "false");
-	    return temp.get(RAND.nextInt(temp.size()));
+	public LogMode getMode() {
+	    return LogMode.values()[RAND.nextInt(LogMode.values().length)];
 	}
 	
-	public String getStatus() {
-	    List<String> temp = Arrays.asList("INFO", "WARNING", "ERROR", "FATAL");
-	    return temp.get(RAND.nextInt(temp.size()));
+	public LogStatus getStatus() {
+	    return LogStatus.values()[RAND.nextInt(LogStatus.values().length)];
+	}
+	
+	public String getIpAddress() {
+		return RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256);
 	}
 	
 	public String getDescription() {
 	    List<String> temp = Arrays.asList("Login with wrong credentials", "Forbidden patients view", 
 	    	"Forbidden messages view", "Forbidden logs view", "Forbidden alarms view");
-	    return temp.get(RAND.nextInt(temp.size()));
-	}
-	
-	public String getUserName() {
-	    List<String> temp = Arrays.asList("Djokica", "Perica", "Mikica", "Zikica", "Marica");
-	    return temp.get(RAND.nextInt(temp.size()));
-	}
-	
-	public String getComputerName() {
-	    List<String> temp = Arrays.asList("Comp1", "Comp2", "Comp3", "Comp4", "Comp5");
-	    return temp.get(RAND.nextInt(temp.size()));
-	}
-	
-	public String getServiceName() {
-	    List<String> temp = Arrays.asList("UserService", "PatientService", 
-	    	"MessageService", "LogService", "AlarmService");
 	    return temp.get(RAND.nextInt(temp.size()));
 	}
 	

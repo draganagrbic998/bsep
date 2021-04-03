@@ -4,11 +4,25 @@
             <h2>Log Search</h2>
             <br><br>
             <mat-form-field>
+                <mat-label>Mode</mat-label>
+                <input 
+                formControlName="mode" 
+                matInput 
+                placeholder="Enter mode">
+            </mat-form-field>
+            <mat-form-field>
                 <mat-label>Status</mat-label>
                 <input 
                 formControlName="status" 
                 matInput 
                 placeholder="Enter status">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>IP address</mat-label>
+                <input 
+                formControlName="ipAddress" 
+                matInput 
+                placeholder="Enter IP address">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Description</mat-label>
@@ -17,26 +31,15 @@
                 matInput 
                 placeholder="Enter description">
             </mat-form-field>
-            <mat-form-field>
-                <mat-label>User name</mat-label>
+            <mat-form-field> 
+                <mat-label>Date</mat-label>
                 <input 
-                formControlName="userName" 
+                formControlName="date"
                 matInput 
-                placeholder="Enter user name">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Computer name</mat-label>
-                <input 
-                formControlName="computerName" 
-                matInput 
-                placeholder="Enter computer name">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Service name</mat-label>
-                <input 
-                formControlName="serviceName" 
-                matInput 
-                placeholder="Enter service name">
+                placeholder="Enter date"
+                [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
             </mat-form-field>
         </div>
         <br><br>

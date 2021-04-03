@@ -13,17 +13,17 @@ public class AdminAlarmDTO {
 
 	private Long id;
 	private boolean status;
+	private long counts;
 	
 	@NotBlank(message = "Param can't be blank")
 	private String param;
-	private long counts;
 		
 	public AdminAlarmDTO(AdminAlarm alarm) {
 		super();
 		this.id = alarm.getId();
 		this.status = alarm.isStatus();
-		this.param = alarm.getParam();
 		this.counts = alarm.getCounts();
+		this.param = alarm.getParam();
 	}
 	
 }

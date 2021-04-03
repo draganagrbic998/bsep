@@ -1,7 +1,7 @@
 export interface LogSearch{
+    mode: string;
     status: string;
+    ipAddress: string;
     description: string;
-    userName: string;
-    computerName: string;
-    serviceName: string;
+    date: Date;
 }

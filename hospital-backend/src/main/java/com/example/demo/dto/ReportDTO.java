@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReportDTO {
 
+	private long successLogs;
 	private long infoLogs;
 	private long warningLogs;
 	private long errorLogs;

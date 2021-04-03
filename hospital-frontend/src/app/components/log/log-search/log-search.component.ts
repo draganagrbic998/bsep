@@ -15,11 +15,11 @@ export class LogSearchComponent implements OnInit {
   @Output() searchTriggered: EventEmitter<LogSearch> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({
+    mode: new FormControl(''),
     status: new FormControl(''),
+    ipAddress: new FormControl(''),
     description: new FormControl(''),
-    userName: new FormControl(''),
-    computerName: new FormControl(''),
-    serviceName: new FormControl('')
+    date: new FormControl('')
   });
 
   ngOnInit(): void {

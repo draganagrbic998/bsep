@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -9,19 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogSearchDTO {
 	
+	@NotNull(message = "Mode can't be null")
+	private String mode;
+
 	@NotNull(message = "Status can't be null")
 	private String status;
 	
+	@NotNull(message = "IP address can't be null")
+	private String ipAddress;
+
 	@NotNull(message = "Description can't be null")
 	private String description;
 	
-	@NotNull(message = "Username can't be null")
-	private String userName;
+	private Date date;
 	
-	@NotNull(message = "Computer name can't be null")
-	private String computerName;
-	
-	@NotNull(message = "Service name can't be null")
-	private String serviceName;
-
 }

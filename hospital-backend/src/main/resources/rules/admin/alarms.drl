@@ -1,5 +1,6 @@
 package rules
 import com.example.demo.model.Log
+import com.example.demo.model.LogMode
 import com.example.demo.model.AdminAlarm
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.service.AdminAlarmService
@@ -14,7 +15,7 @@ rule "Alarm for log status"
 
     when
 		accumulate(
-			Log($log: this, !normal, $status: status),
+			Log($log: this, mode.equals(LogMode.ATTACK), $status: status),
 			$logSet: collectSet($status),
 			$logList: collectList($status),
 			$count: count($log)
@@ -34,14 +35,13 @@ rule "Alarm for log description"
 
     when
 		accumulate(
-			Log($log: this, !normal, $description: description, $userName: userName, $computerName: computerName),
+			Log($log: this, mode.equals(LogMode.ATTACK), $description: description, $ipAddress: ipAddress),
 			$logSet: collectSet($description),
 			$logList: collectList($description),
 			$count: count($log),
-			$userNameSet: collectSet($userName),
-			$computerNameSet: collectSet($computerName)
+			$ipAddressSet: collectSet($ipAddress)
 		)
-		eval($logSet.size() == 1 && ($userNameSet.size() == 1 || $computerNameSet.size() == 1))
+		eval($logSet.size() == 1 && $ipAddressSet.size() == 1)
 		Number(intValue <= $count) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase($logList.get(0) + ""), $counts: counts) from alarmService.findAll(),
 			min($counts)

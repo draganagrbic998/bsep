@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.CertificateDTO;
-import com.example.demo.utils.Constants;
 
 @Service
 public class CertificateService {
@@ -24,11 +25,14 @@ public class CertificateService {
 				+ certificateDTO.getOrganizationUnit() + ".jks";
 
 		try {
-			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
-			out.write(decryptedCertificate);
-			out.close();
+			File file = ResourceUtils.getFile("classpath:certificates" + File.separatorChar + fileName);
+			file.createNewFile();
+			FileOutputStream fout = new FileOutputStream(file);
+			fout.write(decryptedCertificate);
+			fout.close();
 			this.restTemplate.postForEntity(HOSPITAL_API, certificateDTO, CertificateDTO.class);
 		} 
+		
 		catch (Exception e) {
 			e.printStackTrace();
 		}

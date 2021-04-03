@@ -23,7 +23,7 @@ export class LogListComponent implements OnInit {
     firstPage: true,
     lastPage: true
   };
-  search: LogSearch = {status: '', description: '', userName: '', computerName: '', serviceName: ''};
+  search: LogSearch = {mode: '', status: '', ipAddress: '', description: '', date: null};
 
   changePage(value: number): void{
     this.pagination.pageNumber += value;

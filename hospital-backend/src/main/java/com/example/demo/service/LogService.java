@@ -65,11 +65,11 @@ public class LogService {
 	
 	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
 		return this.logRepository.findAll(pageable, 
+				searchDTO.getMode(), 
 				searchDTO.getStatus(), 
-				searchDTO.getDescription(), 
-				searchDTO.getUserName(), 
-				searchDTO.getComputerName(), 
-				searchDTO.getServiceName());
+				searchDTO.getIpAddress(),
+				searchDTO.getDescription(),
+				searchDTO.getDate());
 	}
 
 	@Transactional(readOnly = false)
@@ -88,7 +88,7 @@ public class LogService {
 				Thread.sleep(interval);	
 			}
 			catch(Exception e) {
-				;
+				e.printStackTrace();
 			}
 		}
 	}

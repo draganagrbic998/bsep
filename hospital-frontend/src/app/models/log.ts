@@ -1,9 +1,8 @@
 export interface Log{
     id: number;
     date: Date;
+    mode: string;
     status: string;
+    ipAddress: string;
     description: string;
-    userName: string;
-    computerName: string;
-    serviceName: string;
 }

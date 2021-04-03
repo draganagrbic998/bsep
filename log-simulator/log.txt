@@ -1,1 +1,1 @@
-01/04/2021-19:37:18|true|FATAL|Forbidden messages view|Zikica|Comp3|PatientService
+03/04/2021-16:47:11|NORMAL|SUCCESS|128.136.240.191|Login with wrong credentials
