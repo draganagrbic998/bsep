@@ -1,1 +1,0 @@
-03/04/2021-17:31:04|NORMAL|SUCCESS|159.49.163.46|Forbidden patients view

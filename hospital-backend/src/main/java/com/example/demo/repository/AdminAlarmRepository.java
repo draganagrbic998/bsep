@@ -7,5 +7,5 @@ import com.example.demo.model.AdminAlarm;
 
 @Repository
 public interface AdminAlarmRepository extends JpaRepository<AdminAlarm, Long> {
-	
+
 }

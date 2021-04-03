@@ -1,6 +1,7 @@
 package rules
 import com.example.demo.model.Log
 import com.example.demo.model.LogMode
+import com.example.demo.model.LogStatus
 import com.example.demo.model.AdminAlarm
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.service.AdminAlarmService
@@ -10,43 +11,174 @@ global AdminAlarmService alarmService
 global AlarmTriggeringService alarmTriggeringService
 
 
-rule "Alarm for log status"
+rule "Alarm for SUCCESS status"
 	no-loop
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), $status: status),
-			$logSet: collectSet($status),
-			$logList: collectList($status),
-			$count: count($log)
+			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.SUCCESS)),
+			$logsCount: count($log)
 		)
-		eval($logSet.size() == 1)
-		Number(intValue <= $count) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase($logList.get(0) + ""), $counts: counts) from alarmService.findAll(),
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.SUCCESS + ""), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($count + " number of logs with " + $logList.get(0) + " status appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of SUCCESS logs appeared in the last minute!!"));
 
 end
 
-rule "Alarm for log description"
+rule "Alarm for INFO status"
 	no-loop
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), $description: description, $ipAddress: ipAddress),
-			$logSet: collectSet($description),
-			$logList: collectList($description),
-			$count: count($log),
-			$ipAddressSet: collectSet($ipAddress)
+			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.INFO)),
+			$logsCount: count($log)
 		)
-		eval($logSet.size() == 1 && $ipAddressSet.size() == 1)
-		Number(intValue <= $count) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase($logList.get(0) + ""), $counts: counts) from alarmService.findAll(),
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.INFO + ""), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($count + " number of attempts on '" + $logList.get(0) + "' action appeared in the last minute from the same IP address!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of INFO logs appeared in the last minute!!"));
 
 end
+
+rule "Alarm for WARNING status"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.WARNING)),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.WARNING + ""), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of WARNING logs appeared in the last minute!!"));
+
+end
+
+rule "Alarm for ERROR status"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.ERROR)),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.ERROR + ""), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of ERROR logs appeared in the last minute!!"));
+
+end
+
+rule "Alarm for FATAL status"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.FATAL)),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.FATAL + ""), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of FATAL logs appeared in the last minute!!"));
+
+end
+
+rule "Alarm for 'Login with wrong credentials'"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Login with wrong credentials")),
+			$logs: collectList($log)
+		)
+		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase("Login with wrong credentials"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of wrong logins from the same IP address appeared in the last minute!!"));
+
+end
+
+rule "Alarm for 'Forbidden patients view'"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden patients view")),
+			$logs: collectList($log)
+		)
+		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden patients view"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on patients view from the same IP address appeared in the last minute!!"));
+
+end
+
+rule "Alarm for 'Forbidden messages view'"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden messages view")),
+			$logs: collectList($log)
+		)
+		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden messages view"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on messages view from the same IP address appeared in the last minute!!"));
+
+end
+
+rule "Alarm for 'Forbidden logs view'"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden logs view")),
+			$logs: collectList($log)
+		)
+		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden logs view"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on logs view from the same IP address appeared in the last minute!!"));
+
+end
+
+rule "Alarm for 'Forbidden alarms view'"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden alarms view")),
+			$logs: collectList($log)
+		)
+		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden alarms view"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on alarms view from the same IP address appeared in the last minute!!"));
+
+end
+
+
