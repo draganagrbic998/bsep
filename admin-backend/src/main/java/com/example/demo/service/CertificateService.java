@@ -183,7 +183,12 @@ public class CertificateService {
 		return builder.build();
 	}
 
-	public boolean isCertificateValid(String alias) {
+	public boolean isCertificateValid(long serial) {
+		String alias = this.certificateInfoRepository.getOne(serial).getAlias();
+		return isCertificateValid(alias);
+	}
+	
+	private boolean isCertificateValid(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 
 		if (chain == null) {

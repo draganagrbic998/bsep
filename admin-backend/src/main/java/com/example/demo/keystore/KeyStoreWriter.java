@@ -55,12 +55,16 @@ public class KeyStoreWriter {
 	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo,
 			X509Certificate newCertificate, String issuerFilename, String subjectFilename, String keyStorePassword) {
 		X509Certificate issuerCert = null;
+		X509Certificate rootCert = null;
 		try {
 			KeyStore issuerTrustStore = KeyStore.getInstance("JKS", "SUN");
 			issuerTrustStore.load(new FileInputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
 			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
+			
+			//posto cuvamo ceo chain u svaki keystore, onda issuer mora da ima ili da jeste root
+			rootCert = (X509Certificate) issuerTrustStore.getCertificate("root");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,6 +72,11 @@ public class KeyStoreWriter {
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
 			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
+			
+			//ako nam issuer nije root, dodajmo i root da bi mogli da komuniciraju
+			if (rootCert.getSerialNumber() != issuerCert.getSerialNumber())
+				subjectTrustStore.setCertificateEntry("root", rootCert);
+
 			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
 			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
 		} catch (Exception e) {

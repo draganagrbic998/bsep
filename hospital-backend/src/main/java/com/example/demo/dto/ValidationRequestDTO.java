@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ValidationRequestDTO {
 
-	private String alias;
+	private long serial;
 	private String path;
 
 }

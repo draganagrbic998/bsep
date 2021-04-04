@@ -9,9 +9,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ValidationRequestDTO {
 
-	@NotBlank(message = "Alias cannot be empty")
-	private String alias;
-
-	@NotBlank(message = "Path cannot be empty")
+	private long serial;
 	private String path;
+
 }

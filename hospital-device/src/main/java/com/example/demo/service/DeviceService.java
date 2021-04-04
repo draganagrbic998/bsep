@@ -43,7 +43,7 @@ public class DeviceService {
 				Thread.sleep(SLEEP_INTERVAL);
 			}
 			catch(Exception e) {
-				;
+				e.printStackTrace();
 			}
 		}
 	}

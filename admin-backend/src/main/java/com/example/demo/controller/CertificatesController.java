@@ -36,8 +36,8 @@ public class CertificatesController {
 	private final CertificateInfoMapper certificateInfoMapper;
 
 	@Autowired
-	public CertificatesController(CertificateService certificateService, 
-			CertificateInfoService certificateInfoService, CertificateInfoMapper certificateInfoMapper) {
+	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
+			CertificateInfoMapper certificateInfoMapper) {
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
 		this.certificateInfoMapper = certificateInfoMapper;
@@ -92,10 +92,11 @@ public class CertificatesController {
 		this.certificateService.revoke(revokeDTO.getId(), revokeDTO.getReason());
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO) throws MessagingException {
+	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO)
+			throws MessagingException {
 		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
 			return ResponseEntity.badRequest().build();
 		this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
@@ -112,6 +113,6 @@ public class CertificatesController {
 	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
 		if (!validationRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates"))
 			return ResponseEntity.badRequest().build();
-		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getAlias()));
+		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
 	}
 }

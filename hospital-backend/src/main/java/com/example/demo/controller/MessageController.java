@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.security.cert.X509Certificate;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import com.example.demo.dto.MessageMeasureDTO;
 import com.example.demo.dto.MessageSearchDTO;
 import com.example.demo.mapper.MessageMapper;
 import com.example.demo.model.Message;
+import com.example.demo.service.CertificateService;
 import com.example.demo.service.MessageService;
 
 @RestController
@@ -26,23 +30,30 @@ public class MessageController {
 
 	@Autowired
 	private MessageService messageService;
-	
+
 	@Autowired
 	private MessageMapper messageMapper;
 
+	@Autowired
+	private CertificateService certificateService;
+
 	@PostMapping(value = "/search")
-	@PreAuthorize("hasAuthority('DOCTOR')")	
-	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody MessageSearchDTO searchDTO){
+	@PreAuthorize("hasAuthority('DOCTOR')")
+	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody MessageSearchDTO searchDTO) {
 		return ResponseEntity.ok(this.messageService.findAll(pageable, searchDTO).map(MessageDTO::new));
 	}
 
 	@PostMapping
-	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO) {
+	public ResponseEntity<MessageMeasureDTO> create(HttpServletRequest request,
+			@Valid @RequestBody MessageMeasureDTO messageDTO) {
+		//this.certificateService.validateClientCertificate(
+		//		((X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate"))[0]);
+
 		Message message = this.messageMapper.map(messageDTO);
 		if (message.getPatient() != null) {
-			this.messageService.save(this.messageMapper.map(messageDTO));			
+			this.messageService.save(this.messageMapper.map(messageDTO));
 		}
 		return ResponseEntity.ok(messageDTO);
 	}
-	
+
 }
