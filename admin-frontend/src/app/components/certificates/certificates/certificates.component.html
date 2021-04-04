@@ -101,12 +101,6 @@
       <input type="email" pInputText id="email" [(ngModel)]="certificate.email" required autofocus />
       <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
     </div>
-    
-    <div class="p-field" *ngIf="activeIndex === 0">
-      <label for="path">Target Path</label>
-      <input type="text" pInputText id="path" [(ngModel)]="certificate.path" required autofocus />
-      <small class="p-error" *ngIf="submitted && !certificate.path">Target path is required.</small>
-    </div>
 
     <div class="p-field">
       <label class="p-mb-3">Template</label>

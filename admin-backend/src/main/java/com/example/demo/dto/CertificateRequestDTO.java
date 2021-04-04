@@ -37,7 +37,6 @@ public class CertificateRequestDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
-	@NotBlank(message = "Path cannot be empty")
 	private String path;
 	
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {
