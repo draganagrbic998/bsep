@@ -32,20 +32,20 @@ public class CertificateService {
 			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
 			out.write(decryptedCertificate);
 			out.close();
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void sendRequest(CertificateRequestDTO requestDTO) {
-		requestDTO.setPath("https://" + requestDTO.getPath() + "/api/certificates");
+		requestDTO.setPath(Constants.BACKEND + "/api/certificates");
 		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH, requestDTO, CertificateRequestDTO.class);
 	}
 
 	public void sendRevokeRequest(String certFileName) {
-		X509Certificate cert = (X509Certificate) this.keyStoreService.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName, certFileName.split("_")[1]);
+		X509Certificate cert = (X509Certificate) this.keyStoreService
+				.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName, certFileName.split("_")[1]);
 		RevokeRequestDTO requestDTO = new RevokeRequestDTO();
 		requestDTO.setSerial(cert.getSerialNumber().longValue());
 		requestDTO.setPath(Constants.BACKEND);
@@ -53,11 +53,13 @@ public class CertificateService {
 	}
 
 	public boolean validateClientCertificate(X509Certificate clientCertificate) {
-		//System.out.println(clientCertificate.getSubjectDN().getName());
+		// System.out.println(clientCertificate.getSubjectDN().getName());
 		ValidationRequestDTO validationRequestDTO = new ValidationRequestDTO();
 		validationRequestDTO.setSerial(clientCertificate.getSerialNumber().longValue());
 		validationRequestDTO.setPath(Constants.BACKEND);
-		return this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", validationRequestDTO, Boolean.class).getBody().booleanValue();
+		return this.restTemplate
+				.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", validationRequestDTO, Boolean.class).getBody()
+				.booleanValue();
 	}
 
 }

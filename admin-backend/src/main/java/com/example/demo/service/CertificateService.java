@@ -158,16 +158,12 @@ public class CertificateService {
 						dto, CreatedCertificateDTO.class).getBody();
 
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
-			} else
-				this.restTemplate
-						.postForEntity("https://" + createCertificateDto.getPath() + Constants.CERTIFICATE_SAVE_PATH,
-								dto, CreatedCertificateDTO.class)
-						.getBody();
-
-			String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
-					+ certInfo.getOrganizationUnit() + ".jks";
-			this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, certInfo.getOrganizationUnit(),
-					Constants.CERTIFICATE_ISSUED, Constants.ISSUED_TEMPLATE);
+				
+				String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
+						+ certInfo.getOrganizationUnit() + ".jks";
+				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, certInfo.getOrganizationUnit(),
+						Constants.CERTIFICATE_ISSUED, Constants.ISSUED_TEMPLATE);
+			}
 		} catch (RestClientException | IllegalArgumentException | MessagingException e) {
 			e.printStackTrace();
 		}
