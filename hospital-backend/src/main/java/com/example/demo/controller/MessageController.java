@@ -46,14 +46,15 @@ public class MessageController {
 	@PostMapping
 	public ResponseEntity<MessageMeasureDTO> create(HttpServletRequest request,
 			@Valid @RequestBody MessageMeasureDTO messageDTO) {
-		//this.certificateService.validateClientCertificate(
-		//		((X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate"))[0]);
-
-		Message message = this.messageMapper.map(messageDTO);
-		if (message.getPatient() != null) {
-			this.messageService.save(this.messageMapper.map(messageDTO));
-		}
-		return ResponseEntity.ok(messageDTO);
+//		if(this.certificateService.validateClientCertificate(
+//				((X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate"))[0])) {
+			Message message = this.messageMapper.map(messageDTO);
+			if (message.getPatient() != null) {
+				this.messageService.save(this.messageMapper.map(messageDTO));
+			}
+			return ResponseEntity.ok(messageDTO);
+//		}
+//		return ResponseEntity.badRequest().build();
 	}
 
 }

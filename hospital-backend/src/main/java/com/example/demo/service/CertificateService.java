@@ -52,12 +52,12 @@ public class CertificateService {
 		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", requestDTO, RevokeRequestDTO.class);
 	}
 
-	public void validateClientCertificate(X509Certificate clientCertificate) {
+	public boolean validateClientCertificate(X509Certificate clientCertificate) {
 		//System.out.println(clientCertificate.getSubjectDN().getName());
 		ValidationRequestDTO validationRequestDTO = new ValidationRequestDTO();
 		validationRequestDTO.setSerial(clientCertificate.getSerialNumber().longValue());
 		validationRequestDTO.setPath(Constants.BACKEND);
-		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", validationRequestDTO, ValidationRequestDTO.class);
+		return this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", validationRequestDTO, Boolean.class).getBody().booleanValue();
 	}
 
 }
