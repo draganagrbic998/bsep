@@ -12,8 +12,11 @@ public class Constants {
 	public static final String ADMIN_ALARMS = "admin-alarms";
 	public static final String DOCTOR_ALARMS = "doctor-alarms";
 
-	public final static String CERTIFICATES_FOLDER = "." + File.separator + "src" + File.separator + "main"
-			+ File.separator + "resources" + File.separator + "certificates" + File.separator;
-	public static final String CERTIFICATES_PATH = Constants.ADMIN_BACKEND + "/api/certificates/requests";
+	public static final String RESOURCES_FOLDER = "." + File.separator + "src" + File.separator + "main"
+			+ File.separator + "resources" + File.separator;
+	public static final String CERTIFICATES_FOLDER = RESOURCES_FOLDER + "certificates" + File.separator;
+	public static final String KEYSTORE_PATH = RESOURCES_FOLDER + "keystore.jks";
+	
+	public static final String CERTIFICATES_PATH = Constants.ADMIN_BACKEND + "/api/certificates/";
 
 }

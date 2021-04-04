@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.CertificateRequest;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,8 +38,11 @@ public class CertificateRequestDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
-	private String path;
+	@NotBlank(message = "Template cannot be empty")
+	private String type;
 	
+	private String path;
+
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {
 		this.id = certificateRequest.getId();
 		this.alias = certificateRequest.getAlias();
@@ -48,6 +52,7 @@ public class CertificateRequestDTO {
 		this.country = certificateRequest.getCountry();
 		this.email = certificateRequest.getEmail();
 		this.template = certificateRequest.getTemplate().toString();
+		this.type = certificateRequest.getType().name();
 		this.path = certificateRequest.getPath();
 	}
 

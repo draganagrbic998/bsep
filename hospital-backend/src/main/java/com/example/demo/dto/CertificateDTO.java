@@ -18,6 +18,9 @@ public class CertificateDTO {
 	@NotBlank(message = "Organization unit cannot be empty")
 	private String organizationUnit;
 	
+	@NotBlank(message = "Type must not be empty")
+	private String type;
+	
 	@NotBlank(message = "Certificate cannot be empty")
 	private String certificate;
 

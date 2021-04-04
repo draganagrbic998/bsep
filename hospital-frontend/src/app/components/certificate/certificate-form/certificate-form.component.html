@@ -90,6 +90,24 @@
                     Template is required!
                 </div>
             </div>
+            <br><br>
+            <h6>Type:</h6>
+            <br>
+            <div>
+                <mat-radio-group formControlName="type">
+                    <app-spacer-container>
+                        <mat-radio-button value="HOSPITAL">
+                            Hospital
+                        </mat-radio-button>
+                        <mat-radio-button value="HOSPITAL_DEVICE">
+                            Hospital Device
+                        </mat-radio-button>
+                    </app-spacer-container>
+                </mat-radio-group>
+                <div *ngIf="certificateForm.get('type').hasError('required')" class="error">
+                    Type is required!
+                </div>
+            </div>
         </div>
         <br><br>
         <app-spacer-container>

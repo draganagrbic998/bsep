@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.dto.ValidationRequestDTO;
+import com.example.demo.model.CertificateType;
 import com.example.demo.utils.Constants;
 import com.example.demo.dto.CertificateDTO;
 
@@ -32,6 +33,10 @@ public class CertificateService {
 			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
 			out.write(decryptedCertificate);
 			out.close();
+
+			if (CertificateType.valueOf(certificateDTO.getType()) == CertificateType.HOSPITAL_DEVICE)
+				this.keyStoreService.updateTruststore(certificateDTO.getAlias(),
+						Constants.CERTIFICATES_FOLDER + fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -40,7 +45,8 @@ public class CertificateService {
 
 	public void sendRequest(CertificateRequestDTO requestDTO) {
 		requestDTO.setPath(Constants.BACKEND + "/api/certificates");
-		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH, requestDTO, CertificateRequestDTO.class);
+		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "requests", requestDTO,
+				CertificateRequestDTO.class);
 	}
 
 	public void sendRevokeRequest(String certFileName) {
@@ -49,16 +55,16 @@ public class CertificateService {
 		RevokeRequestDTO requestDTO = new RevokeRequestDTO();
 		requestDTO.setSerial(cert.getSerialNumber().longValue());
 		requestDTO.setPath(Constants.BACKEND);
-		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", requestDTO, RevokeRequestDTO.class);
+		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "requests/revoke", requestDTO,
+				RevokeRequestDTO.class);
 	}
 
 	public boolean validateClientCertificate(X509Certificate clientCertificate) {
-		// System.out.println(clientCertificate.getSubjectDN().getName());
 		ValidationRequestDTO validationRequestDTO = new ValidationRequestDTO();
 		validationRequestDTO.setSerial(clientCertificate.getSerialNumber().longValue());
 		validationRequestDTO.setPath(Constants.BACKEND);
 		return this.restTemplate
-				.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", validationRequestDTO, Boolean.class).getBody()
+				.postForEntity(Constants.CERTIFICATES_PATH + "validate", validationRequestDTO, Boolean.class).getBody()
 				.booleanValue();
 	}
 

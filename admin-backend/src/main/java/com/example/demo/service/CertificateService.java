@@ -145,28 +145,31 @@ public class CertificateService {
 			e.printStackTrace();
 		}
 
-		try {
-			CreatedCertificateDTO dto = new CreatedCertificateDTO();
-			dto.setIssuerAlias(issuerInfo.getAlias());
-			dto.setAlias(certInfo.getAlias());
-			dto.setOrganizationUnit(certInfo.getOrganizationUnit());
-			dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
+		if (createCertificateDto.getId() != 0) {
+			try {
+				CreatedCertificateDTO dto = new CreatedCertificateDTO();
+				dto.setIssuerAlias(issuerInfo.getAlias());
+				dto.setAlias(certInfo.getAlias());
+				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
+				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
 
-			if (createCertificateDto.getId() != 0) {
-				this.restTemplate.postForEntity(
-						this.certificateRequestRepository.findById(createCertificateDto.getId()).orElse(null).getPath(),
-						dto, CreatedCertificateDTO.class).getBody();
+				CertificateRequest request = this.certificateRequestRepository.findById(createCertificateDto.getId())
+						.orElse(null);
+				dto.setType(request.getType().name());
+
+				this.restTemplate.postForEntity(request.getPath(), dto, CreatedCertificateDTO.class).getBody();
 
 				this.certificateRequestRepository.deleteById(createCertificateDto.getId());
-				
+
 				String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
 						+ certInfo.getOrganizationUnit() + ".jks";
-				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, certInfo.getOrganizationUnit(),
+				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, request.getPath(),
 						Constants.CERTIFICATE_ISSUED, Constants.ISSUED_TEMPLATE);
+			} catch (RestClientException | IllegalArgumentException | MessagingException e) {
+				e.printStackTrace();
 			}
-		} catch (RestClientException | IllegalArgumentException | MessagingException e) {
-			e.printStackTrace();
 		}
+
 	}
 
 	public static X500Name certificateNameFromData(CreateCertificateDTO createCertificateDto) {
@@ -180,10 +183,15 @@ public class CertificateService {
 	}
 
 	public boolean isCertificateValid(long serial) {
-		String alias = this.certificateInfoRepository.getOne(serial).getAlias();
+		String alias = null;
+		try {
+			alias = this.certificateInfoRepository.getOne(serial).getAlias();
+		} catch (Exception e) {
+			return false;
+		}
 		return isCertificateValid(alias);
 	}
-	
+
 	private boolean isCertificateValid(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 
@@ -290,8 +298,8 @@ public class CertificateService {
 		ci.setRevocationDate(new Date());
 		this.certificateInfoRepository.save(ci);
 		String certFileName = ci.getIssuerAlias() + "_" + ci.getAlias() + "_" + ci.getOrganizationUnit() + ".jks";
-		this.emailService.sendInfoMail(ci.getEmail(), certFileName, revokeReason,
-				Constants.CERTIFICATE_REVOKED, Constants.REVOKED_TEMPLATE);
+		this.emailService.sendInfoMail(ci.getEmail(), certFileName, revokeReason, Constants.CERTIFICATE_REVOKED,
+				Constants.REVOKED_TEMPLATE);
 	}
 
 	public void createRequest(CertificateRequestDTO certificateRequestDTO) {

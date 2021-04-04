@@ -8,4 +8,5 @@ export class CertificateRequest {
   email: string;
   template: string;
   path: string;
+  type: string;
 }

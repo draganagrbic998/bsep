@@ -109,9 +109,9 @@ public class CertificatesController {
 	}
 
 	@PreAuthorize("permitAll()")
-	@GetMapping(value = "/validate")
+	@PostMapping(value = "/validate")
 	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
-		if (!validationRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates"))
+		if (!validationRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
 			return ResponseEntity.badRequest().build();
 		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
 	}

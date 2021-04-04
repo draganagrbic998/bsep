@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "server.ssl")
 public class PkiProperties {
 
+	private String keyAlias;
     private String keystore;
     private String keystorePassword;
 
