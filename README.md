@@ -11,3 +11,4 @@
 3. U application properties od bolnice i uredjaja zakomentarisite sve sto pocinje sa server.ssl OSIM:
 - server.ssl.key-store=classpath:keystore.jks
 - server.ssl.key-store-password=${KEY_STORE_PASSWORD}
+4. Napomena: svi .jks fajlovi sa "\_koji_radi" u nazivu su kod mene radili.
