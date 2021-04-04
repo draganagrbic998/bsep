@@ -163,7 +163,9 @@ public class CertificateService {
 
 				String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
 						+ certInfo.getOrganizationUnit() + ".jks";
-				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, request.getPath(),
+				
+				String location = request.getPath().split("//")[1].split("/")[0];
+				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, location,
 						Constants.CERTIFICATE_ISSUED, Constants.ISSUED_TEMPLATE);
 			} catch (RestClientException | IllegalArgumentException | MessagingException e) {
 				e.printStackTrace();
