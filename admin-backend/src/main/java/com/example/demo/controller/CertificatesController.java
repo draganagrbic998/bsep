@@ -57,12 +57,10 @@ public class CertificatesController {
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest( @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
 		if (this.userService.findOne(requestDTO.getEmail()) == null) {
-			System.out.println("JEBIGAAA");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		System.out.println("PALA");
 		this.certificateService.createRequest(requestDTO);
 		return ResponseEntity.ok().build();			
 	}

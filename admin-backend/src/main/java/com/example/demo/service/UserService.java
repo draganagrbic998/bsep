@@ -111,12 +111,6 @@ public class UserService implements UserDetailsService {
 	}
 
 	public UserDTO findOne(String email) {
-		try {
-			return this.restTemplate.getForEntity(String.format("%s/%s", USERS_API, email), UserDTO.class).getBody();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return this.restTemplate.getForEntity(String.format("%s/%s", USERS_API, email), UserDTO.class).getBody();
 	}
 }

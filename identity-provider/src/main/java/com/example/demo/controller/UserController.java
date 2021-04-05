@@ -51,7 +51,6 @@ public class UserController {
 	
 	@GetMapping(value = "/{email}")
 	public ResponseEntity<UserDTO> findOne(@PathVariable String email) {
-		System.out.println(email);
 		return ResponseEntity.ok(new UserDTO(this.userService.findOne(email)));
 	}
 
