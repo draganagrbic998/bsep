@@ -22,15 +22,13 @@
             <div [class.padding]="date">
                 <div *ngFor="let detail of filteredDetails">
                     <span class="bold">{{detail.key}}: </span>
-                    <span *ngIf="!isNumber(detail.value)">{{detail.value}}</span>
-                    <span *ngIf="isNumber(detail.value)">{{detail.value | number: ".2"}}</span>
+                    <span>{{detail.value}}</span>
                 </div>
                 <br *ngIf="filteredMainDetails.length">
                 <div *ngIf="filteredMainDetails.length" class="main">
                     <div *ngFor="let detail of filteredMainDetails">
                         <span class="bold">{{detail.key}}: </span>
-                        <span *ngIf="!isNumber(detail.value)">{{detail.value}}</span>
-                        <span *ngIf="isNumber(detail.value)">{{detail.value | number: ".2"}}</span>    
+                        <span>{{detail.value}}</span>
                     </div>    
                 </div>
             </div>
