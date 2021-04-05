@@ -118,7 +118,7 @@ export class UsersComponent implements OnInit {
           {
             severity: 'error',
             summary: 'Error',
-            detail: er.error.text
+            detail: 'Error while creating!'
           });
         this.user = new User();
       });
@@ -146,7 +146,7 @@ export class UsersComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: er.error.text
+          detail: 'Error while updating!'
         });
       });
   }
@@ -194,15 +194,6 @@ export class UsersComponent implements OnInit {
 
   confirmDeletion(user: User): void {
     this.userService.delete(user).subscribe((response: boolean) => {
-      if (!response){
-        this.messageService.add(
-          {
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error while deleting'
-          });
-        return;
-      }
       if (!!this.table) {
         this.table.reset();
       }
@@ -211,6 +202,13 @@ export class UsersComponent implements OnInit {
         summary: 'Success',
         detail: `The account for ${user.firstName} ${user.lastName} was deleted.`
       });
+    }, () => {
+      this.messageService.add(
+        {
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error while deleting'
+        });
     });
   }
 
@@ -219,6 +217,13 @@ export class UsersComponent implements OnInit {
       this.messageService.add(
         {severity: 'success', summary: 'Email sent', detail: 'The activation email has been sent successfully.'}
         );
+    }, () => {
+      this.messageService.add(
+        {
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error while sending activation mail'
+        });
     });
   }
 

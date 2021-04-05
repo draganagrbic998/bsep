@@ -34,8 +34,8 @@ public class KeyStoreReader {
 			Certificate cert = this.keyStore.getCertificate(alias);
 			if (cert == null)
 				throw new CertificateNotFoundException(alias);
+			
 			PrivateKey privKey = (PrivateKey) this.keyStore.getKey(alias, keyPass);
-
 			X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
 			return new IssuerData(privKey, issuerName);
 		} 

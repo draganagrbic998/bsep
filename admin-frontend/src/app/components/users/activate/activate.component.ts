@@ -72,6 +72,8 @@ export class ActivateComponent implements OnInit {
     this.userService.activate(activate).subscribe(() => {
       this.activated = true;
       this.messageService.add({severity: 'success', summary: 'Successful activation', detail: 'You can now log into our services.'});
+    }, () => {
+      this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while activating`});
     });
   }
 

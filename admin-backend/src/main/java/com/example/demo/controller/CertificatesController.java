@@ -35,35 +35,18 @@ import javax.validation.Valid;
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 public class CertificatesController {
 
+	private final UserService userService;
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
 	private final CertificateInfoMapper certificateInfoMapper;
-	private final UserService userService;
 
 	@Autowired
-	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
-			CertificateInfoMapper certificateInfoMapper, UserService userService) {
+	public CertificatesController(UserService userService, CertificateService certificateService, 
+			CertificateInfoService certificateInfoService, CertificateInfoMapper certificateInfoMapper) {
+		this.userService = userService;
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
 		this.certificateInfoMapper = certificateInfoMapper;
-		this.userService = userService;
-	}
-
-	@PostMapping
-	public ResponseEntity<CreateCertificateDTO> create(@Valid @RequestBody CreateCertificateDTO certificateDTO) {
-		this.certificateService.create(certificateDTO);
-		return ResponseEntity.ok(certificateDTO);
-	}
-
-	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		//i dodaj ti ipak ovde validaicju isto ovog sertifikata
-		if (this.userService.findOne(requestDTO.getEmail()) == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		this.certificateService.createRequest(requestDTO);
-		return ResponseEntity.ok().build();			
 	}
 
 	@GetMapping
@@ -76,6 +59,23 @@ public class CertificatesController {
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable)
 				.map(certificateRequest -> new CertificateRequestDTO(certificateRequest)));
+	}
+
+	@GetMapping(value = "/alias/{alias}")
+	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
+		return ResponseEntity.ok(this.certificateInfoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
+	}
+
+	@PostMapping
+	public ResponseEntity<CreateCertificateDTO> create(@Valid @RequestBody CreateCertificateDTO certificateDTO) {
+		this.certificateService.create(certificateDTO);
+		return ResponseEntity.ok(certificateDTO);
+	}
+
+	@PutMapping
+	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) throws MessagingException {
+		this.certificateService.revoke(revokeDTO.getId(), revokeDTO.getReason());
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -94,10 +94,21 @@ public class CertificatesController {
 		return ResponseEntity.ok().contentLength(length).body(resource);
 	}
 
-	@PutMapping
-	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) throws MessagingException {
-		this.certificateService.revoke(revokeDTO.getId(), revokeDTO.getReason());
-		return ResponseEntity.noContent().build();
+	@PreAuthorize("permitAll()")
+	@PostMapping(value = "/validate")
+	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
+		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
+	}
+
+	@PreAuthorize("permitAll()")
+	@PostMapping(value = "/requests")
+	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+		//i dodaj ti ipak ovde validaicju isto ovog sertifikata
+		if (this.userService.findOne(requestDTO.getEmail()) == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		this.certificateService.createRequest(requestDTO);
+		return ResponseEntity.ok().build();			
 	}
 
 	@PreAuthorize("permitAll()")
@@ -115,14 +126,4 @@ public class CertificatesController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
-	@GetMapping(value = "/alias/{alias}")
-	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
-		return ResponseEntity.ok(this.certificateInfoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
-	}
-
-	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/validate")
-	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
-		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
-	}
 }

@@ -254,7 +254,8 @@ public class CertificateService {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 			keyGen.initialize(2048, random);
 			return keyGen.generateKeyPair();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

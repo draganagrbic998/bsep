@@ -43,7 +43,7 @@ public class Setup implements ApplicationRunner {
 		Certificate root = this.keyStoreService.readCertificate("root");
 		CertificateInfo certificateInfo = this.certificateInfoRepository.findByAliasIgnoreCase("root");
 		if (root == null || certificateInfo == null) {
-			createRootCA();
+			this.createRootCA();
 			this.keyStoreService.saveKeyStore();
 		}
 	}

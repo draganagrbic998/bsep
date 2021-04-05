@@ -32,8 +32,7 @@ public class AppConfig {
 	private final RestTemplateBuilder restTemplateBuilder;
 
 	@Autowired
-	public AppConfig(PkiProperties pkiProperties,
-					 RestTemplateBuilder restTemplateBuilder) {
+	public AppConfig(PkiProperties pkiProperties, RestTemplateBuilder restTemplateBuilder) {
 		this.pkiProperties = pkiProperties;
 		this.restTemplateBuilder = restTemplateBuilder;
 	}

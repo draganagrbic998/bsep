@@ -19,7 +19,8 @@ public class KeyStoreWriter {
 	public KeyStoreWriter() {
 		try {
 			this.keyStore = KeyStore.getInstance("JKS", "SUN");
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -31,7 +32,8 @@ public class KeyStoreWriter {
 			} else {
 				this.keyStore.load(null, password);
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +41,8 @@ public class KeyStoreWriter {
 	public void saveKeyStore(String fileName, char[] password) {
 		try {
 			this.keyStore.store(new FileOutputStream(fileName), password);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -47,7 +50,8 @@ public class KeyStoreWriter {
 	public void write(String alias, PrivateKey privateKey, char[] password, Certificate[] certificateChain) {
 		try {
 			this.keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -62,8 +66,6 @@ public class KeyStoreWriter {
 			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
 			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
-			
-			//posto cuvamo ceo chain u svaki keystore, onda issuer mora da ima ili da jeste root
 			rootCert = (X509Certificate) issuerTrustStore.getCertificate("root");
 		} 
 		catch (Exception e) {
@@ -73,8 +75,6 @@ public class KeyStoreWriter {
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
 			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			
-			//ako nam issuer nije root, dodajmo i root da bi mogli da komuniciraju
 			if (rootCert.getSerialNumber() != issuerCert.getSerialNumber())
 				subjectTrustStore.setCertificateEntry("root", rootCert);
 

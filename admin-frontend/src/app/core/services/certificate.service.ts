@@ -22,7 +22,6 @@ export class CertificateService {
 
   private readonly API_PATH = 'api/certificates';
 
-
   getCertificates(page: number, size: number): Observable<Page<CertificateInfo>> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');
     return this.httpClient.get<Page<CertificateInfo>>(this.API_PATH, {params}).pipe(
@@ -37,6 +36,11 @@ export class CertificateService {
     );
   }
 
+  getByAlias(alias: string): Observable<any> {
+    // nmg gospodinu da ovde stavim CertificateIngo jer onda onaj child[depth] ne radi, nmp sta je gospodin raido
+    return this.httpClient.get<any>(`${this.API_PATH}/alias/${alias}`);
+  }
+
   downloadCrt(alias: string): Observable<any> {
     return this.httpClient.get(`${this.API_PATH}/download-crt/${alias}`, {responseType: 'blob'});
   }
@@ -46,21 +50,11 @@ export class CertificateService {
   }
 
   createCertificate(certificate: CertificateInfo): Observable<CertificateInfo> {
-    return this.httpClient.post<CertificateInfo>(this.API_PATH, certificate).pipe(
-      catchError(() => of(null))
-    );
+    return this.httpClient.post<CertificateInfo>(this.API_PATH, certificate);
   }
 
-  getByAlias(alias: string): Observable<any> {
-    // nmg gospodinu da ovde stavim CertificateIngo jer onda onaj child[depth] ne radi, nmp sta je gospodin raido
-    return this.httpClient.get<any>(`${this.API_PATH}/alias/${alias}`);
-  }
-
-  revokeCertificate(revoke: Revoke): Observable<boolean> {
-    return this.httpClient.put<boolean>(this.API_PATH, revoke).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+  revokeCertificate(revoke: Revoke): Observable<null> {
+    return this.httpClient.put<null>(this.API_PATH, revoke);
   }
 
 }

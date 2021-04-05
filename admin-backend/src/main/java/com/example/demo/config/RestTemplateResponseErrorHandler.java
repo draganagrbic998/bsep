@@ -19,25 +19,21 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 @Component
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
-
     @Override
     public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
-
-        return (
-                httpResponse.getStatusCode().series() == CLIENT_ERROR
-                        || httpResponse.getStatusCode().series() == SERVER_ERROR);
+        return httpResponse.getStatusCode().series() == CLIENT_ERROR || httpResponse.getStatusCode().series() == SERVER_ERROR;
     }
 
     @Override
     @SneakyThrows
     public void handleError(ClientHttpResponse httpResponse) {
 
-        Gson g = new Gson();
+        Gson gson = new Gson();
         InputStream bodyStream = httpResponse.getBody();
         InputStreamReader bodyReader = new InputStreamReader(bodyStream);
 
         try {
-            ErrorDTO errorDTO = g.fromJson(bodyReader, ErrorDTO.class);
+            ErrorDTO errorDTO = gson.fromJson(bodyReader, ErrorDTO.class);
             throw new RestTemplateMessageException(errorDTO);
         } 
         catch (Exception e) {

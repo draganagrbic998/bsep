@@ -27,6 +27,12 @@ export class UserService {
     );
   }
 
+  getAuthorities(): Observable<Authority[]> {
+    return this.httpClient.get<Authority[]>(`${this.USERS_PATH}/authorities`).pipe(
+      catchError(() => of([]))
+    );
+  }
+
   create(user: User): Observable<any> {
     return this.httpClient.post(this.USERS_PATH, user);
   }
@@ -35,17 +41,8 @@ export class UserService {
     return this.httpClient.put(this.USERS_PATH, user);
   }
 
-  delete(user: User): Observable<boolean> {
-    return this.httpClient.delete(`${this.USERS_PATH}/${user.id}`).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
-  }
-
-  getAuthorities(): Observable<Authority[]> {
-    return this.httpClient.get<Authority[]>(`${this.USERS_PATH}/authorities`).pipe(
-      catchError(() => of([]))
-    );
+  delete(user: User): Observable<null> {
+    return this.httpClient.delete<null>(`${this.USERS_PATH}/${user.id}`);
   }
 
   getDisabled(uuid: string): Observable<User> {

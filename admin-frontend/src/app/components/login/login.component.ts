@@ -28,9 +28,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
   onSubmitLogin(): void {
     if (this.loginForm.invalid) {
       this.messageService.add({severity: 'error', summary: 'Unsuccessful login', detail: 'Username and password are required'});
@@ -44,11 +41,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     // tslint:disable-next-line: deprecation
     this.authService.login(login).subscribe(
-      (user: AuthToken) => {
+      (token: AuthToken) => {
         this.loading = false;
-        if (user) {
-          if (user.authorities.includes('SUPER_ADMIN')) {
-            this.authService.loggedIn(user);
+        if (token) {
+          if (token.authorities.includes('SUPER_ADMIN')) {
+            this.authService.loggedIn(token);
             this.router.navigate(['']);
           }
           else {
@@ -59,6 +56,9 @@ export class LoginComponent implements OnInit {
           this.messageService.add({severity: 'error', summary: 'Invalid credentials', detail: 'Please check your username and password.'});
         }
       });
+  }
+
+  ngOnInit(): void {
   }
 
 }

@@ -37,12 +37,12 @@ public class EmailService {
 		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(this.ACTIVATE_URL, link));
 		context.setVariables(variables);
 
-		String html = templateEngine.process("activation-mail", context);
+		String html = this.templateEngine.process("activation-mail", context);
 		helper.setTo(to);
 		helper.setText(html, true);
 		helper.setSubject("Activation email - Bezbednost");
 		helper.setFrom("bezbednost.ftn@gmail.com");
-		emailSender.send(message);
+		this.emailSender.send(message);
 	}
 
 	@Async
@@ -55,12 +55,12 @@ public class EmailService {
 		Map<String, Object> variables = Map.of("certFileName", certFileName, "secondVariable", secondVariable);
 		context.setVariables(variables);
 
-		String html = templateEngine.process(template, context);
+		String html = this.templateEngine.process(template, context);
 		helper.setTo(to);
 		helper.setText(html, true);
 		helper.setSubject(subject);
 		helper.setFrom("bezbednost.ftn@gmail.com");
-		emailSender.send(message);
+		this.emailSender.send(message);
 	}
 
 }

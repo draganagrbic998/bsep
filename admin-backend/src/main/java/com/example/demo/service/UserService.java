@@ -20,14 +20,12 @@ public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = "https://localhost:8083/auth";
 	private static final String USERS_API = "https://localhost:8083/api/users";
-
-
+	
 	private final RestTemplate restTemplate;
 	private final EmailService emailService;
 
 	@Autowired
-	public UserService(RestTemplate restTemplate,
-					   EmailService emailService) {
+	public UserService(RestTemplate restTemplate, EmailService emailService) {
 		this.restTemplate = restTemplate;
 		this.emailService = emailService;
 	}
@@ -51,11 +49,8 @@ public class UserService implements UserDetailsService {
 	}
 
 	public void sendActivationMail(long id) throws MessagingException {
-		UserDTO userDTO = this.restTemplate
-				.getForEntity(String.format("%s/send/%d", USERS_API, id), UserDTO.class).getBody();
-
+		UserDTO userDTO = this.restTemplate.getForEntity(String.format("%s/send/%d", USERS_API, id), UserDTO.class).getBody();
 		if (userDTO == null) return;
-
 		this.sendActivationMail(userDTO);
 	}
 
@@ -63,7 +58,6 @@ public class UserService implements UserDetailsService {
 		String link = userDTO.getActivationLink();
 		String to = userDTO.getEmail();
 		String firstName = userDTO.getFirstName();
-
 		this.emailService.sendActivationLink(to, firstName, link);
 	}
 
@@ -73,8 +67,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public UserDTO activate(ActivationDTO activationDTO) {
-		return this.restTemplate.postForEntity(String.format("%s/activate", AUTH_API), activationDTO, UserDTO.class)
-				.getBody();
+		return this.restTemplate.postForEntity(String.format("%s/activate", AUTH_API), activationDTO, UserDTO.class).getBody();
 	}
 
 	public UserDTO update(UserDTO userDTO) {

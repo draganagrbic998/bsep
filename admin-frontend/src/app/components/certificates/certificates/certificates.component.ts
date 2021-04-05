@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { CertificateInfo } from '../../../core/model/certificate-info';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { TableViewComponent } from '../table-view/table-view.component';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
@@ -43,8 +43,7 @@ export class CertificatesComponent implements OnInit {
 
   constructor(
     private certificateService: CertificateService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -156,22 +155,19 @@ export class CertificatesComponent implements OnInit {
 
     if (this.revoke.reason.trim()) {
       // tslint:disable-next-line: deprecation
-      this.certificateService.revokeCertificate(this.revoke).subscribe(val => {
-        if (val) {
-          this.certificate.revoked = true;
-          if (!!this.table) {
-            this.table.reset();
-          }
-          if (!!this.tree) {
-            this.tree.reset();
-          }
-          this.revokeDialog = false;
-          this.messageService.add({
-            severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully revoked.`});
+      this.certificateService.revokeCertificate(this.revoke).subscribe(() => {
+        this.certificate.revoked = true;
+        if (!!this.table) {
+          this.table.reset();
         }
-        else {
-          this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
+        if (!!this.tree) {
+          this.tree.reset();
         }
+        this.revokeDialog = false;
+        this.messageService.add({
+          severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully revoked.`});
+    }, () => {
+        this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
       });
     }
   }
@@ -182,12 +178,7 @@ export class CertificatesComponent implements OnInit {
     if (this.certificate.commonName.trim()) {
       this.certificate.issuerAlias = this.caAlias.getValue();
       // tslint:disable-next-line: deprecation
-      this.certificateService.createCertificate(this.certificate).subscribe((response: CertificateInfo) => {
-        if (!response){
-          this.messageService.add({severity: 'error',
-          summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
-          return;
-        }
+      this.certificateService.createCertificate(this.certificate).subscribe(() => {
         if (!!this.table) {
           this.table.reset();
         }
@@ -201,7 +192,10 @@ export class CertificatesComponent implements OnInit {
         this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
         this.certificate = new CertificateInfo();
 
-      });
+      }, () => {
+        this.messageService.add({severity: 'error',
+        summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
+    });
     }
   }
 
