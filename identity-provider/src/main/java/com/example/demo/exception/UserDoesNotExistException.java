@@ -1,6 +1,7 @@
 package com.example.demo.exception;
 
-public class UserDoesNotExistException extends Exception {
+@SuppressWarnings("serial")
+public class UserDoesNotExistException extends RuntimeException {
 
     public UserDoesNotExistException() {
         super("The user specified doesn't exist");

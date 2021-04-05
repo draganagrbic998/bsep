@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -51,12 +54,10 @@ public class CertificatesController {
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO) {
-		if (!requestDTO.getPath().equalsIgnoreCase("https://localhost:8081/api/certificates")
-				&& !requestDTO.getPath().equalsIgnoreCase("https://localhost:8082/api/certificates"))
-			return ResponseEntity.badRequest().build();
+	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+		//ovde ne proveravam truststore jer se salje zahtev prvi put
 		this.certificateService.createRequest(requestDTO);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().build();			
 	}
 
 	@GetMapping
@@ -95,12 +96,17 @@ public class CertificatesController {
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO)
-			throws MessagingException {
-		if (!revokeRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
-			return ResponseEntity.badRequest().build();
-		this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO, HttpServletRequest request) {
+		if (this.certificateService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+			try {
+				this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
+				return ResponseEntity.ok().build();			
+			}
+			catch(Exception e) {
+				;
+			}
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 	@GetMapping(value = "/alias/{alias}")
@@ -111,8 +117,6 @@ public class CertificatesController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/validate")
 	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
-		if (!validationRequestDTO.getPath().equalsIgnoreCase("https://localhost:8081"))
-			return ResponseEntity.badRequest().build();
 		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
 	}
 }

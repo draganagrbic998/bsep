@@ -55,11 +55,11 @@ public class AuthController {
 
 	@GetMapping(value = "/disabled/{uuid}")
 	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
-		return ResponseEntity.ok(this.userService.getDisabled(uuid));
+		return ResponseEntity.ok(new UserDTO(this.userService.getDisabled(uuid)));
 	}
 
 	@PostMapping(value = "activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) throws ActivationExpiredException, UserDoesNotExistException {
-		return ResponseEntity.ok(this.userService.activate(activationDTO));
+		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
 	}
 }

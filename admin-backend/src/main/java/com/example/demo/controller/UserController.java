@@ -32,7 +32,8 @@ public class UserController {
 	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) {
 		try {
 			return ResponseEntity.created(URI.create(this.userService.create(userDTO).getId().toString())).build();
-		} catch (MessagingException e) {
+		} 
+		catch (MessagingException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}
@@ -45,7 +46,7 @@ public class UserController {
 	@DeleteMapping(value = "{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping
@@ -64,7 +65,8 @@ public class UserController {
 			this.userService.sendActivationMail(id);
 			return ResponseEntity.ok().build();
 
-		} catch (MessagingException e) {
+		} 
+		catch (MessagingException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}

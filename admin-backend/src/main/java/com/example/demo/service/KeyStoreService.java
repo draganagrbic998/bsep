@@ -65,7 +65,7 @@ public class KeyStoreService {
 
 	public String saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
 			Certificate[] newCertificateChain) {
-		String filename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER + issuerInfo.getAlias()
+		String filename = pkiProperties.getKeystorePath() + Constants.CERTIFICATES_FOLDER + issuerInfo.getAlias()
 				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		keyStoreWriter.loadKeyStore(null, pkiProperties.getKeystorePassword().toCharArray());
 		keyStoreWriter.write(certInfo.getAlias(), privateKey,
@@ -76,7 +76,7 @@ public class KeyStoreService {
 
 	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo, X509Certificate newCertificate,
 			String subjectFilename) {
-		String issuerFilename = pkiProperties.getKeystorePath() + Constants.GENERATED_CERT_FOLDER
+		String issuerFilename = pkiProperties.getKeystorePath() + Constants.CERTIFICATES_FOLDER
 				+ issuerInfo.getIssuerAlias() + "_" + issuerInfo.getAlias() + "_" + issuerInfo.getOrganizationUnit()
 				+ ".jks";
 		keyStoreWriter.addToTruststore(issuerInfo, certInfo, newCertificate, issuerFilename, subjectFilename,

@@ -78,7 +78,8 @@ public class CertificateService {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
 				throw new CertificateAuthorityException();
 			}
-		} catch (NullPointerException ignored) {
+		} 
+		catch (NullPointerException ignored) {
 		}
 
 		String alias = createCertificateDto.getAlias();
@@ -138,7 +139,7 @@ public class CertificateService {
 
 		try {
 			// ovo ako ne prodje znaci da ovi fajlovi ne postoje
-			in = new FileInputStream("./src/main/resources/" + Constants.GENERATED_CERT_FOLDER + fileName + ".jks");
+			in = new FileInputStream("./src/main/resources/" + Constants.CERTIFICATES_FOLDER + fileName + ".jks");
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
 		} catch (IOException e) {

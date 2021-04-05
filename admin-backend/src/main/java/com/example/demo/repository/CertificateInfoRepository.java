@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface CertificateInfoRepository extends JpaRepository<CertificateInfo, Long> {
 
     @Query("select ci from CertificateInfo ci where lower(ci.alias) like lower(:alias) ")
-    CertificateInfo findByAliasIgnoreCase(String alias);
+    public CertificateInfo findByAliasIgnoreCase(String alias);
 
 }

@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.exception.EmailAlreadyExistsException;
 import com.example.demo.exception.UserDoesNotExistException;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Authority;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,16 +23,19 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserMapper userMapper;
 
 	@PostMapping
-	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) throws EmailAlreadyExistsException {
-		UserDTO created = this.userService.create(userDTO);
-		return ResponseEntity.created(URI.create(created.getId().toString())).body(created);
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
+		User created = this.userService.save(this.userMapper.map(userDTO));
+		return ResponseEntity.created(URI.create(created.getId().toString())).body(new UserDTO(created));
 	}
 
 	@PutMapping
-	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO) throws UserDoesNotExistException {
-		return ResponseEntity.ok(this.userService.update(userDTO));
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO) {
+		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(userDTO))));
 	}
 
 	@DeleteMapping(value = "{id}")
@@ -42,12 +46,12 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<Page<UserDTO>> readAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.readAll(pageable));
+		return ResponseEntity.ok(this.userService.readAll(pageable).map(UserDTO::new));
 	}
 
 	@GetMapping(value = "/send/{id}")
 	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) throws UserDoesNotExistException {
-		return ResponseEntity.ok(this.userService.resetActivationLink(id));
+		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}
 
 	@GetMapping(value = "/authorities")

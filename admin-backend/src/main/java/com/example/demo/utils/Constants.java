@@ -3,7 +3,7 @@ package com.example.demo.utils;
 public class Constants {
 
 	public static final String FRONTEND = "https://localhost:4200";
-	public static final String GENERATED_CERT_FOLDER = "generated-certificates/";
+	public static final String CERTIFICATES_FOLDER = "certificates/";
 	public static final String CERTIFICATE_SAVE_PATH = "/api/certificates";
 
 	public static final String CERTIFICATE_ISSUED = "Certificate Issued - Bezbednost";
@@ -13,4 +13,7 @@ public class Constants {
 	public static final String REVOKED_TEMPLATE = "certificate-revoked";
 	
 	public static final String REVOKE_REQUEST_REASON = "Revocation requested by hospital admin.";
+	
+	public static final String CERT_ATTRIBUTE = "javax.servlet.request.X509Certificate";
+
 }

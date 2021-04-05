@@ -65,7 +65,8 @@ public class KeyStoreWriter {
 			
 			//posto cuvamo ceo chain u svaki keystore, onda issuer mora da ima ili da jeste root
 			rootCert = (X509Certificate) issuerTrustStore.getCertificate("root");
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -79,7 +80,8 @@ public class KeyStoreWriter {
 
 			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
 			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

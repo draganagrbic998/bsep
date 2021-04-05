@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.Authority;
+import com.example.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +40,16 @@ public class UserDTO {
     private Instant activationExpiration;
 
     private Set<Authority> authorities;
+    
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.activationLink = user.getActivationLink();
+        this.activationExpiration = user.getActivationExpiration();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.enabled = user.isEnabled();
+        this.authorities = user.getAuthorities();
+    }
 
 }

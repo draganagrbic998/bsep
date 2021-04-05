@@ -40,7 +40,7 @@ public class AppConfig {
 
 	@Bean
 	public RestTemplate getRestTemplate() {
-		RestTemplate restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
+		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
 			File file = new File(Path.of(this.pkiProperties.getKeystorePath(), this.pkiProperties.getKeystoreName()).toString());
