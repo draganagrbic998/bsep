@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller; 
 
 import javax.validation.Valid;
 
@@ -26,7 +26,7 @@ import com.example.demo.service.UserService;
 @RestController
 @RequestMapping(value = "/api/alarms", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AlarmController {
-
+	
 	@Autowired
 	private UserService userService;
 

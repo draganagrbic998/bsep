@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import com.example.demo.mapper.MessageMapper;
 import com.example.demo.model.Message;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.MessageService;
+import com.example.demo.utils.Constants;
 
 @RestController
 @RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,17 +46,15 @@ public class MessageController {
 	}
 
 	@PostMapping
-	public ResponseEntity<MessageMeasureDTO> create(HttpServletRequest request,
-			@Valid @RequestBody MessageMeasureDTO messageDTO) {
-		if(this.certificateService.validateClientCertificate(
-				((X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate"))[0])) {
+	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO, HttpServletRequest request) {
+		if(this.certificateService.validateClientCertificate(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0])) {
 			Message message = this.messageMapper.map(messageDTO);
 			if (message.getPatient() != null) {
 				this.messageService.save(this.messageMapper.map(messageDTO));
 			}
 			return ResponseEntity.ok(messageDTO);
 		}
-		return ResponseEntity.status(401).body(messageDTO);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 
 }

@@ -17,10 +17,9 @@ public class KeyStoreReader {
 			keyStore.load(in, keyStorePass.toCharArray());
 
 			if (keyStore.isKeyEntry(alias)) {
-				
-				Certificate c = keyStore.getCertificateChain(alias)[0];
+				Certificate cert = keyStore.getCertificateChain(alias)[0];
 				in.close();
-				return c;
+				return cert;
 			}
 			in.close();
 		} 
