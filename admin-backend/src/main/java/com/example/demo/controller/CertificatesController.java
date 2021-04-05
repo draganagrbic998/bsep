@@ -9,6 +9,7 @@ import com.example.demo.dto.ValidationRequestDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
+import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,15 @@ public class CertificatesController {
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
 	private final CertificateInfoMapper certificateInfoMapper;
+	private final UserService userService;
 
 	@Autowired
 	public CertificatesController(CertificateService certificateService, CertificateInfoService certificateInfoService,
-			CertificateInfoMapper certificateInfoMapper) {
+			CertificateInfoMapper certificateInfoMapper, UserService userService) {
 		this.certificateService = certificateService;
 		this.certificateInfoService = certificateInfoService;
 		this.certificateInfoMapper = certificateInfoMapper;
+		this.userService = userService;
 	}
 
 	@PostMapping
@@ -54,8 +57,12 @@ public class CertificatesController {
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		//ovde ne proveravam truststore jer se salje zahtev prvi put
+	public ResponseEntity<Void> createRequest( @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+		if (this.userService.findOne(requestDTO.getEmail()) == null) {
+			System.out.println("JEBIGAAA");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		System.out.println("PALA");
 		this.certificateService.createRequest(requestDTO);
 		return ResponseEntity.ok().build();			
 	}

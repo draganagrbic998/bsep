@@ -92,5 +92,9 @@ public class UserService implements UserDetailsService {
 		return this.userRepository.findByEmail(username);
 	}
 
+	public User findOne(String email) {
+		return this.userRepository.findByEmail(email);
+	}
+
 	
 }

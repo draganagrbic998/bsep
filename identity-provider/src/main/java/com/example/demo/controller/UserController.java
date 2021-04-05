@@ -48,6 +48,12 @@ public class UserController {
 	public ResponseEntity<Page<UserDTO>> readAll(Pageable pageable) {
 		return ResponseEntity.ok(this.userService.readAll(pageable).map(UserDTO::new));
 	}
+	
+	@GetMapping(value = "/{email}")
+	public ResponseEntity<UserDTO> findOne(@PathVariable String email) {
+		System.out.println(email);
+		return ResponseEntity.ok(new UserDTO(this.userService.findOne(email)));
+	}
 
 	@GetMapping(value = "/send/{id}")
 	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) throws UserDoesNotExistException {
