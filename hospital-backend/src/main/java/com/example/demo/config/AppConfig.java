@@ -44,7 +44,7 @@ public class AppConfig {
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
-					new SSLContextBuilder().loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
+					new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy())
 							.loadKeyMaterial(keyStore, this.pkiProperties.getKeystorePassword().toCharArray()).build(),
 					NoopHostnameVerifier.INSTANCE);
 

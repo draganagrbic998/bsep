@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint()).and()
 			.authorizeRequests()
 			.antMatchers("/auth/**").permitAll()
+			.antMatchers("/api/certificates").permitAll()
 			.and().cors().and()
 			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
 		http.csrf().disable();

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CertificateController {
 
 	@Autowired
@@ -27,19 +26,21 @@ public class CertificateController {
 	@PreAuthorize("permitAll()")
 	@PostMapping
 	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO, HttpServletRequest request) {
-		if (this.certificateService.validateClientCertificate(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0])) {
-			this.certificateService.save(certificateDTO);
-			return ResponseEntity.ok(certificateDTO);			
-		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		//ovde ne radim validaciju sertifikata
+		//a ovde ne treba da se poziva truststore jer je prvi put
+		//dodaj ti ipa ovde validaciju roota
+		this.certificateService.save(certificateDTO);
+		return ResponseEntity.ok(certificateDTO);			
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(value = "/request")
 	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
 		this.certificateService.sendRequest(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping(value = "/{fileName}")
 	public ResponseEntity<Void> revoke(@PathVariable String fileName) {
 		this.certificateService.sendRevokeRequest(fileName);

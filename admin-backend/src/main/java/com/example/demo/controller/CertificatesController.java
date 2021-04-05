@@ -58,6 +58,7 @@ public class CertificatesController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
 	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+		//i dodaj ti ipak ovde validaicju isto ovog sertifikata
 		if (this.userService.findOne(requestDTO.getEmail()) == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

@@ -43,8 +43,7 @@ public class DeviceService {
 				Thread.sleep(SLEEP_INTERVAL);
 			}
 			catch(Exception e) {
-				//ovde oprezno sa printStackTrace
-				;
+				e.printStackTrace();
 			}
 		}
 	}
