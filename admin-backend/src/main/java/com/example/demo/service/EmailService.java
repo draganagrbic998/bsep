@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -8,24 +7,22 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import lombok.AllArgsConstructor;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class EmailService {
 
-	private final String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
+	private final static String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
 
-	private JavaMailSender emailSender;
-	private SpringTemplateEngine templateEngine;
+	private final JavaMailSender emailSender;
+	private final SpringTemplateEngine templateEngine;
 
-	@Autowired
-	public EmailService(JavaMailSender emailSender, SpringTemplateEngine templateEngine) {
-		this.emailSender = emailSender;
-		this.templateEngine = templateEngine;
-	}
 
 	@Async
 	public void sendActivationLink(String to, String firstName, String link) throws MessagingException {
@@ -34,7 +31,7 @@ public class EmailService {
 				StandardCharsets.UTF_8.name());
 		Context context = new Context();
 
-		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(this.ACTIVATE_URL, link));
+		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(ACTIVATE_URL, link));
 		context.setVariables(variables);
 
 		String html = this.templateEngine.process("activation-mail", context);

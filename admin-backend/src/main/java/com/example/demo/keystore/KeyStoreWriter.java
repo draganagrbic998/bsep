@@ -29,7 +29,8 @@ public class KeyStoreWriter {
 		try {
 			if (fileName != null) {
 				this.keyStore.load(new FileInputStream(fileName), password);
-			} else {
+			} 
+			else {
 				this.keyStore.load(null, password);
 			}
 		} 

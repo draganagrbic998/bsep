@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.dto.*;
 import com.example.demo.model.Authority;
 import com.example.demo.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
@@ -16,6 +18,7 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = "https://localhost:8083/auth";
@@ -23,12 +26,6 @@ public class UserService implements UserDetailsService {
 	
 	private final RestTemplate restTemplate;
 	private final EmailService emailService;
-
-	@Autowired
-	public UserService(RestTemplate restTemplate, EmailService emailService) {
-		this.restTemplate = restTemplate;
-		this.emailService = emailService;
-	}
 
 	@Override
 	public User loadUserByUsername(String token) {

@@ -1,5 +1,7 @@
 package com.example.demo.utils;
 
+import java.io.File;
+
 public class Constants {
 
 	public static final String FRONTEND = "https://localhost:4200";
@@ -15,5 +17,6 @@ public class Constants {
 	public static final String REVOKE_REQUEST_REASON = "Revocation requested by hospital admin.";
 	
 	public static final String CERT_ATTRIBUTE = "javax.servlet.request.X509Certificate";
+	public static final String RESOURCE_FOLDER = "src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar;
 
 }

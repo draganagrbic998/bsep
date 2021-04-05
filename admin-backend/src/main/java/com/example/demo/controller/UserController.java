@@ -4,7 +4,9 @@ import com.example.demo.dto.PageDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Authority;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+@AllArgsConstructor
 public class UserController {
 
-	private UserService userService;
-
-	@Autowired
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+	private final UserService userService;
 
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) {

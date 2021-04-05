@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CertificateInfoDTO;
-import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.dto.RevokeDTO;
 import com.example.demo.dto.RevokeRequestDTO;
@@ -9,10 +8,11 @@ import com.example.demo.dto.ValidationRequestDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.CertificateValidationService;
 import com.example.demo.utils.Constants;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,32 +33,18 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
+@AllArgsConstructor
 public class CertificatesController {
 
-	private final UserService userService;
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
 	private final CertificateInfoMapper certificateInfoMapper;
-
-	@Autowired
-	public CertificatesController(UserService userService, CertificateService certificateService, 
-			CertificateInfoService certificateInfoService, CertificateInfoMapper certificateInfoMapper) {
-		this.userService = userService;
-		this.certificateService = certificateService;
-		this.certificateInfoService = certificateInfoService;
-		this.certificateInfoMapper = certificateInfoMapper;
-	}
+	private final CertificateValidationService certificateValidationService;
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable)
 				.map(certificateInfo -> this.certificateInfoMapper.mapToDto(certificateInfo, 0)));
-	}
-
-	@GetMapping(value = "/requests")
-	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateService.findAllRequests(pageable)
-				.map(certificateRequest -> new CertificateRequestDTO(certificateRequest)));
 	}
 
 	@GetMapping(value = "/alias/{alias}")
@@ -97,33 +83,17 @@ public class CertificatesController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/validate")
 	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
-		return ResponseEntity.ok(this.certificateService.isCertificateValid(validationRequestDTO.getSerial()));
-	}
-
-	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		//i dodaj ti ipak ovde validaicju isto ovog sertifikata
-		if (this.userService.findOne(requestDTO.getEmail()) == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		this.certificateService.createRequest(requestDTO);
-		return ResponseEntity.ok().build();			
+		return ResponseEntity.ok(this.certificateValidationService.isCertificateValid(validationRequestDTO.getSerial()));
 	}
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO, HttpServletRequest request) {
-		if (this.certificateService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
-			try {
-				this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
-				return ResponseEntity.ok().build();			
-			}
-			catch(Exception e) {
-				;
-			}
+	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO, HttpServletRequest request) throws MessagingException {
+		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
+		return ResponseEntity.ok().build();			
 	}
 
 }

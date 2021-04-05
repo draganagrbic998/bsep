@@ -6,7 +6,6 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +16,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import lombok.AllArgsConstructor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -26,23 +27,18 @@ import java.security.KeyStore;
 
 @Configuration
 @EnableTransactionManagement
+@AllArgsConstructor
 public class AppConfig {
 
 	private final PkiProperties pkiProperties;
 	private final RestTemplateBuilder restTemplateBuilder;
-
-	@Autowired
-	public AppConfig(PkiProperties pkiProperties, RestTemplateBuilder restTemplateBuilder) {
-		this.pkiProperties = pkiProperties;
-		this.restTemplateBuilder = restTemplateBuilder;
-	}
 
 	@Bean
 	public RestTemplate getRestTemplate() {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
-			File file = new File(Path.of(this.pkiProperties.getKeystorePath(), this.pkiProperties.getKeystoreName()).toString());
+			File file = new File(Path.of(this.pkiProperties.getKeystore()).toString());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
