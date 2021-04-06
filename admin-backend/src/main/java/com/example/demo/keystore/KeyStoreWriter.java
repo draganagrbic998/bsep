@@ -58,16 +58,27 @@ public class KeyStoreWriter {
 	}
 
 	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo,
-			X509Certificate newCertificate, String issuerFilename, String subjectFilename, String keyStorePassword) {
+			X509Certificate newCertificate, String issuerFilename, String subjectFilename, String keyStorePassword, String superadminFilename) {
 		X509Certificate issuerCert = null;
-		X509Certificate rootCert = null;
+		X509Certificate superadminCert = null;
 		try {
 			KeyStore issuerTrustStore = KeyStore.getInstance("JKS", "SUN");
 			issuerTrustStore.load(new FileInputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
 			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
 			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
-			rootCert = (X509Certificate) issuerTrustStore.getCertificate("root");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//sacuvamo i u superadminski da bi mogo da komunicira s njim
+		try {
+			KeyStore superTrustStore = KeyStore.getInstance("JKS", "SUN");
+			superTrustStore.load(new FileInputStream(superadminFilename), keyStorePassword.toCharArray());
+			superTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
+			superTrustStore.store(new FileOutputStream(superadminFilename), keyStorePassword.toCharArray());
+			superadminCert = (X509Certificate) superTrustStore.getCertificate("super");
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -76,10 +87,10 @@ public class KeyStoreWriter {
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
 			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			if (rootCert.getSerialNumber() != issuerCert.getSerialNumber())
-				subjectTrustStore.setCertificateEntry("root", rootCert);
-
 			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
+			//sacuvamo i superadminski da bi mogo da komunicira s njim
+			subjectTrustStore.setCertificateEntry("super", superadminCert);
+
 			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
 		} 
 		catch (Exception e) {

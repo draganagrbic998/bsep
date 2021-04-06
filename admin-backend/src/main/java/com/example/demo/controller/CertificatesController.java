@@ -89,6 +89,7 @@ public class CertificatesController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests/revoke")
 	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO, HttpServletRequest request) throws MessagingException {
+		System.out.println(request.getAttribute(Constants.CERT_ATTRIBUTE));
 		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

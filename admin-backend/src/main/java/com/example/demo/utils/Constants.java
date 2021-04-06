@@ -19,4 +19,6 @@ public class Constants {
 	public static final String CERT_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 	public static final String RESOURCE_FOLDER = "src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar;
 
+	//ne dirati nikako
+	public static final String TRUSTSTORE_PATH = "src/main/resources/certificates/root_super_super.jks";
 }

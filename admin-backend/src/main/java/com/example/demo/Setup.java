@@ -77,7 +77,9 @@ public class Setup implements ApplicationRunner {
 				
 
 		this.keyStoreService.savePrivateKey("root", new Certificate[] { rootCertificate }, keyPair.getPrivate());
-		
+
+		//za kad se pravi nov root root ca
+		//this.keyStoreService.saveSeparateKeys(certificateInfo, certificateInfo, keyPair.getPrivate(), new Certificate[] {rootCertificate});
 
 	}
 

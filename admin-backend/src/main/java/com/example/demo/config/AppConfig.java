@@ -16,6 +16,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import com.example.demo.utils.Constants;
+
 import lombok.AllArgsConstructor;
 
 import java.io.File;
@@ -38,9 +40,10 @@ public class AppConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
-			File file = new File(Path.of(this.pkiProperties.getKeystore()).toString());
+			File keystoreFile = new File(Path.of(Constants.TRUSTSTORE_PATH).toString());
+
 			KeyStore keyStore = KeyStore.getInstance("JKS");
-			InputStream inputStream = new FileInputStream(file);
+			InputStream inputStream = new FileInputStream(keystoreFile);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
@@ -55,6 +58,8 @@ public class AppConfig {
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
+			
+			inputStream.close();
 		}
 
 		catch (Exception e) {
