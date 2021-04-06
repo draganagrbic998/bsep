@@ -44,11 +44,11 @@ public class UserDTO {
     public UserDTO(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.activationLink = user.getActivationLink();
-        this.activationExpiration = user.getActivationExpiration();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.enabled = user.isEnabled();
+        this.activationLink = user.getActivationLink();
+        this.activationExpiration = user.getActivationExpiration();
         this.authorities = user.getAuthorities();
     }
 

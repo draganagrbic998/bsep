@@ -35,8 +35,7 @@ public class CertificateService {
 			out.close();
 
 			if (CertificateType.valueOf(certificateDTO.getType()) == CertificateType.HOSPITAL_DEVICE)
-				this.keyStoreService.updateTruststore(certificateDTO.getAlias(),
-						Constants.CERTIFICATES_FOLDER + fileName);
+				this.keyStoreService.updateTruststore(certificateDTO.getAlias(), Constants.CERTIFICATES_FOLDER + fileName);
 			
 		} 
 		catch (Exception e) {
@@ -47,23 +46,20 @@ public class CertificateService {
 
 	public void sendRequest(CertificateRequestDTO requestDTO) {
 		requestDTO.setPath(Constants.BACKEND + "/api/certificates");
-		this.restTemplate.postForEntity(Constants.REQUESTS_PATH, requestDTO,
-				CertificateRequestDTO.class);
+		this.restTemplate.postForEntity(Constants.REQUESTS_PATH, requestDTO, CertificateRequestDTO.class);
 	}
 
 	public void sendRevokeRequest(String certFileName) {
-		X509Certificate cert = (X509Certificate) this.keyStoreService
+		X509Certificate certificate = (X509Certificate) this.keyStoreService
 				.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName, certFileName.split("_")[1]);
-		RevokeRequestDTO requestDTO = new RevokeRequestDTO(cert.getSerialNumber().longValue(), Constants.BACKEND);
+		RevokeRequestDTO requestDTO = new RevokeRequestDTO(certificate.getSerialNumber().longValue(), Constants.BACKEND);
 		this.restTemplate.postForEntity(Constants.CERTIFICATES_PATH + "/revoke", requestDTO, RevokeRequestDTO.class);
 	}
 
-	public boolean validateClientCertificate(X509Certificate clientCertificate) {
-		ValidationRequestDTO validationRequestDTO = new ValidationRequestDTO();
-		validationRequestDTO.setSerial(clientCertificate.getSerialNumber().longValue());
-		validationRequestDTO.setPath(Constants.BACKEND);
+	public boolean validateCertificate(X509Certificate certificate) {
+		ValidationRequestDTO validationDTO = new ValidationRequestDTO(certificate.getSerialNumber().longValue(), Constants.BACKEND);
 		return this.restTemplate
-				.postForEntity(Constants.CERTIFICATES_PATH + "validate", validationRequestDTO, Boolean.class).getBody()
+				.postForEntity(Constants.CERTIFICATES_PATH + "validate", validationDTO, Boolean.class).getBody()
 				.booleanValue();
 	}
 

@@ -34,30 +34,24 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
 
-	public User save(User user) {
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return this.userRepository.findByEmail(username);
+	}
 
+	public User save(User user) {
         if (user.getId() == null && this.userRepository.findByEmail(user.getEmail()) != null) {
             throw new EmailAlreadyExistsException(user.getEmail());
         }
-
         return this.userRepository.save(user);
     }
 
     public void delete(long id) {
-	    if (this.userRepository.existsById(id)) {
-            this.userRepository.deleteById(id);
-        }
+        this.userRepository.deleteById(id);
     }
 
-    public Page<User> readAll(Pageable pageable) {
+    public Page<User> findAll(Pageable pageable) {
 	    return this.userRepository.findAll(pageable);
-    }
-
-    public User resetActivationLink(long id) throws UserDoesNotExistException {
-	    User user = this.userRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
-	    user.setActivationExpiration(Instant.now().plus(48, ChronoUnit.HOURS));
-	    user.setActivationLink(UUID.randomUUID().toString());
-	    return this.userRepository.save(user);
     }
 
     public List<Authority> getAuthorities() {
@@ -68,7 +62,7 @@ public class UserService implements UserDetailsService {
 	    return this.userRepository.findByEnabledFalseAndActivationLink(uuid);
     }
 
-    public User activate(ActivationDTO activationDTO) throws UserDoesNotExistException, ActivationExpiredException {
+    public User activate(ActivationDTO activationDTO) {
         User user = this.userRepository.findByEnabledFalseAndActivationLink(activationDTO.getUuid());
 
         if (user == null) {
@@ -81,18 +75,14 @@ public class UserService implements UserDetailsService {
 
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(activationDTO.getPassword()));
-
         return this.userRepository.save(user);
     }
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return this.userRepository.findByEmail(username);
-	}
-
-	public User findOne(String email) {
-		return this.userRepository.findByEmail(email);
-	}
-
+    
+    public User resetActivationLink(long id) {
+	    User user = this.userRepository.findById(id).orElseThrow(UserDoesNotExistException::new);
+	    user.setActivationExpiration(Instant.now().plus(48, ChronoUnit.HOURS));
+	    user.setActivationLink(UUID.randomUUID().toString());
+	    return this.userRepository.save(user);
+    }
 	
 }
