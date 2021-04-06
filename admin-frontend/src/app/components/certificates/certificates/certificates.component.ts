@@ -8,6 +8,8 @@ import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { CertificateRequest } from '../../../core/model/certificate-request';
 import { RequestViewComponent } from '../request-view/request-view.component';
 import { Revoke } from 'src/app/core/model/revoke';
+import {Route, Router} from '@angular/router';
+import {extensionTemplates} from '../../../core/utils/templates';
 
 @Component({
   selector: 'app-certificates',
@@ -44,16 +46,13 @@ export class CertificatesComponent implements OnInit {
 
   constructor(
     private certificateService: CertificateService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
 
-    this.templates = [
-      {label: 'CA', value: 'SUB_CA', icon: 'pi pi-globe'},
-      {label: 'TLS Server', value: 'TLS', icon: 'pi pi-cloud'},
-      {label: 'User', value: 'USER', icon: 'pi pi-user'}
-    ];
+    this.templates = extensionTemplates;
 
     this.getCA();
   }
@@ -66,19 +65,12 @@ export class CertificatesComponent implements OnInit {
   }
 
   openNew(): void {
-    this.certificate = new CertificateInfo();
-    this.submitted = false;
-    this.newDialog = true;
+    this.router.navigate(['add-certificate'], {queryParams: {caAlias: this.caAlias.getValue()}});
   }
 
   openDetails(cert: CertificateInfo): void {
     this.certificate = cert;
     this.detailsDialog = true;
-  }
-
-  hideNew(): void {
-    this.newDialog = false;
-    this.submitted = false;
   }
 
   hideDetails(): void {
@@ -111,16 +103,6 @@ export class CertificatesComponent implements OnInit {
 
     this.submitted = false;
     this.newDialog = true;
-
-    if (this.certificate.template === 'SUB_CA'){
-      this.template1Extensions();
-    }
-    else if (this.certificate.template === 'TLS'){
-      this.template2Extensions();
-    }
-    else{
-      this.template3Extensions();
-    }
   }
 
   downloadCrt(certificate: CertificateInfo): void {
@@ -183,33 +165,6 @@ export class CertificatesComponent implements OnInit {
     }
   }
 
-  saveCertificate(): void {
-    this.submitted = true;
-
-    if (this.certificate.commonName.trim()) {
-      this.certificate.issuerAlias = this.caAlias.getValue();
-      // tslint:disable-next-line: deprecation
-      this.certificateService.createCertificate(this.certificate).subscribe(() => {
-        if (!!this.table) {
-          this.table.reset();
-        }
-        if (!!this.tree) {
-          this.tree.reset();
-        }
-        if (!!this.requestsTable) {
-          this.requestsTable.reset();
-        }
-        this.newDialog = false;
-        this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
-        this.certificate = new CertificateInfo();
-
-      }, () => {
-        this.messageService.add({severity: 'error',
-        summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
-    });
-    }
-  }
-
   getTemplate(value: string): any {
     return this.templates.find(t => t.value === value);
   }
@@ -258,42 +213,6 @@ export class CertificatesComponent implements OnInit {
 
   get ca(): CertificateInfo {
     return this.certificateService.ca.getValue();
-  }
-
-  toggleKey(event, key: string): void{
-    if (!this.certificate.keyUsage){
-      this.certificate.keyUsage = [];
-    }
-    if (event.checked){
-      this.certificate.keyUsage.push(key);
-    }
-    else{
-      this.certificate.keyUsage = this.certificate.keyUsage.filter(x => x !== key);
-    }
-  }
-
-  template1Extensions(): void{
-    this.certificate.basicConstraints = true;
-    this.certificate.extendedKeyUsage = null;
-    this.certificate.keyUsage = ['cRLSign', 'digitalSignature', 'keyCertSign']
-  }
-
-  template2Extensions(): void{
-    this.certificate.basicConstraints = false;
-    this.certificate.extendedKeyUsage = 'id_kp_serverAuth';
-    this.certificate.keyUsage = ['nonRepudiation', 'digitalSignature', 'encipherOnly', 'keyEncipherment', 'keyAgreement'];
-
-  }
-
-  template3Extensions(): void{
-    this.certificate.basicConstraints = false;
-    this.certificate.extendedKeyUsage = 'id_kp_clientAuth';
-    this.certificate.keyUsage = ['nonRepudiation', 'digitalSignature', 'keyEncipherment'];
-
-  }
-
-  hasKey(key: string): boolean{
-    return this.certificate.keyUsage?.includes(key);
   }
 
 }

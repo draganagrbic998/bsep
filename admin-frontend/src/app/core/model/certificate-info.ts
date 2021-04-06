@@ -1,3 +1,6 @@
+import {Extensions} from './extensions';
+import {ExtensionsDto} from './extensions-dto';
+
 export class CertificateInfo {
     id: number;
     alias: string;
@@ -18,7 +21,5 @@ export class CertificateInfo {
     numIssued: number;
     issued: CertificateInfo[];
     path: string;
-    extendedKeyUsage: string;
-    basicConstraints: boolean;
-    keyUsage: string[];
+    extensions: ExtensionsDto = new ExtensionsDto();
 }

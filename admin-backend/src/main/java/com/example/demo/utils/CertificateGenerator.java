@@ -24,7 +24,8 @@ import java.util.Map;
 
 @Component
 public class CertificateGenerator {
-	
+
+    KeyPurposeId
 	private Map<String, Integer> keyUsageMapping = new HashMap<>();
 	
 	public CertificateGenerator() {
@@ -78,9 +79,7 @@ public class CertificateGenerator {
             }
             int temp = keyUsage.stream().map(x -> 1 << this.keyUsageMapping.get(x)).reduce(0, (subtotal, element) -> subtotal | element);
             certGen.addExtension(Extension.keyUsage, true, new KeyUsage(temp));
-            
-            
-            
+
             /*
             switch (template) {
                 case SUB_CA:

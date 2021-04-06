@@ -1,0 +1,168 @@
+<div class="p-d-flex p-justify-center p-pt-6 p-pb-5">
+  <p-card>
+    <form [formGroup]="certificateForm" (ngSubmit)="checkExtensions()">
+      <ng-template pTemplate="header">
+        <div class="p-d-flex p-ai-center p-pt-4 p-ml-4 p-mr-4">
+          <h2 class="p-text-bold p-mt-3 p-ml-6">Add a certificate</h2>
+          <button class="p-ml-auto p-mr-5 p-button-outlined"
+                  icon="pi pi-check"
+                  label="Save"
+                  (click)="saveCertificate()"
+                  pButton
+          ></button>
+        </div>
+      </ng-template>
+      <div class="p-px-6">
+        <div class="p-grid p-fluid p-mt-4">
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="text" pInputText id="common-name" formControlName="commonName" required autofocus/>
+                <label for="common-name">Common name</label>
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>
+            </div>
+          </div>
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="text" pInputText id="alias" formControlName="alias" required autofocus/>
+                <label for="alias">Alias</label>
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>
+            </div>
+          </div>
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="text" pInputText id="organization" formControlName="organization" required autofocus/>
+                <label for="organization">Organization</label>
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>
+            </div>
+          </div>
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="text"
+                       pInputText
+                       id="organization-unit"
+                       formControlName="organizationUnit"
+                       required
+                       autofocus/>
+                <label for="organization-unit">Organization unit</label>
+
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is
+                required.</small>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="text" pInputText id="country" formControlName="countryCode" required autofocus/>
+                <label for="country">Country code</label>
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <input type="email" pInputText id="email" formControlName="email" required autofocus/>
+                <label for="email">Email</label>
+              </span>
+              <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <p-dropdown [options]="templates"
+                            formControlName="template"
+                            [autoDisplayFirst]="false"
+                            [showClear]="true"
+                            (ngModelChange)="templateChanged($event)"
+                            optionLabel="label"
+                            inputId="template"
+                ></p-dropdown>
+                <label for="template" class="p-mb-3">Template</label>
+              </span>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6">
+            <div class="p-field">
+              <span class="p-float-label">
+                <p-multiSelect inputId="extensions"
+                               [options]="extensionOptions"
+                               optionLabel="label"
+                               formControlName="extensions"
+                               [showToggleAll]="false"
+                               (onChange)="itemClicked($event)"
+                ></p-multiSelect>
+                <label for="extensions" class="p-mb-3">Extensions</label>
+              </span>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6" *ngIf="!!extensions.keyUsage">
+            <div class="p-field">
+              <span class="p-float-label">
+                <p-multiSelect [options]="keyUsages"
+                               optionLabel="option"
+                               [showToggleAll]="false"
+                               [(ngModel)]="extensions.keyUsage"
+                               (onChange)="certificateForm.get('template').setValue(null)"
+                ></p-multiSelect>
+                <label class="p-mb-3">Key usage</label>
+              </span>
+            </div>
+          </div>
+
+          <div class="p-col-12 p-md-6" *ngIf="!!extensions.extendedKeyUsage">
+            <div class="p-field">
+<span class="p-float-label">
+<p-multiSelect [options]="keyPurposeIds"
+               optionLabel="option"
+               [showToggleAll]="false"
+               [(ngModel)]="extensions.extendedKeyUsage"
+               (onChange)="certificateForm.get('template').setValue(null)"
+></p-multiSelect>
+<label class="p-mb-3">Extended key usage</label>
+</span>
+            </div>
+          </div>
+          <div class="p-col-12 p-md-6" *ngIf="extensions.basicConstraints !== null">
+            <div class="p-field-checkbox">
+              <label for="basic"
+                     (click)="certificate.extensions.basicConstraints = !certificate.extensions.basicConstraints">
+                Basic constraints
+              </label>
+              <p-checkbox id="basic"
+                          class="p-ml-2"
+                          [binary]="true"
+                          [(ngModel)]="extensions.basicConstraints"
+                          (onChange)="certificateForm.get('template').setValue(null)"
+              ></p-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template pTemplate="footer">
+        <div class="p-d-flex p-ai-center">
+          <button class="p-ml-auto p-mr-5 p-button-outlined"
+                  icon="pi pi-check"
+                  label="Save"
+                  (click)="checkExtensions()"
+                  pButton
+          ></button>
+        </div>
+      </ng-template>
+    </form>
+
+  </p-card>
+</div>

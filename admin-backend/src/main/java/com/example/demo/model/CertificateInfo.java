@@ -12,10 +12,6 @@ import java.util.Set;
 @Entity
 @Table(name = "certificate_table")
 public class CertificateInfo {
-
-	private boolean basicConstraints;
-	private String extendedKeyUsage;
-	private String keyUsage;
 	
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -55,6 +51,9 @@ public class CertificateInfo {
 
     @Enumerated(EnumType.STRING)
     private Template template;
+
+    @OneToOne
+    private Extensions extensions;
 
     public void addIssued(CertificateInfo certificateInfo) {
         if (!certificateInfo.issuerAlias.equalsIgnoreCase(this.alias)) {
