@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.CertificateRequestDTO;
+import com.example.demo.dto.certificate.CertificateRequestDTO;
 import com.example.demo.model.CertificateRequest;
 import com.example.demo.model.CertificateType;
 import com.example.demo.model.Template;

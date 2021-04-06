@@ -7,8 +7,4 @@ public class CertificateNotFoundException extends RuntimeException {
         super("Certificate: " + id + " not found");
     }
 
-    public CertificateNotFoundException(String id, Throwable cause) {
-        super("Certificate serial number: " + id + " not found", cause);
-    }
-
 }

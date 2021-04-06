@@ -18,7 +18,8 @@ public class Constants {
 	public static final String KEYSTORE_PATH = RESOURCES_FOLDER + "keystore.jks";
 	
 	public static final String CERTIFICATES_PATH = Constants.ADMIN_BACKEND + "/api/certificates/";
-	
+	public static final String REQUESTS_PATH = Constants.ADMIN_BACKEND + "/api/requests/";
+
 	public static final String CERT_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 
 }

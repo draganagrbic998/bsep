@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.certificate;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CreateCertificateDTO {
 
-	private long id;
-
+	long id;
+	
 	@NotBlank(message = "Issuer alias cannot be empty")
 	private String issuerAlias;
 
@@ -41,10 +41,8 @@ public class CreateCertificateDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
-	private String path;
-	
 	private boolean basicConstraints;
 	private String extendedKeyUsage;
 	private List<String> keyUsage;
-
+	
 }

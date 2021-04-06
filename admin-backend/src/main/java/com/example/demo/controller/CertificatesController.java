@@ -1,14 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CertificateInfoDTO;
-import com.example.demo.dto.CreateCertificateDTO;
 import com.example.demo.dto.RevokeDTO;
 import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.dto.ValidationRequestDTO;
-import com.example.demo.mapper.CertificateInfoMapper;
+import com.example.demo.dto.certificate.CertificateInfoDTO;
+import com.example.demo.dto.certificate.CreateCertificateDTO;
 import com.example.demo.service.CertificateInfoService;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.CertificateValidationService;
+import com.example.demo.service.KeyExportService;
 import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
@@ -36,20 +36,19 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class CertificatesController {
 
-	private final CertificateService certificateService;
-	private final CertificateInfoService certificateInfoService;
-	private final CertificateInfoMapper certificateInfoMapper;
 	private final CertificateValidationService certificateValidationService;
+	private final CertificateInfoService certificateInfoService;
+	private final CertificateService certificateService;
+	private final KeyExportService keyExportService;
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable)
-				.map(certificateInfo -> this.certificateInfoMapper.mapToDto(certificateInfo, 0)));
+		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(ci -> new CertificateInfoDTO(ci, 0)));
 	}
 
-	@GetMapping(value = "/alias/{alias}")
-	public ResponseEntity<CertificateInfoDTO> getByAlias(@PathVariable String alias) {
-		return ResponseEntity.ok(this.certificateInfoMapper.mapToDto(this.certificateInfoService.findByAlias(alias)));
+	@GetMapping(value = "/{alias}")
+	public ResponseEntity<CertificateInfoDTO> findByAlias(@PathVariable String alias) {
+		return ResponseEntity.ok(new CertificateInfoDTO(this.certificateInfoService.findByAlias(alias), 1));
 	}
 
 	@PostMapping
@@ -59,40 +58,56 @@ public class CertificatesController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) throws MessagingException {
-		this.certificateService.revoke(revokeDTO.getId(), revokeDTO.getReason());
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
+		try {
+			this.certificateInfoService.revoke(revokeDTO.getId(), revokeDTO.getReason());
+			return ResponseEntity.noContent().build();
+		}
+		catch(MessagingException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<InputStreamResource> downloadCrt(@PathVariable String alias) throws IOException {
-		ByteArrayInputStream inputStream = new ByteArrayInputStream(certificateService.getCrt(alias).getBytes());
-		int length = inputStream.available();
-		InputStreamResource resource = new InputStreamResource(inputStream);
-		return ResponseEntity.ok().contentLength(length).body(resource);
+	public ResponseEntity<InputStreamResource> downloadCrt(@PathVariable String alias) {
+		try {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(this.keyExportService.getCrt(alias).getBytes());
+			int length = inputStream.available();
+			InputStreamResource resource = new InputStreamResource(inputStream);
+			return ResponseEntity.ok().contentLength(length).body(resource);
+		}
+		catch(IOException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@GetMapping(value = "/download-key/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<InputStreamResource> downloadKey(@PathVariable String alias) throws IOException {
-		ByteArrayInputStream inputStream = new ByteArrayInputStream(certificateService.getKey(alias).getBytes());
-		int length = inputStream.available();
-		InputStreamResource resource = new InputStreamResource(inputStream);
-		return ResponseEntity.ok().contentLength(length).body(resource);
+	public ResponseEntity<InputStreamResource> downloadKey(@PathVariable String alias) {
+		try {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(this.keyExportService.getKey(alias).getBytes());
+			int length = inputStream.available();
+			InputStreamResource resource = new InputStreamResource(inputStream);
+			return ResponseEntity.ok().contentLength(length).body(resource);
+		}
+		catch(IOException e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/validate")
-	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationRequestDTO) {
-		return ResponseEntity.ok(this.certificateValidationService.isCertificateValid(validationRequestDTO.getSerial()));
+	public ResponseEntity<Boolean> validate(@Valid @RequestBody ValidationRequestDTO validationDTO) {
+		return ResponseEntity.ok(this.certificateValidationService.isCertificateValid(validationDTO.getSerial()));
 	}
 
 	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests/revoke")
-	public ResponseEntity<Void> revokeRequest(@Valid @RequestBody RevokeRequestDTO revokeRequestDTO, HttpServletRequest request) throws MessagingException {
-		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+	@PostMapping(value = "/revoke")
+	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeRequestDTO revokeDTO, HttpServletRequest request) throws MessagingException {
+		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) 
+				request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		this.certificateService.revoke(revokeRequestDTO.getSerial(), Constants.REVOKE_REQUEST_REASON);
+		this.certificateInfoService.revoke(revokeDTO.getSerial(), "Revocation requested by hospital admin.");
 		return ResponseEntity.ok().build();			
 	}
 

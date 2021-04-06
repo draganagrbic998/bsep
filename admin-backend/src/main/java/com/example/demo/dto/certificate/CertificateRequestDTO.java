@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateRequest;
 
@@ -41,6 +41,7 @@ public class CertificateRequestDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String type;
 	
+	@NotBlank(message = "Path cannot be empty")
 	private String path;
 
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {

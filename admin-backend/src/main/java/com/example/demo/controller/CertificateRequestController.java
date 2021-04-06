@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.CertificateRequestDTO;
+import com.example.demo.dto.certificate.CertificateRequestDTO;
 import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.service.CertificateRequestService;
 import com.example.demo.service.CertificateValidationService;
@@ -26,24 +26,25 @@ import com.example.demo.utils.Constants;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/requests", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 @AllArgsConstructor
 public class CertificateRequestController {
 
+	private final CertificateValidationService certificateValidationService;
 	private final CertificateRequestService certificateService;
 	private final CertificateRequestMapper certificateMapper;
-	private final CertificateValidationService certificateValidationService;
 		
-	@GetMapping(value = "/requests")
-	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
+	@GetMapping
+	public ResponseEntity<Page<CertificateRequestDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateService.findAll(pageable).map(CertificateRequestDTO::new));
 	}
 
 	@PreAuthorize("permitAll()")
-	@PostMapping(value = "/requests")
-	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+	@PostMapping
+	public ResponseEntity<Void> create(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
+		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) 
+				request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		this.certificateService.save(this.certificateMapper.map(requestDTO));

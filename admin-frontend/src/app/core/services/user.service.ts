@@ -38,7 +38,7 @@ export class UserService {
   }
 
   update(user: User): Observable<any> {
-    return this.httpClient.put(this.USERS_PATH, user);
+    return this.httpClient.put(`${this.USERS_PATH}/${user.id}`, user);
   }
 
   delete(user: User): Observable<null> {

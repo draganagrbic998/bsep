@@ -4,57 +4,71 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "certificate_table")
 public class CertificateInfo {
-
-	private boolean basicConstraints;
-	private String extendedKeyUsage;
-	private String keyUsage;
 	
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CertificateInfo> issued;
-
+    @NotBlank
+    @Column(unique = true)
     private String alias;
 
-    private String issuerAlias;
-
+    @NotBlank
     private String commonName;
 
-    private String serialNumber;
-
+    @NotBlank
     private String organization;
 
+    @NotBlank
     private String organizationUnit;
 
+    @NotBlank
     private String country;
 
-    private Date startDate;
-
-    private Date endDate;
-
-    private boolean revoked;
-
-    private String revocationReason;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date revocationDate;
-
-    private boolean isCA;
-
+    @NotBlank
+    @Email
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Template template;
+
+    @NotNull
+	private boolean basicConstraints;
+	private String extendedKeyUsage;
+	private String keyUsage;
+	
+    private String issuerAlias;
+
+    @NotNull
+    private boolean isCA;
+
+    @NotNull
+    private Date startDate;
+
+    @NotNull
+    private Date endDate;
+
+    @NotNull
+    private boolean revoked;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date revocationDate;
+
+    private String revocationReason;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<CertificateInfo> issued;
 
     public void addIssued(CertificateInfo certificateInfo) {
         if (!certificateInfo.issuerAlias.equalsIgnoreCase(this.alias)) {

@@ -25,8 +25,7 @@ public class KeyStoreService {
 	private final PkiProperties pkiProperties;
 
 	public void loadKeyStore() {
-		this.keyStoreWriter.loadKeyStore(this.pkiProperties.getKeystore(),
-				this.pkiProperties.getKeystorePassword().toCharArray());
+		this.keyStoreWriter.loadKeyStore(this.pkiProperties.getKeystore(), this.pkiProperties.getKeystorePassword().toCharArray());
 	}
 
 	public void saveKeyStore() {
@@ -52,28 +51,26 @@ public class KeyStoreService {
 	}
 
 	public PrivateKey readPrivateKey(String alias) {
-		return this.keyStoreReader.readPrivateKey(this.pkiProperties.getKeystore(),
+		return this.keyStoreReader.readPrivateKey(this.pkiProperties.getKeystore(), 
 				this.pkiProperties.getKeystorePassword(), alias, this.pkiProperties.getKeystorePassword());
 	}
 
-	public String saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, PrivateKey privateKey,
-			Certificate[] newCertificateChain) {
-		String filename = Constants.RESOURCE_FOLDER + Constants.CERTIFICATES_FOLDER + issuerInfo.getAlias()
-				+ "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
+	public String saveSeparateKeys(CertificateInfo issuerInfo, CertificateInfo certInfo, 
+			PrivateKey privateKey, Certificate[] newCertificateChain) {
+		String filename = Constants.RESOURCE_FOLDER + Constants.CERTIFICATES_FOLDER 
+				+ issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
 		this.keyStoreWriter.loadKeyStore(null, this.pkiProperties.getKeystorePassword().toCharArray());
-		this.keyStoreWriter.write(certInfo.getAlias(), privateKey,
-				this.pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);
+		this.keyStoreWriter.write(certInfo.getAlias(), privateKey, this.pkiProperties.getKeystorePassword().toCharArray(), newCertificateChain);
 		this.keyStoreWriter.saveKeyStore(filename, this.pkiProperties.getKeystorePassword().toCharArray());
 		return filename;
 	}
 
-	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo, X509Certificate newCertificate,
-			String subjectFilename) {
+	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo, 
+			X509Certificate newCertificate, String subjectFilename) {
 		String issuerFilename =  Constants.RESOURCE_FOLDER + Constants.CERTIFICATES_FOLDER
-				+ issuerInfo.getIssuerAlias() + "_" + issuerInfo.getAlias() + "_" + issuerInfo.getOrganizationUnit()
-				+ ".jks";
-		this.keyStoreWriter.addToTruststore(issuerInfo, certInfo, newCertificate, issuerFilename, subjectFilename,
-				this.pkiProperties.getKeystorePassword(), this.pkiProperties.getSuperadminJks());
+				+ issuerInfo.getIssuerAlias() + "_" + issuerInfo.getAlias() + "_" + issuerInfo.getOrganizationUnit() + ".jks";
+		this.keyStoreWriter.addToTruststore(issuerInfo, certInfo, newCertificate, issuerFilename, subjectFilename, 
+				this.pkiProperties.getKeystorePassword(), Constants.KEYSTORE_PATH);
 	}
 
 }

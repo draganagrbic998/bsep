@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,17 +26,18 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping
-	public ResponseEntity<Void> create(@Valid @RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
 		try {
-			return ResponseEntity.created(URI.create(this.userService.create(userDTO).getId().toString())).build();
+			return ResponseEntity.ok(this.userService.create(userDTO));
 		} 
 		catch (MessagingException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}
 
-	@PutMapping
-	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO) {
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
+		userDTO.setId(id);
 		return ResponseEntity.ok(this.userService.update(userDTO));
 	}
 
@@ -48,8 +48,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<PageDTO<UserDTO>> readAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.read(pageable));
+	public ResponseEntity<PageDTO<UserDTO>> findAll(Pageable pageable) {
+		return ResponseEntity.ok(this.userService.findAll(pageable));
 	}
 
 	@GetMapping(value = "/authorities")
