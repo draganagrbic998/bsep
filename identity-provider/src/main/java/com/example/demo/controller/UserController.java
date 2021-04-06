@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Authority;
 import com.example.demo.model.User;
@@ -45,17 +44,12 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<UserDTO>> readAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.readAll(pageable).map(UserDTO::new));
-	}
-	
-	@GetMapping(value = "/{email}")
-	public ResponseEntity<UserDTO> findOne(@PathVariable String email) {
-		return ResponseEntity.ok(new UserDTO(this.userService.findOne(email)));
+	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
+		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
 	}
 
 	@GetMapping(value = "/send/{id}")
-	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) throws UserDoesNotExistException {
+	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
 		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}
 

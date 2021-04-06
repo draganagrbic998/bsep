@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import com.example.demo.utils.Constants;
+
 import lombok.AllArgsConstructor;
 
 import javax.mail.MessagingException;
@@ -18,20 +20,17 @@ import java.util.Map;
 @AllArgsConstructor
 public class EmailService {
 
-	private final static String ACTIVATE_URL = "https://localhost:4200/activate?q=%s";
+	private final static String ACTIVATION_URL = Constants.FRONTEND + "/activate?q=%s";
 
 	private final JavaMailSender emailSender;
 	private final SpringTemplateEngine templateEngine;
 
-
 	@Async
 	public void sendActivationLink(String to, String firstName, String link) throws MessagingException {
-		MimeMessage message = emailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-				StandardCharsets.UTF_8.name());
+		MimeMessage message = this.emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 		Context context = new Context();
-
-		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(ACTIVATE_URL, link));
+		Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(ACTIVATION_URL, link));
 		context.setVariables(variables);
 
 		String html = this.templateEngine.process("activation-mail", context);
@@ -44,11 +43,9 @@ public class EmailService {
 
 	@Async
 	public void sendInfoMail(String to, String certFileName, String secondVariable, String subject, String template) throws MessagingException {
-		MimeMessage message = emailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-				StandardCharsets.UTF_8.name());
+		MimeMessage message = this.emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 		Context context = new Context();
-
 		Map<String, Object> variables = Map.of("certFileName", certFileName, "secondVariable", secondVariable);
 		context.setVariables(variables);
 

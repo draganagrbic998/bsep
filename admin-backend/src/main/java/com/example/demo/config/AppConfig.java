@@ -42,10 +42,9 @@ public class AppConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
-			File keystoreFile = new File(Path.of(Constants.TRUSTSTORE_PATH).toString());
-
+			File file = new File(Path.of(Constants.KEYSTORE_PATH).toString());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
-			InputStream inputStream = new FileInputStream(keystoreFile);
+			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
@@ -60,7 +59,6 @@ public class AppConfig {
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
-			
 			inputStream.close();
 		}
 
@@ -72,13 +70,14 @@ public class AppConfig {
 	}
 
 	@Bean
-	public SpringTemplateEngine springTemplateEngine() {
+	public SpringTemplateEngine templateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.addTemplateResolver(htmlTemplateResolver());
+		templateEngine.addTemplateResolver(this.emailTemplateResolver());
 		return templateEngine;
 	}
+	
 	@Bean
-	public SpringResourceTemplateResolver htmlTemplateResolver(){
+	public SpringResourceTemplateResolver emailTemplateResolver(){
 		SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();
 		emailTemplateResolver.setPrefix("classpath:/templates/");
 		emailTemplateResolver.setSuffix(".html");

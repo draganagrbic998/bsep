@@ -7,10 +7,10 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
-import com.example.demo.utils.CertificateUtils;
 
 import lombok.AllArgsConstructor;
 
@@ -19,23 +19,21 @@ import lombok.AllArgsConstructor;
 public class CertificateValidationService {
 
 	private final KeyStoreService keyStoreService;
-	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateInfoRepository certificateRepository;
 	
+	@Transactional(readOnly = true)
 	public boolean isCertificateValid(long serial) {
-		String alias = null;
 		try {
-			alias = this.certificateInfoRepository.getOne(serial).getAlias();
+			return this.isCertificateValid(this.certificateRepository.getOne(serial).getAlias());
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
-		return isCertificateValid(alias);
 	}
 
+	@Transactional(readOnly = true)
 	public boolean isCertificateValid(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
-
 		if (chain == null) {
 			return false;
 		}
@@ -44,8 +42,7 @@ public class CertificateValidationService {
 		X509Certificate x509cert;
 		for (int i = 0; i < chain.length; i++) {
 			x509cert = (X509Certificate) chain[i];
-
-			CertificateInfo certificateInfo = this.certificateInfoRepository.findById(x509cert.getSerialNumber().longValue()).orElse(null);
+			CertificateInfo certificateInfo = this.certificateRepository.findById(x509cert.getSerialNumber().longValue()).orElse(null);
 
 			if (certificateInfo == null) {
 				return false;
@@ -61,7 +58,7 @@ public class CertificateValidationService {
 
 			try {
 				if (i == chain.length - 1) {
-					return CertificateUtils.isSelfSigned(x509cert);
+					return this.isSelfSigned(x509cert);
 				}
 				X509Certificate issuer = (X509Certificate) chain[i + 1];
 				x509cert.verify(issuer.getPublicKey());
@@ -76,5 +73,17 @@ public class CertificateValidationService {
 		return false;
 	}
 
-	
+	public boolean isSelfSigned(X509Certificate certificate) {
+		try {
+			certificate.verify(certificate.getPublicKey());
+			return true;
+		} 
+		catch (SignatureException | InvalidKeyException e) {
+			return false;
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

@@ -24,8 +24,7 @@ import java.util.Map;
 
 @Component
 public class CertificateGenerator {
-
-    KeyPurposeId
+	
 	private Map<String, Integer> keyUsageMapping = new HashMap<>();
 	
 	public CertificateGenerator() {
@@ -38,8 +37,8 @@ public class CertificateGenerator {
 		this.keyUsageMapping.put("nonRepudiation", 6);
 	}
 
-    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, Template template, KeyPair keyPair, boolean isSelfSigned, java.security.cert.Certificate issuer,
-    		boolean isBasicConstaints, String extendedKeyUsage, List<String> keyUsage) {
+    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, Template template, KeyPair keyPair,
+    		boolean isSelfSigned, java.security.cert.Certificate issuer, boolean isBasicConstaints, String extendedKeyUsage, List<String> keyUsage) {
         try {
             Security.addProvider(new BouncyCastleProvider());
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
@@ -67,9 +66,7 @@ public class CertificateGenerator {
             
             certGen.addExtension(Extension.authorityKeyIdentifier, false, authorityKeyIdentifier);
             certGen.addExtension(Extension.subjectAlternativeName, false, new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost")));
-            
-            
-            
+
             certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(isBasicConstaints));
             if (extendedKeyUsage != null && extendedKeyUsage.equalsIgnoreCase("id_kp_clientAuth")) {
                 certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
@@ -80,34 +77,16 @@ public class CertificateGenerator {
             int temp = keyUsage.stream().map(x -> 1 << this.keyUsageMapping.get(x)).reduce(0, (subtotal, element) -> subtotal | element);
             certGen.addExtension(Extension.keyUsage, true, new KeyUsage(temp));
 
-            /*
-            switch (template) {
-                case SUB_CA:
-                    certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
-                    certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.cRLSign | KeyUsage.digitalSignature | KeyUsage.keyCertSign));
-                    break;
-                case TLS:
-                    certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
-                    certGen.addExtension(Extension.keyUsage, true,
-                            new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.encipherOnly | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
-                    certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-                    break;
-                case USER:
-                    certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
-                    certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.keyEncipherment));
-                    certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
-                    break;
-            }*/
-            
-
             X509CertificateHolder certHolder = certGen.build(contentSigner);
             JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
             certConverter = certConverter.setProvider("BC");
             return certConverter.getCertificate(certHolder);
-        } 
+
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

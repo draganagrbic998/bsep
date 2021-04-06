@@ -14,6 +14,5 @@ public class PkiProperties {
 
 	private String keystore;
 	private String keystorePassword;
-	private String superadminJks;
 
 }
