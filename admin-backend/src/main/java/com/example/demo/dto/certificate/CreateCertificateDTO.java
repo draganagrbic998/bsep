@@ -1,5 +1,6 @@
 package com.example.demo.dto.certificate;
 
+import com.example.demo.model.Extensions;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,8 +42,6 @@ public class CreateCertificateDTO {
 	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
-	private boolean basicConstraints;
-	private String extendedKeyUsage;
-	private List<String> keyUsage;
+	private Extensions extensions;
 	
 }

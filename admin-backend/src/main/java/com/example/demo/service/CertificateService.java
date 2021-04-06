@@ -4,6 +4,7 @@ import com.example.demo.dto.certificate.CreateCertificateDTO;
 import com.example.demo.dto.certificate.CreatedCertificateDTO;
 import com.example.demo.exception.AliasExistsException;
 import com.example.demo.exception.CertificateAuthorityException;
+import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.model.*;
 import com.example.demo.repository.CertificateInfoRepository;
@@ -17,6 +18,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+import org.bouncycastle.util.io.pem.PemObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -35,22 +38,24 @@ import javax.mail.MessagingException;
 @AllArgsConstructor
 public class CertificateService {
 
-	private final CertificateInfoRepository certificateInfoRepository;
-	private final CertificateRequestService certificateRequestService;
-	private final CertificateValidationService certificateValidationService;
-	private final CertificateGenerator certificateGenerator;
 	private final KeyStoreService keyStoreService;
+	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateGenerator certificateGenerator;
 	private final RestTemplate restTemplate;
 	private final EmailService emailService;
+	private final CertificateRequestService certificateRequestService;
+	private final CertificateValidationService certificateValidationService;
 
-	public void create(CreateCertificateDTO certificateDTO) {
+	public void create(CreateCertificateDTO createCertificateDto) {
 		this.keyStoreService.loadKeyStore();
-		String issuerAlias = certificateDTO.getIssuerAlias();
+
+		String issuerAlias = createCertificateDto.getIssuerAlias();
+
 		Certificate[] issuerCertificateChain = this.keyStoreService.readCertificateChain(issuerAlias);
 		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
+
 		X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
 		CertificateInfo issuerInfo = this.certificateInfoRepository.findByAliasIgnoreCase(issuerAlias);
-		
 		if (!this.certificateValidationService.isCertificateValid(issuerAlias))
 			throw new InvalidIssuerException();
 
@@ -62,75 +67,88 @@ public class CertificateService {
 		catch (NullPointerException ignored) {
 		}
 
-		String alias = certificateDTO.getAlias();
+		String alias = createCertificateDto.getAlias();
+
 		if (this.certificateInfoRepository.findByAliasIgnoreCase(alias) != null)
 			throw new AliasExistsException();
 
 		KeyPair keyPair = CertificateUtils.generateKeyPair();
+
 		if (keyPair == null)
 			return;
 
-		X500Name subjectName = CertificateUtils.certificateNameFromData(certificateDTO);
+		X500Name subjectName = CertificateUtils.certificateNameFromData(createCertificateDto);
+
 		SubjectData subjectData = new SubjectData();
 		subjectData.setX500name(subjectName);
-		String templateString = certificateDTO.getTemplate();
+
+		String templateString = createCertificateDto.getTemplate();
 
 		Date[] dates;
 		dates = CertificateUtils.generateDates(templateString.equals("SUB_CA") ? 24 : 12);
 		subjectData.setStartDate(dates[0]);
 		subjectData.setEndDate(dates[1]);
 		subjectData.setPublicKey(keyPair.getPublic());
+
 		Template template = Template.valueOf(templateString);
 
-		CertificateInfo certInfo = generateCertificateInfo(subjectData, certificateDTO.getIssuerAlias(),
-				certificateDTO.getAlias(), certificateDTO.getCountry(),
-				certificateDTO.getOrganizationUnit(), certificateDTO.getOrganization(),
-				certificateDTO.getEmail(), template == Template.SUB_CA, template, certificateDTO.isBasicConstraints(),
-				certificateDTO.getExtendedKeyUsage(), certificateDTO.getKeyUsage());
+		CertificateInfo certInfo = generateCertificateInfo(subjectData, createCertificateDto.getIssuerAlias(),
+				createCertificateDto.getAlias(), createCertificateDto.getCountry(),
+				createCertificateDto.getOrganizationUnit(), createCertificateDto.getOrganization(),
+				createCertificateDto.getEmail(), template == Template.SUB_CA, template,
+				createCertificateDto.getExtensions());
 
 		issuerInfo.addIssued(certInfo);
 		this.certificateInfoRepository.save(issuerInfo);
+
 		subjectData.setSerialNumber(certInfo.getId().toString());
 
-		X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(
-				subjectData, issuerData, template, keyPair, false, issuerCertificateChain[0], 
-				certificateDTO.isBasicConstraints(), certificateDTO.getExtendedKeyUsage(), certificateDTO.getKeyUsage());
+		//ovo proveri jel ok
+		X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData,
+				keyPair, false, issuerCertificateChain[0], createCertificateDto.getExtensions());
+
 		Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
 
-		this.keyStoreService.savePrivateKey(certificateDTO.getAlias(), newCertificateChain, keyPair.getPrivate());
+		this.keyStoreService.savePrivateKey(createCertificateDto.getAlias(), newCertificateChain, keyPair.getPrivate());
 		this.keyStoreService.saveKeyStore();
+
 		String filename = this.keyStoreService.saveSeparateKeys(issuerInfo, certInfo, keyPair.getPrivate(), newCertificateChain);
 		this.keyStoreService.addToTruststore(issuerInfo, certInfo, createdCertificate, filename);
-		String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
+
 		byte[] returnValue = null;
+		String fileName = issuerInfo.getAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit();
+		InputStream in = null;
 
 		try {
-			InputStream in = new FileInputStream("./src/main/resources/" + Constants.CERTIFICATES_FOLDER + fileName + ".jks");
+			in = new FileInputStream("./src/main/resources/" + Constants.CERTIFICATES_FOLDER + fileName + ".jks");
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (certificateDTO.getId() != 0) {
+		if (createCertificateDto.getId() != 0) {
 			try {
 				CreatedCertificateDTO dto = new CreatedCertificateDTO();
 				dto.setIssuerAlias(issuerInfo.getAlias());
 				dto.setAlias(certInfo.getAlias());
 				dto.setOrganizationUnit(certInfo.getOrganizationUnit());
 				dto.setCertificate(Base64.getEncoder().encodeToString(returnValue));
-				CertificateRequest request = this.certificateRequestService.findOne(certificateDTO.getId());
+
+				CertificateRequest request = this.certificateRequestService.findOne(createCertificateDto.getId());
 				dto.setType(request.getType().name());
 
 				this.restTemplate.postForEntity(request.getPath(), dto, CreatedCertificateDTO.class).getBody();
-				this.certificateRequestService.delete(certificateDTO.getId());
 
-				String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_" + certInfo.getOrganizationUnit() + ".jks";
+				this.certificateRequestService.delete(createCertificateDto.getId());
+
+				String certFileName = certInfo.getIssuerAlias() + "_" + certInfo.getAlias() + "_"
+						+ certInfo.getOrganizationUnit() + ".jks";
+				
 				String location = request.getPath().split("//")[1].split("/")[0];
-				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, location, "Certificate Issued - Bezbednost", Constants.ISSUED_TEMPLATE);
-			} 
-			catch (RestClientException | IllegalArgumentException | MessagingException e) {
+				this.emailService.sendInfoMail(certInfo.getEmail(), certFileName, location,
+						"Certificate Issued - Bezbednost", Constants.ISSUED_TEMPLATE);
+			} catch (RestClientException | IllegalArgumentException | MessagingException e) {
 				e.printStackTrace();
 			}
 		}
@@ -139,26 +157,51 @@ public class CertificateService {
 
 	public CertificateInfo generateCertificateInfo(SubjectData subjectData, String issuerAlias, String alias,
 			String country, String organizationUnit, String organization, String email, boolean isCA,
-			Template template, boolean isBasic, String extentedKeyUsage, List<String> keyUsages) {
-		
+			Template template, Extensions extensions) {
 		CertificateInfo certInfo = new CertificateInfo();
 		String cn = subjectData.getX500name().getRDNs(BCStyle.CN)[0].getFirst().getValue().toString();
 
 		certInfo.setAlias(alias);
 		certInfo.setCommonName(cn);
-		certInfo.setOrganizationUnit(organizationUnit);
-		certInfo.setOrganization(organization);
-		certInfo.setCountry(country);
-		certInfo.setEmail(email);
-		certInfo.setTemplate(template);
-		certInfo.setBasicConstraints(isBasic);
-		certInfo.setKeyUsage(keyUsages.stream().reduce("", (subtotal, element) -> subtotal +","+ element));
-		certInfo.setExtendedKeyUsage(extentedKeyUsage);
 		certInfo.setIssuerAlias(issuerAlias);
-		certInfo.setCA(isCA);
 		certInfo.setStartDate(subjectData.getStartDate());
 		certInfo.setEndDate(subjectData.getEndDate());
+		certInfo.setRevoked(false);
+		certInfo.setCountry(country);
+		certInfo.setOrganizationUnit(organizationUnit);
+		certInfo.setOrganization(organization);
+		certInfo.setEmail(email);
+		certInfo.setRevocationReason("");
+		certInfo.setCA(isCA);
+		certInfo.setTemplate(template);
+		//proveri jel ovo ok
+		certInfo.setExtensions(extensions);
 		return this.certificateInfoRepository.save(certInfo);
 	}
 
+	public String getCrt(String alias) throws IOException {
+		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
+
+		StringBuilder chainBuilder = new StringBuilder();
+		for (Certificate c : chain) {
+			String pemCertificate = this.writePem(c);
+			chainBuilder.append(pemCertificate);
+		}
+		return chainBuilder.toString();
+	}
+
+	public String getKey(String alias) throws IOException {
+		PrivateKey privateKey = this.keyStoreService.readPrivateKey(alias);
+		PemObject pemFile = new PemObject("PRIVATE KEY", privateKey.getEncoded());
+		return this.writePem(pemFile);
+	}
+
+	private String writePem(Object obj) throws IOException {
+		StringWriter writer = new StringWriter();
+		JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
+		pemWriter.writeObject(obj);
+		pemWriter.flush();
+		pemWriter.close();
+		return writer.toString();
+	}
 }

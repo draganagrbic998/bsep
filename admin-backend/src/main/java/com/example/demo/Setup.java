@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.model.CertificateInfo;
-import com.example.demo.model.IssuerData;
-import com.example.demo.model.SubjectData;
-import com.example.demo.model.Template;
+import com.example.demo.model.*;
 import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.service.KeyStoreService;
 import com.example.demo.utils.CertificateGenerator;
@@ -14,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -67,14 +65,18 @@ public class Setup implements ApplicationRunner {
 
 		CertificateInfo certificateInfo = generateCertificateInfoEntity(subjectData);
 		subjectData.setSerialNumber(certificateInfo.getId().toString());
-		
+
 		X509Certificate rootCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData,
-				Template.SUB_CA, keyPair, true, null, true, null, List.of("cRLSign", "digitalSignature", "keyCertSign"));				
+				keyPair, true, null, certificateInfo.getExtensions());
 
 		this.keyStoreService.savePrivateKey("root", new Certificate[] { rootCertificate }, keyPair.getPrivate());
 	}
 
-	private CertificateInfo generateCertificateInfoEntity(SubjectData subjectData) {		
+	private CertificateInfo generateCertificateInfoEntity(SubjectData subjectData) {
+		Extensions e = new Extensions();
+		e.setBasicConstraints(true);
+		e.setKeyUsage(KeyUsage.cRLSign | KeyUsage.digitalSignature | KeyUsage.keyCertSign);
+
 		CertificateInfo certInfo = new CertificateInfo();
 		certInfo.setCommonName("root");
 		certInfo.setAlias("root");
@@ -89,8 +91,7 @@ public class Setup implements ApplicationRunner {
 		certInfo.setIssuerAlias("root");
 		certInfo.setCA(true);
 		certInfo.setTemplate(Template.SUB_CA);
-		certInfo.setBasicConstraints(true);
-		certInfo.setKeyUsage("cRLSign, digitalSignature, keyCertSign");
+		certInfo.setExtensions(e);
 		return this.certificateInfoRepository.save(certInfo);
 	}
 }

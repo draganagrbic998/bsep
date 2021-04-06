@@ -70,7 +70,7 @@ public class CertificateInfo {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<CertificateInfo> issued;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Extensions extensions;
 
     public void addIssued(CertificateInfo certificateInfo) {

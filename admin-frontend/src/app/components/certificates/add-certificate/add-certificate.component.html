@@ -1,17 +1,15 @@
-<div class="p-d-flex p-justify-center p-pt-6 p-pb-5">
-  <p-card>
+<div class="p-d-flex p-justify-center p-px-6 p-pt-6 p-pb-5">
+  <p-card class="p-mx-6">
     <form [formGroup]="certificateForm" (ngSubmit)="checkExtensions()">
-      <ng-template pTemplate="header">
-        <div class="p-d-flex p-ai-center p-pt-4 p-ml-4 p-mr-4">
-          <h2 class="p-text-bold p-mt-3 p-ml-6">Add a certificate</h2>
-          <button class="p-ml-auto p-mr-5 p-button-outlined"
-                  icon="pi pi-check"
-                  label="Save"
-                  (click)="saveCertificate()"
-                  pButton
-          ></button>
-        </div>
-      </ng-template>
+      <div class="p-d-flex p-ai-center p-pt-4 p-ml-4 p-mr-4">
+        <h2 class="p-text-bold p-mt-3 p-ml-4">Add a certificate</h2>
+        <button class="p-ml-auto p-mr-4 p-button-outlined"
+                icon="pi pi-check"
+                label="Save"
+                (click)="checkExtensions()"
+                pButton
+        ></button>
+      </div>
       <div class="p-px-6">
         <div class="p-grid p-fluid p-mt-4">
           <div class="p-col-12 p-md-6">
@@ -20,7 +18,9 @@
                 <input type="text" pInputText id="common-name" formControlName="commonName" required autofocus/>
                 <label for="common-name">Common name</label>
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('commonName').dirty && !certificateForm.get('commonName').valid"
+              >Common name is required.</small>
             </div>
           </div>
           <div class="p-col-12 p-md-6">
@@ -29,7 +29,9 @@
                 <input type="text" pInputText id="alias" formControlName="alias" required autofocus/>
                 <label for="alias">Alias</label>
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('alias').dirty && !certificateForm.get('alias').valid"
+              >Alias is required.</small>
             </div>
           </div>
           <div class="p-col-12 p-md-6">
@@ -38,7 +40,9 @@
                 <input type="text" pInputText id="organization" formControlName="organization" required autofocus/>
                 <label for="organization">Organization</label>
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('organization').dirty && !certificateForm.get('organization').valid"
+              >Organization is required.</small>
             </div>
           </div>
           <div class="p-col-12 p-md-6">
@@ -53,8 +57,9 @@
                 <label for="organization-unit">Organization unit</label>
 
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is
-                required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('organizationUnit').dirty && !certificateForm.get('organizationUnit').valid"
+              >Organization unit is required.</small>
             </div>
           </div>
 
@@ -64,7 +69,9 @@
                 <input type="text" pInputText id="country" formControlName="countryCode" required autofocus/>
                 <label for="country">Country code</label>
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('countryCode').dirty && !certificateForm.get('countryCode').valid"
+              >Common name is required.</small>
             </div>
           </div>
 
@@ -74,7 +81,9 @@
                 <input type="email" pInputText id="email" formControlName="email" required autofocus/>
                 <label for="email">Email</label>
               </span>
-              <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
+              <small class="p-error"
+                     *ngIf="certificateForm.get('email').dirty && !certificateForm.get('email').valid"
+              >Email is required.</small>
             </div>
           </div>
 
@@ -85,7 +94,7 @@
                             formControlName="template"
                             [autoDisplayFirst]="false"
                             [showClear]="true"
-                            (ngModelChange)="templateChanged($event)"
+                            (onChange)="templateChanged($event)"
                             optionLabel="label"
                             inputId="template"
                 ></p-dropdown>
@@ -109,13 +118,13 @@
             </div>
           </div>
 
-          <div class="p-col-12 p-md-6" *ngIf="!!extensions.keyUsage">
+          <div class="p-col-12 p-md-6" *ngIf="!!certificateForm.get('keyUsage').value">
             <div class="p-field">
               <span class="p-float-label">
                 <p-multiSelect [options]="keyUsages"
                                optionLabel="option"
                                [showToggleAll]="false"
-                               [(ngModel)]="extensions.keyUsage"
+                               formControlName="keyUsage"
                                (onChange)="certificateForm.get('template').setValue(null)"
                 ></p-multiSelect>
                 <label class="p-mb-3">Key usage</label>
@@ -123,20 +132,20 @@
             </div>
           </div>
 
-          <div class="p-col-12 p-md-6" *ngIf="!!extensions.extendedKeyUsage">
+          <div class="p-col-12 p-md-6" *ngIf="!!certificateForm.get('extendedKeyUsage').value">
             <div class="p-field">
-<span class="p-float-label">
-<p-multiSelect [options]="keyPurposeIds"
-               optionLabel="option"
-               [showToggleAll]="false"
-               [(ngModel)]="extensions.extendedKeyUsage"
-               (onChange)="certificateForm.get('template').setValue(null)"
-></p-multiSelect>
-<label class="p-mb-3">Extended key usage</label>
-</span>
+              <span class="p-float-label">
+                <p-multiSelect [options]="keyPurposeIds"
+                               optionLabel="option"
+                               [showToggleAll]="false"
+                               formControlName="extendedKeyUsage"
+                               (onChange)="certificateForm.get('template').setValue(null)"
+                ></p-multiSelect>
+                <label class="p-mb-3">Extended key usage</label>
+              </span>
             </div>
           </div>
-          <div class="p-col-12 p-md-6" *ngIf="extensions.basicConstraints !== null">
+          <div class="p-col-12 p-md-6" *ngIf="certificateForm.get('basicConstraints').value !== null">
             <div class="p-field-checkbox">
               <label for="basic"
                      (click)="certificate.extensions.basicConstraints = !certificate.extensions.basicConstraints">
@@ -145,23 +154,21 @@
               <p-checkbox id="basic"
                           class="p-ml-2"
                           [binary]="true"
-                          [(ngModel)]="extensions.basicConstraints"
+                          formControlName="basicConstraints"
                           (onChange)="certificateForm.get('template').setValue(null)"
               ></p-checkbox>
             </div>
           </div>
         </div>
       </div>
-      <ng-template pTemplate="footer">
-        <div class="p-d-flex p-ai-center">
-          <button class="p-ml-auto p-mr-5 p-button-outlined"
-                  icon="pi pi-check"
-                  label="Save"
-                  (click)="checkExtensions()"
-                  pButton
-          ></button>
-        </div>
-      </ng-template>
+      <div class="p-d-flex p-ai-center p-pb-4 p-mt-4 p-mr-4">
+        <button class="p-ml-auto p-mr-4 p-button-outlined"
+                icon="pi pi-check"
+                label="Save"
+                type="submit"
+                pButton
+        ></button>
+      </div>
     </form>
 
   </p-card>

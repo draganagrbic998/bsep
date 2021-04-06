@@ -1,6 +1,7 @@
 package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateInfo;
+import com.example.demo.model.Extensions;
 import com.example.demo.model.Template;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,6 @@ public class CertificateInfoDTO {
 	private String country;
 	private String email;
 	private Template template;
-	private boolean basicConstraints;
-	private String keyUsage;
-	private String extendedKeyUsage;
 	private String issuerAlias;
 	private boolean isCA;
 	private Date startDate;
@@ -33,6 +31,7 @@ public class CertificateInfoDTO {
 	private String revocationReason;
 	private long numIssued;
 	private List<CertificateInfoDTO> issued;
+	private Extensions extensions;
 
 	public CertificateInfoDTO(CertificateInfo certificate, int mappingLevel) {
 		this.id = certificate.getId();
@@ -43,9 +42,7 @@ public class CertificateInfoDTO {
 		this.country = certificate.getCountry();
 		this.email = certificate.getEmail();
 		this.template = certificate.getTemplate();
-		this.basicConstraints = certificate.isBasicConstraints();
-		this.keyUsage = certificate.getKeyUsage();
-		this.extendedKeyUsage = certificate.getExtendedKeyUsage();
+		this.extensions = certificate.getExtensions();
 		this.issuerAlias = certificate.getIssuerAlias();
 		this.isCA = certificate.isCA();
 		this.startDate = certificate.getStartDate();

@@ -8,7 +8,7 @@ import {extensionTemplates} from '../../../core/utils/templates';
 import {Template} from '../../../core/model/template';
 import {Extensions} from '../../../core/model/extensions';
 import {keyPurposeIds} from '../../../core/utils/key-purpose-ids';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-add-certificate',
@@ -18,14 +18,12 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class AddCertificateComponent implements OnInit, OnDestroy {
 
   certificate: CertificateInfo = new CertificateInfo();
-  submitted = false;
   caAlias = 'root';
   keyUsages = keyUsages;
   keyPurposeIds = keyPurposeIds;
   certificateForm: FormGroup;
 
 
-  extensions: Extensions = new Extensions();
   templates = extensionTemplates;
 
   constructor(private messageService: MessageService,
@@ -50,47 +48,63 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
       organizationUnit: ['', Validators.required],
       countryCode: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      template: [{}],
-      extensions: [[]],
+      template: [null],
+      extensions: [null],
+      keyUsage: [null],
+      basicConstraints: [null],
+      extendedKeyUsage: [null]
     });
   }
 
   checkExtensions(): void {
-    this.certificate.extensions.basicConstraints = this.extensions.basicConstraints;
-    this.certificate.extensions.extendedKeyUsage = this.extensions.extendedKeyUsage?.map(ex => ex.value);
-    // tslint:disable-next-line:no-bitwise
-    this.certificate.extensions.keyUsage = this.extensions.keyUsage?.map(ku => ku.value).reduce((e, d) => e | d);
-    console.log(this.certificate.extensions.keyUsage);
-    if (this.certificate.extensions.basicConstraints === null &&
-      !this.certificate.extensions.extendedKeyUsage &&
-      !this.certificate.extensions.keyUsage) {
-      this.confirmationService.confirm({
-        header: 'Are you sure?',
-        message: `There are no extensions selected for the certificate. Do you want to proceed?`,
-        accept: () => this.saveCertificate()
-      });
+    console.log(this.certificateForm.valid);
+    if (this.certificateForm.valid) {
+      this.certificate.commonName = this.certificateForm.get('commonName').value;
+      this.certificate.alias = this.certificateForm.get('alias').value;
+      this.certificate.organization = this.certificateForm.get('organization').value;
+      this.certificate.organizationUnit = this.certificateForm.get('organizationUnit').value;
+      this.certificate.country = this.certificateForm.get('countryCode').value;
+      this.certificate.email = this.certificateForm.get('email').value;
+      this.certificate.template = (this.certificateForm.get('template').value as Template)?.enumValue;
+      this.certificate.issuerAlias = this.caAlias;
+      // tslint:disable-next-line: deprecation
+      this.certificate.extensions.basicConstraints = this.certificateForm.get('basicConstraints').value;
+      this.certificate.extensions.keyPurposeIds = this.certificateForm.get('extendedKeyUsage').value?.map(ex => ex.value);
+      // tslint:disable-next-line:no-bitwise
+      this.certificate.extensions.keyUsage = this.certificateForm.get('keyUsage').value?.map(ku => ku.value).reduce((e, d) => e | d);
+      if (this.certificate.extensions.basicConstraints === null &&
+        !this.certificate.extensions.keyPurposeIds &&
+        !this.certificate.extensions.keyUsage) {
+        this.confirmationService.confirm({
+          header: 'Are you sure?',
+          message: `There are no extensions selected for the certificate. Do you want to proceed?`,
+          accept: () => this.saveCertificate()
+        });
+      } else {
+        this.saveCertificate();
+      }
     } else {
-      this.saveCertificate();
+      this.certificateForm.get('commonName').markAsDirty();
+      this.certificateForm.get('alias').markAsDirty();
+      this.certificateForm.get('organization').markAsDirty();
+      this.certificateForm.get('organizationUnit').markAsDirty();
+      this.certificateForm.get('countryCode').markAsDirty();
+      this.certificateForm.get('email').markAsDirty();
     }
   }
 
   saveCertificate(): void {
-    this.submitted = true;
+    this.certificateService.createCertificate(this.certificate).subscribe(() => {
 
-    if (this.certificate.commonName?.trim()) {
-      this.certificate.issuerAlias = this.caAlias;
-      // tslint:disable-next-line: deprecation
-      this.certificateService.createCertificate(this.certificate).subscribe(() => {
+      this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
 
-        this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
+      this.router.navigate(['..']);
 
-        this.router.navigate(['..']);
+    }, () => {
+      this.messageService.add({severity: 'error',
+        summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
+    });
 
-      }, () => {
-        this.messageService.add({severity: 'error',
-          summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
-      });
-    }
   }
 
 
@@ -102,49 +116,53 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
     this.certificateForm.get('template').setValue(null);
     switch (event.itemValue.label) {
       case 'extendedKeyUsage':
-        this.extensions.extendedKeyUsage = !!this.extensions.extendedKeyUsage ? null : [];
+        this.certificateForm.get('extendedKeyUsage')
+          .setValue(!!this.certificateForm.get('extendedKeyUsage').value ? null : []);
         break;
       case 'keyUsage':
-        this.extensions.keyUsage = !!this.extensions.keyUsage ? null : [];
+        this.certificateForm.get('keyUsage')
+          .setValue(!!this.certificateForm.get('keyUsage').value ? null : []);
         break;
       case 'basicConstraints':
-        this.extensions.basicConstraints = this.extensions.basicConstraints !== null ? null : false;
+        this.certificateForm.get('basicConstraints')
+          .setValue(this.certificateForm.get('basicConstraints').value !== null ? null : []);
+        break;
     }
   }
 
-  templateChanged(changedTemplate: Template): void {
+  templateChanged(event: any): void {
+    const changedTemplate: Template = event.value;
     if (!changedTemplate) {
-      this.certificateForm.get('extensions').setValue([]);
-      this.extensions.basicConstraints = null;
-      this.extensions.extendedKeyUsage = null;
-      this.extensions.keyUsage = null;
+      this.certificateForm.get('extensions').setValue(null);
+      this.certificateForm.get('basicConstraints').setValue( null);
+      this.certificateForm.get('extendedKeyUsage').setValue(null);
+      this.certificateForm.get('keyUsage').setValue(null);
       return;
     }
-    this.extensions.basicConstraints = changedTemplate.extensions.basicConstraints;
-    this.extensions.keyUsage = changedTemplate.extensions.keyUsage;
-    this.extensions.extendedKeyUsage = changedTemplate.extensions.extendedKeyUsage;
-    this.certificateForm.get('extensions').setValue([]);
-    if (this.extensions.keyUsage !== null) {
-      this.certificateForm.get('selectedExtensions').value.push({label: 'keyUsage'});
+    this.certificateForm.get('basicConstraints').setValue(changedTemplate.extensions.basicConstraints);
+    this.certificateForm.get('keyUsage').setValue(changedTemplate.extensions.keyUsage);
+    this.certificateForm.get('extendedKeyUsage').setValue(changedTemplate.extensions.extendedKeyUsage);
+    const extensions = [];
+    if (this.certificateForm.get('keyUsage').value !== null) {
+      extensions.push({label: 'keyUsage'});
     }
-    if (this.extensions.extendedKeyUsage !== null) {
-      this.certificateForm.get('selectedExtensions').value.push({label: 'extendedKeyUsage'});
+    if (this.certificateForm.get('extendedKeyUsage').value !== null) {
+      extensions.push({label: 'extendedKeyUsage'});
     }
-    if (this.extensions.basicConstraints !== null) {
-      this.certificateForm.get('selectedExtensions').value.push({label: 'basicConstraints'});
+    if (this.certificateForm.get('basicConstraints').value !== null) {
+      extensions.push({label: 'basicConstraints'});
     }
-
+    this.certificateForm.get('extensions').setValue(extensions);
 
   }
 
   ngOnDestroy(): void {
     this.certificate = new CertificateInfo();
-    this.submitted = false;
     this.caAlias = 'root';
   }
 
   get extensionOptions(): { label: string }[] {
-    return Object.keys(this.extensions).map(s => {
+    return Object.keys(new Extensions()).map(s => {
       return {
         label: s
       };
