@@ -44,14 +44,14 @@ public class MessageController {
 
 	@PostMapping
 	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO, HttpServletRequest request) {
-		if(this.certificateService.validateClientCertificate(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0])) {
-			Message message = this.messageMapper.map(messageDTO);
-			if (message.getPatient() != null) {
-				this.messageService.save(this.messageMapper.map(messageDTO));
-			}
-			return ResponseEntity.ok(messageDTO);
+		if(!this.certificateService.validateClientCertificate(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0])) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		Message message = this.messageMapper.map(messageDTO);
+		if (message.getPatient() != null) {
+			this.messageService.save(this.messageMapper.map(messageDTO));
+		}
+		return ResponseEntity.ok(messageDTO);
 	}
 
 }

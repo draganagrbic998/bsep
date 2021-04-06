@@ -111,6 +111,16 @@ export class CertificatesComponent implements OnInit {
 
     this.submitted = false;
     this.newDialog = true;
+
+    if (this.certificate.template === 'SUB_CA'){
+      this.template1Extensions();
+    }
+    else if (this.certificate.template === 'TLS'){
+      this.template2Extensions();
+    }
+    else{
+      this.template3Extensions();
+    }
   }
 
   downloadCrt(certificate: CertificateInfo): void {
@@ -272,7 +282,6 @@ export class CertificatesComponent implements OnInit {
     this.certificate.basicConstraints = false;
     this.certificate.extendedKeyUsage = 'id_kp_serverAuth';
     this.certificate.keyUsage = ['nonRepudiation', 'digitalSignature', 'encipherOnly', 'keyEncipherment', 'keyAgreement'];
-    
 
   }
 

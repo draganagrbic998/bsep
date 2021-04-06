@@ -44,8 +44,6 @@ public class Setup implements ApplicationRunner {
 	}
 
 	private void createRootCA() {
-		
-		
 		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		builder.addRDN(BCStyle.CN, "root");
 		builder.addRDN(BCStyle.O, "BSEP");
@@ -70,16 +68,10 @@ public class Setup implements ApplicationRunner {
 		CertificateInfo certificateInfo = generateCertificateInfoEntity(subjectData);
 		subjectData.setSerialNumber(certificateInfo.getId().toString());
 		
-		//ovo proveri jel ok
 		X509Certificate rootCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData,
-				Template.SUB_CA, keyPair, true, null, true, null, List.of("cRLSign", "digitalSignature", "keyCertSign"));
-				
+				Template.SUB_CA, keyPair, true, null, true, null, List.of("cRLSign", "digitalSignature", "keyCertSign"));				
 
 		this.keyStoreService.savePrivateKey("root", new Certificate[] { rootCertificate }, keyPair.getPrivate());
-
-		//za kad se pravi nov root root ca
-		//this.keyStoreService.saveSeparateKeys(certificateInfo, certificateInfo, keyPair.getPrivate(), new Certificate[] {rootCertificate});
-
 	}
 
 	private CertificateInfo generateCertificateInfoEntity(SubjectData subjectData) {		

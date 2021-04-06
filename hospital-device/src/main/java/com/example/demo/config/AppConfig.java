@@ -3,6 +3,7 @@ package com.example.demo.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.security.KeyStore;
 
 import org.apache.http.client.HttpClient;
@@ -14,7 +15,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class AppConfig {
 		RestTemplate restTemplate = new RestTemplate();
 
 		try {
-			File file = ResourceUtils.getFile(this.pkiProperties.getKeystore());
+			File file = new File(Path.of(this.pkiProperties.getKeystore()).toString());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());

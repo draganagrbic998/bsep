@@ -73,7 +73,7 @@ public class KeyStoreService {
 				+ issuerInfo.getIssuerAlias() + "_" + issuerInfo.getAlias() + "_" + issuerInfo.getOrganizationUnit()
 				+ ".jks";
 		this.keyStoreWriter.addToTruststore(issuerInfo, certInfo, newCertificate, issuerFilename, subjectFilename,
-				this.pkiProperties.getKeystorePassword(), pkiProperties.getSuperadminJks());
+				this.pkiProperties.getKeystorePassword(), this.pkiProperties.getSuperadminJks());
 	}
 
 }

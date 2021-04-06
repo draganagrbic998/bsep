@@ -100,7 +100,4 @@ public class UserService implements UserDetailsService {
 				responseType).getBody();
 	}
 
-	public UserDTO findOne(String email) {
-		return this.restTemplate.getForEntity(String.format("%s/%s", USERS_API, email), UserDTO.class).getBody();
-	}
 }
