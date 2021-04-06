@@ -27,6 +27,7 @@ public class CertificateValidationService {
 			alias = this.certificateInfoRepository.getOne(serial).getAlias();
 		} 
 		catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		return isCertificateValid(alias);

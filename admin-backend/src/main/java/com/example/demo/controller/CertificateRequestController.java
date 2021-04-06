@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.security.cert.X509Certificate;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -18,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.mapper.CertificateRequestMapper;
 import com.example.demo.service.CertificateRequestService;
-import com.example.demo.service.UserService;
+import com.example.demo.service.CertificateValidationService;
+import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
@@ -29,8 +32,8 @@ import lombok.AllArgsConstructor;
 public class CertificateRequestController {
 
 	private final CertificateRequestService certificateService;
-	private final UserService userService;
 	private final CertificateRequestMapper certificateMapper;
+	private final CertificateValidationService certificateValidationService;
 		
 	@GetMapping(value = "/requests")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
@@ -40,8 +43,7 @@ public class CertificateRequestController {
 	@PreAuthorize("permitAll()")
 	@PostMapping(value = "/requests")
 	public ResponseEntity<Void> createRequest(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		//i dodaj ti ipak ovde validaicju isto ovog sertifikata
-		if (this.userService.findOne(requestDTO.getEmail()) == null) {
+		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		this.certificateService.save(this.certificateMapper.map(requestDTO));
