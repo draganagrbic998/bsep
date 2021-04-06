@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -17,13 +16,15 @@ import com.example.demo.dto.LogDTO;
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.service.LogService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/api/logs", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('ADMIN')")	
+@AllArgsConstructor
 public class LogController {
 
-	@Autowired
-	private LogService logService;
+	private final LogService logService;
 		
 	@PostMapping
 	public ResponseEntity<Page<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogSearchDTO searchDTO){

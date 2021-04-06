@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,16 +12,17 @@ import com.example.demo.dto.RevokeRequestDTO;
 import com.example.demo.dto.ValidationRequestDTO;
 import com.example.demo.model.CertificateType;
 import com.example.demo.utils.Constants;
+
+import lombok.AllArgsConstructor;
+
 import com.example.demo.dto.CertificateDTO;
 
 @Service
+@AllArgsConstructor
 public class CertificateService {
 
-	@Autowired
-	private KeyStoreService keyStoreService;
-
-	@Autowired
-	private RestTemplate restTemplate;
+	private final KeyStoreService keyStoreService;
+	private final RestTemplate restTemplate;
 
 	public void save(CertificateDTO certificateDTO) {
 		byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());

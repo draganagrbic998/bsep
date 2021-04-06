@@ -6,7 +6,9 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -19,13 +21,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private UserMapper userMapper;
+	private final UserService userService;
+	private final UserMapper userMapper;
 
 	@PostMapping
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {

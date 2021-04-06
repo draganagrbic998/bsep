@@ -5,23 +5,20 @@ import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
 import com.example.demo.utils.Constants;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 @Service
+@AllArgsConstructor
 public class KeyStoreService {
 
-	@Autowired
-	private KeyStoreReader keyStoreReader;
-
-	@Autowired
-	private KeyStoreWriter keyStoreWriter;
-
-	@Autowired
-	private PkiProperties pkiProperties;
+	private final KeyStoreReader keyStoreReader;
+	private final KeyStoreWriter keyStoreWriter;
+	private final PkiProperties pkiProperties;
 
 	public Certificate readCertificate(String path, String alias) {
 		return keyStoreReader.readCertificate(path, pkiProperties.getKeystorePassword(), alias);

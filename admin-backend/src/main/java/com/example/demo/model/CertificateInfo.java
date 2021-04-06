@@ -13,6 +13,11 @@ import java.util.Set;
 @Table(name = "certificate_table")
 public class CertificateInfo {
 
+	//proveri jel ovo ok
+	private boolean basicConstraints;
+	private String extendedKeyUsage;
+	private String keyUsage;
+	
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;

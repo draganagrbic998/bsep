@@ -3,6 +3,8 @@ package com.example.demo.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -40,5 +42,9 @@ public class CreateCertificateDTO {
 	private String template;
 
 	private String path;
+	
+	private boolean basicConstraints;
+	private String extendedKeyUsage;
+	private List<String> keyUsage;
 
 }

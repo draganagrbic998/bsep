@@ -1,6 +1,5 @@
 package com.example.demo.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.DoctorAlarmDTO;
@@ -9,11 +8,13 @@ import com.example.demo.model.DoctorAlarm;
 import com.example.demo.model.AdminAlarm;
 import com.example.demo.service.PatientService;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class AlarmMapper {
 	
-	@Autowired
-	private PatientService patientService;
+	private final PatientService patientService;
 	
 	public AdminAlarm map(AdminAlarmDTO alarmDTO) {
 		AdminAlarm alarm = new AdminAlarm();

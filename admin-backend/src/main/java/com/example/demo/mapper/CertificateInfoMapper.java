@@ -35,6 +35,9 @@ public class CertificateInfoMapper {
         certificateInfoDto.setCA(certificateInfo.isCA());
         certificateInfoDto.setEmail(certificateInfo.getEmail());
         certificateInfoDto.setTemplate(certificateInfo.getTemplate());
+        certificateInfoDto.setBasicConstraints(certificateInfo.isBasicConstraints());
+        certificateInfoDto.setExtendedKeyUsage(certificateInfo.getExtendedKeyUsage());
+        certificateInfoDto.setKeyUsage(certificateInfo.getKeyUsage());
         if (mappingLevel > 0) {
             certificateInfoDto.setIssued(certificateInfo.getIssued().stream()
                     .map(ci -> this.mapToDto(ci, mappingLevel - 1))

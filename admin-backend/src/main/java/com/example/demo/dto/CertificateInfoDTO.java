@@ -29,5 +29,9 @@ public class CertificateInfoDTO {
 	private boolean isCA;
 	private String email;
 	private Template template;
+	private boolean basicConstraints;
+	private String extendedKeyUsage;
+	private String keyUsage;
+	
 	
 }

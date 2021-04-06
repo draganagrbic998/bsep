@@ -30,6 +30,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -94,15 +95,18 @@ public class CertificateService {
 		CertificateInfo certInfo = generateCertificateInfo(subjectData, createCertificateDto.getIssuerAlias(),
 				createCertificateDto.getAlias(), createCertificateDto.getCountry(),
 				createCertificateDto.getOrganizationUnit(), createCertificateDto.getOrganization(),
-				createCertificateDto.getEmail(), template == Template.SUB_CA, template);
+				createCertificateDto.getEmail(), template == Template.SUB_CA, template, createCertificateDto.isBasicConstraints(),
+				createCertificateDto.getExtendedKeyUsage(), createCertificateDto.getKeyUsage());
 
 		issuerInfo.addIssued(certInfo);
 		this.certificateInfoRepository.save(issuerInfo);
 
 		subjectData.setSerialNumber(certInfo.getId().toString());
 
+		//ovo proveri jel ok
 		X509Certificate createdCertificate = this.certificateGenerator.generateCertificate(subjectData, issuerData,
-				template, keyPair, false, issuerCertificateChain[0]);
+				template, keyPair, false, issuerCertificateChain[0], createCertificateDto.isBasicConstraints(), createCertificateDto.getExtendedKeyUsage(),
+				createCertificateDto.getKeyUsage());
 
 		Certificate[] newCertificateChain = ArrayUtils.insert(0, issuerCertificateChain, createdCertificate);
 
@@ -168,7 +172,7 @@ public class CertificateService {
 
 	public CertificateInfo generateCertificateInfo(SubjectData subjectData, String issuerAlias, String alias,
 			String country, String organizationUnit, String organization, String email, boolean isCA,
-			Template template) {
+			Template template, boolean isBasic, String extentedKeyUsage, List<String> keyUsages) {
 		CertificateInfo certInfo = new CertificateInfo();
 		String cn = subjectData.getX500name().getRDNs(BCStyle.CN)[0].getFirst().getValue().toString();
 
@@ -185,6 +189,10 @@ public class CertificateService {
 		certInfo.setRevocationReason("");
 		certInfo.setCA(isCA);
 		certInfo.setTemplate(template);
+		//proveri jel ovo ok
+		certInfo.setBasicConstraints(isBasic);
+		certInfo.setExtendedKeyUsage(extentedKeyUsage);
+		certInfo.setKeyUsage(keyUsages.stream().reduce("", (subtotal, element) -> subtotal +","+ element));
 		return this.certificateInfoRepository.save(certInfo);
 	}
 

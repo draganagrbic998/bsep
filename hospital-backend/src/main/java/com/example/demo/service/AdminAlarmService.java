@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,14 @@ import com.example.demo.model.AdminAlarm;
 import com.example.demo.model.Log;
 import com.example.demo.repository.AdminAlarmRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class AdminAlarmService {
 
-	@Autowired
-	private AdminAlarmRepository alarmRepository;
+	private final AdminAlarmRepository alarmRepository;
 		
 	public Page<AdminAlarm> findAll(Pageable pageable){
 		return this.alarmRepository.findAll(pageable);

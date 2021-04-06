@@ -6,13 +6,15 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.MessageDTO;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class DeviceService {
 
 	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
@@ -21,8 +23,7 @@ public class DeviceService {
 	private static final long SLEEP_INTERVAL = 5000;
 	private static final long PATIENT_ID = 1;
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	private final RestTemplate restTemplate;
 	
 	@PostConstruct
 	public void init() {

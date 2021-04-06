@@ -3,14 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CertificateDTO;
 import com.example.demo.service.CertificateService;
-import com.example.demo.utils.Constants;
 
-import java.security.cert.X509Certificate;
+import lombok.AllArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class CertificateController {
 
-	@Autowired
-	private CertificateService certificateService;
+	private final CertificateService certificateService;
 
 	@PreAuthorize("permitAll()")
 	@PostMapping

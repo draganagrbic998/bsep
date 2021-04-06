@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -23,21 +22,17 @@ import com.example.demo.service.AdminAlarmService;
 import com.example.demo.service.DoctorAlarmService;
 import com.example.demo.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/api/alarms", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class AlarmController {
 	
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private AdminAlarmService adminAlarmService;
-
-	@Autowired
-	private DoctorAlarmService doctorAlarmService;
-		
-	@Autowired
-	private AlarmMapper alarmMapper;
+	private final UserService userService;
+	private final AdminAlarmService adminAlarmService;
+	private final DoctorAlarmService doctorAlarmService;
+	private final AlarmMapper alarmMapper;
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ADMIN')")	

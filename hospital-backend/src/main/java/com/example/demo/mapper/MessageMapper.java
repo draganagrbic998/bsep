@@ -2,7 +2,6 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.MessageMeasureDTO;
@@ -10,11 +9,13 @@ import com.example.demo.exception.MyException;
 import com.example.demo.model.Message;
 import com.example.demo.service.PatientService;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class MessageMapper {
 
-	@Autowired
-	private PatientService patientService;
+	private final PatientService patientService;
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 

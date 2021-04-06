@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,21 +25,17 @@ import com.example.demo.utils.Configuration;
 import com.example.demo.utils.LogConfiguration;
 import com.google.gson.Gson;
 
+import lombok.AllArgsConstructor;
+
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class LogService {
 
-	@Autowired
-	private LogRepository logRepository;
-	
-	@Autowired
-	private LogMapper logMapper;
-		
-	@Autowired
-	private LogEventService eventService;
-	
-	@Autowired
-	private RestTemplate restTemplate;
+	private final LogRepository logRepository;
+	private final LogMapper logMapper;
+	private final LogEventService eventService;
+	private final RestTemplate restTemplate;
 	
 	@PostConstruct
 	public void init() {

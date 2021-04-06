@@ -7,25 +7,22 @@ import com.example.demo.model.User;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class UserMapper {
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private AuthorityRepository authorityRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final AuthorityRepository authorityRepository;
 	
     public User map(UserDTO userDTO) {
         User user;

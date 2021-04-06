@@ -18,4 +18,7 @@ export class CertificateInfo {
     numIssued: number;
     issued: CertificateInfo[];
     path: string;
+    extendedKeyUsage: string;
+    basicConstraints: boolean;
+    keyUsage: string[];
 }

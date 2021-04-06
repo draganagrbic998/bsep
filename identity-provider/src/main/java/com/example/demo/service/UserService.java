@@ -8,7 +8,9 @@ import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.repository.AuthorityRepository;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,16 +27,12 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-    private PasswordEncoder passwordEncoder;
-
-	@Autowired
-    private AuthorityRepository authorityRepository;
+	private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
 
 	public User save(User user) {
 

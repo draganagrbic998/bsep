@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { CertificateInfo } from '../../../core/model/certificate-info';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -40,6 +40,7 @@ export class CertificatesComponent implements OnInit {
   tree: TreeViewComponent;
   @ViewChild('requestsTable')
   requestsTable: RequestViewComponent;
+
 
   constructor(
     private certificateService: CertificateService,
@@ -247,6 +248,43 @@ export class CertificatesComponent implements OnInit {
 
   get ca(): CertificateInfo {
     return this.certificateService.ca.getValue();
+  }
+
+  toggleKey(event, key: string): void{
+    if (!this.certificate.keyUsage){
+      this.certificate.keyUsage = [];
+    }
+    if (event.checked){
+      this.certificate.keyUsage.push(key);
+    }
+    else{
+      this.certificate.keyUsage = this.certificate.keyUsage.filter(x => x !== key);
+    }
+  }
+
+  template1Extensions(): void{
+    this.certificate.basicConstraints = true;
+    this.certificate.extendedKeyUsage = null;
+    this.certificate.keyUsage = ['cRLSign', 'digitalSignature', 'keyCertSign']
+  }
+
+  template2Extensions(): void{
+    this.certificate.basicConstraints = false;
+    this.certificate.extendedKeyUsage = 'id_kp_serverAuth';
+    this.certificate.keyUsage = ['nonRepudiation', 'digitalSignature', 'encipherOnly', 'keyEncipherment', 'keyAgreement'];
+    
+
+  }
+
+  template3Extensions(): void{
+    this.certificate.basicConstraints = false;
+    this.certificate.extendedKeyUsage = 'id_kp_clientAuth';
+    this.certificate.keyUsage = ['nonRepudiation', 'digitalSignature', 'keyEncipherment'];
+
+  }
+
+  hasKey(key: string): boolean{
+    return this.certificate.keyUsage?.includes(key);
   }
 
 }

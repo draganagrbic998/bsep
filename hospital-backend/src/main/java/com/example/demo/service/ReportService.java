@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,15 +9,15 @@ import com.example.demo.model.LogStatus;
 import com.example.demo.repository.AlarmTriggeringRepository;
 import com.example.demo.repository.LogRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class ReportService {
 
-	@Autowired
-	private LogRepository logRepository;
-
-	@Autowired
-	private AlarmTriggeringRepository alarmRepository;
+	private final LogRepository logRepository;
+	private final AlarmTriggeringRepository alarmRepository;
 		
 	public ReportDTO report(ReportSearchDTO searchDTO) {
 		return new ReportDTO(

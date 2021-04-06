@@ -5,7 +5,6 @@ import java.security.cert.X509Certificate;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,18 +25,16 @@ import com.example.demo.service.CertificateService;
 import com.example.demo.service.MessageService;
 import com.example.demo.utils.Constants;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class MessageController {
 
-	@Autowired
-	private MessageService messageService;
-
-	@Autowired
-	private MessageMapper messageMapper;
-
-	@Autowired
-	private CertificateService certificateService;
+	private final MessageService messageService;
+	private final MessageMapper messageMapper;
+	private final CertificateService certificateService;
 
 	@PostMapping(value = "/search")
 	@PreAuthorize("hasAuthority('DOCTOR')")

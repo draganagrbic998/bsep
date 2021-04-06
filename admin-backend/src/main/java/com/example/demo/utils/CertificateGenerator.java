@@ -19,12 +19,27 @@ import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
-@NoArgsConstructor
 public class CertificateGenerator {
+	
+	private Map<String, Integer> keyUsageMapping = new HashMap<>();
+	
+	public CertificateGenerator() {
+		this.keyUsageMapping.put("cRLSign", 1);
+		this.keyUsageMapping.put("digitalSignature", 7);
+		this.keyUsageMapping.put("keyCertSign", 2);
+		this.keyUsageMapping.put("encipherOnly", 0);
+		this.keyUsageMapping.put("keyEncipherment", 5);
+		this.keyUsageMapping.put("keyAgreement", 3);
+		this.keyUsageMapping.put("nonRepudiation", 6);
+	}
 
-    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, Template template, KeyPair keyPair, boolean isSelfSigned, java.security.cert.Certificate issuer) {
+    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, Template template, KeyPair keyPair, boolean isSelfSigned, java.security.cert.Certificate issuer,
+    		boolean isBasicConstaints, String extendedKeyUsage, List<String> keyUsage) {
         try {
             Security.addProvider(new BouncyCastleProvider());
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
@@ -52,7 +67,22 @@ public class CertificateGenerator {
             
             certGen.addExtension(Extension.authorityKeyIdentifier, false, authorityKeyIdentifier);
             certGen.addExtension(Extension.subjectAlternativeName, false, new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost")));
-
+            
+            
+            
+            certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(isBasicConstaints));
+            if (extendedKeyUsage != null && extendedKeyUsage.equalsIgnoreCase("id_kp_clientAuth")) {
+                certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+            }
+            else if (extendedKeyUsage != null && extendedKeyUsage.equalsIgnoreCase("id_kp_serverAuth")) {
+                certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+            }
+            int temp = keyUsage.stream().map(x -> 1 << this.keyUsageMapping.get(x)).reduce(0, (subtotal, element) -> subtotal | element);
+            certGen.addExtension(Extension.keyUsage, true, new KeyUsage(temp));
+            
+            
+            
+            /*
             switch (template) {
                 case SUB_CA:
                     certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
@@ -61,7 +91,7 @@ public class CertificateGenerator {
                 case TLS:
                     certGen.addExtension(Extension.basicConstraints, true, new BasicConstraints(false));
                     certGen.addExtension(Extension.keyUsage, true,
-                            new KeyUsage( KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.encipherOnly | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
+                            new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.encipherOnly | KeyUsage.keyEncipherment | KeyUsage.keyAgreement));
                     certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
                     break;
                 case USER:
@@ -69,7 +99,8 @@ public class CertificateGenerator {
                     certGen.addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.nonRepudiation | KeyUsage.digitalSignature | KeyUsage.keyEncipherment));
                     certGen.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
                     break;
-            }
+            }*/
+            
 
             X509CertificateHolder certHolder = certGen.build(contentSigner);
             JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
