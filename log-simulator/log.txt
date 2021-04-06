@@ -1,1 +1,1 @@
-05/04/2021-15:29:03|NORMAL|ERROR|99.13.63.118|Forbidden messages view
+06/04/2021-11:58:50|ATTACK|WARNING|172.206.108.15|Forbidden patients view
