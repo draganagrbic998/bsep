@@ -90,14 +90,36 @@
       <hr>
 
       <div class="p-grid p-justify-around p-mt-3">
-        <div class="p-col p-text-left p-as-center p-lg-12">
-          <span class="p-text-light">Has basic constaints: </span> <span class="p-text-bold">{{certificate.extensions.basicConstraints ? 'YES' : 'NO'}}</span>
+        <div class="p-col-12 p-text-left" *ngIf="certificate.extensions.basicConstraints !== null">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3">
+              <span class="p-text-light">Basic constraints: </span>
+            </div>
+            <div class="p-col-8 p-md-9">
+              <p-badge [value]="certificate.extensions.basicConstraints ? 'TRUE' : 'FALSE'"
+                       [severity]="certificate.extensions.basicConstraints ? 'success' : 'danger'"></p-badge>
+            </div>
+          </div>
         </div>
-        <div class="p-col p-text-left p-as-center p-lg-12">
-<!--          <span class="p-text-light">Key usage: </span> <span class="p-text-bold">{{certificate.keyUsage}}</span>-->
+        <div class="p-col-12 p-text-left p-as-center" *ngIf="!!certificate.extensions.keyUsage">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3 p-text-light">Key usages:</div>
+            <div class="p-col-8 p-md-9">
+              <p-badge class="p-mr-1" *ngFor="let keyUsage of keyUsages" [value]="keyUsage.option"></p-badge>
+            </div>
+          </div>
         </div>
-        <div class="p-col p-text-left p-as-center p-lg-12">
-<!--          <span class="p-text-light">Extended key usage: </span> <span class="p-text-bold">{{certificate.extendedKeyUsage ? certificate.extendedKeyUsage : 'NONE'}}</span>-->
+        <div class="p-col-12 p-text-left p-as-center" *ngIf="!!certificate.extensions.keyPurposeIds">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3 p-text-light">Extended key usages:</div>
+            <div class="p-col-8 p-md-9">
+              <p-badge class="p-mr-1"
+                       *ngFor="let extendedKeyUsage of extendedKeyUsages"
+                       [value]="extendedKeyUsage.option"
+                       severity="warning"
+              ></p-badge>
+            </div>
+          </div>
         </div>
 
       </div>

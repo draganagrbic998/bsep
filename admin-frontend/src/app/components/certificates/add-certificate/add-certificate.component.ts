@@ -8,7 +8,7 @@ import {extensionTemplates} from '../../../core/utils/templates';
 import {Template} from '../../../core/model/template';
 import {Extensions} from '../../../core/model/extensions';
 import {keyPurposeIds} from '../../../core/utils/key-purpose-ids';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-add-certificate',
@@ -19,8 +19,8 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
 
   certificate: CertificateInfo = new CertificateInfo();
   caAlias = 'root';
-  keyUsages = keyUsages;
-  keyPurposeIds = keyPurposeIds;
+  keyUsages = Object.values(keyUsages);
+  keyPurposeIds = Object.values(keyPurposeIds);
   certificateForm: FormGroup;
 
 

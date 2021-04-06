@@ -1,6 +1,3 @@
-import {KeyPurposeId} from './key-purpose-id';
-import {KeyUsageType} from './key-usage-type';
-
 export class ExtensionsDto {
   keyPurposeIds: string[] | null = null;
   basicConstraints: boolean | null = null;

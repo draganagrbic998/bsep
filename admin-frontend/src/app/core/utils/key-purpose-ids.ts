@@ -95,7 +95,7 @@ export const id_kp_capwapWTP: KeyPurposeId = {
   value: '19'
 };
 
-export const keyPurposeIds: KeyPurposeId[] = [
+export const keyPurposeIds = {
   id_kp_serverAuth,
   id_kp_clientAuth,
   id_kp_codeSigning,
@@ -115,4 +115,10 @@ export const keyPurposeIds: KeyPurposeId[] = [
   id_kp_ipsecIKE,
   id_kp_capwapAC,
   id_kp_capwapWTP
-];
+};
+
+export const getExtendedKeyUsages: (keyPurposeIdValues: string[]) => KeyPurposeId[] = keyPurposeIdValues => {
+  const keyPurposes: KeyPurposeId[] = Object.values(keyPurposeIds);
+  return keyPurposeIdValues.map(v => keyPurposes[parseInt(v, 10)]);
+};
+

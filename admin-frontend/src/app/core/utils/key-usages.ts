@@ -1,51 +1,24 @@
 import {KeyUsageType} from '../model/key-usage-type';
 
-export const digitalSignature: KeyUsageType = {
-  option: 'digitalSignature',
-  value: 128
-};
+export const digitalSignature = new KeyUsageType('digitalSignature', 7);
 
-export const nonRepudiation: KeyUsageType = {
-  option: 'nonRepudiation',
-  value: 64
-};
+export const nonRepudiation = new KeyUsageType('nonRepudiation', 6);
 
-export const keyEncipherment: KeyUsageType = {
-  option: 'keyEncipherment',
-  value: 32
-};
+export const keyEncipherment = new KeyUsageType('keyEncipherment', 5);
 
-export const dataEncipherment: KeyUsageType = {
-  option: 'dataEncipherment',
-  value: 16
-};
+export const dataEncipherment = new KeyUsageType('dataEncipherment', 4);
 
-export const keyAgreement: KeyUsageType = {
-  option: 'keyAgreement',
-  value: 8
-};
+export const keyAgreement = new KeyUsageType('keyAgreement', 3);
 
-export const keyCertSign: KeyUsageType = {
-  option: 'keyCertSign',
-  value: 4
-};
+export const keyCertSign = new KeyUsageType('keyCertSign', 2);
 
-export const cRLSign: KeyUsageType = {
-  option: 'cRLSign',
-  value: 2
-};
+export const cRLSign = new KeyUsageType('cRLSign', 1);
 
-export const encipherOnly: KeyUsageType = {
-  option: 'encipherOnly',
-  value: 1
-};
+export const encipherOnly = new KeyUsageType('encipherOnly', 0);
 
-export const decipherOnly: KeyUsageType = {
-  option: 'decipherOnly',
-  value: 32768
-};
+export const decipherOnly = new KeyUsageType('decipherOnly', 15);
 
-export const keyUsages: KeyUsageType[] = [
+export const keyUsages = {
   digitalSignature,
   nonRepudiation,
   keyEncipherment,
@@ -55,6 +28,11 @@ export const keyUsages: KeyUsageType[] = [
   cRLSign,
   encipherOnly,
   decipherOnly
-];
+};
+
+export const getKeyUsages: (bytes: number) => KeyUsageType[] = (bytes: number) => {
+  // tslint:disable-next-line:no-bitwise
+  return Object.values(keyUsages).filter((usage: KeyUsageType) => !!((bytes >> usage.position) & 1));
+};
 
 

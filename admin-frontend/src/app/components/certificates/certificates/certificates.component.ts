@@ -10,6 +10,10 @@ import { RequestViewComponent } from '../request-view/request-view.component';
 import { Revoke } from 'src/app/core/model/revoke';
 import {Route, Router} from '@angular/router';
 import {extensionTemplates} from '../../../core/utils/templates';
+import {KeyUsageType} from '../../../core/model/key-usage-type';
+import {getKeyUsages} from '../../../core/utils/key-usages';
+import {KeyPurposeId} from '../../../core/model/key-purpose-id';
+import {getExtendedKeyUsages} from '../../../core/utils/key-purpose-ids';
 
 @Component({
   selector: 'app-certificates',
@@ -19,6 +23,8 @@ import {extensionTemplates} from '../../../core/utils/templates';
 export class CertificatesComponent implements OnInit {
 
   certificate: CertificateInfo = new CertificateInfo();
+  keyUsages: KeyUsageType[] = [];
+  extendedKeyUsages: KeyPurposeId[] = [];
   revoke: Revoke = new Revoke();
   submitted = false;
   newDialog = false;
@@ -70,12 +76,16 @@ export class CertificatesComponent implements OnInit {
 
   openDetails(cert: CertificateInfo): void {
     this.certificate = cert;
+    this.keyUsages = getKeyUsages(this.certificate.extensions.keyUsage);
+    this.extendedKeyUsages = getExtendedKeyUsages(this.certificate.extensions.keyPurposeIds);
     this.detailsDialog = true;
   }
 
   hideDetails(): void {
     this.detailsDialog = false;
     this.certificate = new CertificateInfo();
+    this.keyUsages = [];
+    this.extendedKeyUsages = [];
   }
 
   openRevoke(cert: CertificateInfo): void {
@@ -100,9 +110,6 @@ export class CertificatesComponent implements OnInit {
     this.certificate.organization = cert.organization;
     this.certificate.organizationUnit = cert.organizationUnit;
     this.certificate.path = cert.path;
-
-    this.submitted = false;
-    this.newDialog = true;
   }
 
   downloadCrt(certificate: CertificateInfo): void {
@@ -166,7 +173,7 @@ export class CertificatesComponent implements OnInit {
   }
 
   getTemplate(value: string): any {
-    return this.templates.find(t => t.value === value);
+    return this.templates.find(t => t.enumValue === value);
   }
 
   switchCA(cert: CertificateInfo): void {

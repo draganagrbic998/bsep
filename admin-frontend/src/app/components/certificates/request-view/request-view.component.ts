@@ -49,7 +49,7 @@ export class RequestViewComponent {
   }
 
   getTemplate(value: string): any {
-    return this.templates.find(t => t.value === value);
+    return this.templates.find(t => t.enumValue === value);
   }
 
   reset(): any {
