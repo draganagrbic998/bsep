@@ -85,17 +85,25 @@ public class CertificateService {
 		String templateString = createCertificateDto.getTemplate();
 
 		Date[] dates;
-		dates = CertificateUtils.generateDates(templateString.equals("SUB_CA") ? 24 : 12);
+		dates = CertificateUtils.generateDates(12);
 		subjectData.setStartDate(dates[0]);
 		subjectData.setEndDate(dates[1]);
 		subjectData.setPublicKey(keyPair.getPublic());
+		boolean isCa;
+		Template template;
 
-		Template template = Template.valueOf(templateString);
+		if (templateString != null) {
+			template = Template.valueOf(templateString);
+			isCa = template == Template.SUB_CA;
+		} else {
+			isCa = false;
+			template = null;
+		}
 
 		CertificateInfo certInfo = generateCertificateInfo(subjectData, createCertificateDto.getIssuerAlias(),
 				createCertificateDto.getAlias(), createCertificateDto.getCountry(),
 				createCertificateDto.getOrganizationUnit(), createCertificateDto.getOrganization(),
-				createCertificateDto.getEmail(), template == Template.SUB_CA, template,
+				createCertificateDto.getEmail(), isCa, template,
 				createCertificateDto.getExtensions());
 
 		issuerInfo.addIssued(certInfo);
@@ -174,7 +182,6 @@ public class CertificateService {
 		certInfo.setRevocationReason("");
 		certInfo.setCA(isCA);
 		certInfo.setTemplate(template);
-		//proveri jel ovo ok
 		certInfo.setExtensions(extensions);
 		return this.certificateInfoRepository.save(certInfo);
 	}

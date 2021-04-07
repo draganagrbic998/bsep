@@ -3,6 +3,7 @@ package com.example.demo.dto.certificate;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.Extensions;
 import com.example.demo.model.Template;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,8 @@ public class CertificateInfoDTO {
 	private String revocationReason;
 	private long numIssued;
 	private List<CertificateInfoDTO> issued;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Extensions extensions;
 
 	public CertificateInfoDTO(CertificateInfo certificate, int mappingLevel) {

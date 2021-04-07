@@ -8,7 +8,13 @@
                 label="Save"
                 (click)="checkExtensions()"
                 pButton
+                *ngIf="!loading; else spinner1"
         ></button>
+        <ng-template #spinner1>
+          <p-progressSpinner class="p-ml-auto p-mr-4"
+                             [style]="{width: '30px', height: '30px'}"
+          ></p-progressSpinner>
+        </ng-template>
       </div>
       <div class="p-px-6">
         <div class="p-grid p-fluid p-mt-4">
@@ -167,7 +173,14 @@
                 label="Save"
                 type="submit"
                 pButton
+                *ngIf="!loading; else spinner2"
         ></button>
+
+        <ng-template #spinner2>
+          <p-progressSpinner class="p-ml-auto p-mr-4"
+                             [style]="{width: '30px', height: '30px'}"
+          ></p-progressSpinner>
+        </ng-template>
       </div>
     </form>
 

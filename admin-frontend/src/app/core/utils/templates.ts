@@ -44,6 +44,18 @@ export const USER: Template =   {
   }
 };
 
+export const CUSTOM: Template =   {
+  label: 'Custom',
+  enumValue: null,
+  icon: 'pi pi-cog',
+  extensions: {
+    basicConstraints: null,
+    keyUsage: null,
+    extendedKeyUsage: null
+  }
+};
+
+
 export const extensionTemplates = {
   SUB_CA,
   TLS,

@@ -101,7 +101,8 @@
             </div>
           </div>
         </div>
-        <div class="p-col-12 p-text-left p-as-center" *ngIf="!!certificate.extensions.keyUsage">
+        <div class="p-col-12 p-text-left p-as-center"
+             *ngIf="!!certificate.extensions.keyUsage && certificate.extensions.keyUsage > 0">
           <div class="p-grid">
             <div class="p-col-4 p-md-3 p-text-light">Key usages:</div>
             <div class="p-col-8 p-md-9">
@@ -109,7 +110,8 @@
             </div>
           </div>
         </div>
-        <div class="p-col-12 p-text-left p-as-center" *ngIf="!!certificate.extensions.keyPurposeIds">
+        <div class="p-col-12 p-text-left p-as-center"
+             *ngIf="!!certificate.extensions.keyPurposeIds && certificate.extensions.keyPurposeIds.length > 0">
           <div class="p-grid">
             <div class="p-col-4 p-md-3 p-text-light">Extended key usages:</div>
             <div class="p-col-8 p-md-9">

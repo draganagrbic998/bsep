@@ -22,6 +22,7 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
   keyUsages = Object.values(keyUsages);
   keyPurposeIds = Object.values(keyPurposeIds);
   certificateForm: FormGroup;
+  loading = false;
 
 
   templates = Object.values(extensionTemplates);
@@ -45,6 +46,8 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
 
     if (!!this.certificate) {
       setTimeout(() => this.setPredefinedCertificateForm(this.certificate), 1);
+    } else {
+      this.certificate = new CertificateInfo();
     }
   }
 
@@ -80,6 +83,7 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
   }
 
   checkExtensions(): void {
+    this.loading = true;
     if (this.certificateForm.valid) {
       this.certificate.commonName = this.certificateForm.get('commonName').value;
       this.certificate.alias = this.certificateForm.get('alias').value;
@@ -112,6 +116,7 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
       this.certificateForm.get('organizationUnit').markAsDirty();
       this.certificateForm.get('countryCode').markAsDirty();
       this.certificateForm.get('email').markAsDirty();
+      this.loading = false;
     }
   }
 
@@ -123,10 +128,11 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
         summary: 'Success',
         detail: `${this.certificate.commonName} successfully created.`
       });
-
-      this.router.navigate(['..']);
+      this.loading = false;
+      this.router.navigate(['certificates']);
 
     }, () => {
+      this.loading = false;
       this.messageService.add({
         severity: 'error',
         summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`

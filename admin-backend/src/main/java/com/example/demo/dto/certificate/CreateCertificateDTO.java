@@ -39,7 +39,6 @@ public class CreateCertificateDTO {
 	@Email
 	private String email;
 
-	@NotBlank(message = "Template cannot be empty")
 	private String template;
 
 	private Extensions extensions;

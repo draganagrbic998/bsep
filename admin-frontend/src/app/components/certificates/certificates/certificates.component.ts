@@ -9,11 +9,12 @@ import { CertificateRequest } from '../../../core/model/certificate-request';
 import { RequestViewComponent } from '../request-view/request-view.component';
 import { Revoke } from 'src/app/core/model/revoke';
 import {Route, Router} from '@angular/router';
-import {extensionTemplates} from '../../../core/utils/templates';
+import {CUSTOM, extensionTemplates} from '../../../core/utils/templates';
 import {KeyUsageType} from '../../../core/model/key-usage-type';
 import {getKeyUsages} from '../../../core/utils/key-usages';
 import {KeyPurposeId} from '../../../core/model/key-purpose-id';
 import {getExtendedKeyUsages} from '../../../core/utils/key-purpose-ids';
+import {Template} from '../../../core/model/template';
 
 @Component({
   selector: 'app-certificates',
@@ -176,7 +177,10 @@ export class CertificatesComponent implements OnInit {
   }
 
   getTemplate(value: string): any {
-    return this.templates.find(t => t.enumValue === value);
+    if (!value) {
+      return CUSTOM;
+    }
+    return this.templates.find((t: Template) => t.enumValue === value);
   }
 
   switchCA(cert: CertificateInfo): void {
