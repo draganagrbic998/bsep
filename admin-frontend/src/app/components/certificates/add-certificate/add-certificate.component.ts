@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {CertificateInfo} from '../../../core/model/certificate-info';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {CertificateService} from '../../../core/services/certificate.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {keyUsages} from '../../../core/utils/key-usages';
-import {extensionTemplates} from '../../../core/utils/templates';
+import {extensionTemplates, getTemplate} from '../../../core/utils/templates';
 import {Template} from '../../../core/model/template';
 import {Extensions} from '../../../core/model/extensions';
 import {keyPurposeIds} from '../../../core/utils/key-purpose-ids';
@@ -24,30 +24,38 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
   certificateForm: FormGroup;
 
 
-  templates = extensionTemplates;
+  templates = Object.values(extensionTemplates);
 
   constructor(private messageService: MessageService,
               private certificateService: CertificateService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(val => {
-      if (!val.caAlias) {
-        this.hideNew();
-      }
-      this.caAlias = val.caAlias;
-    });
+    this.caAlias = this.certificateService.ca.getValue().alias;
+    this.certificate = this.certificateService.requestCertificate.getValue();
+    if (!this.caAlias) {
+      this.router.navigate(['/certificates']);
+    }
 
+    this.setNewCertificateForm();
+
+    if (!!this.certificate) {
+      setTimeout(() => this.setPredefinedCertificateForm(this.certificate), 1);
+    }
+  }
+
+  setNewCertificateForm(): void {
     this.certificateForm = this.formBuilder.group({
-      commonName: ['', Validators.required],
-      alias: ['', Validators.required],
-      organization: ['', Validators.required],
-      organizationUnit: ['', Validators.required],
-      countryCode: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      commonName: [null, Validators.required],
+      alias: [null, Validators.required],
+      organization: [null, Validators.required],
+      organizationUnit: [null, Validators.required],
+      countryCode: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
       template: [null],
       extensions: [null],
       keyUsage: [null],
@@ -56,8 +64,22 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
     });
   }
 
+  setPredefinedCertificateForm(certificate: CertificateInfo): void {
+    this.certificateForm.get('commonName').setValue(certificate.commonName);
+    this.certificateForm.get('alias').setValue(certificate.alias);
+    this.certificateForm.get('organization').setValue(certificate.organization);
+    this.certificateForm.get('organizationUnit').setValue(certificate.organizationUnit);
+    this.certificateForm.get('countryCode').setValue(certificate.country);
+    this.certificateForm.get('email').setValue(certificate.email);
+
+    const template = getTemplate(certificate.template);
+
+    this.certificateForm.get('template').setValue(template);
+
+    this.setExtensions(template);
+  }
+
   checkExtensions(): void {
-    console.log(this.certificateForm.valid);
     if (this.certificateForm.valid) {
       this.certificate.commonName = this.certificateForm.get('commonName').value;
       this.certificate.alias = this.certificateForm.get('alias').value;
@@ -96,20 +118,20 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
   saveCertificate(): void {
     this.certificateService.createCertificate(this.certificate).subscribe(() => {
 
-      this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: `${this.certificate.commonName} successfully created.`
+      });
 
       this.router.navigate(['..']);
 
     }, () => {
-      this.messageService.add({severity: 'error',
-        summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`});
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Failure', detail: `Error occured while creating ${this.certificate.alias}.`
+      });
     });
-
-  }
-
-
-  hideNew(): void {
-    this.router.navigate(['certificates']);
   }
 
   itemClicked(event: any): void {
@@ -139,9 +161,13 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
       this.certificateForm.get('keyUsage').setValue(null);
       return;
     }
-    this.certificateForm.get('basicConstraints').setValue(changedTemplate.extensions.basicConstraints);
-    this.certificateForm.get('keyUsage').setValue(changedTemplate.extensions.keyUsage);
-    this.certificateForm.get('extendedKeyUsage').setValue(changedTemplate.extensions.extendedKeyUsage);
+    this.setExtensions(changedTemplate);
+  }
+
+  setExtensions(template: Template): void {
+    this.certificateForm.get('basicConstraints').setValue(template.extensions.basicConstraints);
+    this.certificateForm.get('keyUsage').setValue(template.extensions.keyUsage);
+    this.certificateForm.get('extendedKeyUsage').setValue(template.extensions.extendedKeyUsage);
     const extensions = [];
     if (this.certificateForm.get('keyUsage').value !== null) {
       extensions.push({label: 'keyUsage'});

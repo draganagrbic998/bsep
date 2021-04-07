@@ -58,7 +58,7 @@ export class CertificatesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.templates = extensionTemplates;
+    this.templates = Object.values(extensionTemplates);
 
     this.getCA();
   }
@@ -70,8 +70,9 @@ export class CertificatesComponent implements OnInit {
     });
   }
 
-  openNew(): void {
-    this.router.navigate(['add-certificate'], {queryParams: {caAlias: this.caAlias.getValue()}});
+  openNew(certificate?: CertificateInfo): void {
+    this.certificateService.requestCertificate.next(certificate);
+    this.router.navigate(['add-certificate']);
   }
 
   openDetails(cert: CertificateInfo): void {
@@ -110,6 +111,8 @@ export class CertificatesComponent implements OnInit {
     this.certificate.organization = cert.organization;
     this.certificate.organizationUnit = cert.organizationUnit;
     this.certificate.path = cert.path;
+
+    this.openNew(this.certificate);
   }
 
   downloadCrt(certificate: CertificateInfo): void {
