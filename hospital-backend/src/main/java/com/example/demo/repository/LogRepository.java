@@ -18,7 +18,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 			+ "lower(m.status) like lower(concat('%', :status, '%')) and "
 			+ "lower(m.ipAddress) like lower(concat('%', :ipAddress, '%')) and "
 			+ "lower(m.description) like lower(concat('%', :description, '%')) and "
-			+ "(cast(:date as date) is null or m.date <= :date) "
+			+ "(cast(:date as date) is null or cast(m.date as date) = :date) "
 			+ "order by m.date desc")
 	public Page<Log> findAll(Pageable pageable, String mode, String status, String ipAddress, String description, Date date);
 	
