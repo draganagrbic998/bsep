@@ -39,12 +39,12 @@ public class PatientController {
 
 	@PostMapping
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
-		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(patientDTO)));
+		return ResponseEntity.ok(new PatientDTO(this.patientService.save(this.patientMapper.map(patientDTO))));
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
-		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(id, patientDTO)));
+		return ResponseEntity.ok(new PatientDTO(this.patientService.save(this.patientMapper.map(id, patientDTO))));
 	}
 
 	@DeleteMapping(value = "/{id}")
