@@ -1,7 +1,7 @@
 @import "../../../../styles/theme";
 
 .root{
-    border: 1px solid $gray;
+    border: 1px solid rgb(116, 112, 112);
     border-radius: 5px;
     margin: 10px;
 }
@@ -10,8 +10,12 @@
     padding: 0;
 }
 
+.padding{
+    padding: 15px;
+}
+
 .date{
-    background-color: $gray;
+    background-color: rgb(168, 165, 165);
     opacity: 0.8;
     height: 30px;
     padding: 5px;
@@ -23,10 +27,6 @@
 
 .bold{
     font-weight: bold;
-}
-
-.padding{
-    padding: 15px;
 }
 
 .main{

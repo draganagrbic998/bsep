@@ -23,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CertificatesModule } from './components/certificates/certificates.module';
 import { UsersModule } from './components/users/users.module';
+import { ConfigurationModule } from './components/configuration/configuration.module';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { UsersModule } from './components/users/users.module';
     MenubarModule,
     ButtonModule,
     CertificatesModule,
-    UsersModule
+    UsersModule,
+    ConfigurationModule
   ],
   providers: [
     {

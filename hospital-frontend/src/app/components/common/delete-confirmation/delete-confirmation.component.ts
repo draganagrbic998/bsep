@@ -13,7 +13,7 @@ export class DeleteConfirmationComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private deleteFunction: () => Observable<boolean>,
-    public dialogRef: MatDialogRef<DeleteConfirmationComponent>,
+    private dialogRef: MatDialogRef<DeleteConfirmationComponent>,
     private snackBar: MatSnackBar
   ) { }
 

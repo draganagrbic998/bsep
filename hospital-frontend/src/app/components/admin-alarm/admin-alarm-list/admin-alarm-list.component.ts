@@ -14,7 +14,7 @@ export class AdminAlarmListComponent implements OnInit {
 
   constructor(
     private alarmService: AlarmService,
-    public dialogRef: MatDialogRef<AdminAlarmListComponent>
+    private dialogRef: MatDialogRef<AdminAlarmListComponent>
   ) { }
 
   alarms: AdminAlarm[] = [];

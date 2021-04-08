@@ -4,14 +4,23 @@ html{
     height: 100%;
 }
 
+h1, h2, h3, h4, h5, h6{
+    text-align: center;
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $main;
+}
+    
+.mat-slide-toggle .mat-slide-toggle-bar{
+    margin-right: 30px;
+}
+
 body{
     height: 100%;
     margin: 0;
+    overflow: hidden;  
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-image: url('../assets/background.jpg');
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('../assets/background.jpg');
     background-size: 100% 100%;
-}
-
-h1, h2, h3, h4, h5, h6{
-    text-align: center;
 }

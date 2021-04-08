@@ -1,31 +1,31 @@
-<mat-toolbar color="primary" class="mat-elevation-z24">
+<mat-toolbar class="mat-elevation-z24">
     <span>
         <button
-        *ngIf="onRoute('patient-list')"
-        matTooltip="New Patient"
+        *ngIf="!onRoute('patient-list')"
+        [routerLink]="'patient-list'"
         mat-button
-        (click)="createPatient()">
-            New Patient
-        </button>
-        <button
-        *ngIf="!onRoute('patient-list') && !onRoute('form')"
-        matTooltip="Patients"
-        mat-button
-        [routerLink]="'patient-list'">
+        matTooltip="Patients">
             Patients
         </button>
         <button
-        *ngIf="onRoute('patient-list') || onRoute('alarm-triggering-list')"
-        matTooltip="Messages"
+        *ngIf="onRoute('patient-list')"
+        (click)="openPatientForm()"
         mat-button
-        [routerLink]="'message-list'">
+        matTooltip="New Patient">
+            New Patient
+        </button>
+        <button
+        *ngIf="onRoute('patient-list') || onRoute('alarm-triggering-list')"
+        [routerLink]="'message-list'"
+        mat-button
+        matTooltip="Messages">
             Messages
         </button>
         <button
         *ngIf="onRoute('patient-list') || onRoute('message-list')"
-        matTooltip="Alarms"
+        [routerLink]="'alarm-triggering-list'"
         mat-button
-        [routerLink]="'alarm-triggering-list'">
+        matTooltip="Alarms">
             Alarms
         </button>
     </span>
@@ -36,11 +36,11 @@
             [classList]="'form-control'"
             placeholder="Search...">   
         </form>
-        <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
-            <mat-icon matTooltip="More">more_vert</mat-icon>
+        <button [matMenuTriggerFor]="more" mat-icon-button matTooltip="More">
+            <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">
-            <button mat-menu-item (click)="signOut()">
+            <button (click)="signOut()" mat-menu-item>
                 <mat-icon>logout</mat-icon>
                 <span>Sign out</span>
             </button>

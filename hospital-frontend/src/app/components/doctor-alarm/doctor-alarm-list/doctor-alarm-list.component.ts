@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { Pagination } from 'src/app/models/pagination';
-import { DoctorAlarmDialogComponent } from '../doctor-alarm-dialog/doctor-alarm-dialog.component';
+import { DoctorAlarmFormComponent } from '../doctor-alarm-form/doctor-alarm-form.component';
 import { AlarmService } from 'src/app/services/alarm.service';
 import { Page } from 'src/app/models/page';
 
@@ -30,7 +30,7 @@ export class DoctorAlarmListComponent implements OnInit {
 
   addAlarm(): void{
     const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patientId}};
-    this.dialog.open(DoctorAlarmDialogComponent, options);
+    this.dialog.open(DoctorAlarmFormComponent, options);
   }
 
   changePage(value: number): void{

@@ -8,18 +8,17 @@ export class StorageService {
 
   constructor() { }
 
-  readonly USER_KEY = 'user';
-  readonly PATIENT_KEY = 'patient';
+  private readonly USER_KEY = 'user';
 
-  set(key: string, value: object): void{
+  private set(key: string, value: object): void{
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  remove(key: string): void{
+  private remove(key: string): void{
     localStorage.removeItem(key);
   }
 
-  get(key: string): object{
+  private get(key: string): object{
     return JSON.parse(localStorage.getItem(key));
   }
 

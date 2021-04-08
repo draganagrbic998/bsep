@@ -4,10 +4,10 @@
             <app-spacer-container *ngIf="delete">
                 <h5>{{delete}}</h5>
                 <button 
+                (click)="deleted.emit()"
                 mat-icon-button 
                 matTooltip="Delete"
-                color="warn"
-                (click)="deleted.emit()">
+                color="warn">
                     <mat-icon>delete</mat-icon>
                 </button>  
             </app-spacer-container>

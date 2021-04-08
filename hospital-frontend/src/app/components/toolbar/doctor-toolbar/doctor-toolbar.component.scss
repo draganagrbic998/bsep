@@ -1,3 +1,5 @@
+@import "../../../../styles/theme";
+
 .mat-toolbar{
     display: flex;
     flex-direction: row;
@@ -6,6 +8,11 @@
     position: fixed;
     z-index: 100;
     height: 47px;
+    background-color: $main;
+}
+
+span > button{
+    color: white;
 }
 
 .main{
@@ -19,6 +26,5 @@ input{
 }
 
 .form-control:focus {
-    border-color: #00f7ff;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+    border-color: #1cbec4;
 }
