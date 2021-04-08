@@ -1,9 +1,8 @@
 package com.example.demo.dto.certificate;
 
+import com.example.demo.model.Extensions;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -43,9 +42,7 @@ public class CreateCertificateDTO {
 
 	@NotNull(message = "Template cannot be null")
 	private Template template;
-
-	private boolean basicConstraints;
-	private String extendedKeyUsage;
-	private List<String> keyUsage;
+	
+	private Extensions extensions;
 	
 }

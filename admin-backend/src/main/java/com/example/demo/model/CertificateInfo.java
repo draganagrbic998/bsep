@@ -43,11 +43,6 @@ public class CertificateInfo {
     private Template template;
 
     @NotNull
-	private boolean basicConstraints;
-	private String keyUsage;
-	private String extendedKeyUsage;
-
-    @NotNull
     private Date startDate;
 
     @NotNull
@@ -64,6 +59,9 @@ public class CertificateInfo {
     @JoinColumn(name = "issuer_id")
     private CertificateInfo issuer;
     
+    @OneToOne(cascade = CascadeType.ALL)
+    private Extensions extensions;
+
     public String getIssuerAlias() {
     	if (this.issuer == null) {
     		return this.alias;

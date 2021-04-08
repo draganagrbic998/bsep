@@ -12,9 +12,10 @@ import { Revoke } from '../model/revoke';
 })
 export class CertificateService {
 
-  ca: BehaviorSubject<CertificateInfo | null> = new BehaviorSubject<CertificateInfo>(null);
+  ca: BehaviorSubject<CertificateInfo | null> = new BehaviorSubject<CertificateInfo | null>(null);
   certificates: CertificateInfo[] = [];
   certificateRequests: CertificateRequest[] = [];
+  requestCertificate: BehaviorSubject<CertificateInfo | undefined> = new BehaviorSubject<CertificateInfo | undefined>(undefined);
 
   constructor(
     private httpClient: HttpClient

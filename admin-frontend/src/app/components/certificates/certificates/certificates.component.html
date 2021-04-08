@@ -57,142 +57,6 @@
 
 </div>
 
-<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="New certificate" [modal]="true" styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <div class="p-grid">
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="common-name">Common name</label>
-          <input type="text" pInputText id="common-name" [(ngModel)]="certificate.commonName" required autofocus/>
-          <small class="p-error" *ngIf="submitted && !certificate.commonName">Common name is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="alias">Alias</label>
-          <input type="text" pInputText id="alias" [(ngModel)]="certificate.alias" required autofocus/>
-          <small class="p-error" *ngIf="submitted && !certificate.alias">Alias is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="organization">Organization</label>
-          <input type="text" pInputText id="organization" [(ngModel)]="certificate.organization" required autofocus />
-          <small class="p-error" *ngIf="submitted && !certificate.organization">Organization is required.</small>
-        </div>
-      </div>
-      <div class="p-sm-12 p-md-6">
-        <div class="p-field">
-          <label for="organization-unit">Organization unit</label>
-          <input type="text" pInputText id="organization-unit" [(ngModel)]="certificate.organizationUnit" required autofocus />
-          <small class="p-error" *ngIf="submitted && !certificate.organizationUnit">Organization unit is required.</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-field">
-      <label for="country">Country code</label>
-      <input type="text" pInputText id="country" [(ngModel)]="certificate.country" required autofocus />
-      <small class="p-error" *ngIf="submitted && !certificate.country">Country code is required.</small>
-    </div>
-
-    <div class="p-field">
-      <label for="email">Email</label>
-      <input type="email" pInputText id="email" [(ngModel)]="certificate.email" required autofocus />
-      <small class="p-error" *ngIf="submitted && !certificate.email">Email is required.</small>
-    </div>
-
-    <div class="p-field">
-      <label class="p-mb-3">Template</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton (onClick)="template1Extensions()" id="template1" name="template" value="SUB_CA" [(ngModel)]="certificate.template" #t1></p-radioButton>
-          <label (click)="t1.select(null);" for="template1">Subordinate CA</label>
-        </div>
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton (onClick)="template2Extensions()" id="template2" name="template" value="TLS" [(ngModel)]="certificate.template" #t2></p-radioButton>
-          <label (click)="t2.select(null);" for="template2">TLS Server</label>
-        </div>
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton (onClick)="template3Extensions()" id="template3" name="template" value="USER" [(ngModel)]="certificate.template" #t3></p-radioButton>
-          <label (click)="t3.select(null);" for="template3">User</label>
-        </div>
-      </div>
-    </div>
-    <div class="p-field">
-      <label class="p-mb-3">Basic contraints</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="basic" (onChange)="certificate.basicConstraints = !certificate" [binary]="true" [(ngModel)]="certificate.basicConstraints" #b></p-checkbox>
-          <label for="basic">has basic constaints</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-field">
-      <label class="p-mb-3">Key usage</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key1" [binary]="true" [ngModel]="hasKey('cRLSign')" (onChange)="toggleKey($event, 'cRLSign')" #b></p-checkbox>
-          <label for="key1">cRLSign</label>
-        </div>
-        
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key2" [binary]="true" [ngModel]="hasKey('digitalSignature')" (onChange)="toggleKey($event, 'digitalSignature')"  #b></p-checkbox>
-          <label for="key2">digitalSignature</label>
-        </div>
-
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key3" [binary]="true" [ngModel]="hasKey('keyCertSign')" (onChange)="toggleKey($event, 'keyCertSign')" #b></p-checkbox>
-          <label for="key3">keyCertSign</label>
-        </div>
-
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key4" [binary]="true" [ngModel]="hasKey('encipherOnly')" (onChange)="toggleKey($event, 'encipherOnly')" #b></p-checkbox>
-          <label for="key4">encipherOnly</label>
-        </div>
-
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key5" [binary]="true" [ngModel]="hasKey('keyEncipherment')" (onChange)="toggleKey($event, 'keyEncipherment')" #b></p-checkbox>
-          <label for="key5">keyEncipherment</label>
-        </div>
-
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key6" [binary]="true" [ngModel]="hasKey('keyAgreement')" (onChange)="toggleKey($event, 'keyAgreement')" #b></p-checkbox>
-          <label for="key6">keyAgreement</label>
-        </div>
-
-        <div class="p-field-checkbox p-col-4">
-          <p-checkbox id="key7" [binary]="true" [ngModel]="hasKey('nonRepudiation')"  (onChange)="toggleKey($event, 'nonRepudiation')"  #b></p-checkbox>
-          <label for="key7">nonRepudiation</label>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="p-field">
-      <label class="p-mb-3">Extended key usage</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton id="extension1" name="extended_key_usage" value="id_kp_clientAuth" [(ngModel)]="certificate.extendedKeyUsage" #e1></p-radioButton>
-          <label (click)="e1.select(null)" for="extension1">id_kp_clientAuth</label>
-        </div>
-        <div class="p-field-radiobutton p-col-4">
-          <p-radioButton id="extension2" name="extended_key_usage" value="id_kp_serverAuth" [(ngModel)]="certificate.extendedKeyUsage" #e2></p-radioButton>
-          <label (click)="e2.select(null)" for="extension2">id_kp_serverAuth</label>
-        </div>
-      </div>
-    </div>
-
-    
-  </ng-template>
-
-  <ng-template pTemplate="footer">
-    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideNew()"></button>
-    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCertificate()"></button>
-  </ng-template>
-</p-dialog>
-
 <p-dialog [(visible)]="detailsDialog" [style]="{width: '600px'}" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="header">
     <span class="p-text-left p-align-center p-d-flex">
@@ -226,14 +90,38 @@
       <hr>
 
       <div class="p-grid p-justify-around p-mt-3">
-        <div class="p-col p-text-left p-as-center p-lg-12">
-          <span class="p-text-light">Has basic constaints: </span> <span class="p-text-bold">{{certificate.basicConstraints ? 'YES' : 'NO'}}</span>
+        <div class="p-col-12 p-text-left" *ngIf="certificate.extensions.basicConstraints !== null">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3">
+              <span class="p-text-light">Basic constraints: </span>
+            </div>
+            <div class="p-col-8 p-md-9">
+              <p-badge [value]="certificate.extensions.basicConstraints ? 'TRUE' : 'FALSE'"
+                       [severity]="certificate.extensions.basicConstraints ? 'success' : 'danger'"></p-badge>
+            </div>
+          </div>
         </div>
-        <div class="p-col p-text-left p-as-center p-lg-12">
-          <span class="p-text-light">Key usage: </span> <span class="p-text-bold">{{certificate.keyUsage}}</span>
+        <div class="p-col-12 p-text-left p-as-center"
+             *ngIf="!!certificate.extensions.keyUsage && certificate.extensions.keyUsage > 0">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3 p-text-light">Key usages:</div>
+            <div class="p-col-8 p-md-9">
+              <p-badge class="p-mr-1" *ngFor="let keyUsage of keyUsages" [value]="keyUsage.option"></p-badge>
+            </div>
+          </div>
         </div>
-        <div class="p-col p-text-left p-as-center p-lg-12">
-          <span class="p-text-light">Extended key usage: </span> <span class="p-text-bold">{{certificate.extendedKeyUsage ? certificate.extendedKeyUsage : 'NONE'}}</span>
+        <div class="p-col-12 p-text-left p-as-center"
+             *ngIf="!!certificate.extensions.keyPurposeIds && certificate.extensions.keyPurposeIds.length > 0">
+          <div class="p-grid">
+            <div class="p-col-4 p-md-3 p-text-light">Extended key usages:</div>
+            <div class="p-col-8 p-md-9">
+              <p-badge class="p-mr-1"
+                       *ngFor="let extendedKeyUsage of extendedKeyUsages"
+                       [value]="extendedKeyUsage.option"
+                       severity="warning"
+              ></p-badge>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -254,7 +142,7 @@
           <p-badge class="p-ml-4" [value]="certificate.revoked ? 'REVOKED' : 'VALID'"
                    [severity]="certificate.revoked ? 'danger' : 'success'"></p-badge>
         </div>
-      </div>      
+      </div>
 
     </div>
 

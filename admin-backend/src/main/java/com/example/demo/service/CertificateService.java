@@ -72,7 +72,7 @@ public class CertificateService {
 		subjectData.setSerialNumber(cert.getId() + "");
 		X509Certificate certificate = this.certificateGenerator.generateCertificate(
 				subjectData, issuerData, keyPair, issuerChain[0], false, 
-				certificateDTO.isBasicConstraints(), certificateDTO.getExtendedKeyUsage(), certificateDTO.getKeyUsage());
+				certificateDTO.getExtensions());
 		Certificate[] chain = ArrayUtils.insert(0, issuerChain, certificate);
 
 		this.keyStoreService.savePrivateKey(certificateDTO.getAlias(), chain, keyPair.getPrivate());
@@ -119,12 +119,11 @@ public class CertificateService {
 		certificate.setCountry(certificateDTO.getCountry());
 		certificate.setEmail(certificateDTO.getEmail());
 		certificate.setTemplate(certificateDTO.getTemplate());
-		certificate.setBasicConstraints(certificateDTO.isBasicConstraints());
-		certificate.setKeyUsage(certificateDTO.getKeyUsage().stream().reduce("", (subtotal, element) -> subtotal +","+ element));
-		certificate.setExtendedKeyUsage(certificateDTO.getExtendedKeyUsage());
 		certificate.setStartDate(subjectData.getStartDate());
 		certificate.setEndDate(subjectData.getEndDate());
+		certificate.setExtensions(certificateDTO.getExtensions());
 		return this.certificateRepository.save(certificate);
 	}
 
 }
+

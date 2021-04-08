@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.model.Extensions;
 import com.example.demo.model.IssuerData;
 import com.example.demo.model.SubjectData;
 import org.bouncycastle.asn1.x509.*;
@@ -18,34 +19,19 @@ import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.Security;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public class CertificateGenerator {
-	
-	private Map<String, Integer> keyUsageMapping = new HashMap<>();
-	
-	public CertificateGenerator() {
-		this.keyUsageMapping.put("cRLSign", 1);
-		this.keyUsageMapping.put("digitalSignature", 7);
-		this.keyUsageMapping.put("keyCertSign", 2);
-		this.keyUsageMapping.put("encipherOnly", 0);
-		this.keyUsageMapping.put("keyEncipherment", 5);
-		this.keyUsageMapping.put("keyAgreement", 3);
-		this.keyUsageMapping.put("nonRepudiation", 6);
-	}
 
-    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData, KeyPair keyPair, Certificate issuer, 
-    		boolean isSelfSigned, boolean isBasicConstaints, String extendedKeyUsage, List<String> keyUsage) {
+    public X509Certificate generateCertificate(SubjectData subjectData, IssuerData issuerData,
+    	KeyPair keyPair, Certificate issuer, boolean isSelfSigned, Extensions extensions) {
     	
         try {
             Security.addProvider(new BouncyCastleProvider());
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
             builder = builder.setProvider("BC");
+
             ContentSigner signer = builder.build(issuerData.getPrivateKey());
-            
             X509v3CertificateBuilder generator = new JcaX509v3CertificateBuilder(issuerData.getX500name(),
                     new BigInteger(subjectData.getSerialNumber()),
                     subjectData.getStartDate(),
@@ -67,28 +53,28 @@ public class CertificateGenerator {
             
             generator.addExtension(Extension.authorityKeyIdentifier, false, authorityKeyIdentifier);
             generator.addExtension(Extension.subjectAlternativeName, false, new GeneralNames(new GeneralName(GeneralName.dNSName, "localhost")));
-            generator.addExtension(Extension.basicConstraints, true, new BasicConstraints(isBasicConstaints));
             
-            if (extendedKeyUsage != null && extendedKeyUsage.equalsIgnoreCase("id_kp_clientAuth")) {
-                generator.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_clientAuth));
+            if (extensions.getBasicConstraints() != null) {
+                generator.addExtension(Extension.basicConstraints, true, new BasicConstraints(extensions.getBasicConstraints()));
             }
-            else if (extendedKeyUsage != null && extendedKeyUsage.equalsIgnoreCase("id_kp_serverAuth")) {
-                generator.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+
+            if (extensions.getKeyPurposeIds() != null && extensions.getKeyPurposeIds().size() > 0) {
+                KeyPurposeId[] ids = extensions.getEntityKeyPurposeIds().toArray(new KeyPurposeId[0]);
+                generator.addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(ids));
             }
-            
-            int temp = keyUsage.stream().map(x -> 1 << this.keyUsageMapping.get(x)).reduce(0, (subtotal, element) -> subtotal | element);
-            generator.addExtension(Extension.keyUsage, true, new KeyUsage(temp));
+
+            if (extensions.getKeyUsage() != null && extensions.getKeyUsage() != 0) {
+                generator.addExtension(Extension.keyUsage, true, new KeyUsage(extensions.getKeyUsage()));
+            }
 
             X509CertificateHolder holder = generator.build(signer);
             JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
             converter = converter.setProvider("BC");
             return converter.getCertificate(holder);
-            
         } 
         
         catch (Exception e) {
-            throw new RuntimeException(e);
+        	throw new RuntimeException(e);
         }
-        
     }
 }
