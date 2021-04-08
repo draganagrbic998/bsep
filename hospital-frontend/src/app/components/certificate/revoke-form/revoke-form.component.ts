@@ -33,7 +33,7 @@ export class RevokeFormComponent implements OnInit {
       (response: boolean) => {
         this.savePending = false;
         if (response){
-          this.snackBar.open('Certificate succesfully revoked!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
+          this.snackBar.open('Certificate revoked!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.location.back();
         }
         else{

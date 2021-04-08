@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User implements UserDetails {
 
-	private List<Authority.Authorities> authorities;
+	private List<Authority.Auth> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -53,11 +53,11 @@ public class User implements UserDetails {
 	}
 	
 	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.ADMIN));
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Auth.ADMIN));
 	}
 	
 	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Authorities.DOCTOR));
+		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Auth.DOCTOR));
 	}
 	
 }

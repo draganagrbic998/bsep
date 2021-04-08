@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
-import com.example.demo.exception.ActivationExpiredException;
-import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
@@ -57,7 +55,8 @@ public class AuthController {
 	}
 
 	@PostMapping(value = "activate")
-	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) throws ActivationExpiredException, UserDoesNotExistException {
+	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
 	}
+	
 }

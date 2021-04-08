@@ -15,24 +15,24 @@ import lombok.AllArgsConstructor;
 @Transactional(readOnly = true)
 public class CertificateRequestService {
 
-	private final CertificateRequestRepository certificateRequestRepository;
-
-	@Transactional(readOnly = false)
-	public CertificateRequest save(CertificateRequest certificateRequest) {
-		return this.certificateRequestRepository.save(certificateRequest);
-	}
+	private final CertificateRequestRepository requestRepository;
 
 	public Page<CertificateRequest> findAll(Pageable pageable) {
-		return this.certificateRequestRepository.findAll(pageable);
+		return this.requestRepository.findAll(pageable);
 	}
 
 	public CertificateRequest findOne(long id) {
-		return this.certificateRequestRepository.findById(id).get();
+		return this.requestRepository.findById(id).get();
 	}
 	
 	@Transactional(readOnly = false)
+	public CertificateRequest save(CertificateRequest request) {
+		return this.requestRepository.save(request);
+	}
+
+	@Transactional(readOnly = false)
 	public void delete(long id) {
-		this.certificateRequestRepository.deleteById(id);
+		this.requestRepository.deleteById(id);
 	}
 	
 }

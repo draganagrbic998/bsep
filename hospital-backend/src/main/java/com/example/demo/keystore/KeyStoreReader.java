@@ -11,24 +11,26 @@ import org.springframework.stereotype.Component;
 public class KeyStoreReader {
 
 	public Certificate readCertificate(String keyStoreFile, String keyStorePass, String alias) {
+		
 		try {
 			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
 			keyStore.load(in, keyStorePass.toCharArray());
 
 			if (keyStore.isKeyEntry(alias)) {
-				Certificate cert = keyStore.getCertificateChain(alias)[0];
+				Certificate certificate = keyStore.getCertificateChain(alias)[0];
 				in.close();
-				return cert;
+				return certificate;
 			}
+			
 			in.close();
+			return null;
 		} 
 		
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		return null;
+		
 	}
 
 }

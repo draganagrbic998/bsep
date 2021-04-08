@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Authority implements GrantedAuthority {
 
-	public enum Authorities {
+	public enum Auth {
 		ADMIN, DOCTOR;
 	}
 
-	private Authorities name;
+	private Auth name;
 		
 	@Override
 	public String getAuthority() {

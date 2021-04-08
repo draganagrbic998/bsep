@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
@@ -36,22 +35,13 @@ public class UserService implements UserDetailsService {
 		return this.restTemplate.postForEntity(AUTH_API + "/login", loginDTO, AuthTokenDTO.class).getBody();
 	}
 
-	public UserDTO create(UserDTO userDTO) throws MessagingException {
-		UserDTO user = this.restTemplate.postForEntity(USERS_API, userDTO, UserDTO.class).getBody();
-		this.sendActivationMail(user);
-		return user;
-	}
-
-	public UserDTO update(UserDTO userDTO) {
+	public List<Authority> getAuthorities() {
+		ParameterizedTypeReference<List<Authority>> responseType = new ParameterizedTypeReference<>() {};
 		return this.restTemplate.exchange(
-				USERS_API,
-				HttpMethod.PUT,
-				new HttpEntity<>(userDTO),
-				UserDTO.class).getBody();
-	}
-
-	public void delete(long id) {
-		this.restTemplate.delete(USERS_API + "/" + id);
+				String.format("%s/authorities", USERS_API),
+				HttpMethod.GET,
+				new HttpEntity<>(null),
+				responseType).getBody();
 	}
 
 	public PageDTO<UserDTO> findAll(Pageable pageable) {
@@ -63,13 +53,22 @@ public class UserService implements UserDetailsService {
 				responseType).getBody();
 	}
 
-	public List<Authority> getAuthorities() {
-		ParameterizedTypeReference<List<Authority>> responseType = new ParameterizedTypeReference<>() {};
+	public UserDTO create(UserDTO userDTO) {
+		UserDTO user = this.restTemplate.postForEntity(USERS_API, userDTO, UserDTO.class).getBody();
+		this.sendActivationMail(user);
+		return user;
+	}
+
+	public UserDTO update(long id, UserDTO userDTO) {
 		return this.restTemplate.exchange(
-				String.format("%s/authorities", USERS_API),
-				HttpMethod.GET,
-				new HttpEntity<>(null),
-				responseType).getBody();
+				USERS_API + "/" + id,
+				HttpMethod.PUT,
+				new HttpEntity<>(userDTO),
+				UserDTO.class).getBody();
+	}
+
+	public void delete(long id) {
+		this.restTemplate.delete(USERS_API + "/" + id);
 	}
 
 	public UserDTO getDisabled(String uuid) {
@@ -80,12 +79,12 @@ public class UserService implements UserDetailsService {
 		return this.restTemplate.postForEntity(String.format("%s/activate", AUTH_API), activationDTO, UserDTO.class).getBody();
 	}
 
-	public void sendActivationMail(long id) throws MessagingException {
+	public void sendActivationMail(long id) {
 		UserDTO userDTO = this.restTemplate.getForEntity(String.format("%s/send/%d", USERS_API, id), UserDTO.class).getBody();
 		this.sendActivationMail(userDTO);
 	}
 
-	private void sendActivationMail(UserDTO userDTO) throws MessagingException {
+	private void sendActivationMail(UserDTO userDTO) {
 		this.emailService.sendActivationLink(userDTO.getEmail(), userDTO.getFirstName(), userDTO.getActivationLink());
 	}
 

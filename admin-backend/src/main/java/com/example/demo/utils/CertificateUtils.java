@@ -23,27 +23,26 @@ public class CertificateUtils {
 		return new Date[] { startDate, endDate };
 	}
 
-	public static X500Name certificateNameFromData(CreateCertificateDTO createCertificateDto) {
-		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-		builder.addRDN(BCStyle.CN, createCertificateDto.getCommonName());
-		builder.addRDN(BCStyle.O, createCertificateDto.getOrganization());
-		builder.addRDN(BCStyle.OU, createCertificateDto.getOrganizationUnit());
-		builder.addRDN(BCStyle.E, createCertificateDto.getEmail());
-		builder.addRDN(BCStyle.C, createCertificateDto.getCountry());
-		return builder.build();
-	}
-
 	public static KeyPair generateKeyPair() {
 		try {
-			KeyPairGenerator keyGen = java.security.KeyPairGenerator.getInstance("RSA");
+			KeyPairGenerator generator = java.security.KeyPairGenerator.getInstance("RSA");
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-			keyGen.initialize(2048, random);
-			return keyGen.generateKeyPair();
+			generator.initialize(2048, random);
+			return generator.generateKeyPair();
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
+	}
+
+	public static X500Name certificateNameFromData(CreateCertificateDTO certificateDTO) {
+		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+		builder.addRDN(BCStyle.CN, certificateDTO.getCommonName());
+		builder.addRDN(BCStyle.O, certificateDTO.getOrganization());
+		builder.addRDN(BCStyle.OU, certificateDTO.getOrganizationUnit());
+		builder.addRDN(BCStyle.C, certificateDTO.getCountry());
+		builder.addRDN(BCStyle.E, certificateDTO.getEmail());
+		return builder.build();
 	}
 	
 }

@@ -19,8 +19,8 @@ public class AlarmMapper {
 	public AdminAlarm map(AdminAlarmDTO alarmDTO) {
 		AdminAlarm alarm = new AdminAlarm();
 		alarm.setStatus(alarmDTO.isStatus());
-		alarm.setParam(alarmDTO.getParam());
 		alarm.setCounts(alarmDTO.getCounts());
+		alarm.setParam(alarmDTO.getParam());
 		return alarm;
 	}
 
@@ -34,7 +34,7 @@ public class AlarmMapper {
 		alarm.setMaxTemperature(alarmDTO.getMaxTemperature());
 		alarm.setMinOxygenLevel(alarmDTO.getMinOxygenLevel());
 		alarm.setMaxOxygenLevel(alarmDTO.getMaxOxygenLevel());
-		alarm.setPatient(this.patientService.find(patientId));
+		alarm.setPatient(this.patientService.findOne(patientId));
 		return alarm;
 	}
 	

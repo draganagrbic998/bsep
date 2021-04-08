@@ -23,9 +23,6 @@ public class CertificateController {
 	@PreAuthorize("permitAll()")
 	@PostMapping
 	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO, HttpServletRequest request) {
-		//ovde ne radim validaciju sertifikata
-		//a ovde ne treba da se poziva truststore jer je prvi put
-		//dodaj ti ipa ovde validaciju roota
 		this.certificateService.save(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);			
 	}

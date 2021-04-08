@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.exception.CertificateNotFoundException;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.utils.Constants;
@@ -8,8 +7,6 @@ import com.example.demo.utils.Constants;
 import lombok.AllArgsConstructor;
 
 import java.util.Date;
-
-import javax.mail.MessagingException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,35 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class CertificateInfoService {
 
-	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateInfoRepository certificateRepository;
 	private final EmailService emailService;
 
 	public Page<CertificateInfo> findAll(Pageable pageable) {
-		return this.certificateInfoRepository.findAll(pageable);
+		return this.certificateRepository.findAll(pageable);
 	}
 
 	public CertificateInfo findByAlias(String alias) {
-		return this.certificateInfoRepository.findByAliasIgnoreCase(alias);
+		return this.certificateRepository.findByAlias(alias);
 	}
 
 	@Transactional(readOnly = false)
-	public CertificateInfo save(CertificateInfo certInfo) {
-		return this.certificateInfoRepository.save(certInfo);
+	public CertificateInfo save(CertificateInfo certificate) {
+		return this.certificateRepository.save(certificate);
 	}
 	
 	@Transactional(readOnly = false)
-	public void revoke(long id, String revokeReason) throws MessagingException {
-		CertificateInfo certificate = this.certificateInfoRepository.findById(id).orElse(null);
-		if (certificate == null) {
-			throw new CertificateNotFoundException(String.valueOf(id));
-		}
+	public void revoke(long id, String reason) {
+		CertificateInfo certificate = this.certificateRepository.findById(id).get();
 		certificate.setRevoked(true);
 		certificate.setRevocationDate(new Date());
-		certificate.setRevocationReason(revokeReason);
-		this.certificateInfoRepository.save(certificate);
+		certificate.setRevocationReason(reason);
+		this.certificateRepository.save(certificate);
 		String certFileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + "_" + certificate.getOrganizationUnit() + ".jks";
-		this.emailService.sendInfoMail(certificate.getEmail(), certFileName, revokeReason, 
-				"Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
+		this.emailService.sendInfoMail(certificate.getEmail(), certFileName, reason, "Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
 	}
 
 }

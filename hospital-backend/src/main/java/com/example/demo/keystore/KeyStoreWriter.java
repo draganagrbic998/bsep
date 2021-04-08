@@ -10,15 +10,17 @@ import java.security.cert.X509Certificate;
 @Component
 public class KeyStoreWriter {
 
-	public void addToTruststore(String hospitalAlias, String deviceAlias, X509Certificate newCertificate,
+	public void addToTruststore(String hospitalAlias, String deviceAlias, X509Certificate certificate,
 			String hospitalFilename, String subjectFilename, String keyStorePassword) {
-		X509Certificate hospitalCert = null;
+		
+		X509Certificate hospitalCertificate = null;
+		
 		try {
 			KeyStore hospitalTrustStore = KeyStore.getInstance("JKS", "SUN");
 			hospitalTrustStore.load(new FileInputStream(hospitalFilename), keyStorePassword.toCharArray());
-			hospitalTrustStore.setCertificateEntry(deviceAlias, newCertificate);
+			hospitalTrustStore.setCertificateEntry(deviceAlias, certificate);
 			hospitalTrustStore.store(new FileOutputStream(hospitalFilename), keyStorePassword.toCharArray());
-			hospitalCert = (X509Certificate) hospitalTrustStore.getCertificate(hospitalAlias);
+			hospitalCertificate = (X509Certificate) hospitalTrustStore.getCertificate(hospitalAlias);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -27,7 +29,7 @@ public class KeyStoreWriter {
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
 			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			subjectTrustStore.setCertificateEntry(hospitalAlias, hospitalCert);
+			subjectTrustStore.setCertificateEntry(hospitalAlias, hospitalCertificate);
 			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
 		} 
 		catch (Exception e) {

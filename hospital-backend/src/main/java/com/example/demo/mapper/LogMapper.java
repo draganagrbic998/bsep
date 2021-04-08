@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.LogMeasureDTO;
-import com.example.demo.exception.MyException;
 import com.example.demo.model.Log;
 import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
@@ -28,7 +27,7 @@ public class LogMapper {
 			return log;
 		}
 		catch(Exception e) {
-			throw new MyException();
+			throw new RuntimeException(e);
 		}
 	}
 	
