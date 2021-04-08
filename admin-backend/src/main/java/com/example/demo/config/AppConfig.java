@@ -13,9 +13,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.templatemode.TemplateMode;
 
 import com.example.demo.utils.Constants;
 
@@ -24,7 +21,6 @@ import lombok.AllArgsConstructor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.KeyStore;
 
@@ -69,20 +65,4 @@ public class AppConfig {
 		return restTemplate;
 	}
 
-	@Bean
-	public SpringTemplateEngine templateEngine() {
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.addTemplateResolver(this.emailTemplateResolver());
-		return templateEngine;
-	}
-	
-	@Bean
-	public SpringResourceTemplateResolver emailTemplateResolver(){
-		SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();
-		emailTemplateResolver.setPrefix("classpath:/templates/");
-		emailTemplateResolver.setSuffix(".html");
-		emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
-		emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		return emailTemplateResolver;
-	}
 }

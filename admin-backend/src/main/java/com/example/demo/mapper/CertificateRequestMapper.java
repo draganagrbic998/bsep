@@ -3,7 +3,6 @@ package com.example.demo.mapper;
 import com.example.demo.dto.certificate.CertificateRequestDTO;
 import com.example.demo.model.CertificateRequest;
 import com.example.demo.model.CertificateType;
-import com.example.demo.model.Template;
 
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ public class CertificateRequestMapper {
 		request.setCommonName(requestDTO.getCommonName());
 		request.setCountry(requestDTO.getCountry());
 		request.setEmail(requestDTO.getEmail());
-		request.setTemplate(Template.valueOf(requestDTO.getTemplate()));
+		request.setTemplate(requestDTO.getTemplate());
 		request.setType(CertificateType.valueOf(requestDTO.getType()));
 		request.setPath(requestDTO.getPath());
 		return request;

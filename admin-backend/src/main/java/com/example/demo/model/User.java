@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("serial")
 public class User implements UserDetails {
 
-	private List<Authority.Authorities> authorities;
+	private List<Authority.Auth> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -12,7 +12,6 @@ export class CertificateInfo {
     revoked: boolean;
     revocationReason: string;
     revocationDate: Date;
-    isCA: string;
     email: string;
     template: string;
     numIssued: number;

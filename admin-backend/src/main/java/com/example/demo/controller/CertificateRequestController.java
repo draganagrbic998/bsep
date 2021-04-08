@@ -31,7 +31,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CertificateRequestController {
 
-	private final CertificateValidationService certificateValidationService;
+	private final CertificateValidationService validationService;
 	private final CertificateRequestService certificateService;
 	private final CertificateRequestMapper certificateMapper;
 		
@@ -43,13 +43,12 @@ public class CertificateRequestController {
 	@PreAuthorize("permitAll()")
 	@PostMapping
 	public ResponseEntity<Void> create(@Valid @RequestBody CertificateRequestDTO requestDTO, HttpServletRequest request) {
-		if (!this.certificateValidationService.isCertificateValid(((X509Certificate[]) 
-				request.getAttribute(Constants.CERT_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+		if (!this.validationService.isCertificateValid(((X509Certificate[]) 
+				request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		this.certificateService.save(this.certificateMapper.map(requestDTO));
 		return ResponseEntity.ok().build();			
 	}
 
-	
 }

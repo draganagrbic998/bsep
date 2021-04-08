@@ -21,7 +21,7 @@ public class KeyStoreWriter {
 			this.keyStore = KeyStore.getInstance("JKS", "SUN");
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class KeyStoreWriter {
 			}
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -44,29 +44,31 @@ public class KeyStoreWriter {
 			this.keyStore.store(new FileOutputStream(fileName), password);
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
-	public void write(String alias, PrivateKey privateKey, char[] password, Certificate[] certificateChain) {
+	public void write(String alias, PrivateKey privateKey, char[] password, Certificate[] chain) {
 		try {
-			this.keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
+			this.keyStore.setKeyEntry(alias, privateKey, password, chain);
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
-	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo, X509Certificate newCertificate, 
-			String issuerFilename, String subjectFilename, String keyStorePassword, String superadminFilename) {
-		X509Certificate issuerCert = null;
-		X509Certificate superadminCert = null;
+	public void addToTruststore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, 
+			String issuerFilename, String subjectFilename, String superFilename, String password) {
+		
+		X509Certificate issuerCertificate = null;
+		X509Certificate superadminCertificate = null;
+		
 		try {
 			KeyStore issuerTrustStore = KeyStore.getInstance("JKS", "SUN");
-			issuerTrustStore.load(new FileInputStream(issuerFilename), keyStorePassword.toCharArray());
-			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
-			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
-			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
+			issuerTrustStore.load(new FileInputStream(issuerFilename), password.toCharArray());
+			issuerTrustStore.setCertificateEntry(cert.getAlias(), certificate);
+			issuerTrustStore.store(new FileOutputStream(issuerFilename), password.toCharArray());
+			issuerCertificate = (X509Certificate) issuerTrustStore.getCertificate(issuer.getAlias());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -74,10 +76,10 @@ public class KeyStoreWriter {
 		
 		try {
 			KeyStore superTrustStore = KeyStore.getInstance("JKS", "SUN");
-			superTrustStore.load(new FileInputStream(superadminFilename), keyStorePassword.toCharArray());
-			superTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
-			superTrustStore.store(new FileOutputStream(superadminFilename), keyStorePassword.toCharArray());
-			superadminCert = (X509Certificate) superTrustStore.getCertificate("super");
+			superTrustStore.load(new FileInputStream(superFilename), password.toCharArray());
+			superTrustStore.setCertificateEntry(cert.getAlias(), certificate);
+			superTrustStore.store(new FileOutputStream(superFilename), password.toCharArray());
+			superadminCertificate = (X509Certificate) superTrustStore.getCertificate("super");
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -85,15 +87,14 @@ public class KeyStoreWriter {
 
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
-			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
-			subjectTrustStore.setCertificateEntry("super", superadminCert);
-
-			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
+			subjectTrustStore.load(new FileInputStream(subjectFilename), password.toCharArray());
+			subjectTrustStore.setCertificateEntry(issuer.getAlias(), issuerCertificate);
+			subjectTrustStore.setCertificateEntry("super", superadminCertificate);
+			subjectTrustStore.store(new FileOutputStream(subjectFilename), password.toCharArray());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
 }

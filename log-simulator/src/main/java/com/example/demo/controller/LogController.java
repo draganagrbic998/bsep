@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -22,7 +21,7 @@ public class LogController {
 	private final LogService logService;
 	
 	@GetMapping
-	public ResponseEntity<List<LogDTO>> findAll() throws IOException {
+	public ResponseEntity<List<LogDTO>> findAll() {
 		return ResponseEntity.ok(this.logService.findAll());
 	}
 	

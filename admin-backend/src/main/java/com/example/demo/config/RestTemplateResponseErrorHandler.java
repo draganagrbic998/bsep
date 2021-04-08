@@ -27,7 +27,6 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override
     @SneakyThrows
     public void handleError(ClientHttpResponse httpResponse) {
-
         Gson gson = new Gson();
         InputStream bodyStream = httpResponse.getBody();
         InputStreamReader bodyReader = new InputStreamReader(bodyStream);
@@ -39,6 +38,5 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
         catch (Exception e) {
             throw new RestTemplateVoidException();
         }
-
     }
 }

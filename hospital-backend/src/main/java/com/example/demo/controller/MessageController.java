@@ -32,9 +32,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MessageController {
 
+	private final CertificateService certificateService;
 	private final MessageService messageService;
 	private final MessageMapper messageMapper;
-	private final CertificateService certificateService;
 
 	@PostMapping(value = "/search")
 	@PreAuthorize("hasAuthority('DOCTOR')")
@@ -44,7 +44,7 @@ public class MessageController {
 
 	@PostMapping
 	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO, HttpServletRequest request) {
-		if(!this.certificateService.validateCertificate(((X509Certificate[]) request.getAttribute(Constants.CERT_ATTRIBUTE))[0])) {
+		if(!this.certificateService.validateCertificate(((X509Certificate[]) request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0])) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		Message message = this.messageMapper.map(messageDTO);

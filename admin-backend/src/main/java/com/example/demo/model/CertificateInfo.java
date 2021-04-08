@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +16,7 @@ import java.util.Set;
 public class CertificateInfo {
 	
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -45,13 +44,8 @@ public class CertificateInfo {
 
     @NotNull
 	private boolean basicConstraints;
-	private String extendedKeyUsage;
 	private String keyUsage;
-	
-    private String issuerAlias;
-
-    @NotNull
-    private boolean isCA;
+	private String extendedKeyUsage;
 
     @NotNull
     private Date startDate;
@@ -62,19 +56,19 @@ public class CertificateInfo {
     @NotNull
     private boolean revoked;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private Date revocationDate;
 
     private String revocationReason;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CertificateInfo> issued;
-
-    public void addIssued(CertificateInfo certificateInfo) {
-        if (!certificateInfo.issuerAlias.equalsIgnoreCase(this.alias)) {
-            certificateInfo.issuerAlias = this.alias;
-        }
-        this.issued.add(certificateInfo);
+    
+    @ManyToOne
+    @JoinColumn(name = "issuer_id")
+    private CertificateInfo issuer;
+    
+    public String getIssuerAlias() {
+    	if (this.issuer == null) {
+    		return this.alias;
+    	}
+    	return this.issuer.getAlias();
     }
-
+    
 }

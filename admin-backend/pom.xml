@@ -36,36 +36,24 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		
+				
 		<dependency> 
 	        <groupId>org.hibernate</groupId>
 	        <artifactId>hibernate-validator</artifactId>
 	        <version>6.0.13.Final</version>
 	    </dependency>
-	    
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-ci</artifactId>
-			<version>6.5.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-spring</artifactId>
-			<version>6.5.0.Final</version>
-		</dependency>
-		
+				
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -90,12 +78,6 @@
 		</dependency>
 		
 		<dependency>
-        	<groupId>org.eclipse.jdt.core.compiler</groupId>
-        	<artifactId>ecj</artifactId>
-        	<version>4.3.1</version>
-    	</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
@@ -107,6 +89,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-ci</artifactId>
+			<version>6.5.0.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-spring</artifactId>
+			<version>6.5.0.Final</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring5</artifactId>
 		</dependency>
@@ -115,6 +109,12 @@
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
+
+		<dependency>
+        	<groupId>org.eclipse.jdt.core.compiler</groupId>
+        	<artifactId>ecj</artifactId>
+        	<version>4.3.1</version>
+    	</dependency>
 
 	</dependencies>
 

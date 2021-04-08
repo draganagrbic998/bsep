@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ReportSearchDTO {
-
 	private Date start;
 	private Date end;
-		
 }

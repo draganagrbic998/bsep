@@ -8,12 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportDTO {
-
 	private long successLogs;
 	private long infoLogs;
 	private long warningLogs;
 	private long errorLogs;
 	private long fatalLogs;
 	private long alarms;
-		
 }

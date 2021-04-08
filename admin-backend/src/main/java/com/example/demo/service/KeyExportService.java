@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -17,29 +16,34 @@ public class KeyExportService {
 
 	private final KeyStoreService keyStoreService;
 	
-	public String getCrt(String alias) throws IOException {
+	public String getCrt(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 		StringBuilder chainBuilder = new StringBuilder();
-		for (Certificate cert : chain) {
-			String pemCertificate = this.writePem(cert);
+		for (Certificate certificate : chain) {
+			String pemCertificate = this.writePem(certificate);
 			chainBuilder.append(pemCertificate);
 		}
 		return chainBuilder.toString();
 	}
 
-	public String getKey(String alias) throws IOException {
+	public String getKey(String alias) {
 		PrivateKey privateKey = this.keyStoreService.readPrivateKey(alias);
 		PemObject pemFile = new PemObject("PRIVATE KEY", privateKey.getEncoded());
 		return this.writePem(pemFile);
 	}
 
-	private String writePem(Object obj) throws IOException {
-		StringWriter writer = new StringWriter();
-		JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
-		pemWriter.writeObject(obj);
-		pemWriter.flush();
-		pemWriter.close();
-		return writer.toString();
+	private String writePem(Object obj) {
+		try {
+			StringWriter writer = new StringWriter();
+			JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
+			pemWriter.writeObject(obj);
+			pemWriter.flush();
+			pemWriter.close();
+			return writer.toString();
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

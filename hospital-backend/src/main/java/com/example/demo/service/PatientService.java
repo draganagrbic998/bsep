@@ -21,7 +21,7 @@ public class PatientService {
 		return this.patientRepository.findAll(pageable, search);
 	}
 	
-	public Patient find(long id) {
+	public Patient findOne(long id) {
 		return this.patientRepository.findById(id).orElse(null);
 	}
 	

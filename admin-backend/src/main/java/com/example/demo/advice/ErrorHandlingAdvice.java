@@ -13,42 +13,49 @@ public class ErrorHandlingAdvice {
 
     @ExceptionHandler(CertificateNotFoundException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onCertificateNotFoundException(){
-        return new ResponseEntity<>(new ErrorDTO("The certificate was not found", "CERT_NOT_FOUND"),
-                HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorDTO> onCertificateNotFoundException(CertificateNotFoundException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_FOUND"), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CertificateAuthorityException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onIssuerNotCAException(){
-        return new ResponseEntity<>(new ErrorDTO("The certificate is not a CA", "NOT_CA"),
-                HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorDTO> onIssuerNotCAException(CertificateAuthorityException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "NOT_CA"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidIssuerException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onIssuerNotValidException(){
-        return new ResponseEntity<>(new ErrorDTO("The issuer is not valid", "INVALID_ISSUER"),
-                HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorDTO> onIssuerNotValidException(InvalidIssuerException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "INVALID_ISSUER"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AliasExistsException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(){
-        return new ResponseEntity<>(new ErrorDTO("The alias specified already exists", "ALIAS_EXISTS"),
-                HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasExistsException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ALIAS_TAKEN"), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(RestTemplateVoidException.class)
     @ResponseBody
-    ResponseEntity<Void> onRestTemplateVoidException(){
+    public ResponseEntity<Void> onRestTemplateVoidException(){
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RestTemplateMessageException.class)
     @ResponseBody
-    ResponseEntity<ErrorDTO> onRestTemplateMessageException(RestTemplateMessageException e){
+    public ResponseEntity<ErrorDTO> onRestTemplateMessageException(RestTemplateMessageException e){
         return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Void> handleException(NullPointerException exception){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Void> handleException(Exception exception){
+        exception.printStackTrace();
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

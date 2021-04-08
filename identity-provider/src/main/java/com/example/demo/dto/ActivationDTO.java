@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ActivationDTO {
 	
-	@NotBlank(message = "UUID can't be blank")
+	@NotBlank(message = "UUID cannot be blank")
     private String uuid;
 	
-	@NotBlank(message = "Password can't be blank")
+	@NotBlank(message = "Password cannot be blank")
     private String password;
 }
