@@ -48,10 +48,6 @@ export class RequestViewComponent {
     return items;
   }
 
-  getTemplate(value: string): any {
-    return this.templates.find(t => t.value === value);
-  }
-
   reset(): any {
     this.requestsTable.reset();
   }

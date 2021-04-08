@@ -1,4 +1,6 @@
 package com.example.demo.exception;
 
-public class RestTemplateVoidException extends Exception {
+@SuppressWarnings("serial")
+public class RestTemplateVoidException extends RuntimeException {
+
 }

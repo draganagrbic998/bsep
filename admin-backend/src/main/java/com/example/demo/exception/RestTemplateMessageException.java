@@ -4,7 +4,8 @@ import com.example.demo.dto.ErrorDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-public class RestTemplateMessageException extends Exception {
+@SuppressWarnings("serial")
+public class RestTemplateMessageException extends RuntimeException {
 
     @Getter
     @Setter

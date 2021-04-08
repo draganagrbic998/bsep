@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -12,13 +11,15 @@ import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.utils.Constants;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = Constants.IDENTITY_BACKEND + "/auth";
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	private final RestTemplate restTemplate;
 
 	@Override
 	public User loadUserByUsername(String token) {

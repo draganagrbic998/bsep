@@ -9,10 +9,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class LoginDTO {
 	
-	@NotBlank
+	@NotBlank(message = "Email cannot be blank")
     private String email;
 	
-	@NotBlank
+	@NotBlank(message = "Password cannot be blank")
     private String password;
 	
 }

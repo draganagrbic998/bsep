@@ -19,8 +19,9 @@ public class KeyStoreWriter {
 	public KeyStoreWriter() {
 		try {
 			this.keyStore = KeyStore.getInstance("JKS", "SUN");
-		} catch (Exception e) {
-			e.printStackTrace();
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -28,51 +29,72 @@ public class KeyStoreWriter {
 		try {
 			if (fileName != null) {
 				this.keyStore.load(new FileInputStream(fileName), password);
-			} else {
+			} 
+			else {
 				this.keyStore.load(null, password);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	public void saveKeyStore(String fileName, char[] password) {
 		try {
 			this.keyStore.store(new FileOutputStream(fileName), password);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public void write(String alias, PrivateKey privateKey, char[] password, Certificate[] certificateChain) {
+	public void write(String alias, PrivateKey privateKey, char[] password, Certificate[] chain) {
 		try {
-			this.keyStore.setKeyEntry(alias, privateKey, password, certificateChain);
-		} catch (Exception e) {
-			e.printStackTrace();
+			this.keyStore.setKeyEntry(alias, privateKey, password, chain);
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public void addToTruststore(CertificateInfo issuerInfo, CertificateInfo certInfo,
-			X509Certificate newCertificate, String issuerFilename, String subjectFilename, String keyStorePassword) {
-		X509Certificate issuerCert = null;
+	public void addToTruststore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, 
+			String issuerFilename, String subjectFilename, String superFilename, String password) {
+		
+		X509Certificate issuerCertificate = null;
+		X509Certificate superadminCertificate = null;
+		
 		try {
 			KeyStore issuerTrustStore = KeyStore.getInstance("JKS", "SUN");
-			issuerTrustStore.load(new FileInputStream(issuerFilename), keyStorePassword.toCharArray());
-			issuerTrustStore.setCertificateEntry(certInfo.getAlias(), newCertificate);
-			issuerTrustStore.store(new FileOutputStream(issuerFilename), keyStorePassword.toCharArray());
-			issuerCert = (X509Certificate) issuerTrustStore.getCertificate(issuerInfo.getAlias());
-		} catch (Exception e) {
+			issuerTrustStore.load(new FileInputStream(issuerFilename), password.toCharArray());
+			issuerTrustStore.setCertificateEntry(cert.getAlias(), certificate);
+			issuerTrustStore.store(new FileOutputStream(issuerFilename), password.toCharArray());
+			issuerCertificate = (X509Certificate) issuerTrustStore.getCertificate(issuer.getAlias());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			KeyStore superTrustStore = KeyStore.getInstance("JKS", "SUN");
+			superTrustStore.load(new FileInputStream(superFilename), password.toCharArray());
+			superTrustStore.setCertificateEntry(cert.getAlias(), certificate);
+			superTrustStore.store(new FileOutputStream(superFilename), password.toCharArray());
+			superadminCertificate = (X509Certificate) superTrustStore.getCertificate("super");
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
 			KeyStore subjectTrustStore = KeyStore.getInstance("JKS", "SUN");
-			subjectTrustStore.load(new FileInputStream(subjectFilename), keyStorePassword.toCharArray());
-			subjectTrustStore.setCertificateEntry(issuerInfo.getAlias(), issuerCert);
-			subjectTrustStore.store(new FileOutputStream(subjectFilename), keyStorePassword.toCharArray());
-		} catch (Exception e) {
+			subjectTrustStore.load(new FileInputStream(subjectFilename), password.toCharArray());
+			subjectTrustStore.setCertificateEntry(issuer.getAlias(), issuerCertificate);
+			subjectTrustStore.setCertificateEntry("super", superadminCertificate);
+			subjectTrustStore.store(new FileOutputStream(subjectFilename), password.toCharArray());
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
+	}
 }

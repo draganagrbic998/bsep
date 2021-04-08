@@ -2,29 +2,29 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.MessageMeasureDTO;
-import com.example.demo.exception.MyException;
 import com.example.demo.model.Message;
 import com.example.demo.service.PatientService;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class MessageMapper {
 
-	@Autowired
-	private PatientService patientService;
-
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	
+	private final PatientService patientService;
 
 	public Message map(MessageMeasureDTO messageDTO) {
 		try {
-			messageDTO.setText(messageDTO.getText().replace(',', '.'));
 			Message message = new Message();
+			messageDTO.setText(messageDTO.getText().replace(',', '.'));
 			String[] array = messageDTO.getText().split(" ");
 			message.setDate(DATE_FORMAT.parse(array[0].trim().split("=")[1].trim()));
-			message.setPatient(this.patientService.find(Long.parseLong(array[1].trim().split("=")[1].trim())));
+			message.setPatient(this.patientService.findOne(Long.parseLong(array[1].trim().split("=")[1].trim())));
 			message.setPulse(Double.parseDouble(array[2].trim().split("=")[1].trim()));
 			message.setPressure(Double.parseDouble(array[3].trim().split("=")[1].trim()));
 			message.setTemperature(Double.parseDouble(array[4].trim().split("=")[1].trim()));
@@ -32,7 +32,7 @@ public class MessageMapper {
 			return message;
 		}
 		catch(Exception e) {
-			throw new MyException();
+			throw new RuntimeException(e);
 		}
 	}
 		

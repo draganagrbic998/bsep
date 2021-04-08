@@ -4,7 +4,9 @@ import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,14 +20,10 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserService userService;
-
-	@Autowired
-	public SecurityConfig(UserService userService) {
-		this.userService = userService;
-	}
 
 	@Bean
 	public CorsFilter corsFilter() {
@@ -41,11 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-				.authenticationEntryPoint(new AuthEntryPoint())
-				.and().authorizeRequests()
-				.antMatchers("/auth/**").permitAll()
-				.and().cors().and()
-				.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
+			.authenticationEntryPoint(new AuthEntryPoint())
+			.and().authorizeRequests()
+			.antMatchers("/auth/**").permitAll()
+			.and().cors().and()
+			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
 		http.csrf().disable();
 	}
 }

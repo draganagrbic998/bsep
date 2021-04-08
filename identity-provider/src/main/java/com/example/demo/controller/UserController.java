@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.exception.EmailAlreadyExistsException;
-import com.example.demo.exception.UserDoesNotExistException;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Authority;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -13,25 +14,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class UserController {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
+	private final UserMapper userMapper;
 
-	@PostMapping
-	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) throws EmailAlreadyExistsException {
-		UserDTO created = this.userService.create(userDTO);
-		return ResponseEntity.created(URI.create(created.getId().toString())).body(created);
+	@GetMapping
+	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
+		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
 	}
 
-	@PutMapping
-	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO) throws UserDoesNotExistException {
-		return ResponseEntity.ok(this.userService.update(userDTO));
+	@GetMapping(value = "/authorities")
+	public ResponseEntity<List<Authority>> getAuthorities() {
+		return ResponseEntity.ok(this.userService.getAuthorities());
+	}
+
+	@PostMapping
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
+		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(userDTO))));
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
+		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(id, userDTO))));
 	}
 
 	@DeleteMapping(value = "{id}")
@@ -40,19 +50,9 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping
-	public ResponseEntity<Page<UserDTO>> readAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.readAll(pageable));
-	}
-
 	@GetMapping(value = "/send/{id}")
-	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) throws UserDoesNotExistException {
-		return ResponseEntity.ok(this.userService.resetActivationLink(id));
-	}
-
-	@GetMapping(value = "/authorities")
-	public ResponseEntity<List<Authority>> getAuthorities() {
-		return ResponseEntity.ok(this.userService.getAuthorities());
+	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
+		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}
 
 }

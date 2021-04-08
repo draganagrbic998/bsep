@@ -1,6 +1,5 @@
 package com.example.demo.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.DoctorAlarmDTO;
@@ -9,17 +8,19 @@ import com.example.demo.model.DoctorAlarm;
 import com.example.demo.model.AdminAlarm;
 import com.example.demo.service.PatientService;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class AlarmMapper {
 	
-	@Autowired
-	private PatientService patientService;
+	private final PatientService patientService;
 	
 	public AdminAlarm map(AdminAlarmDTO alarmDTO) {
 		AdminAlarm alarm = new AdminAlarm();
 		alarm.setStatus(alarmDTO.isStatus());
-		alarm.setParam(alarmDTO.getParam());
 		alarm.setCounts(alarmDTO.getCounts());
+		alarm.setParam(alarmDTO.getParam());
 		return alarm;
 	}
 
@@ -33,7 +34,7 @@ public class AlarmMapper {
 		alarm.setMaxTemperature(alarmDTO.getMaxTemperature());
 		alarm.setMinOxygenLevel(alarmDTO.getMinOxygenLevel());
 		alarm.setMaxOxygenLevel(alarmDTO.getMaxOxygenLevel());
-		alarm.setPatient(this.patientService.find(patientId));
+		alarm.setPatient(this.patientService.findOne(patientId));
 		return alarm;
 	}
 	

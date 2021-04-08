@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -22,16 +21,16 @@ import com.example.demo.dto.PatientDTO;
 import com.example.demo.mapper.PatientMapper;
 import com.example.demo.service.PatientService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/api/patients", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('DOCTOR')")	
+@AllArgsConstructor
 public class PatientController {
 
-	@Autowired
-	private PatientService patientService;
-	
-	@Autowired
-	private PatientMapper patientMapper;
+	private final PatientService patientService;
+	private final PatientMapper patientMapper;
 			
 	@GetMapping
 	public ResponseEntity<Page<PatientDTO>> findAll(Pageable pageable, @RequestParam String search){

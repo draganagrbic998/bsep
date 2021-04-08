@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +13,14 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.UserService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class AuthController {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 		
 	@PostMapping(value = "/login")
 	public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO){

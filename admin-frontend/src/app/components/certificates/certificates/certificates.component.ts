@@ -1,13 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { CertificateInfo } from '../../../core/model/certificate-info';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
 import { TableViewComponent } from '../table-view/table-view.component';
 import { TreeViewComponent } from '../tree-view/tree-view.component';
 import { CertificateRequest } from '../../../core/model/certificate-request';
 import { RequestViewComponent } from '../request-view/request-view.component';
 import { Revoke } from 'src/app/core/model/revoke';
+import {Route, Router} from '@angular/router';
+import {CUSTOM, extensionTemplates} from '../../../core/utils/templates';
+import {KeyUsageType} from '../../../core/model/key-usage-type';
+import {getKeyUsages} from '../../../core/utils/key-usages';
+import {KeyPurposeId} from '../../../core/model/key-purpose-id';
+import {getExtendedKeyUsages} from '../../../core/utils/key-purpose-ids';
+import {Template} from '../../../core/model/template';
 
 @Component({
   selector: 'app-certificates',
@@ -17,6 +24,8 @@ import { Revoke } from 'src/app/core/model/revoke';
 export class CertificatesComponent implements OnInit {
 
   certificate: CertificateInfo = new CertificateInfo();
+  keyUsages: KeyUsageType[] = [];
+  extendedKeyUsages: KeyPurposeId[] = [];
   revoke: Revoke = new Revoke();
   submitted = false;
   newDialog = false;
@@ -41,19 +50,16 @@ export class CertificatesComponent implements OnInit {
   @ViewChild('requestsTable')
   requestsTable: RequestViewComponent;
 
+
   constructor(
     private certificateService: CertificateService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private router: Router
   ) { }
 
   ngOnInit(): void {
 
-    this.templates = [
-      {label: 'CA', value: 'SUB_CA', icon: 'pi pi-globe'},
-      {label: 'TLS Server', value: 'TLS', icon: 'pi pi-cloud'},
-      {label: 'User', value: 'USER', icon: 'pi pi-user'}
-    ];
+    this.templates = Object.values(extensionTemplates);
 
     this.getCA();
   }
@@ -65,25 +71,23 @@ export class CertificatesComponent implements OnInit {
     });
   }
 
-  openNew(): void {
-    this.certificate = new CertificateInfo();
-    this.submitted = false;
-    this.newDialog = true;
+  openNew(certificate?: CertificateInfo): void {
+    this.certificateService.requestCertificate.next(certificate);
+    this.router.navigate(['add-certificate']);
   }
 
   openDetails(cert: CertificateInfo): void {
     this.certificate = cert;
+    this.keyUsages = getKeyUsages(this.certificate.extensions.keyUsage);
+    this.extendedKeyUsages = getExtendedKeyUsages(this.certificate.extensions.keyPurposeIds);
     this.detailsDialog = true;
-  }
-
-  hideNew(): void {
-    this.newDialog = false;
-    this.submitted = false;
   }
 
   hideDetails(): void {
     this.detailsDialog = false;
     this.certificate = new CertificateInfo();
+    this.keyUsages = [];
+    this.extendedKeyUsages = [];
   }
 
   openRevoke(cert: CertificateInfo): void {
@@ -109,8 +113,7 @@ export class CertificatesComponent implements OnInit {
     this.certificate.organizationUnit = cert.organizationUnit;
     this.certificate.path = cert.path;
 
-    this.submitted = false;
-    this.newDialog = true;
+    this.openNew(this.certificate);
   }
 
   downloadCrt(certificate: CertificateInfo): void {
@@ -156,52 +159,28 @@ export class CertificatesComponent implements OnInit {
 
     if (this.revoke.reason.trim()) {
       // tslint:disable-next-line: deprecation
-      this.certificateService.revokeCertificate(this.revoke).subscribe(val => {
-        if (val) {
-          this.certificate.revoked = true;
-          if (!!this.table) {
-            this.table.reset();
-          }
-          if (!!this.tree) {
-            this.tree.reset();
-          }
-          this.revokeDialog = false;
-          this.messageService.add({
-            severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully revoked.`});
-        }
-        else {
-          this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
-        }
-      });
-    }
-  }
-
-  saveCertificate(): void {
-    this.submitted = true;
-
-    if (this.certificate.commonName.trim()) {
-      this.certificate.issuerAlias = this.caAlias.getValue();
-      // tslint:disable-next-line: deprecation
-      this.certificateService.createCertificate(this.certificate).subscribe(() => {
+      this.certificateService.revokeCertificate(this.revoke).subscribe(() => {
+        this.certificate.revoked = true;
         if (!!this.table) {
           this.table.reset();
         }
         if (!!this.tree) {
           this.tree.reset();
         }
-        if (!!this.requestsTable) {
-          this.requestsTable.reset();
-        }
-        this.newDialog = false;
-        this.messageService.add({severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully created.`});
-        this.certificate = new CertificateInfo();
-
+        this.revokeDialog = false;
+        this.messageService.add({
+          severity: 'success', summary: 'Success', detail: `${this.certificate.commonName} successfully revoked.`});
+    }, () => {
+        this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while revoking ${this.certificate.commonName}.`});
       });
     }
   }
 
   getTemplate(value: string): any {
-    return this.templates.find(t => t.value === value);
+    if (!value) {
+      return CUSTOM;
+    }
+    return this.templates.find((t: Template) => t.enumValue === value);
   }
 
   switchCA(cert: CertificateInfo): void {

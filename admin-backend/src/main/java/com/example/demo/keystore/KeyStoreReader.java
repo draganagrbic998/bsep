@@ -23,63 +23,61 @@ public class KeyStoreReader {
 			this.keyStore = KeyStore.getInstance("JKS", "SUN");
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-	}
-
-	public IssuerData readIssuerFromStore(String keyStoreFile, String alias, char[] password, char[] keyPass) {
-		try {
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
-			this.keyStore.load(in, password);
-			Certificate cert = this.keyStore.getCertificate(alias);
-			if (cert == null)
-				throw new CertificateNotFoundException(alias);
-			PrivateKey privKey = (PrivateKey) this.keyStore.getKey(alias, keyPass);
-
-			X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) cert).getSubject();
-			return new IssuerData(privKey, issuerName);
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
-	public Certificate[] readCertificateChain(String keyStoreFile, String keyStorePass, String alias) {
+	public PrivateKey readPrivateKey(String storeName, String storePassword, String alias, String password) {
 		try {
-			KeyStore ks = KeyStore.getInstance("JKS", "SUN");
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
-			ks.load(in, keyStorePass.toCharArray());
+			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
+			keyStore.load(in, storePassword.toCharArray());
 
-			if (ks.isKeyEntry(alias)) {
-				return ks.getCertificateChain(alias);
+			if (keyStore.isKeyEntry(alias)) {
+				return (PrivateKey) keyStore.getKey(alias, password.toCharArray());
 			}
+			return null;
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
-	public Certificate readCertificate(String keyStoreFile, String keyStorePass, String alias) {
-		return this.readCertificateChain(keyStoreFile, keyStorePass, alias)[0];
-	}
-
-	public PrivateKey readPrivateKey(String keyStoreFile, String keyStorePass, String alias, String pass) {
+	public IssuerData readIssuerFromStore(String storeName, String alias, char[] storePassword, char[] password) {
 		try {
-			KeyStore ks = KeyStore.getInstance("JKS", "SUN");
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(keyStoreFile));
-			ks.load(in, keyStorePass.toCharArray());
-
-			if(ks.isKeyEntry(alias)) {
-				return (PrivateKey) ks.getKey(alias, pass.toCharArray());
-			}
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
+			this.keyStore.load(in, storePassword);
+			Certificate certificate = this.keyStore.getCertificate(alias);
+			if (certificate == null)
+				throw new CertificateNotFoundException();
+			
+			PrivateKey privateKey = (PrivateKey) this.keyStore.getKey(alias, password);
+			X500Name issuerName = new JcaX509CertificateHolder((X509Certificate) certificate).getSubject();
+			return new IssuerData(privateKey, issuerName);
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		
-		return null;
+	}
+
+	public Certificate[] readCertificateChain(String storeName, String storePassword, String alias) {
+		try {
+			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
+			keyStore.load(in, storePassword.toCharArray());
+
+			if (keyStore.isKeyEntry(alias)) {
+				return keyStore.getCertificateChain(alias);
+			}
+			return null;
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public Certificate readCertificate(String storeName, String storePassword, String alias) {
+		return this.readCertificateChain(storeName, storePassword, alias)[0];
 	}
 
 }

@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MessageSearchDTO {
 
-	@NotNull(message = "Insured number can't be null")
+	@NotNull(message = "Insured number cannot be null")
 	private String insuredNumber;
 	
-	@NotNull(message = "First name can't be null")
+	@NotNull(message = "First name cannot be null")
 	private String firstName;
 	
-	@NotNull(message = "Last name can't be null")
+	@NotNull(message = "Last name cannot be null")
 	private String lastName;
 	
 	private Date date;

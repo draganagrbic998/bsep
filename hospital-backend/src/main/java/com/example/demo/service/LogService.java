@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,27 +19,23 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.dto.LogMeasureDTO;
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
+import com.example.demo.model.Configuration;
 import com.example.demo.model.Log;
+import com.example.demo.model.LogConfiguration;
 import com.example.demo.repository.LogRepository;
-import com.example.demo.utils.Configuration;
-import com.example.demo.utils.LogConfiguration;
 import com.google.gson.Gson;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class LogService {
 
-	@Autowired
-	private LogRepository logRepository;
-	
-	@Autowired
-	private LogMapper logMapper;
-		
-	@Autowired
-	private LogEventService eventService;
-	
-	@Autowired
-	private RestTemplate restTemplate;
+	private final LogRepository logRepository;
+	private final LogMapper logMapper;
+	private final LogEventService eventService;
+	private final RestTemplate restTemplate;
 	
 	@PostConstruct
 	public void init() {
@@ -59,7 +54,7 @@ public class LogService {
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -88,7 +83,7 @@ public class LogService {
 				Thread.sleep(interval);	
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				;
 			}
 		}
 	}

@@ -35,16 +35,6 @@
                             Valid country code is required!
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Target path</mat-label>
-                        <input 
-                        formControlName="path" 
-                        matInput 
-                        placeholder="Enter target path">
-                        <mat-error>
-                            Valid target path is required!
-                        </mat-error>
-                    </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field>
@@ -82,23 +72,37 @@
             <br><br>
             <h6>Template:</h6>
             <br>
-            <div>
-                <mat-radio-group formControlName="template">
-                    <app-spacer-container>
-                        <mat-radio-button value="SUB_CA">
-                            Subordinate CA
-                        </mat-radio-button>
-                        <mat-radio-button value="TLS">
-                            TLS Server
-                        </mat-radio-button>
-                        <mat-radio-button value="USER">
-                            TLS Client
-                        </mat-radio-button>
-                    </app-spacer-container>
-                </mat-radio-group>
-                <div *ngIf="certificateForm.get('template').hasError('required')" class="error">
-                    Template is required!
-                </div>
+            <mat-radio-group formControlName="template">
+                <app-spacer-container>
+                    <mat-radio-button value="SUB_CA">
+                        Subordinate CA
+                    </mat-radio-button>
+                    <mat-radio-button value="TLS">
+                        TLS Server
+                    </mat-radio-button>
+                    <mat-radio-button value="USER">
+                        TLS Client
+                    </mat-radio-button>
+                </app-spacer-container>
+            </mat-radio-group>
+            <div *ngIf="certificateForm.get('template').hasError('required')" class="error">
+                Template is required!
+            </div>
+            <br><br>
+            <h6>Type:</h6>
+            <br>
+            <mat-radio-group formControlName="type">
+                <app-spacer-container>
+                    <mat-radio-button value="HOSPITAL">
+                        Hospital
+                    </mat-radio-button>
+                    <mat-radio-button value="HOSPITAL_DEVICE">
+                        Hospital Device
+                    </mat-radio-button>
+                </app-spacer-container>
+            </mat-radio-group>
+            <div *ngIf="certificateForm.get('type').hasError('required')" class="error">
+                Type is required!
             </div>
         </div>
         <br><br>

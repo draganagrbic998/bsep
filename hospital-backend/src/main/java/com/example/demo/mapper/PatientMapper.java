@@ -1,17 +1,18 @@
 package com.example.demo.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.PatientDTO;
 import com.example.demo.model.Patient;
 import com.example.demo.repository.PatientRepository;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class PatientMapper {
 
-	@Autowired
-	private PatientRepository patientRepository;
+	private final PatientRepository patientRepository;
 	
 	public Patient map(PatientDTO patientDTO) {
 		Patient patient = new Patient();

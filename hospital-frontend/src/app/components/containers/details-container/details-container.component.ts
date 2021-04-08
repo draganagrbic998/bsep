@@ -24,10 +24,6 @@ export class DetailsContainerComponent implements OnInit {
     return this.mainDetails.filter(x => x.value !== undefined && x.value !== null);
   }
 
-  isNumber(value: string | number): boolean{
-    return typeof value === 'number';
-  }
-
   ngOnInit(): void {
   }
 

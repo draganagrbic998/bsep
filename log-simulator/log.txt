@@ -1,0 +1,1 @@
+06/04/2021-17:28:22|ATTACK|SUCCESS|243.34.35.120|Forbidden patients view

@@ -28,7 +28,7 @@ export class CertificateFormComponent implements OnInit {
     country: new FormControl('', [Validators.required, Validators.pattern(new RegExp('[A-Z]{2}'))]),
     email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')]),
     template: new FormControl('', [Validators.required]),
-    path: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
+    type: new FormControl('', [Validators.required])
   });
 
   sendRequest(): void {

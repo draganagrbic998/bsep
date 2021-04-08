@@ -6,50 +6,45 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.templatemode.TemplateMode;
+
+import com.example.demo.utils.Constants;
+
+import lombok.AllArgsConstructor;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.KeyStore;
 
 @Configuration
 @EnableTransactionManagement
+@EnableAsync
+@AllArgsConstructor
 public class AppConfig {
 
 	private final PkiProperties pkiProperties;
 	private final RestTemplateBuilder restTemplateBuilder;
 
-	@Autowired
-	public AppConfig(PkiProperties pkiProperties,
-					 RestTemplateBuilder restTemplateBuilder) {
-		this.pkiProperties = pkiProperties;
-		this.restTemplateBuilder = restTemplateBuilder;
-	}
-
 	@Bean
 	public RestTemplate getRestTemplate() {
-		RestTemplate restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
+		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 
 		try {
-			File file = new File(Path.of(this.pkiProperties.getKeystorePath(), this.pkiProperties.getKeystoreName()).toString());
+			File file = new File(Path.of(Constants.KEYSTORE_PATH).toString());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
-					new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy())
+					new SSLContextBuilder().loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
 							.loadKeyMaterial(keyStore, this.pkiProperties.getKeystorePassword().toCharArray()).build(),
 					NoopHostnameVerifier.INSTANCE);
 
@@ -60,6 +55,7 @@ public class AppConfig {
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
+			inputStream.close();
 		}
 
 		catch (Exception e) {
@@ -69,19 +65,4 @@ public class AppConfig {
 		return restTemplate;
 	}
 
-	@Bean
-	public SpringTemplateEngine springTemplateEngine() {
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.addTemplateResolver(htmlTemplateResolver());
-		return templateEngine;
-	}
-	@Bean
-	public SpringResourceTemplateResolver htmlTemplateResolver(){
-		SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();
-		emailTemplateResolver.setPrefix("classpath:/templates/");
-		emailTemplateResolver.setSuffix(".html");
-		emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
-		emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		return emailTemplateResolver;
-	}
 }

@@ -1,46 +1,32 @@
 package com.example.demo.mapper;
 
-import com.example.demo.dto.CertificateInfoDTO;
-import com.example.demo.model.CertificateInfo;
-import org.springframework.stereotype.Component;
-
+import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.demo.dto.certificate.CertificateInfoDTO;
+import com.example.demo.model.CertificateInfo;
+import com.example.demo.repository.CertificateInfoRepository;
+
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class CertificateInfoMapper {
+
+	private final CertificateInfoRepository certificateRepository;
 	
-    public CertificateInfoDTO mapToDto(CertificateInfo certificateInfo) {
-        return this.mapToDto(certificateInfo, 1);
-    }
-
-    public CertificateInfoDTO mapToDto(CertificateInfo certificateInfo, int mappingLevel) {
-        if (certificateInfo == null) {
-            return null;
-        }
-        CertificateInfoDTO certificateInfoDto = new CertificateInfoDTO();
-        certificateInfoDto.setId(certificateInfo.getId());
-        certificateInfoDto.setNumIssued(certificateInfo.getIssued().size());
-        certificateInfoDto.setAlias(certificateInfo.getAlias());
-        certificateInfoDto.setIssuerAlias(certificateInfo.getIssuerAlias());
-        certificateInfoDto.setCommonName(certificateInfo.getCommonName());
-        certificateInfoDto.setSerialNumber(certificateInfo.getSerialNumber());
-        certificateInfoDto.setOrganization(certificateInfo.getOrganization());
-        certificateInfoDto.setOrganizationUnit(certificateInfo.getOrganizationUnit());
-        certificateInfoDto.setCountry(certificateInfo.getCountry());
-        certificateInfoDto.setStartDate(certificateInfo.getStartDate());
-        certificateInfoDto.setEndDate(certificateInfo.getEndDate());
-        certificateInfoDto.setRevoked(certificateInfo.isRevoked());
-        certificateInfoDto.setRevocationReason(certificateInfo.getRevocationReason());
-        certificateInfoDto.setRevocationDate(certificateInfo.getRevocationDate());
-        certificateInfoDto.setCA(certificateInfo.isCA());
-        certificateInfoDto.setEmail(certificateInfo.getEmail());
-        certificateInfoDto.setTemplate(certificateInfo.getTemplate());
+	@Transactional(readOnly = true)
+	public CertificateInfoDTO map(CertificateInfo certificate, int mappingLevel) {
+		CertificateInfoDTO certificateDTO = new CertificateInfoDTO(certificate);
+		List<CertificateInfo> certificates = this.certificateRepository.findIssued(certificate.getId());
+		certificateDTO.setNumIssued(certificates.size());
         if (mappingLevel > 0) {
-            certificateInfoDto.setIssued(certificateInfo.getIssued().stream()
-                    .map(ci -> this.mapToDto(ci, mappingLevel - 1))
-                    .collect(Collectors.toList()));
+            certificateDTO.setIssued(certificates.stream().map(ci -> this.map(ci, mappingLevel - 1)).collect(Collectors.toList()));;
         }
-        return certificateInfoDto;
-    }
-
+		return certificateDTO;
+	}
+	
 }

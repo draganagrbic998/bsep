@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LogSearchDTO {
 	
-	@NotNull(message = "Mode can't be null")
+	@NotNull(message = "Mode cannot be null")
 	private String mode;
 
-	@NotNull(message = "Status can't be null")
+	@NotNull(message = "Status cannot be null")
 	private String status;
 	
-	@NotNull(message = "IP address can't be null")
+	@NotNull(message = "IP address cannot be null")
 	private String ipAddress;
 
-	@NotNull(message = "Description can't be null")
+	@NotNull(message = "Description cannot be null")
 	private String description;
 	
 	private Date date;

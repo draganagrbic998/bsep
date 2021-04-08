@@ -12,15 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 	
-	private UserDetailsService userService;
+	private final UserDetailsService userService;
 	
-	public AuthFilter(UserDetailsService userService) {
-		super();
-		this.userService = userService;
-	}
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -33,7 +31,8 @@ public class AuthFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
-		filterChain.doFilter(request, response);		
+		filterChain.doFilter(request, response);	
+		
 	}
 	
 }

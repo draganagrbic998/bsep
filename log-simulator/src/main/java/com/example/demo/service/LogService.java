@@ -3,7 +3,6 @@ package com.example.demo.service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,22 +20,27 @@ import com.example.demo.dto.LogDTO;
 @Service
 public class LogService {
 
-    private static final String FILE_PATH = "log.txt";
-	private static final long SLEEP_INTERVAL = 5000;
-    private static Random RAND = new Random();
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	private static Random RAND = new Random();
+	private static final long SLEEP_INTERVAL = 5000;
+    private static final String FILE_PATH = "log.txt";
 		
-	public List<LogDTO> findAll() throws IOException {
-		List<LogDTO> logsDTO = new ArrayList<>();
-		BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			logsDTO.add(new LogDTO(line));
+	public List<LogDTO> findAll() {
+		try {
+			List<LogDTO> logsDTO = new ArrayList<>();
+			BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				logsDTO.add(new LogDTO(line));
+			}
+			reader.close();
+			FileWriter writer = new FileWriter(FILE_PATH);
+			writer.close();
+			return logsDTO;
 		}
-		reader.close();
-		FileWriter writer = new FileWriter(FILE_PATH);
-		writer.close();
-		return logsDTO;
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@PostConstruct
@@ -60,7 +64,7 @@ public class LogService {
 				Thread.sleep(SLEEP_INTERVAL);
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 	}

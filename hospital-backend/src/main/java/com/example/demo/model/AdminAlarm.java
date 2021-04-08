@@ -21,11 +21,11 @@ public class AdminAlarm {
 
 	@NotNull
 	private boolean status;
-	
-	@NotBlank
-	private String param;
-	
+		
 	@NotNull
 	private long counts;
+
+	@NotBlank
+	private String param;
 
 }

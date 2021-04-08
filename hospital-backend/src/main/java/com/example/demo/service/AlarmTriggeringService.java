@@ -1,19 +1,22 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.AlarmTriggering;
-import com.example.demo.repository.AlarmTriggeringRepository;import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.repository.AlarmTriggeringRepository;
+
+import lombok.AllArgsConstructor;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class AlarmTriggeringService {
 
-	@Autowired
-	private AlarmTriggeringRepository alarmTriggeringRepository;
+	private final AlarmTriggeringRepository alarmTriggeringRepository;
 	
 	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable) {
 		return this.alarmTriggeringRepository.findByPatientIdNullOrderByDateDesc(pageable);
