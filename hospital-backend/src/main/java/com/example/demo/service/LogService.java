@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.io.File;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,12 +60,14 @@ public class LogService {
 	}
 	
 	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String stringDate = searchDTO.getDate() == null ? "empty" : format.format(searchDTO.getDate());
 		return this.logRepository.findAll(pageable, 
 				searchDTO.getMode(), 
 				searchDTO.getStatus(), 
 				searchDTO.getIpAddress(),
 				searchDTO.getDescription(),
-				searchDTO.getDate());
+				stringDate);
 	}
 
 	@Transactional(readOnly = false)

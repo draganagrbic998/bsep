@@ -1,1 +1,0 @@
-08/04/2021-21:54:36|NORMAL|FATAL|115.108.240.204|Forbidden logs view
