@@ -1,12 +1,12 @@
-.root{
+form{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
-    min-width: 800px;
-    padding: 10px;
+    align-items: flex-start;
+    width: 800px;
+    padding: 20px;
 }
 
-.root > div{
+form > div{
     width: 46%;
 }

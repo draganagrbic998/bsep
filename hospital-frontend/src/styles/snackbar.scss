@@ -1,13 +1,13 @@
 @import "./theme";
 
 .snackbar-success{
-    background-color: $success;
-    color: white;
+    background-color: #7cda7c;
+    color: whitesmoke;
 }
 
 .snackbar-error{
     background-color: $warn;
-    color: white;
+    color: whitesmoke;
 }
 
 .mat-simple-snackbar-action{

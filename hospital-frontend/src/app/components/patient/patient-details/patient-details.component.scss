@@ -1,10 +1,7 @@
 .root{
-    width: 1000px;
     height: 600px;
-    margin: 0 auto;
-    margin-top: 20px;
+    width: 1000px;
     padding: 10px;
-    overflow: hidden;
 }
 
 .mat-card{
@@ -26,14 +23,14 @@ span{
     width: 48%;
     border: 2px inset rgba(200, 200, 200, 0.3);
     border-radius: 5px;
-    padding: 20px;
+    padding: 30px;
+    padding-top: 50px;
     font-size: 20px;
-    padding-top: 80px;
 }
 
 .right{
     width: 48%;
     border: 2px inset rgba(200, 200, 200, 0.3);
     border-radius: 5px;
-    padding-top: 30px;
+    padding-top: 50px;
 }

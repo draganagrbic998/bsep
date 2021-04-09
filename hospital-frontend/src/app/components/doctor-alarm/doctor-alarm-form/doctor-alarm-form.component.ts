@@ -7,16 +7,16 @@ import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
-  selector: 'app-doctor-alarm-dialog',
-  templateUrl: './doctor-alarm-dialog.component.html',
-  styleUrls: ['./doctor-alarm-dialog.component.scss']
+  selector: 'app-doctor-alarm-form',
+  templateUrl: './doctor-alarm-form.component.html',
+  styleUrls: ['./doctor-alarm-form.component.scss']
 })
-export class DoctorAlarmDialogComponent implements OnInit {
+export class DoctorAlarmFormComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientId: number,
     private alarmService: AlarmService,
-    public dialogRef: MatDialogRef<DoctorAlarmDialogComponent>,
+    private dialogRef: MatDialogRef<DoctorAlarmFormComponent>,
     private snackBar: MatSnackBar
   ) { }
 

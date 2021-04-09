@@ -1,7 +1,7 @@
 {
 	"configurations": [
 		{
-			"path": "https://localhost:8084/api/logs",
+			"path": "../log-simulator/log.txt",
 			"interval": 5000,
 			"regExp": ".*"
 		}

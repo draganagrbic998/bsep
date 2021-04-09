@@ -12,8 +12,8 @@
     [title]="title"></app-empty-container>                
 </div>
 
-<cdk-virtual-scroll-viewport [itemSize]="10" class="scroller">
-    <div *ngIf="!pending" class="content">
+<cdk-virtual-scroll-viewport *ngIf="!pending" [itemSize]="10" class="scroller">
+    <div class="content">
         <ng-content></ng-content>
     </div>
 </cdk-virtual-scroll-viewport>

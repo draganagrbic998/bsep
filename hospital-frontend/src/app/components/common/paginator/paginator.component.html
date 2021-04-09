@@ -1,32 +1,36 @@
 <app-spacer-container>
-    <span class="left">
+    <span class="left" cdkFocusInitial>
         <button 
-        *ngIf="!pending && !pagination.firstPage"
-        mat-icon-button 
-        (click)="changedPage.emit(-1)">
-            <mat-icon [class.small]="small" color="primary" matTooltip="Previous page">navigate_before</mat-icon>
+        *ngIf="!pending && !pagination.firstPage" 
+        (click)="changedPage.emit(-1)"
+        mat-icon-button
+        matTooltip="Previous page">
+            <mat-icon [class.small]="small">navigate_before</mat-icon>
         </button>
     </span>
     <span *ngIf="refresh && !pending && !pagination.pageNumber">
-        <button
+        <button 
+        (click)="changedPage.emit(0)"
         mat-icon-button 
-        (click)="changedPage.emit(0)">
-            <mat-icon class="refresh" matTooltip="Refresh">autorenew</mat-icon>
+        matTooltip="Refresh">
+            <mat-icon class="more">autorenew</mat-icon>
         </button>
     </span>
     <span *ngIf="alarm && !pending">
-        <button
-        mat-icon-button 
-        (click)="alarmWanted.emit()">
-            <mat-icon class="alarm" matTooltip="Add alarm">alarm_on</mat-icon>
+        <button 
+        (click)="alarmWanted.emit()"
+        mat-icon-button
+        matTooltip="Add alarm">
+            <mat-icon class="more">alarm_on</mat-icon>
         </button>
     </span>
     <span class="right">
         <button 
-        *ngIf="!pending && !pagination.lastPage"
-        mat-icon-button 
-        (click)="changedPage.emit(1)">
-            <mat-icon [class.small]="small" color="primary" matTooltip="Next page">navigate_next</mat-icon>
+        *ngIf="!pending && !pagination.lastPage" 
+        (click)="changedPage.emit(1)"
+        mat-icon-button
+        matTooltip="Next page">
+            <mat-icon [class.small]="small">navigate_next</mat-icon>
         </button>
     </span>
 </app-spacer-container>    

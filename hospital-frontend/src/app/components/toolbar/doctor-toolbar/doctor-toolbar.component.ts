@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { environment } from 'src/environments/environment';
+import { PatientFormComponent } from '../../patient/patient-form/patient-form.component';
 
 @Component({
   selector: 'app-doctor-toolbar',
@@ -15,7 +18,8 @@ export class DoctorToolbarComponent implements OnInit {
   constructor(
     private storageService: StorageService,
     private patientService: PatientService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { }
 
   search: FormControl = new FormControl('');
@@ -29,9 +33,9 @@ export class DoctorToolbarComponent implements OnInit {
     this.router.navigate([environment.loginRoute]);
   }
 
-  createPatient(): void{
-    this.storageService.remove(this.storageService.PATIENT_KEY);
-    this.router.navigate([`${environment.patientFormRoute}/create`]);
+  openPatientForm(): void{
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: {}}};
+    this.dialog.open(PatientFormComponent, options);
   }
 
   announceSearchData(): void{

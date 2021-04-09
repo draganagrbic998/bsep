@@ -29,6 +29,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+@PreAuthorize("hasAuthority('DOCTOR')")
 @AllArgsConstructor
 public class MessageController {
 
@@ -37,14 +38,15 @@ public class MessageController {
 	private final MessageMapper messageMapper;
 
 	@PostMapping(value = "/search")
-	@PreAuthorize("hasAuthority('DOCTOR')")
 	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody MessageSearchDTO searchDTO) {
 		return ResponseEntity.ok(this.messageService.findAll(pageable, searchDTO).map(MessageDTO::new));
 	}
 
+	@PreAuthorize("permitAll()")
 	@PostMapping
 	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO, HttpServletRequest request) {
-		if(!this.certificateService.validateCertificate(((X509Certificate[]) request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0])) {
+		if(!this.certificateService.validateCertificate(((X509Certificate[]) 
+				request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0])) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 		Message message = this.messageMapper.map(messageDTO);

@@ -1,61 +1,61 @@
-<mat-toolbar color="primary" class="mat-elevation-z24">
+<mat-toolbar class="mat-elevation-z24">
     <span>
         <button
-        *ngIf="!onRoute('log-list') && !onRoute('form')"
-        matTooltip="Logs"
+        *ngIf="!onRoute('login') && !onRoute('report')"
+        [routerLink]="'report'"
         mat-button
-        [routerLink]="'log-list'">
+        matTooltip="Dashboard">
+            Dashboard
+        </button>
+        <button
+        *ngIf="onRoute('report')"
+        [routerLink]="'log-list'"
+        mat-button
+        matTooltip="Logs">
             Logs
         </button>
         <button
-        *ngIf="!onRoute('alarm-triggering-list') && !onRoute('form')"
-        matTooltip="Alarms"
+        *ngIf="onRoute('report')"
+        [routerLink]="'alarm-triggering-list'"
         mat-button
-        [routerLink]="'alarm-triggering-list'">
+        matTooltip="Alarms">
             Alarms
         </button>
         <button
         *ngIf="onRoute('alarm-triggering-list')"
-        matTooltip="Add alarm"
+        (click)="openAlarmForm()"
         mat-button
-        (click)="addAlarm()">
+        matTooltip="Add alarm">
             Add alarm
         </button>
         <button
         *ngIf="onRoute('alarm-triggering-list')"
-        matTooltip="Alarms list"
+        (click)="openAlarmList()"
         mat-button
-        (click)="listAlarms()">
+        matTooltip="Alarms list">
             Alarms list
         </button>
         <button
-        *ngIf="!onRoute('login') && !onRoute('report') && !onRoute('alarm-triggering-list')"
-        matTooltip="Report"
-        mat-button
-        [routerLink]="'report'">
-            Report
-        </button>
-        <button
         *ngIf="onRoute('report')"
-        matTooltip="Certificate request"
+        (click)="openCertificateForm()"
         mat-button
-        [routerLink]="'certificate-form'">
+        matTooltip="Certificate request">
             Certificate request
         </button>
         <button
         *ngIf="onRoute('report')"
-        matTooltip="Revoke certificate request"
+        (click)="openRevokeForm()"
         mat-button
-        [routerLink]="'revoke-form'">
+        matTooltip="Revoke certificate request">
             Revoke certificate request
         </button>
     </span>
     <span>
-        <button *ngIf="!onRoute('form')" mat-icon-button [matMenuTriggerFor]="more">
-            <mat-icon matTooltip="More">more_vert</mat-icon>
+        <button *ngIf="!onRoute('login')" [matMenuTriggerFor]="more" mat-icon-button matTooltip="More">
+            <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">
-            <button mat-menu-item (click)="signOut()">
+            <button (click)="signOut()" mat-menu-item>
                 <mat-icon>logout</mat-icon>
                 <span>Sign out</span>
             </button>

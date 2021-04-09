@@ -9,9 +9,9 @@ export class DetailsContainerComponent implements OnInit {
 
   constructor() { }
 
-  @Input() warn: boolean;
-  @Input() delete: string;
   @Input() date: Date;
+  @Input() delete: string;
+  @Input() warn: boolean;
   @Input() private details: Detail[] = [];
   @Input() private mainDetails: Detail[] = [];
   @Output() deleted: EventEmitter<null> = new EventEmitter();

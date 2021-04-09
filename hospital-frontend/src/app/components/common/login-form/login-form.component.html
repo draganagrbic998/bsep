@@ -1,39 +1,37 @@
-<br><br><br>
-<app-form-container>
-    <h1>Log In</h1>
-    <br><br><br>
-    <form [formGroup]="loginForm">
-        <div [class.disabled]="loginPending">
-            <mat-form-field>
-                <mat-label>Email</mat-label>
-                <input 
-                formControlName="email" 
-                matInput 
-                placeholder="Enter email">
-                <mat-error>
-                    Email is required!
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input 
-                type="password" 
-                formControlName="password"
-                matInput 
-                placeholder="Enter password">
-                <mat-error>
-                    Password is required!
-                </mat-error>    
-            </mat-form-field>
-        </div>
-        <br><br><br>
-        <div class="center">
-            <button 
-            *ngIf="!loginPending"
-            mat-raised-button 
-            color="primary"
-            (click)="login()">Login</button>
-            <app-spinner-button *ngIf="loginPending"></app-spinner-button>
-        </div>
-    </form>
-</app-form-container>
+<div class="root">
+    <app-form-container>
+        <h1>Log In</h1>
+        <form [formGroup]="loginForm">
+            <div [class.disabled]="loginPending">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input 
+                    formControlName="email" 
+                    matInput 
+                    placeholder="Enter email">
+                    <mat-error>
+                        Email is required!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input 
+                    type="password" 
+                    formControlName="password"
+                    matInput 
+                    placeholder="Enter password">
+                    <mat-error>
+                        Password is required!
+                    </mat-error>    
+                </mat-form-field>    
+            </div>
+            <div class="center">
+                <button 
+                *ngIf="!loginPending" 
+                (click)="login()"
+                mat-raised-button>Login</button>
+                <app-spinner-button *ngIf="loginPending"></app-spinner-button>
+            </div>    
+        </form>
+    </app-form-container>    
+</div>

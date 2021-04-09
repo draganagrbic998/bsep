@@ -1,121 +1,91 @@
-<app-form-container>
-    <form [formGroup]="certificateForm">
-        <div [class.disabled]="savePending">
-            <h2>Certificate Request</h2>
-            <br><br>
-            <app-spacer-container>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Common name</mat-label>
-                        <input 
-                        formControlName="commonName" 
-                        matInput 
-                        placeholder="Enter common name">
-                        <mat-error>
-                            Valid common name is required!
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Organization</mat-label>
-                        <input 
-                        formControlName="organization" 
-                        matInput 
-                        placeholder="Enter organization">
-                        <mat-error>
-                            Valid organization is required!
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Country code</mat-label>
-                        <input 
-                        formControlName="country" 
-                        matInput 
-                        placeholder="Enter country code">
-                        <mat-error>
-                            Valid country code is required!
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Alias</mat-label>
-                        <input 
-                        formControlName="alias" 
-                        matInput 
-                        placeholder="Enter alias">
-                        <mat-error>
-                            Valid alias is required!
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Organization unit</mat-label>
-                        <input 
-                        formControlName="organizationUnit" 
-                        matInput 
-                        placeholder="Enter organization unit">
-                        <mat-error>
-                            Valid organization unit is required!
-                        </mat-error>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Email</mat-label>
-                        <input 
-                        formControlName="email" 
-                        matInput 
-                        placeholder="Enter email">
-                        <mat-error>
-                            Valid email is required!
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-            </app-spacer-container>
-            <br><br>
-            <h6>Template:</h6>
-            <br>
-            <mat-radio-group formControlName="template">
-                <app-spacer-container>
-                    <mat-radio-button value="SUB_CA">
-                        Subordinate CA
-                    </mat-radio-button>
-                    <mat-radio-button value="TLS">
-                        TLS Server
-                    </mat-radio-button>
-                    <mat-radio-button value="USER">
-                        TLS Client
-                    </mat-radio-button>
-                </app-spacer-container>
-            </mat-radio-group>
-            <div *ngIf="certificateForm.get('template').hasError('required')" class="error">
-                Template is required!
-            </div>
-            <br><br>
-            <h6>Type:</h6>
-            <br>
-            <mat-radio-group formControlName="type">
-                <app-spacer-container>
-                    <mat-radio-button value="HOSPITAL">
-                        Hospital
-                    </mat-radio-button>
-                    <mat-radio-button value="HOSPITAL_DEVICE">
-                        Hospital Device
-                    </mat-radio-button>
-                </app-spacer-container>
-            </mat-radio-group>
-            <div *ngIf="certificateForm.get('type').hasError('required')" class="error">
-                Type is required!
-            </div>
-        </div>
-        <br><br>
+<app-dialog-container title="Certificate Request" [disabled]="certificateForm.invalid" [pending]="savePending" (confirmed)="sendRequest()">
+    <form [formGroup]="certificateForm" [class.disabled]="savePending">
         <app-spacer-container>
-            <span></span>
-            <span>
-                <button 
-                *ngIf="!savePending"
-                mat-raised-button 
-                color="primary"
-                (click)="sendRequest()">Send Request</button>
-                <app-spinner-button *ngIf="savePending"></app-spinner-button>    
-            </span>
-        </app-spacer-container>        
+            <div>
+                <mat-form-field>
+                    <mat-label>Common name</mat-label>
+                    <input 
+                    formControlName="commonName" 
+                    matInput 
+                    placeholder="Enter common name">
+                    <mat-error>
+                        Valid common name is required!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Organization</mat-label>
+                    <input 
+                    formControlName="organization" 
+                    matInput 
+                    placeholder="Enter organization">
+                    <mat-error>
+                        Valid organization is required!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Country code</mat-label>
+                    <input 
+                    formControlName="country" 
+                    matInput 
+                    placeholder="Enter country code">
+                    <mat-error>
+                        Valid country code is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Alias</mat-label>
+                    <input 
+                    formControlName="alias" 
+                    matInput 
+                    placeholder="Enter alias">
+                    <mat-error>
+                        Valid alias is required!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Organization unit</mat-label>
+                    <input 
+                    formControlName="organizationUnit" 
+                    matInput 
+                    placeholder="Enter organization unit">
+                    <mat-error>
+                        Valid organization unit is required!
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input 
+                    formControlName="email" 
+                    matInput 
+                    placeholder="Enter email">
+                    <mat-error>
+                        Valid email is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>    
+        </app-spacer-container>
+        <h6>Template:</h6>
+        <mat-radio-group formControlName="template">
+            <mat-radio-button value="SUB_CA">
+                Subordinate CA
+            </mat-radio-button>
+            <mat-radio-button value="TLS">
+                TLS Server
+            </mat-radio-button>
+            <mat-radio-button value="USER">
+                TLS Client
+            </mat-radio-button>
+        </mat-radio-group>
+        <h6>Type:</h6>
+        <mat-radio-group formControlName="type">
+            <mat-radio-button value="HOSPITAL">
+                Hospital
+            </mat-radio-button>
+            <mat-radio-button value="HOSPITAL_DEVICE">
+                Hospital Device
+            </mat-radio-button>
+        </mat-radio-group>    
     </form>
-</app-form-container>
+</app-dialog-container>

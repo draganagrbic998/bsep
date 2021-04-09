@@ -38,14 +38,13 @@ export class LoginFormComponent implements OnInit {
     this.userService.login(this.loginForm.value).subscribe(
       (user: User) => {
         this.loginPending = false;
-        if (user){
+        if (user && user.authorities.includes(ADMIN)){
           this.storageService.setUser(user);
-          if (user.authorities[0] === ADMIN){
-            this.router.navigate([environment.reportRoute]);
-          }
-          else if (user.authorities[0] === DOCTOR){
-            this.router.navigate([environment.patientListRoute]);
-          }
+          this.router.navigate([environment.reportRoute]);
+        }
+        else if (user && user.authorities.includes(DOCTOR)){
+          this.storageService.setUser(user);
+          this.router.navigate([environment.patientListRoute]);
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);

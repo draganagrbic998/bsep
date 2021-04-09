@@ -1,22 +1,23 @@
 package com.example.demo.service;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.dto.LogMeasureDTO;
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Configuration;
@@ -35,8 +36,18 @@ public class LogService {
 	private final LogRepository logRepository;
 	private final LogMapper logMapper;
 	private final LogEventService eventService;
-	private final RestTemplate restTemplate;
-	
+
+	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String stringDate = searchDTO.getDate() == null ? "empty" : format.format(searchDTO.getDate());
+		return this.logRepository.findAll(pageable, 
+				searchDTO.getMode(), 
+				searchDTO.getStatus(), 
+				searchDTO.getIpAddress(),
+				searchDTO.getDescription(),
+				stringDate);
+	}
+
 	@PostConstruct
 	public void init() {
 		try {
@@ -57,35 +68,39 @@ public class LogService {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
-		return this.logRepository.findAll(pageable, 
-				searchDTO.getMode(), 
-				searchDTO.getStatus(), 
-				searchDTO.getIpAddress(),
-				searchDTO.getDescription(),
-				searchDTO.getDate());
-	}
-
-	@Transactional(readOnly = false)
-	public List<Log> save(List<Log> logs) {
-		return this.logRepository.saveAll(logs);
-	}
-	
+		
 	private void readLogs(String path, long interval, String regExp) {
 		while (true) {
 			try {
-				List<LogMeasureDTO> logsDTO = this.restTemplate.exchange(path, HttpMethod.GET, null, 
-					new ParameterizedTypeReference<List<LogMeasureDTO>>() {}).getBody();
-				List<Log> logs = logsDTO.stream().filter(x -> x.getText().matches(regExp)).map(x -> this.logMapper.map(x)).collect(Collectors.toList());
+				List<String> lines = this.readAll(path, regExp);
+				List<Log> logs = lines.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
 				logs = this.save(logs);
 				logs.forEach(x -> this.eventService.addLog(x));
 				Thread.sleep(interval);	
 			}
 			catch(Exception e) {
-				;
+				e.printStackTrace();
 			}
 		}
 	}
 	
+	public List<String> readAll(String path, String regExp) throws IOException {
+		List<String> lines = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader(path));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			if (line.matches(regExp))
+				lines.add(line);
+		}
+		reader.close();
+		FileWriter writer = new FileWriter(path);
+		writer.close();
+		return lines;
+	}
+
+	@Transactional(readOnly = false)
+	private List<Log> save(List<Log> logs) {
+		return this.logRepository.saveAll(logs);
+	}
+
 }

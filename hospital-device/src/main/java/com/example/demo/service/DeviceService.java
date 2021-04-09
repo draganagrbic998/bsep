@@ -54,19 +54,19 @@ public class DeviceService {
 	}
 		
 	private double getPulse() {
-		return Math.random();
+		return 40 + (120 - 40) * RANDOM.nextDouble();
 	}
 	
 	private double getPressure() {
-		return Math.random();
+		return 80 + (200 - 80) * RANDOM.nextDouble();
 	}
 	
 	private double getTemperature() {
-		return 30 + (45 - 35) * RANDOM.nextDouble();
+		return 30 + (45 - 30) * RANDOM.nextDouble();
 	}
 	
 	private double getOxygenLevel() {
-		return Math.random();
+		return 80 + (100 - 80) * RANDOM.nextDouble();
 	}
 	
 }

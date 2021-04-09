@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/common/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { Page } from 'src/app/models/page';
 import { Pagination } from 'src/app/models/pagination';
 import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient.service';
-import { StorageService } from 'src/app/services/storage.service';
-import { environment } from 'src/environments/environment';
+import { PatientFormComponent } from '../patient-form/patient-form.component';
+import { PatientDetailsComponent } from '../patient-details/patient-details.component';
 
 @Component({
   selector: 'app-patient-list',
@@ -19,10 +18,8 @@ import { environment } from 'src/environments/environment';
 export class PatientListComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService,
     private patientService: PatientService,
-    private dialog: MatDialog,
-    private router: Router
+    private dialog: MatDialog
   ) { }
 
   columns: string[] = ['firstName', 'lastName', 'birthDate', 'address', 'city', 'actions'];
@@ -36,8 +33,8 @@ export class PatientListComponent implements OnInit {
   search = '';
 
   edit(patient: Patient): void{
-    this.storageService.set(this.storageService.PATIENT_KEY, patient);
-    this.router.navigate([`${environment.patientFormRoute}/edit`]);
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: patient}};
+    this.dialog.open(PatientFormComponent, options);
   }
 
   delete(id: number): void{
@@ -50,9 +47,9 @@ export class PatientListComponent implements OnInit {
     });
   }
 
-  openDetails(patient: Patient): void{
-    this.storageService.set(this.storageService.PATIENT_KEY, patient);
-    this.router.navigate([environment.patientDetailsRoute]);
+  details(patient: Patient): void{
+    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: patient}, ...{disableClose: false}};
+    this.dialog.open(PatientDetailsComponent, options);
   }
 
   changePage(value: number): void{

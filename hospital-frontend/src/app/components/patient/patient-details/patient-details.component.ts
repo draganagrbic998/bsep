@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Patient } from 'src/app/models/patient';
-import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-patient-details',
@@ -10,13 +10,10 @@ import { StorageService } from 'src/app/services/storage.service';
 export class PatientDetailsComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService
+    @Inject(MAT_DIALOG_DATA) public patient: Patient
   ) { }
 
-  patient: Patient;
-
   ngOnInit(): void {
-    this.patient = this.storageService.get(this.storageService.PATIENT_KEY) as Patient;
   }
 
 }
