@@ -66,7 +66,7 @@ export class CertificatesComponent implements OnInit {
 
   getCA(): void {
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+    this.certificateService.findByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
     });
   }
@@ -159,7 +159,7 @@ export class CertificatesComponent implements OnInit {
 
     if (this.revoke.reason.trim()) {
       // tslint:disable-next-line: deprecation
-      this.certificateService.revokeCertificate(this.revoke).subscribe(() => {
+      this.certificateService.revoke(this.revoke).subscribe(() => {
         this.certificate.revoked = true;
         if (!!this.table) {
           this.table.reset();
@@ -199,7 +199,7 @@ export class CertificatesComponent implements OnInit {
     this.loadingTab = true;
     this.caAlias.next('root');
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+    this.certificateService.findByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
       this.activeIndex = 0;
       this.loadingTab = false;
@@ -210,7 +210,7 @@ export class CertificatesComponent implements OnInit {
     this.loadingTab = true;
     this.caAlias.next('root');
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias(this.caAlias.getValue()).subscribe(val => {
+    this.certificateService.findByAlias(this.caAlias.getValue()).subscribe(val => {
       this.certificateService.ca.next(val);
       this.activeIndex = 1;
       this.loadingTab = false;

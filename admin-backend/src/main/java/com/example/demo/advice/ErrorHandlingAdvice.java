@@ -14,25 +14,31 @@ public class ErrorHandlingAdvice {
     @ExceptionHandler(CertificateNotFoundException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onCertificateNotFoundException(CertificateNotFoundException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_FOUND"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_FOUND"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CertificateAuthorityException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onIssuerNotCAException(CertificateAuthorityException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "NOT_CA"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_CA"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidIssuerException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onIssuerNotValidException(InvalidIssuerException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "INVALID_ISSUER"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ISSUER_INVALID"), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AliasExistsException.class)
+    @ExceptionHandler(AliasTakenException.class)
     @ResponseBody
-    public ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasExistsException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ALIAS_TAKEN"), HttpStatus.CONFLICT);
+    public ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasTakenException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ALIAS_TAKEN"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidCertificateException.class)
+    @ResponseBody
+    public ResponseEntity<ErrorDTO> onInvalidCertificateException(InvalidCertificateException e){
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_INVALID"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RestTemplateVoidException.class)
@@ -48,7 +54,7 @@ public class ErrorHandlingAdvice {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Void> handleException(NullPointerException exception){
+    public ResponseEntity<Void> onNullPointerException(NullPointerException exception){
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

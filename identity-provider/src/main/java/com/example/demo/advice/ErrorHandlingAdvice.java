@@ -2,6 +2,7 @@ package com.example.demo.advice;
 
 import com.example.demo.dto.ErrorDTO;
 import com.example.demo.exception.ActivationExpiredException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +19,7 @@ public class ErrorHandlingAdvice {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Void> handleException(NullPointerException exception){
+    public ResponseEntity<Void> onNullPointerException(NullPointerException exception){
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

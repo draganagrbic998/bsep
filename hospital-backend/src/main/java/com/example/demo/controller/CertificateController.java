@@ -3,15 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.dto.CertificateRequestDTO;
 import com.example.demo.dto.CertificateDTO;
 import com.example.demo.service.CertificateService;
-import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
-import java.security.cert.X509Certificate;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,26 +19,23 @@ public class CertificateController {
 
 	private final CertificateService certificateService;
 
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	@PostMapping
-	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO, HttpServletRequest request) {
-		if(!this.certificateService.validateCertificate(((X509Certificate[]) 
-				request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0])) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		this.certificateService.save(certificateDTO);
+	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO) {
+		this.certificateService.create(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);			
 	}
 
 	@PostMapping(value = "/request")
 	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
-		this.certificateService.sendRequest(requestDTO);
+		this.certificateService.request(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
 
 	@DeleteMapping(value = "/{fileName}")
 	public ResponseEntity<Void> revoke(@PathVariable String fileName) {
-		this.certificateService.sendRevokeRequest(fileName);
+		this.certificateService.revoke(fileName);
 		return ResponseEntity.noContent().build();
 	}
+
 }

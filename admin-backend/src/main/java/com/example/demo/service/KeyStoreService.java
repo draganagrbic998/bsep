@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.config.PkiProperties;
 import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
 import com.example.demo.model.CertificateInfo;
-import com.example.demo.model.IssuerData;
 import com.example.demo.utils.Constants;
+import com.example.demo.utils.PkiProperties;
+import com.example.demo.utils.certificate.IssuerData;
 
 import lombok.AllArgsConstructor;
 
@@ -48,7 +48,7 @@ public class KeyStoreService {
 		return this.keyStoreReader.readCertificateChain(this.pkiProperties.getKeystore(), this.pkiProperties.getKeystorePassword(), alias);
 	}
 
-	public IssuerData readIssuerFromStore(String alias) {
+	public IssuerData readIssuer(String alias) {
 		return this.keyStoreReader.readIssuerFromStore(this.pkiProperties.getKeystore(),
 				alias, this.pkiProperties.getKeystorePassword().toCharArray(),
 				this.pkiProperties.getKeystorePassword().toCharArray());
@@ -63,7 +63,7 @@ public class KeyStoreService {
 		return filename;
 	}
 
-	public void addToTruststore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, String subjectFilename) {
+	public void updateTrustStore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, String subjectFilename) {
 		String issuerFilename =  Constants.CERTIFICATES_FOLDER
 				+ issuer.getIssuerAlias() + "_" + issuer.getAlias() + "_" + issuer.getOrganizationUnit() + ".jks";
 		this.keyStoreWriter.addToTruststore(issuer, cert, certificate, issuerFilename, subjectFilename, 

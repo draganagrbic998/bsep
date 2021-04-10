@@ -29,6 +29,11 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.findAll(pageable));
 	}
 
+	@GetMapping(value = "/authorities")
+	public ResponseEntity<List<Authority>> findAllAuthorities() {
+		return ResponseEntity.ok(this.userService.findAllAuthorities());
+	}
+
 	@PostMapping
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(this.userService.create(userDTO));
@@ -43,11 +48,6 @@ public class UserController {
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@GetMapping(value = "/authorities")
-	public ResponseEntity<List<Authority>> getAuthorities() {
-		return ResponseEntity.ok(this.userService.getAuthorities());
 	}
 
 	@PostMapping(value = "/send/{id}")

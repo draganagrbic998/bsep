@@ -1,9 +1,9 @@
 package com.example.demo.exception;
 
 @SuppressWarnings("serial")
-public class AliasExistsException extends RuntimeException {
+public class AliasTakenException extends RuntimeException {
 
-	public AliasExistsException() {
+	public AliasTakenException() {
 		super("The alias specified already exists");
 	}
 	

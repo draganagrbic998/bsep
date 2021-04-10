@@ -14,5 +14,6 @@ public class Constants {
 		
 	public static final String KEYSTORE_PATH = "src/main/resources/certificates/root_super_super.jks";
 	public static final String CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
+	public static final String AUTHORIZATION_HEADER = "Authorization";
 	
 }

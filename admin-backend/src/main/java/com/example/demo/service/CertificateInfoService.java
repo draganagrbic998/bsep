@@ -18,31 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class CertificateInfoService {
 
-	private final CertificateInfoRepository certificateRepository;
+	private final CertificateInfoRepository certificateInfoRepository;
 	private final EmailService emailService;
 
 	public Page<CertificateInfo> findAll(Pageable pageable) {
-		return this.certificateRepository.findAll(pageable);
+		return this.certificateInfoRepository.findAll(pageable);
 	}
 
 	public CertificateInfo findByAlias(String alias) {
-		return this.certificateRepository.findByAlias(alias);
+		return this.certificateInfoRepository.findByAlias(alias);
 	}
 
 	@Transactional(readOnly = false)
 	public CertificateInfo save(CertificateInfo certificate) {
-		return this.certificateRepository.save(certificate);
+		return this.certificateInfoRepository.save(certificate);
 	}
 	
 	@Transactional(readOnly = false)
 	public void revoke(long id, String reason) {
-		CertificateInfo certificate = this.certificateRepository.findById(id).get();
+		CertificateInfo certificate = this.certificateInfoRepository.findById(id).get();
 		certificate.setRevoked(true);
 		certificate.setRevocationDate(new Date());
 		certificate.setRevocationReason(reason);
-		this.certificateRepository.save(certificate);
-		String certFileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + "_" + certificate.getOrganizationUnit() + ".jks";
-		this.emailService.sendInfoMail(certificate.getEmail(), certFileName, reason, "Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
+		this.certificateInfoRepository.save(certificate);
+		String fileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + "_" + certificate.getOrganizationUnit() + ".jks";
+		this.emailService.sendInfoMail(certificate.getEmail(), fileName, reason, "Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
 	}
 
 }

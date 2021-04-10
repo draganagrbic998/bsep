@@ -41,7 +41,7 @@ export class UsersComponent implements OnInit {
       authorities: [[], Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
-    this.userService.getAuthorities().subscribe(val => {
+    this.userService.findAllAuthorities().subscribe(val => {
       this.userService.authorities = val;
     });
   }
@@ -62,7 +62,7 @@ export class UsersComponent implements OnInit {
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.userService.get(page, size).subscribe(val => {
+    this.userService.findAll(page, size).subscribe(val => {
       this.userService.users = val.content;
       this.totalRecords = val.totalElements;
       this.loading = false;

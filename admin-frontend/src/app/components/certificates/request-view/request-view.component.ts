@@ -33,7 +33,7 @@ export class RequestViewComponent {
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.certificateService.getCertificateRequests(page, size).subscribe(val => {
+    this.certificateService.findAllRequests(page, size).subscribe(val => {
       this.certificateService.certificateRequests = val.content;
       this.totalRecords = val.totalElements;
       this.loading = false;

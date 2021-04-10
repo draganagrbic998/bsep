@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.utils;
 
 import com.example.demo.dto.ErrorDTO;
 import com.example.demo.exception.RestTemplateMessageException;
@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
 import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @Component
-public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
+public class RestTemplateErrorHandler implements ResponseErrorHandler {
 
     @Override
     public boolean hasError(ClientHttpResponse httpResponse) throws IOException {

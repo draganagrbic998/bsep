@@ -2,20 +2,24 @@ package com.example.demo.service;
 
 import com.example.demo.dto.certificate.CreateCertificateDTO;
 import com.example.demo.dto.certificate.CreatedCertificateDTO;
-import com.example.demo.exception.AliasExistsException;
+import com.example.demo.exception.AliasTakenException;
 import com.example.demo.exception.CertificateAuthorityException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.model.*;
 import com.example.demo.repository.CertificateInfoRepository;
-import com.example.demo.utils.CertificateGenerator;
-import com.example.demo.utils.CertificateUtils;
+import com.example.demo.utils.AuthenticationProvider;
 import com.example.demo.utils.Constants;
+import com.example.demo.utils.certificate.CertificateGenerator;
+import com.example.demo.utils.certificate.CertificateUtils;
+import com.example.demo.utils.certificate.IssuerData;
+import com.example.demo.utils.certificate.SubjectData;
 
 import lombok.AllArgsConstructor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,27 +34,28 @@ import java.util.Date;
 @AllArgsConstructor
 public class CertificateService {
 
-	private final CertificateInfoRepository certificateRepository;
-	private final CertificateRequestService requestService;
-	private final CertificateValidationService validationService;
+	private final CertificateInfoRepository certificateInfoRepository;
+	private final CertificateRequestService certificateRequestService;
+	private final CertificateValidationService certificateValidationService;
 	private final CertificateGenerator certificateGenerator;
 	private final KeyStoreService keyStoreService;
-	private final RestTemplate restTemplate;
 	private final EmailService emailService;
+	private final RestTemplate restTemplate;
+	private final AuthenticationProvider authProvider;
 
 	public void create(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
 		String issuerAlias = certificateDTO.getIssuerAlias();
 		Certificate[] issuerChain = this.keyStoreService.readCertificateChain(issuerAlias);
-		IssuerData issuerData = this.keyStoreService.readIssuerFromStore(issuerAlias);
+		IssuerData issuerData = this.keyStoreService.readIssuer(issuerAlias);
 		X509Certificate issuer = (X509Certificate) issuerChain[0];
-		CertificateInfo issuerInfo = this.certificateRepository.findByAlias(issuerAlias);
+		CertificateInfo issuerInfo = this.certificateInfoRepository.findByAlias(issuerAlias);
 		
-		if (!this.validationService.isCertificateValid(issuerAlias))
+		if (!this.certificateValidationService.isCertificateValid(issuerAlias))
 			throw new InvalidIssuerException();
 
-		if (this.certificateRepository.findByAlias(certificateDTO.getAlias()) != null)
-			throw new AliasExistsException();
+		if (this.certificateInfoRepository.findByAlias(certificateDTO.getAlias()) != null)
+			throw new AliasTakenException();
 
 		try {
 			if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) {
@@ -77,7 +82,7 @@ public class CertificateService {
 
 		this.keyStoreService.savePrivateKey(certificateDTO.getAlias(), chain, keyPair.getPrivate());
 		this.keyStoreService.saveKeyStore();
-		this.keyStoreService.addToTruststore(issuerInfo, cert, certificate, 
+		this.keyStoreService.updateTrustStore(issuerInfo, cert, certificate, 
 			this.keyStoreService.saveSeparateKeys(issuerInfo, cert, keyPair.getPrivate(), chain));
 		
 		String fileName = issuerInfo.getAlias() + "_" + cert.getAlias() + "_" + cert.getOrganizationUnit();
@@ -93,14 +98,18 @@ public class CertificateService {
 		}
 
 		if (certificateDTO.getId() != 0) {
-			CertificateRequest request = this.requestService.findOne(certificateDTO.getId());
+			CertificateRequest request = this.certificateRequestService.findOne(certificateDTO.getId());
 			CreatedCertificateDTO created = new CreatedCertificateDTO(
 				issuerInfo.getAlias(), cert.getAlias(), cert.getOrganizationUnit(),
 				request.getType(), Base64.getEncoder().encodeToString(returnValue)
 			);
 
-			this.restTemplate.postForEntity(request.getPath(), created, CreatedCertificateDTO.class).getBody();
-			this.requestService.delete(certificateDTO.getId());
+			this.restTemplate.exchange(
+					request.getPath(), 
+					HttpMethod.POST, 
+					this.authProvider.getAuthEntity(created), 
+					CreatedCertificateDTO.class);
+			this.certificateRequestService.delete(certificateDTO.getId());
 			
 			String certFileName = cert.getIssuerAlias() + "_" + cert.getAlias() + "_" + cert.getOrganizationUnit() + ".jks";
 			String location = request.getPath().split("//")[1].split("/")[0];
@@ -122,7 +131,7 @@ public class CertificateService {
 		certificate.setStartDate(subjectData.getStartDate());
 		certificate.setEndDate(subjectData.getEndDate());
 		certificate.setExtensions(certificateDTO.getExtensions());
-		return this.certificateRepository.save(certificate);
+		return this.certificateInfoRepository.save(certificate);
 	}
 
 }

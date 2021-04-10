@@ -2,51 +2,53 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.RevokeDTO;
 import com.example.demo.dto.certificate.CertificateInfoDTO;
+import com.example.demo.dto.certificate.CertificateRequestDTO;
 import com.example.demo.dto.certificate.CreateCertificateDTO;
 import com.example.demo.mapper.CertificateInfoMapper;
 import com.example.demo.service.CertificateInfoService;
+import com.example.demo.service.CertificateRequestService;
 import com.example.demo.service.CertificateService;
-import com.example.demo.service.CertificateValidationService;
 import com.example.demo.service.KeyExportService;
-import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.security.cert.X509Certificate;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 @AllArgsConstructor
-public class CertificatesController {
+public class CertificateController {
 
 	private final CertificateService certificateService;
 	private final CertificateInfoService certificateInfoService;
-	private final CertificateValidationService validationService;
-	private final CertificateInfoMapper certificateMapper;
+	private final CertificateRequestService certificateRequestService;
+	private final CertificateInfoMapper certificateInfoMapper;
 	private final KeyExportService keyExportService;
 
 	@GetMapping
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(ci -> this.certificateMapper.map(ci, 0)));
+		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(ci -> this.certificateInfoMapper.map(ci, 0)));
 	}
 
 	@GetMapping(value = "/{alias}")
 	public ResponseEntity<CertificateInfoDTO> findByAlias(@PathVariable String alias) {
-		return ResponseEntity.ok(this.certificateMapper.map(this.certificateInfoService.findByAlias(alias), 1));
+		return ResponseEntity.ok(this.certificateInfoMapper.map(this.certificateInfoService.findByAlias(alias), 1));
+	}
+
+	@GetMapping(value = "/requests")
+	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
+		return ResponseEntity.ok(this.certificateRequestService.findAll(pageable).map(CertificateRequestDTO::new));
 	}
 
 	@PostMapping
@@ -75,23 +77,6 @@ public class CertificatesController {
 		int length = inputStream.available();
 		InputStreamResource resource = new InputStreamResource(inputStream);
 		return ResponseEntity.ok().contentLength(length).body(resource);
-	}
-
-	@PreAuthorize("permitAll()")
-	@GetMapping(value = "/validate/{serial}")
-	public ResponseEntity<Boolean> validate(@PathVariable long serial) {
-		return ResponseEntity.ok(this.validationService.isCertificateValid(serial));
-	}
-
-	@PreAuthorize("permitAll()")
-	@GetMapping(value = "/revoke/{serial}")
-	public ResponseEntity<Void> revoke(@PathVariable long serial, HttpServletRequest request) {
-		if (!this.validationService.isCertificateValid(((X509Certificate[]) 
-				request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0].getSerialNumber().longValue())) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		this.certificateInfoService.revoke(serial, "Revocation requested by hospital admin.");
-		return ResponseEntity.ok().build();			
 	}
 
 }

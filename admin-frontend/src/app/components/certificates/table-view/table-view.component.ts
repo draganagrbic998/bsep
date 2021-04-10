@@ -46,7 +46,7 @@ export class TableViewComponent {
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.certificateService.getCertificates(page, size).subscribe(val => {
+    this.certificateService.findAll(page, size).subscribe(val => {
       this.certificateService.certificates = val.content;
       this.totalRecords = val.totalElements;
       this.loading = false;

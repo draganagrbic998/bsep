@@ -1,7 +1,8 @@
 package com.example.demo.keystore;
 
 import com.example.demo.exception.CertificateNotFoundException;
-import com.example.demo.model.IssuerData;
+import com.example.demo.utils.certificate.IssuerData;
+
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.springframework.stereotype.Component;

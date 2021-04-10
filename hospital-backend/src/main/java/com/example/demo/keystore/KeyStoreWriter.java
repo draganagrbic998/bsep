@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate;
 @Component
 public class KeyStoreWriter {
 
-	public void addToTruststore(String hospitalAlias, String deviceAlias, X509Certificate certificate,
+	public void updateTrustStore(String hospitalAlias, String deviceAlias, X509Certificate certificate,
 			String hospitalFilename, String subjectFilename, String keyStorePassword) {
 		
 		X509Certificate hospitalCertificate = null;

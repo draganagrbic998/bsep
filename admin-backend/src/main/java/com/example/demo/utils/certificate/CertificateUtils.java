@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.utils.certificate;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

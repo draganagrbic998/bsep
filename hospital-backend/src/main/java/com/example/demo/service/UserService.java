@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.TokenDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
+import com.example.demo.utils.AuthenticationProvider;
 import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
@@ -20,14 +22,23 @@ public class UserService implements UserDetailsService {
 	private static final String AUTH_API = Constants.IDENTITY_BACKEND + "/auth";
 	
 	private final RestTemplate restTemplate;
+	private final AuthenticationProvider authProvider;
 
 	@Override
 	public User loadUserByUsername(String token) {
-		return this.restTemplate.postForEntity(AUTH_API, new TokenDTO(token), User.class).getBody();
+		return this.restTemplate.exchange(
+				AUTH_API, 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(new TokenDTO(token)), 
+				User.class).getBody();
 	}
 	
 	public UserDTO login(LoginDTO loginDTO) {
-		return this.restTemplate.postForEntity(AUTH_API + "/login", loginDTO, UserDTO.class).getBody();
+		return this.restTemplate.exchange(
+				AUTH_API + "/login", 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(loginDTO), 
+				UserDTO.class).getBody();
 	}
 	
 	public User currentUser() {

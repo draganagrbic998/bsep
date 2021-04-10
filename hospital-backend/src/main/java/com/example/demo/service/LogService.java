@@ -20,10 +20,10 @@ import org.springframework.util.ResourceUtils;
 
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
-import com.example.demo.model.Configuration;
 import com.example.demo.model.Log;
-import com.example.demo.model.LogConfiguration;
 import com.example.demo.repository.LogRepository;
+import com.example.demo.utils.Configuration;
+import com.example.demo.utils.LogConfiguration;
 import com.google.gson.Gson;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +46,11 @@ public class LogService {
 				searchDTO.getIpAddress(),
 				searchDTO.getDescription(),
 				stringDate);
+	}
+
+	@Transactional(readOnly = false)
+	private List<Log> save(List<Log> logs) {
+		return this.logRepository.saveAll(logs);
 	}
 
 	@PostConstruct
@@ -96,11 +101,6 @@ public class LogService {
 		FileWriter writer = new FileWriter(path);
 		writer.close();
 		return lines;
-	}
-
-	@Transactional(readOnly = false)
-	private List<Log> save(List<Log> logs) {
-		return this.logRepository.saveAll(logs);
 	}
 
 }

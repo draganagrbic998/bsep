@@ -18,13 +18,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CertificateValidationService {
 
-	private final CertificateInfoRepository certificateRepository;
+	private final CertificateInfoRepository certificateInfoRepository;
 	private final KeyStoreService keyStoreService;
 	
 	@Transactional(readOnly = true)
 	public boolean isCertificateValid(long id) {
 		try {
-			return this.isCertificateValid(this.certificateRepository.findById(id).get().getAlias());
+			return this.isCertificateValid(this.certificateInfoRepository.findById(id).get().getAlias());
 		} 
 		catch (Exception e) {
 			return false;
@@ -40,7 +40,7 @@ public class CertificateValidationService {
 
 		for (int i = 0; i < chain.length; i++) {
 			X509Certificate certificate = (X509Certificate) chain[i];
-			CertificateInfo cert = this.certificateRepository.findById(certificate.getSerialNumber().longValue()).orElse(null);
+			CertificateInfo cert = this.certificateInfoRepository.findById(certificate.getSerialNumber().longValue()).orElse(null);
 
 			if (cert == null) {
 				return false;

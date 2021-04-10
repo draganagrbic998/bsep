@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.utils;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @NoArgsConstructor
 @Configuration
-@ConfigurationProperties(prefix = "pki")
+@ConfigurationProperties(prefix = "server.ssl")
 public class PkiProperties {
-	private String keystore;
-	private String keystorePassword;
+	private String keyAlias;
+    private String keystore;
+    private String keystorePassword;
 }

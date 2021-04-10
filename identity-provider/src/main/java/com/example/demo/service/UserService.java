@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
 	    return this.userRepository.findAll(pageable);
     }
 
-    public List<Authority> getAuthorities() {
+    public List<Authority> findAllAuthorities() {
 	    return this.authorityRepository.findAll();
     }
 

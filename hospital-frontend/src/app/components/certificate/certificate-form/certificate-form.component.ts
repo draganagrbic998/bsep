@@ -37,7 +37,7 @@ export class CertificateFormComponent implements OnInit {
     }
     this.savePending = true;
     // tslint:disable-next-line: deprecation
-    this.certificateService.sendRequest(this.certificateForm.value).subscribe(
+    this.certificateService.request(this.certificateForm.value).subscribe(
       (certificateRequest: CertificateRequest) => {
         this.savePending = false;
         if (certificateRequest){

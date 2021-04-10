@@ -121,7 +121,7 @@ export class AddCertificateComponent implements OnInit, OnDestroy {
   }
 
   saveCertificate(): void {
-    this.certificateService.createCertificate(this.certificate).subscribe(() => {
+    this.certificateService.create(this.certificate).subscribe(() => {
 
       this.messageService.add({
         severity: 'success',

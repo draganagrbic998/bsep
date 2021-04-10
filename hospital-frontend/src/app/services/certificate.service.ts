@@ -15,13 +15,13 @@ export class CertificateService {
 
   private readonly API_PATH = 'api/certificates';
 
-  sendRequest(request: CertificateRequest): Observable<CertificateRequest>{
+  request(request: CertificateRequest): Observable<CertificateRequest>{
     return this.http.post<CertificateRequest>(`${this.API_PATH}/request`, request).pipe(
       catchError(() => of(null))
     );
   }
 
-  sendRevokeRequest(certFileName: string): Observable<boolean>{
+  revoke(certFileName: string): Observable<boolean>{
     return this.http.delete<boolean>(`${this.API_PATH}/${certFileName}`).pipe(
       map(() => true),
       catchError(() => of(false))
