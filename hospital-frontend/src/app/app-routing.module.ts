@@ -14,7 +14,7 @@ import { LoginFormComponent } from './components/common/login-form/login-form.co
 
 const routes: Routes = [
   {
-    path: environment.loginRoute,
+    path: environment.loginFormRoute,
     component: LoginFormComponent,
   },
   {
@@ -30,7 +30,7 @@ const routes: Routes = [
     data: {authorities: [DOCTOR]}
   },
   {
-    path: environment.alarmTriggeringListRoute,
+    path: environment.alarmListRoute,
     component: AlarmTriggeringListComponent,
     canActivate: [AuthGuard],
     data: {authorities: [DOCTOR, ADMIN]}
@@ -50,7 +50,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: environment.loginRoute
+    redirectTo: environment.loginFormRoute
   }
 ];
 

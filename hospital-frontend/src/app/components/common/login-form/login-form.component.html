@@ -2,7 +2,7 @@
     <app-form-container>
         <h1>Log In</h1>
         <form [formGroup]="loginForm">
-            <div [class.disabled]="loginPending">
+            <div [class.disabled]="pending">
                 <mat-form-field>
                     <mat-label>Email</mat-label>
                     <input 
@@ -27,10 +27,10 @@
             </div>
             <div class="center">
                 <button 
-                *ngIf="!loginPending" 
+                *ngIf="!pending" 
                 (click)="login()"
                 mat-raised-button>Login</button>
-                <app-spinner-button *ngIf="loginPending"></app-spinner-button>
+                <app-spinner-button *ngIf="pending"></app-spinner-button>
             </div>    
         </form>
     </app-form-container>    

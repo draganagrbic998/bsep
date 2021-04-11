@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { Pagination } from 'src/app/models/pagination';
@@ -21,7 +21,7 @@ export class DoctorAlarmListComponent implements OnInit {
 
   @Input() patientId: number;
   alarms: DoctorAlarm[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     pageNumber: 0,
     firstPage: true,
@@ -29,8 +29,7 @@ export class DoctorAlarmListComponent implements OnInit {
   };
 
   addAlarm(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: this.patientId}};
-    this.dialog.open(DoctorAlarmFormComponent, options);
+    this.dialog.open(DoctorAlarmFormComponent, {...DIALOG_OPTIONS, ...{data: this.patientId}});
   }
 
   changePage(value: number): void{
@@ -39,11 +38,11 @@ export class DoctorAlarmListComponent implements OnInit {
   }
 
   fetchAlarms(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.alarmService.findAllDoctor(this.patientId, this.pagination.pageNumber).subscribe(
       (page: Page<DoctorAlarm>) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.alarms = page.content;
         this.pagination.firstPage = page.first;
         this.pagination.lastPage = page.last;

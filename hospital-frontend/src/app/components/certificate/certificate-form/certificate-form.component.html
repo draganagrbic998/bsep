@@ -1,5 +1,6 @@
-<app-dialog-container title="Certificate Request" [disabled]="certificateForm.invalid" [pending]="savePending" (confirmed)="sendRequest()">
-    <form [formGroup]="certificateForm" [class.disabled]="savePending">
+<app-dialog-container title="Certificate Request" [disabled]="certificateForm.invalid" 
+[pending]="pending" (confirmed)="confirm()">
+    <form [formGroup]="certificateForm" [class.disabled]="pending">
         <app-spacer-container>
             <div>
                 <mat-form-field>

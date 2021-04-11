@@ -20,7 +20,7 @@ export class DoctorAlarmFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  savePending = false;
+  pending = false;
   alarmForm: FormGroup = new FormGroup({
     minPulse: new FormControl(''),
     maxPulse: new FormControl(''),
@@ -35,15 +35,15 @@ export class DoctorAlarmFormComponent implements OnInit {
   });
 
   confirm(): void{
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.alarmService.saveDoctor(this.patientId, this.alarmForm.value).subscribe(
       (alarm: DoctorAlarm) => {
-        this.savePending = false;
+        this.pending = false;
         if (alarm){
+          this.alarmService.announceRefreshDoctorData();
           this.snackBar.open('Alarm saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
-          this.alarmService.announceRefreshDoctorData();
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);

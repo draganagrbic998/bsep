@@ -15,7 +15,7 @@
             New Patient
         </button>
         <button
-        *ngIf="onRoute('patient-list') || onRoute('alarm-triggering-list')"
+        *ngIf="onRoute('patient-list') || onRoute('alarm-list')"
         [routerLink]="'message-list'"
         mat-button
         matTooltip="Messages">
@@ -23,7 +23,7 @@
         </button>
         <button
         *ngIf="onRoute('patient-list') || onRoute('message-list')"
-        [routerLink]="'alarm-triggering-list'"
+        [routerLink]="'alarm-list'"
         mat-button
         matTooltip="Alarms">
             Alarms

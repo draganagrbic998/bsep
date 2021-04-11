@@ -16,20 +16,20 @@
         </button>
         <button
         *ngIf="onRoute('report')"
-        [routerLink]="'alarm-triggering-list'"
+        [routerLink]="'alarm-list'"
         mat-button
         matTooltip="Alarms">
             Alarms
         </button>
         <button
-        *ngIf="onRoute('alarm-triggering-list')"
+        *ngIf="onRoute('alarm-list')"
         (click)="openAlarmForm()"
         mat-button
         matTooltip="Add alarm">
             Add alarm
         </button>
         <button
-        *ngIf="onRoute('alarm-triggering-list')"
+        *ngIf="onRoute('alarm-list')"
         (click)="openAlarmList()"
         mat-button
         matTooltip="Alarms list">

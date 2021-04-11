@@ -1,6 +1,6 @@
 <div class="root">
     <div class="left">
-        <app-list-container title="NO MESSAGES" [pending]="fetchPending" [empty]="!messages.length" 
+        <app-list-container title="NO MESSAGES" [pending]="pending" [empty]="!messages.length" 
         [refresh]="true" [pagination]="pagination" (changedPage)="changePage($event)">
             <app-message-details
             *ngFor="let message of messages"
@@ -9,7 +9,7 @@
         </app-list-container>
     </div>
     <div class="right">
-        <app-message-search [fetchPending]="fetchPending" 
+        <app-message-search [pending]="pending" 
         (searchTriggered)="search = $event; fetchMessages()"></app-message-search>
     </div>
 </div>

@@ -31,21 +31,21 @@ export class PatientFormComponent implements OnInit {
     address: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     city: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
   });
-  savePending = false;
+  pending = false;
 
-  save(): void{
+  confirm(): void{
     if (this.patientForm.invalid){
       this.patientForm.updateValueAndValidity();
       return;
     }
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.patientService.save({...this.patient, ...this.patientForm.value}).subscribe(
       (patient: Patient) => {
-        this.savePending = false;
+        this.pending = false;
         if (patient){
-          this.snackBar.open('Patient saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.patientService.announceRefreshData();
+          this.snackBar.open('Patient saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
         }
         else{

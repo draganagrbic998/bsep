@@ -19,7 +19,7 @@ export class AdminAlarmFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  savePending = false;
+  pending = false;
   alarmForm: FormGroup = new FormGroup({
     status: new FormControl(true, [Validators.required]),
     param: new FormControl('', []),
@@ -27,12 +27,13 @@ export class AdminAlarmFormComponent implements OnInit {
   });
 
   confirm(): void{
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.alarmService.saveAdmin(this.alarmForm.value).subscribe(
       (alarm: AdminAlarm) => {
-        this.savePending = false;
+        this.pending = false;
         if (alarm){
+          this.alarmService.announceRefreshAdminData();
           this.snackBar.open('Alarm saved!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
         }

@@ -1,11 +1,11 @@
 <div class="root">
   <div class="left">
 
-    <app-preloader *ngIf="fetchPending"></app-preloader>
-    <app-empty-container *ngIf="!fetchPending && !report" 
+    <app-preloader *ngIf="pending"></app-preloader>
+    <app-empty-container *ngIf="!pending && !report" 
     [title]="'ERROR LOADING REPORT'"></app-empty-container>
 
-    <table *ngIf="!fetchPending && report" class="table table-bordered mat-elevation-z24">
+    <table *ngIf="!pending && report" class="table table-bordered mat-elevation-z24">
       <thead>
         <tr>
           <th scope="col"></th>
@@ -45,7 +45,7 @@
   <div class="right">
     <app-form-container>
       <h2>Search</h2>
-        <form [formGroup]="searchForm" [class.disabled]="fetchPending">
+        <form [formGroup]="searchForm" [class.disabled]="pending">
           <mat-form-field> 
             <mat-label>Start date</mat-label>
             <input 
@@ -71,10 +71,10 @@
           <span></span>
           <span>
               <button 
-              *ngIf="!fetchPending" 
+              *ngIf="!pending" 
               (click)="getReport()"
               mat-raised-button>Search</button>
-              <app-spinner-button *ngIf="fetchPending"></app-spinner-button>    
+              <app-spinner-button *ngIf="pending"></app-spinner-button>    
           </span>
       </app-spacer-container>        
     </app-form-container>

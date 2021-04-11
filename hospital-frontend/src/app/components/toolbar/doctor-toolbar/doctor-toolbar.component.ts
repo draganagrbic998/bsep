@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PatientService } from 'src/app/services/patient.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -30,12 +30,11 @@ export class DoctorToolbarComponent implements OnInit {
 
   signOut(): void{
     this.storageService.removeUser();
-    this.router.navigate([environment.loginRoute]);
+    this.router.navigate([environment.loginFormRoute]);
   }
 
   openPatientForm(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: {}}};
-    this.dialog.open(PatientFormComponent, options);
+    this.dialog.open(PatientFormComponent, {...DIALOG_OPTIONS, ...{data: {}}});
   }
 
   announceSearchData(): void{

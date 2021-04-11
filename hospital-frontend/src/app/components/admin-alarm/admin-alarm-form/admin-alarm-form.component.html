@@ -1,6 +1,6 @@
-<app-dialog-container title="Create new alarm" [pending]="savePending" 
+<app-dialog-container title="Create new alarm" [pending]="pending" 
 [disabled]="alarmForm.invalid" (confirmed)="confirm()">
-    <form [formGroup]="alarmForm" [class.disabled]="savePending">
+    <form [formGroup]="alarmForm" [class.disabled]="pending">
         <mat-slide-toggle formControlName="status">
             {{alarmForm.controls.status.value ? 
                 'Alarm for tracking logs status' : 

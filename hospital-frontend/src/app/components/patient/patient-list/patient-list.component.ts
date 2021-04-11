@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeleteConfirmationComponent } from 'src/app/components/common/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
@@ -9,6 +9,7 @@ import { Patient } from 'src/app/models/patient';
 import { PatientService } from 'src/app/services/patient.service';
 import { PatientFormComponent } from '../patient-form/patient-form.component';
 import { PatientDetailsComponent } from '../patient-details/patient-details.component';
+import { DeleteData } from 'src/app/models/delete-data';
 
 @Component({
   selector: 'app-patient-list',
@@ -24,7 +25,7 @@ export class PatientListComponent implements OnInit {
 
   columns: string[] = ['firstName', 'lastName', 'birthDate', 'address', 'city', 'actions'];
   patients: MatTableDataSource<Patient> = new MatTableDataSource([]);
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     pageNumber: 0,
     firstPage: true,
@@ -33,23 +34,19 @@ export class PatientListComponent implements OnInit {
   search = '';
 
   edit(patient: Patient): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: patient}};
-    this.dialog.open(PatientFormComponent, options);
+    this.dialog.open(PatientFormComponent, {...DIALOG_OPTIONS, ...{data: patient}});
   }
 
   delete(id: number): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.patientService.delete(id)}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.patientService.announceRefreshData();
-      }
-    });
+    const deleteData: DeleteData = {
+      deleteFunction: () => this.patientService.delete(id),
+      refreshFunction: () => this.patientService.announceRefreshData()
+    };
+    this.dialog.open(DeleteConfirmationComponent, {...DIALOG_OPTIONS, ...{data: deleteData}});
   }
 
   details(patient: Patient): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: patient}, ...{disableClose: false}};
-    this.dialog.open(PatientDetailsComponent, options);
+    this.dialog.open(PatientDetailsComponent, {...DIALOG_OPTIONS, ...{data: patient}, ...{disableClose: false}});
   }
 
   changePage(value: number): void{
@@ -58,11 +55,11 @@ export class PatientListComponent implements OnInit {
   }
 
   fetchPatients(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.patientService.findAll(this.pagination.pageNumber, this.search).subscribe(
       (page: Page<Patient>) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.patients = new MatTableDataSource(page.content);
         this.pagination.firstPage = page.first;
         this.pagination.lastPage = page.last;

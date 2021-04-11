@@ -1,6 +1,6 @@
 <app-form-container>
     <h2>Search</h2>
-    <form [formGroup]="searchForm" [class.disabled]="fetchPending">
+    <form [formGroup]="searchForm" [class.disabled]="pending">
         <mat-form-field>
             <mat-label>Mode</mat-label>
             <input 
@@ -44,10 +44,10 @@
         <span></span>
         <span>
             <button 
-            *ngIf="!fetchPending" 
+            *ngIf="!pending" 
             (click)="searchTriggered.emit(searchForm.value)"
             mat-raised-button>Search</button>
-            <app-spinner-button *ngIf="fetchPending"></app-spinner-button>    
+            <app-spinner-button *ngIf="pending"></app-spinner-button>    
         </span>
     </app-spacer-container>        
 </app-form-container>

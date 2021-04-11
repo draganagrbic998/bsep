@@ -11,7 +11,7 @@ export class LogSearchComponent implements OnInit {
 
   constructor() { }
 
-  @Input() fetchPending: boolean;
+  @Input() pending: boolean;
   @Output() searchTriggered: EventEmitter<LogSearch> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({

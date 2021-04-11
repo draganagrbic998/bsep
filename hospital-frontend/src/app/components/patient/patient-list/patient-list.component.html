@@ -1,6 +1,6 @@
-<app-preloader *ngIf="fetchPending"></app-preloader>
+<app-preloader *ngIf="pending"></app-preloader>
 
-<div *ngIf="!fetchPending" class="root">
+<div *ngIf="!pending" class="root">
   <div class="mat-elevation-z24">
     <table mat-table [dataSource]="patients">
       
@@ -76,7 +76,7 @@
         <span>
           <app-paginator 
           [small]="true" 
-          [pending]="fetchPending"
+          [pending]="pending"
           [pagination]="pagination" 
           (changedPage)="changePage($event)"
           ></app-paginator>

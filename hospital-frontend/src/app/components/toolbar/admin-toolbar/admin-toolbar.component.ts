@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { StorageService } from 'src/app/services/storage.service';
@@ -28,7 +28,7 @@ export class AdminToolbarComponent implements OnInit {
 
   signOut(): void{
     this.storageService.removeUser();
-    this.router.navigate([environment.loginRoute]);
+    this.router.navigate([environment.loginFormRoute]);
   }
 
   openAlarmForm(): void{
@@ -36,8 +36,8 @@ export class AdminToolbarComponent implements OnInit {
   }
 
   openAlarmList(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{width: '500px', height: '550px', disableClose: false}};
-    this.dialog.open(AdminAlarmListComponent, options);
+    this.dialog.open(AdminAlarmListComponent, {...DIALOG_OPTIONS,
+      ...{width: '500px', height: '550px', disableClose: false}});
   }
 
   openCertificateForm(): void{

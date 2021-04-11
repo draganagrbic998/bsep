@@ -1,5 +1,6 @@
-<app-dialog-container title="Certificate Revoke" [disabled]="revokeForm.invalid" [pending]="savePending" (confirmed)="sendRequest()">
-    <form [formGroup]="revokeForm" [class.disabled]="savePending">
+<app-dialog-container title="Certificate Revoke" [disabled]="revokeForm.invalid" 
+[pending]="pending" (confirmed)="confirm()">
+    <form [formGroup]="revokeForm" [class.disabled]="pending">
         <mat-form-field>
             <mat-label>File name</mat-label>
             <input 

@@ -1,5 +1,6 @@
-<app-dialog-container [title]="patient.id ? 'Edit Patient' : 'New Patient'" [disabled]="patientForm.invalid" [pending]="savePending" (confirmed)="save()">
-    <form [formGroup]="patientForm" [class.disabled]="savePending">
+<app-dialog-container [title]="patient.id ? 'Edit Patient' : 'New Patient'" 
+[disabled]="patientForm.invalid" [pending]="pending" (confirmed)="confirm()">
+    <form [formGroup]="patientForm" [class.disabled]="pending">
         <div>
             <mat-form-field>
                 <mat-label>First name</mat-label>

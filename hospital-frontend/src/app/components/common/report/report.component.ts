@@ -15,18 +15,18 @@ export class ReportComponent implements OnInit {
   ) { }
 
   report: Report;
-  fetchPending = true;
+  pending = true;
   searchForm: FormGroup = new FormGroup({
     start: new FormControl(''),
     end: new FormControl('')
   });
 
   getReport(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.reportService.report(this.searchForm.value).subscribe(
       (report: Report) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.report = report;
       }
     );

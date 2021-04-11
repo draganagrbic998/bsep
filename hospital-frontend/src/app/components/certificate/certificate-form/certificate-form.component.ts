@@ -19,7 +19,7 @@ export class CertificateFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  savePending = false;
+  pending = false;
   certificateForm: FormGroup = new FormGroup({
     alias: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     commonName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
@@ -31,15 +31,15 @@ export class CertificateFormComponent implements OnInit {
     type: new FormControl('', [Validators.required])
   });
 
-  sendRequest(): void {
+  confirm(): void {
     if (this.certificateForm.invalid){
       return;
     }
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.certificateService.request(this.certificateForm.value).subscribe(
       (certificateRequest: CertificateRequest) => {
-        this.savePending = false;
+        this.pending = false;
         if (certificateRequest){
           this.snackBar.open('Request sent!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();

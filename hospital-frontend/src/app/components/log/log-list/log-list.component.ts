@@ -17,7 +17,7 @@ export class LogListComponent implements OnInit {
   ) { }
 
   logs: Log[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     pageNumber: 0,
     firstPage: true,
@@ -31,11 +31,11 @@ export class LogListComponent implements OnInit {
   }
 
   fetchLogs(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.logService.findAll(this.pagination.pageNumber, this.search).subscribe(
       (page: Page<Log>) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.logs = page.content;
         this.pagination.firstPage = page.first;
         this.pagination.lastPage = page.last;

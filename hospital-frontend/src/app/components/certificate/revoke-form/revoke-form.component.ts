@@ -18,20 +18,20 @@ export class RevokeFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  savePending = false;
+  pending = false;
   revokeForm: FormGroup = new FormGroup({
     certFileName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('.+_.+_.+\.jks'))]),
   });
 
-  sendRequest(): void {
+  confirm(): void {
     if (this.revokeForm.invalid){
       return;
     }
-    this.savePending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.certificateService.revoke(this.revokeForm.value.certFileName).subscribe(
       (response: boolean) => {
-        this.savePending = false;
+        this.pending = false;
         if (response){
           this.snackBar.open('Certificate revoked!', SNACKBAR_CLOSE, SNACKBAR_SUCCESS_OPTIONS);
           this.dialogRef.close();
