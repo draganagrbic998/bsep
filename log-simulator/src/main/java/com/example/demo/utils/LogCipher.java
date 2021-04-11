@@ -30,10 +30,10 @@ public class LogCipher {
 			return plainText;
 
 		try {
-			cipher.init(Cipher.ENCRYPT_MODE, key, ips);
-			cipherText = cipher.doFinal(plainText.getBytes());
-		} catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
-				| BadPaddingException e) {
+			this.cipher.init(Cipher.ENCRYPT_MODE, key, ips);
+			cipherText = this.cipher.doFinal(plainText.getBytes());
+		} 
+		catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 			e.printStackTrace();
 		}
 		return Base64.getEncoder().encodeToString(cipherText);
@@ -42,10 +42,10 @@ public class LogCipher {
 	public String decrypt(String cipherText) {
 		byte[] plainText = null;
 		try {
-			cipher.init(Cipher.DECRYPT_MODE, key, ips);
-			plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
-		} catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException
-				| BadPaddingException e) {
+			this.cipher.init(Cipher.DECRYPT_MODE, key, ips);
+			plainText = this.cipher.doFinal(Base64.getDecoder().decode(cipherText));
+		} 
+		catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
 			e.printStackTrace();
 		}
 		return new String(plainText);

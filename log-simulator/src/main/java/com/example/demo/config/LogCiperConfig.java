@@ -31,18 +31,18 @@ public class LogCiperConfig {
 	@Bean
 	public LogCipher getLogCipher() {
 		LogCipher logCipher = null;
-
 		SecretKey key = null;
 
 		try {
 			File file = new File(this.cipherProperties.getKeystorePath());
-			KeyStore ks = KeyStore.getInstance("JCEKS");
+			KeyStore keyStore = KeyStore.getInstance("JCEKS");
 			InputStream in = new FileInputStream(file);
-			ks.load(in, this.cipherProperties.getKeystorePassword().toCharArray());
+			keyStore.load(in, this.cipherProperties.getKeystorePassword().toCharArray());
 
-			key = (SecretKey) ks.getKey("databaseKey", this.cipherProperties.getKeystorePassword().toCharArray());
+			key = (SecretKey) keyStore.getKey("databaseKey", this.cipherProperties.getKeystorePassword().toCharArray());
 			in.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -65,7 +65,8 @@ public class LogCiperConfig {
 				ks.setEntry("databaseKey", skEntry, protParam);
 
 				ks.store(new FileOutputStream(file), this.cipherProperties.getKeystorePassword().toCharArray());
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -76,9 +77,9 @@ public class LogCiperConfig {
 			File file = ResourceUtils.getFile(this.cipherProperties.getIpsPath());
 			InputStream in = new FileInputStream(file);
 			ips = new IvParameterSpec(in.readAllBytes());
-
 			in.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -97,19 +98,20 @@ public class LogCiperConfig {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (out != null)
+			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
 		}
 
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
 			logCipher = new LogCipher(cipher, key, ips);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 

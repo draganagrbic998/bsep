@@ -9,12 +9,14 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.utils.LogCipher;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class LogService {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
@@ -22,8 +24,7 @@ public class LogService {
 	private static final long SLEEP_INTERVAL = 5000;
 	private static final String FILE_PATH = "log.txt";
 	
-	@Autowired
-	private LogCipher logCipher;
+	private final LogCipher logCipher;
 	
 	@PostConstruct
 	public void init() {

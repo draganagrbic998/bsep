@@ -29,16 +29,14 @@ public class PatientMapper {
 		return this.databaseCipher.encrypt(patient);
 	}
 	
-	public Page<PatientDTO> map(Page<Patient> patients) {
-		return patients.map(patient -> {
-			return new PatientDTO(this.databaseCipher.decrypt(patient));
-		});
-	}
-
 	public PatientDTO map(Patient patient) {
 		return new PatientDTO(this.databaseCipher.decrypt(patient));
 	}
 	
+	public Page<PatientDTO> map(Page<Patient> patients) {
+		return patients.map(patient -> new PatientDTO(this.databaseCipher.decrypt(patient)));
+	}
+
 	private void setModel(Patient patient, PatientDTO patientDTO) {
 		patient.setFirstName(patientDTO.getFirstName());
 		patient.setLastName(patientDTO.getLastName());

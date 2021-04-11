@@ -2,7 +2,6 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.Log;
@@ -10,13 +9,15 @@ import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
 import com.example.demo.utils.DatabaseCipher;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class LogMapper {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
-	@Autowired
-	private DatabaseCipher logCipher;
+	private final DatabaseCipher logCipher;
 	
 	public Log map(String line) {
 		try {

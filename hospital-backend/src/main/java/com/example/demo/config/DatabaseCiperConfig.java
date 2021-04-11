@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import com.example.demo.utils.Constants;
+import com.example.demo.utils.CipherProperties;
 import com.example.demo.utils.DatabaseCipher;
 import com.example.demo.utils.PkiProperties;
 
@@ -28,22 +28,22 @@ import lombok.AllArgsConstructor;
 public class DatabaseCiperConfig {
 
 	private final PkiProperties pkiProperties;
+	private final CipherProperties cipherProperties;
 
 	@Bean
 	public DatabaseCipher getDatabaseCipher() {
 		DatabaseCipher databaseCipher = null;
-
 		SecretKey key = null;
 
 		try {
-			File file = new File(Constants.DATABASE_KEY_PATH);
-			KeyStore ks = KeyStore.getInstance("JCEKS");
+			File file = new File(this.cipherProperties.getDbKeystorePath());
+			KeyStore keyStore = KeyStore.getInstance("JCEKS");
 			InputStream in = new FileInputStream(file);
-			ks.load(in, this.pkiProperties.getKeystorePassword().toCharArray());
-
-			key = (SecretKey) ks.getKey("databaseKey", this.pkiProperties.getKeystorePassword().toCharArray());
+			keyStore.load(in, this.pkiProperties.getKeystorePassword().toCharArray());
+			key = (SecretKey) keyStore.getKey("databaseKey", this.pkiProperties.getKeystorePassword().toCharArray());
 			in.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -53,7 +53,7 @@ public class DatabaseCiperConfig {
 				keyGenerator.init(256);
 				key = keyGenerator.generateKey();
 
-				File file = new File(Constants.DATABASE_KEY_PATH);
+				File file = new File(this.cipherProperties.getDbKeystorePath());
 				file.createNewFile();
 
 				KeyStore ks = KeyStore.getInstance("JCEKS");
@@ -66,7 +66,8 @@ public class DatabaseCiperConfig {
 				ks.setEntry("databaseKey", skEntry, protParam);
 
 				ks.store(new FileOutputStream(file), this.pkiProperties.getKeystorePassword().toCharArray());
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -74,12 +75,12 @@ public class DatabaseCiperConfig {
 		IvParameterSpec ips = null;
 
 		try {
-			File file = ResourceUtils.getFile(Constants.IPS_PATH);
+			File file = ResourceUtils.getFile(this.cipherProperties.getIpsPath());
 			InputStream in = new FileInputStream(file);
 			ips = new IvParameterSpec(in.readAllBytes());
-
 			in.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -88,29 +89,31 @@ public class DatabaseCiperConfig {
 			new SecureRandom().nextBytes(iv);
 			ips = new IvParameterSpec(iv);
 
-			File file = new File(Constants.IPS_PATH);
+			File file = new File(this.cipherProperties.getIpsPath());
 			FileOutputStream out = null;
 
 			try {
 				file.createNewFile();
 				out = new FileOutputStream(file);
 				out.write(iv);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (out != null)
+			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
 		}
 
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
 			databaseCipher = new DatabaseCipher(cipher, key, ips);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
