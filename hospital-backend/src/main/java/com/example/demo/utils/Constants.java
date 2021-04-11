@@ -18,4 +18,7 @@ public class Constants {
 	public static final String CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 
+	public static final String DATABASE_KEY_PATH = RESOURCES_FOLDER + "databaseKeystore.jks";
+	public static final String IPS_PATH = RESOURCES_FOLDER + "ips.bin";
+
 }

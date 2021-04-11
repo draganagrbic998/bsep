@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Patient;
 import com.example.demo.repository.PatientRepository;
+import com.example.demo.utils.DatabaseCipher;
 
 import lombok.AllArgsConstructor;
 
@@ -16,15 +17,16 @@ import lombok.AllArgsConstructor;
 public class PatientService {
 
 	private final PatientRepository patientRepository;
-		
-	public Page<Patient> findAll(Pageable pageable, String search) {
-		return this.patientRepository.findAll(pageable, search);
-	}
+	private final DatabaseCipher databaseCipher;
 	
+	public Page<Patient> findAll(Pageable pageable, String search) {
+		return this.patientRepository.findAll(pageable, this.databaseCipher.encrypt(search));
+	}
+
 	public Patient findOne(long id) {
 		return this.patientRepository.findById(id).orElse(null);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public Patient save(Patient patient) {
 		return this.patientRepository.save(patient);
