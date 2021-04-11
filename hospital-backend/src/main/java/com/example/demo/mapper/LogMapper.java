@@ -2,19 +2,25 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.Log;
 import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
+import com.example.demo.utils.DatabaseCipher;
 
 @Component
 public class LogMapper {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
+	@Autowired
+	private DatabaseCipher logCipher;
+	
 	public Log map(String line) {
 		try {
+			line = this.logCipher.decrypt(line);
 			Log log = new Log();
 			line = line.replace(',', '.');
 			String[] array = line.split("\\|");
