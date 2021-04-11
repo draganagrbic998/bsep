@@ -11,10 +11,10 @@ import java.util.Date;
 @Component
 public class TokenUtils {
 
-	@Value("BSEP-APP")
+	@Value("${app-name}")
 	private String APP_NAME;
 	
-	@Value("BSEP-SECRET")
+	@Value("${app-secret}")
 	private String APP_SECRET;
 			
 	@Value("1000000000")
