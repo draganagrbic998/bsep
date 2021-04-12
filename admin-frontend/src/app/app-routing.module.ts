@@ -62,7 +62,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'configurations',
+        path: 'configuration',
         component: ConfigurationComponent,
 
         data: {authorities: ['SUPER_ADMIN']},

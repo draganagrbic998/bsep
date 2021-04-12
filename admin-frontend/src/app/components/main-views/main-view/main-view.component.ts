@@ -25,8 +25,8 @@ export class MainViewComponent {
       routerLink: '/users'
     },
     {
-      label: 'Configurations',
-      routerLink: '/configurations'
+      label: 'Configuration',
+      routerLink: '/configuration'
     }
   ];
 

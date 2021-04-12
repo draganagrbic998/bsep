@@ -28,8 +28,8 @@ public class ConfigurationController {
 	private final ConfigurationService configurationService;
 
 	@GetMapping(value = "{url}")
-	public ResponseEntity<Configuration> getConfiguration() {
-		return configurationService.
+	public ResponseEntity<Configuration> getConfiguration(@PathVariable String url) {
+		return ResponseEntity.ok(configurationService.getConfiguration(url));
 	}
 
 
