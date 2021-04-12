@@ -49,7 +49,7 @@ public class LogService {
 	}
 
 	@Transactional(readOnly = false)
-	private List<Log> save(List<Log> logs) {
+	protected List<Log> save(List<Log> logs) {
 		return this.logRepository.saveAll(logs);
 	}
 
@@ -61,12 +61,7 @@ public class LogService {
 			Configuration configuration = gson.fromJson(new FileReader(file), Configuration.class);
 		
 			for (LogConfiguration lc: configuration.getConfigurations()) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp());
-					}
-				}).start();
+				new Thread(() -> readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp())).start();
 			}
 		}
 		catch(Exception e) {
