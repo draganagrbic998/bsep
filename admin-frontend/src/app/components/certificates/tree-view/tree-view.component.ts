@@ -60,7 +60,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.certificateService.ca.getValue().alias !== 'root') {
       // tslint:disable-next-line: deprecation
-      this.certificateService.getByAlias('root').subscribe(val => {
+      this.certificateService.findByAlias('root').subscribe(val => {
         this.switchCA.emit(val);
       });
     }
@@ -262,7 +262,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       .style('fill', 'red');
 
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias(d.data.alias).subscribe(val => {
+    this.certificateService.findByAlias(d.data.alias).subscribe(val => {
       const children = val.issued.map(i => d3.hierarchy(i, j => j.issued));
 
       for (const child of children) {
@@ -308,14 +308,14 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
       return;
     }
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias(val).subscribe(v => {
+    this.certificateService.findByAlias(val).subscribe(v => {
       this.certificateService.ca.next(v);
     });
   }
 
   reset(): void {
     // tslint:disable-next-line: deprecation
-    this.certificateService.getByAlias('root').subscribe(val => {
+    this.certificateService.findByAlias('root').subscribe(val => {
       this.certificateService.ca.next(val);
       this.switchCA.emit(val);
       this.setupTree();

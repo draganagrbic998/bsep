@@ -1,19 +1,8 @@
-<app-spacer-container>
-    <span cdkFocusInitial></span>
-    <button 
-    mat-icon-button 
-    (click)="dialogRef.close()">
-        <mat-icon matTooltip="close">close</mat-icon>
-    </button>        
-</app-spacer-container>
-
-<div>
-    <app-list-container title="NO ALARMS" [pending]="fetchPending" 
-    [empty]="!alarms.length" [pagination]="pagination" (changedPage)="changePage($event)">
-        <app-admin-alarm-details
-        *ngFor="let alarm of alarms; let i = index"
-        [alarm]="alarm"
-        [index]="i + 1"
-        ></app-admin-alarm-details>
-    </app-list-container>
-</div>
+<app-list-container title="NO ALARMS" [pending]="pending" 
+[empty]="!alarms.length" [pagination]="pagination" (changedPage)="changePage($event)">
+    <app-admin-alarm-details
+    *ngFor="let alarm of alarms; let i = index"
+    [alarm]="alarm"
+    [index]="i + 1"
+    ></app-admin-alarm-details>
+</app-list-container>

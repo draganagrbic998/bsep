@@ -15,7 +15,7 @@ public class AdminAlarmDTO {
 	private boolean status;
 	private long counts;
 	
-	@NotBlank(message = "Param can't be blank")
+	@NotBlank(message = "Param cannot be blank")
 	private String param;
 		
 	public AdminAlarmDTO(AdminAlarm alarm) {

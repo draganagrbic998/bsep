@@ -10,7 +10,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class UserDTO {
-
     private Long id;
     private String email;
     private String password;
@@ -20,5 +19,4 @@ public class UserDTO {
     private String activationLink;
     private Instant activationExpiration;
     private Set<Authority> authorities;
-
 }

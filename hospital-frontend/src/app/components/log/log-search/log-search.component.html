@@ -1,58 +1,53 @@
 <app-form-container>
-    <form [formGroup]="searchForm">
-        <div [class.disabled]="fetchPending">
-            <h2>Log Search</h2>
-            <br><br>
-            <mat-form-field>
-                <mat-label>Mode</mat-label>
-                <input 
-                formControlName="mode" 
-                matInput 
-                placeholder="Enter mode">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Status</mat-label>
-                <input 
-                formControlName="status" 
-                matInput 
-                placeholder="Enter status">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>IP address</mat-label>
-                <input 
-                formControlName="ipAddress" 
-                matInput 
-                placeholder="Enter IP address">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Description</mat-label>
-                <input 
-                formControlName="description" 
-                matInput 
-                placeholder="Enter description">
-            </mat-form-field>
-            <mat-form-field> 
-                <mat-label>Date</mat-label>
-                <input 
-                formControlName="date"
-                matInput 
-                placeholder="Enter date"
-                [matDatepicker]="date">
-                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                <mat-datepicker #date></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <br><br>
-        <app-spacer-container>
-            <span></span>
-            <span>
-                <button 
-                *ngIf="!fetchPending"
-                mat-raised-button 
-                color="primary"
-                (click)="searchTriggered.emit(searchForm.value)">Search</button>
-                <app-spinner-button *ngIf="fetchPending"></app-spinner-button>    
-            </span>
-        </app-spacer-container>        
+    <h2>Search</h2>
+    <form [formGroup]="searchForm" [class.disabled]="pending">
+        <mat-form-field>
+            <mat-label>Mode</mat-label>
+            <input 
+            formControlName="mode" 
+            matInput 
+            placeholder="Enter mode">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Status</mat-label>
+            <input 
+            formControlName="status" 
+            matInput 
+            placeholder="Enter status">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>IP address</mat-label>
+            <input 
+            formControlName="ipAddress" 
+            matInput 
+            placeholder="Enter IP address">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input 
+            formControlName="description" 
+            matInput 
+            placeholder="Enter description">
+        </mat-form-field>
+        <mat-form-field> 
+            <mat-label>Date</mat-label>
+            <input 
+            formControlName="date"
+            matInput 
+            placeholder="Enter date"
+            [matDatepicker]="date">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
     </form>
+    <app-spacer-container>
+        <span></span>
+        <span>
+            <button 
+            *ngIf="!pending" 
+            (click)="searchTriggered.emit(searchForm.value)"
+            mat-raised-button>Search</button>
+            <app-spinner-button *ngIf="pending"></app-spinner-button>    
+        </span>
+    </app-spacer-container>        
 </app-form-container>

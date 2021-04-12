@@ -34,17 +34,17 @@ public class PatientController {
 			
 	@GetMapping
 	public ResponseEntity<Page<PatientDTO>> findAll(Pageable pageable, @RequestParam String search){
-		return ResponseEntity.ok(this.patientService.findAll(pageable, search).map(PatientDTO::new));
+		return ResponseEntity.ok(this.patientMapper.map(this.patientService.findAll(pageable, search)));
 	}
 
 	@PostMapping
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
-		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(patientDTO)));
+		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(patientDTO))));
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
-		return ResponseEntity.ok(new PatientDTO(this.patientMapper.map(id, patientDTO)));
+		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(id, patientDTO))));
 	}
 
 	@DeleteMapping(value = "/{id}")

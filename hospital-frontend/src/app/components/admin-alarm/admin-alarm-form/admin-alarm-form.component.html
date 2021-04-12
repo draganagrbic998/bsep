@@ -1,0 +1,43 @@
+<app-dialog-container title="Create new alarm" [pending]="pending" 
+[disabled]="alarmForm.invalid" (confirmed)="confirm()">
+    <form [formGroup]="alarmForm" [class.disabled]="pending">
+        <mat-slide-toggle formControlName="status">
+            {{alarmForm.controls.status.value ? 
+                'Alarm for tracking logs status' : 
+                'Alarm for tracking logs description'}}
+        </mat-slide-toggle>
+        <div>
+            <span>Param: </span>
+            <select
+            *ngIf="alarmForm.controls.status.value"
+            formControlName="param"
+            [classList]="'form-control'">
+                <option value="" hidden>Select search param</option>
+                <option>SUCCESS</option>
+                <option>INFO</option>
+                <option>WARNING</option>
+                <option>ERROR</option>
+                <option>FATAL</option>
+            </select>    
+            <select
+            *ngIf="!alarmForm.controls.status.value"
+            formControlName="param"
+            [classList]="'form-control'">
+                <option value="" hidden>Select search param</option>
+                <option>Login with wrong credentials</option>
+                <option>Forbidden patients view</option>
+                <option>Forbidden messages view</option>
+                <option>Forbidden logs view</option>
+                <option>Forbidden alarms view</option>
+            </select>    
+        </div>
+        <div>
+            <span>Counts: </span>
+            <input
+            appOnlyNumbers
+            formControlName="counts"
+            [classList]="'form-control'"
+            placeholder="Enter number of counts">     
+        </div>
+    </form>
+</app-dialog-container>

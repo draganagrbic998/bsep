@@ -20,14 +20,14 @@ export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(page: number, size: number): Observable<Page<User>> {
+  findAll(page: number, size: number): Observable<Page<User>> {
     const params = new HttpParams().set('page', String(page)).set('size', String(size));
     return this.httpClient.get<Page<User>>(this.USERS_PATH, {params}).pipe(
       catchError(() => of({content: [], totalElements: 0}))
     );
   }
 
-  getAuthorities(): Observable<Authority[]> {
+  findAllAuthorities(): Observable<Authority[]> {
     return this.httpClient.get<Authority[]>(`${this.USERS_PATH}/authorities`).pipe(
       catchError(() => of([]))
     );
@@ -45,15 +45,16 @@ export class UserService {
     return this.httpClient.delete<null>(`${this.USERS_PATH}/${user.id}`);
   }
 
-  getDisabled(uuid: string): Observable<User> {
-    return this.httpClient.get<User>(`${this.AUTH_PATH}/disabled/${uuid}`);
+  sendActivationMail(id: number): Observable<null> {
+    return this.httpClient.post<null>(`${this.USERS_PATH}/send/${id}`, null);
   }
 
   activate(activation: Activation): Observable<User> {
     return this.httpClient.post<User>(`${this.AUTH_PATH}/activate`, activation);
   }
 
-  sendActivationMail(id: number): Observable<null> {
-    return this.httpClient.post<null>(`${this.USERS_PATH}/send/${id}`, null);
+  getDisabled(uuid: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.AUTH_PATH}/disabled/${uuid}`);
   }
+
 }

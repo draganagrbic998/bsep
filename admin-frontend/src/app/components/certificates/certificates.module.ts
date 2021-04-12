@@ -25,6 +25,9 @@ import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { RequestViewComponent } from './request-view/request-view.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { AddCertificateComponent } from './add-certificate/add-certificate.component';
+import {CardModule} from 'primeng/card';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 
 @NgModule({
@@ -32,7 +35,8 @@ import { InputTextModule } from 'primeng/inputtext';
     CertificatesComponent,
     TableViewComponent,
     TreeViewComponent,
-    RequestViewComponent
+    RequestViewComponent,
+    AddCertificateComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +61,9 @@ import { InputTextModule } from 'primeng/inputtext';
     InputNumberModule,
     ProgressSpinnerModule,
     MenuModule,
-    MenubarModule
+    MenubarModule,
+    CardModule,
+    MultiSelectModule
   ]
 })
 export class CertificatesModule { }

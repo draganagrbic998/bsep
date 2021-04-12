@@ -8,8 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.dto.certificate.CertificateRequestDTO;
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -48,16 +46,4 @@ public class CertificateRequest {
 	@NotBlank
 	private String path;
 
-	public CertificateRequest(CertificateRequestDTO requestDTO) {
-		this.id = requestDTO.getId();
-		this.alias = requestDTO.getAlias();
-		this.commonName = requestDTO.getCommonName();
-		this.organization = requestDTO.getOrganization();
-		this.organizationUnit = requestDTO.getOrganizationUnit();
-		this.country = requestDTO.getCountry();
-		this.email = requestDTO.getEmail();
-		this.template = Template.valueOf(requestDTO.getTemplate());
-		this.type = CertificateType.valueOf(requestDTO.getType());
-		this.path = requestDTO.getPath();
-	}
 }

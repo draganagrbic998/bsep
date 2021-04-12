@@ -11,6 +11,5 @@ import java.util.List;
 public class AuthTokenDTO {
 	private long id;
 	private String token;
-	private List<Authority.Authorities> authorities;
-	
+	private List<Authority.Auth> authorities;
 }

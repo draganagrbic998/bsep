@@ -1,0 +1,89 @@
+<div class="p-card p-mt-4 p-mx-4 p-shadow-3">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <span class="p-d-flex p-ai-center">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">https://</span>
+          <input type="text" pInputText placeholder="Address">
+          <button type="button"
+                  [label]="connected ? 'Disconnect' : 'Connect'"
+                  pButton
+          ></button>
+        </div>
+      </span>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <span class="p-d-flex p-ai-center">
+        <p-badge [severity]="connected ? 'success' : 'warning'"
+                 [value]="connected ? 'Connected' : 'Disconnected'"
+        ></p-badge>
+      </span>
+    </ng-template>
+  </p-toolbar>
+
+<!--  <p-table [value]="users"-->
+<!--           [lazy]="true"-->
+<!--           (onLazyLoad)="getUsers($event)"-->
+<!--           [rows]="10"-->
+<!--           [paginator]="true"-->
+<!--           [rowHover]="true"-->
+<!--           [totalRecords]="totalRecords"-->
+<!--           [loading]="loading"-->
+<!--           dataKey="id"-->
+<!--           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"-->
+<!--           [showCurrentPageReport]="true"-->
+<!--           #table-->
+<!--  >-->
+<!--    <ng-template pTemplate="caption">-->
+<!--      <div class="p-d-flex p-ai-center p-jc-between">-->
+<!--        <h5 class="p-m-0">Manage Users</h5>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--    <ng-template pTemplate="header">-->
+<!--      <tr>-->
+<!--        <th>First name</th>-->
+<!--        <th>Last name</th>-->
+<!--        <th class="responsive-column">Email</th>-->
+<!--        <th>Status</th>-->
+<!--        <th>Authorities</th>-->
+<!--        <th></th>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
+<!--    <ng-template pTemplate="body" let-user>-->
+<!--      <tr>-->
+<!--        <td>{{user.firstName}}</td>-->
+<!--        <td>{{user.lastName}}</td>-->
+<!--        <td class="responsive-column">{{user.email}}</td>-->
+<!--        <td><p-badge [value]="user.enabled ? 'ENABLED' : 'DISABLED'" [severity]="user.enabled ? 'success' : 'danger'"></p-badge></td>-->
+<!--        <td>-->
+<!--          <p-overlayPanel appendTo="body" #op>-->
+<!--            <ng-template pTemplate>-->
+<!--              <p-chip *ngFor="let authority of user.authorities" class="p-mx-1" [label]="authority.name"></p-chip>-->
+<!--            </ng-template>-->
+<!--          </p-overlayPanel>-->
+<!--          <button pButton-->
+<!--                  class="p-button-sm p-button-rounded p-button-outlined p-button-warning"-->
+<!--                  icon="pi pi-star-o"-->
+<!--                  label="Authorities"-->
+<!--                  (click)="op.toggle($event)"-->
+<!--          ></button>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--          <button type="button"-->
+<!--                  class="p-button-sm p-button-rounded p-button-outlined"-->
+<!--                  pButton-->
+<!--                  icon="pi pi-bars"-->
+<!--                  label="Options"-->
+<!--                  (click)="menu.toggle($event)"-->
+<!--          ></button>-->
+<!--          <p-menu #menu [popup]="true" [model]="getMenuItems(user)" appendTo="body"></p-menu>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </ng-template>-->
+<!--    <ng-template pTemplate="summary">-->
+<!--      <div class="p-d-flex p-ai-center p-jc-between">-->
+<!--        In total there are {{totalRecords}} products.-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--  </p-table>-->
+</div>

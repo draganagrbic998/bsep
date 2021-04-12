@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 public class ReportController {
 
 	private final ReportService reportService;
-	
+
 	@PostMapping
 	public ResponseEntity<ReportDTO> report(@RequestBody ReportSearchDTO searchDTO){
 		return ResponseEntity.ok(this.reportService.report(searchDTO));

@@ -13,6 +13,8 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
+import com.example.demo.security.CertificateFilter;
+import com.example.demo.service.CertificateService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
 
@@ -24,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserService userService;
+	private final CertificateService certificateService;
 			
 	@Bean
 	public CorsFilter corsFilter() {
@@ -40,13 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint()).and()
-			.authorizeRequests()
-			.antMatchers("/auth/**").permitAll()
-			.antMatchers("/api/certificates").permitAll()
+			.exceptionHandling().authenticationEntryPoint(new AuthEntryPoint())
 			.and().cors().and()
-			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class);
-		http.csrf().disable();
+			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class)
+			.addFilterBefore(new CertificateFilter(this.certificateService), BasicAuthenticationFilter.class)
+			.csrf().disable();
 	}
 		
 }

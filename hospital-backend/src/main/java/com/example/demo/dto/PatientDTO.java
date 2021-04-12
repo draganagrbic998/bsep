@@ -16,25 +16,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientDTO {
 
-	@NotBlank(message = "First name can't be blank")
+	@NotBlank(message = "First name cannot be blank")
 	private String firstName;
 	
-	@NotBlank(message = "Last name can't be blank")
+	@NotBlank(message = "Last name cannot be blank")
 	private String lastName;
 	
-	@NotNull(message = "Birth date can't be null")
+	@NotNull(message = "Birth date cannot be null")
 	private Date birthDate;
 	
-	@NotNull(message = "Gender can't be null")
+	@NotNull(message = "Gender cannot be null")
 	private Gender gender;
 	
-	@NotNull(message = "Blod type can't be null")
+	@NotNull(message = "Blod type cannot be null")
 	private BlodType blodType;
 		
-	@NotBlank(message = "Address can't be blank")
+	@NotBlank(message = "Address cannot be blank")
 	private String address;
 	
-	@NotBlank(message = "City can't be blank")
+	@NotBlank(message = "City cannot be blank")
 	private String city;
 			
 	private Long id;

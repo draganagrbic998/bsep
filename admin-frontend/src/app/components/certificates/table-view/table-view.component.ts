@@ -3,6 +3,8 @@ import { Table } from 'primeng/table';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { CertificateInfo } from '../../../core/model/certificate-info';
+import {Template} from '../../../core/model/template';
+import {CUSTOM} from '../../../core/utils/templates';
 
 @Component({
   selector: 'app-table-view',
@@ -44,7 +46,7 @@ export class TableViewComponent {
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.certificateService.getCertificates(page, size).subscribe(val => {
+    this.certificateService.findAll(page, size).subscribe(val => {
       this.certificateService.certificates = val.content;
       this.totalRecords = val.totalElements;
       this.loading = false;
@@ -68,7 +70,10 @@ export class TableViewComponent {
   }
 
   getTemplate(value: string): any {
-    return this.templates.find(t => t.value === value);
+    if (!value) {
+      return CUSTOM;
+    }
+    return this.templates.find((t: Template) => t.enumValue === value);
   }
 
   reset(): void {

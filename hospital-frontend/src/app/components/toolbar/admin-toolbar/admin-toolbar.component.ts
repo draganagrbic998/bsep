@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
-import { AdminAlarmDialogComponent } from '../../admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
+import { AdminAlarmFormComponent } from '../../admin-alarm/admin-alarm-form/admin-alarm-form.component';
 import { AdminAlarmListComponent } from '../../admin-alarm/admin-alarm-list/admin-alarm-list.component';
+import { CertificateFormComponent } from '../../certificate/certificate-form/certificate-form.component';
+import { RevokeFormComponent } from '../../certificate/revoke-form/revoke-form.component';
 
 @Component({
   selector: 'app-admin-toolbar',
@@ -26,16 +28,24 @@ export class AdminToolbarComponent implements OnInit {
 
   signOut(): void{
     this.storageService.removeUser();
-    this.router.navigate([environment.loginRoute]);
+    this.router.navigate([environment.loginFormRoute]);
   }
 
-  addAlarm(): void{
-    this.dialog.open(AdminAlarmDialogComponent, DIALOG_OPTIONS);
+  openAlarmForm(): void{
+    this.dialog.open(AdminAlarmFormComponent, DIALOG_OPTIONS);
   }
 
-  listAlarms(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{width: '500px', height: '550px'}};
-    this.dialog.open(AdminAlarmListComponent, options);
+  openAlarmList(): void{
+    this.dialog.open(AdminAlarmListComponent, {...DIALOG_OPTIONS,
+      ...{width: '500px', height: '550px', disableClose: false}});
+  }
+
+  openCertificateForm(): void{
+    this.dialog.open(CertificateFormComponent, DIALOG_OPTIONS);
+  }
+
+  openRevokeForm(): void{
+    this.dialog.open(RevokeFormComponent, DIALOG_OPTIONS);
   }
 
   ngOnInit(): void {

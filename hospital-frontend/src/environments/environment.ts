@@ -4,16 +4,12 @@
 
 export const environment = {
   production: false,
-  loginRoute: 'login-form',
-  patientFormRoute: 'patient-form',
+  loginFormRoute: 'login-form',
   patientListRoute: 'patient-list',
-  patientDetailsRoute: 'patient-details',
   messageListRoute: 'message-list',
-  alarmTriggeringListRoute: 'alarm-triggering-list',
+  alarmListRoute: 'alarm-list',
   logListRoute: 'log-list',
-  reportRoute: 'report',
-  certificateFormRoute: 'certificate-form',
-  revokeFormRoute: 'revoke-form'
+  reportRoute: 'report'
 };
 
 /*

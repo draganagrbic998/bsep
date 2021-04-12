@@ -6,10 +6,10 @@
     <ng-content></ng-content>
     <app-spacer-container>
         <span>
-            <button *ngIf="!pending" (click)="dialogRef.close()" cdkFocusInitial mat-button>Cancel</button>
+            <button *ngIf="!pending" (click)="dialogRef.close()" mat-button cdkFocusInitial>Cancel</button>
         </span>
         <span>
-            <button *ngIf="!pending" (click)="confirmed.emit()" [disabled]="disabled" mat-button>Confirm</button>
+            <button *ngIf="!pending" (click)="confirmed.emit()" mat-button [disabled]="disabled">Confirm</button>
             <app-spinner-button *ngIf="pending"></app-spinner-button>
         </span>
     </app-spacer-container>

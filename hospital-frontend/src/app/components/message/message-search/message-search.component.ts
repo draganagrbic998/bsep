@@ -11,7 +11,7 @@ export class MessageSearchComponent implements OnInit {
 
   constructor() { }
 
-  @Input() fetchPending: boolean;
+  @Input() pending: boolean;
   @Output() searchTriggered: EventEmitter<MessageSearch> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({

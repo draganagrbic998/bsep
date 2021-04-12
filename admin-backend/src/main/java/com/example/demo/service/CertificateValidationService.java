@@ -18,13 +18,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CertificateValidationService {
 
+	private final CertificateInfoRepository certificateInfoRepository;
 	private final KeyStoreService keyStoreService;
-	private final CertificateInfoRepository certificateRepository;
 	
 	@Transactional(readOnly = true)
-	public boolean isCertificateValid(long serial) {
+	public boolean isCertificateValid(long id) {
 		try {
-			return this.isCertificateValid(this.certificateRepository.getOne(serial).getAlias());
+			return this.isCertificateValid(this.certificateInfoRepository.findById(id).get().getAlias());
 		} 
 		catch (Exception e) {
 			return false;
@@ -38,30 +38,28 @@ public class CertificateValidationService {
 			return false;
 		}
 
-		Date now = new Date();
-		X509Certificate x509cert;
 		for (int i = 0; i < chain.length; i++) {
-			x509cert = (X509Certificate) chain[i];
-			CertificateInfo certificateInfo = this.certificateRepository.findById(x509cert.getSerialNumber().longValue()).orElse(null);
+			X509Certificate certificate = (X509Certificate) chain[i];
+			CertificateInfo cert = this.certificateInfoRepository.findById(certificate.getSerialNumber().longValue()).orElse(null);
 
-			if (certificateInfo == null) {
+			if (cert == null) {
 				return false;
 			}
 
-			if (certificateInfo.isRevoked()) {
+			if (cert.isRevoked()) {
 				return false;
 			}
 
-			if (now.after(x509cert.getNotAfter()) || now.before(x509cert.getNotBefore())) {
+			if (new Date().after(certificate.getNotAfter()) || new Date().before(certificate.getNotBefore())) {
 				return false;
 			}
 
 			try {
 				if (i == chain.length - 1) {
-					return this.isSelfSigned(x509cert);
+					return this.isSelfSigned(certificate);
 				}
 				X509Certificate issuer = (X509Certificate) chain[i + 1];
-				x509cert.verify(issuer.getPublicKey());
+				certificate.verify(issuer.getPublicKey());
 			} 
 			catch (SignatureException | InvalidKeyException e) {
 				return false;

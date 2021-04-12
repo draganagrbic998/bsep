@@ -1,6 +1,6 @@
 <div class="root">
     <div class="left">
-        <app-list-container title="NO LOGS" [pending]="fetchPending" [empty]="!logs.length" 
+        <app-list-container title="NO LOGS" [pending]="pending" [empty]="!logs.length" 
         [refresh]="true" [pagination]="pagination" (changedPage)="changePage($event)">
             <app-log-details
             *ngFor="let log of logs"
@@ -9,7 +9,7 @@
         </app-list-container>
     </div>
     <div class="right">
-        <app-log-search [fetchPending]="fetchPending" 
+        <app-log-search [pending]="pending" 
         (searchTriggered)="search = $event; fetchLogs()"></app-log-search>
     </div>
 </div>

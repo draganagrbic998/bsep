@@ -18,8 +18,8 @@ import lombok.AllArgsConstructor;
 public class DeviceService {
 
 	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
-	private static final Random RANDOM = new Random();
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	private static final Random RANDOM = new Random();
 	private static final long SLEEP_INTERVAL = 5000;
 	private static final long PATIENT_ID = 1;
 	
@@ -54,19 +54,19 @@ public class DeviceService {
 	}
 		
 	private double getPulse() {
-		return Math.random();
+		return 40 + (120 - 40) * RANDOM.nextDouble();
 	}
 	
 	private double getPressure() {
-		return Math.random();
+		return 80 + (200 - 80) * RANDOM.nextDouble();
 	}
 	
 	private double getTemperature() {
-		return 30 + (45 - 35) * RANDOM.nextDouble();
+		return 30 + (45 - 30) * RANDOM.nextDouble();
 	}
 	
 	private double getOxygenLevel() {
-		return Math.random();
+		return 80 + (100 - 80) * RANDOM.nextDouble();
 	}
 	
 }

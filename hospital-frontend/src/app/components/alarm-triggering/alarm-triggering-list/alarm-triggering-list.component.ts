@@ -16,7 +16,7 @@ export class AlarmTriggeringListComponent implements OnInit {
   ) { }
 
   alarmTriggerings: AlarmTriggering[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     pageNumber: 0,
     firstPage: true,
@@ -29,11 +29,11 @@ export class AlarmTriggeringListComponent implements OnInit {
   }
 
   fetchAlarmTriggerings(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.alarmTriggeringService.findAll(this.pagination.pageNumber).subscribe(
       (page: Page<AlarmTriggering>) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.alarmTriggerings = page.content;
         this.pagination.firstPage = page.first;
         this.pagination.lastPage = page.last;

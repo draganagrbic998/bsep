@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { Pagination } from 'src/app/models/pagination';
 import { AlarmService } from 'src/app/services/alarm.service';
@@ -13,12 +12,11 @@ import { Page } from 'src/app/models/page';
 export class AdminAlarmListComponent implements OnInit {
 
   constructor(
-    private alarmService: AlarmService,
-    public dialogRef: MatDialogRef<AdminAlarmListComponent>
+    private alarmService: AlarmService
   ) { }
 
   alarms: AdminAlarm[] = [];
-  fetchPending = true;
+  pending = true;
   pagination: Pagination = {
     pageNumber: 0,
     firstPage: true,
@@ -31,11 +29,11 @@ export class AdminAlarmListComponent implements OnInit {
   }
 
   fetchAlarms(): void{
-    this.fetchPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.alarmService.findAllAdmin(this.pagination.pageNumber).subscribe(
       (page: Page<AdminAlarm>) => {
-        this.fetchPending = false;
+        this.pending = false;
         this.alarms = page.content;
         this.pagination.firstPage = page.first;
         this.pagination.lastPage = page.last;

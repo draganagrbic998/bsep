@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class TokenDTO {
 	
-	@NotBlank(message = "Token can't be blank")
+	@NotBlank(message = "Token cannot be blank")
 	private String token;
 	
 }

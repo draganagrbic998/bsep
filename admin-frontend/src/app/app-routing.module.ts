@@ -10,6 +10,8 @@ import { TreeViewComponent } from './components/certificates/tree-view/tree-view
 import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
 import { UsersComponent } from './components/users/users/users.component';
 import { ActivateComponent } from './components/users/activate/activate.component';
+import {ConfigurationComponent} from './components/configuration/configuration/configuration.component';
+import {AddCertificateComponent} from './components/certificates/add-certificate/add-certificate.component';
 
 const routes: Routes = [
   {
@@ -39,23 +41,36 @@ const routes: Routes = [
         data: {authorities: ['SUPER_ADMIN']},
         canActivate: [AuthGuard],
         children: [
-            {
-              path: '',
-              component: TableViewComponent
-            },
-            {
-              path: 'tree',
-              component: TreeViewComponent
-            },
-            {
-              path: 'requests',
-              component: RequestViewComponent
-            }
-          ]
-        },
+          {
+            path: '',
+            component: TableViewComponent
+          },
+          {
+            path: 'tree',
+            component: TreeViewComponent
+          },
+          {
+            path: 'requests',
+            component: RequestViewComponent
+          }
+        ]
+      },
       {
         path: 'users',
         component: UsersComponent,
+        data: {authorities: ['SUPER_ADMIN']},
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'configurations',
+        component: ConfigurationComponent,
+
+        data: {authorities: ['SUPER_ADMIN']},
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'add-certificate',
+        component: AddCertificateComponent,
         data: {authorities: ['SUPER_ADMIN']},
         canActivate: [AuthGuard],
       }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -25,20 +24,24 @@ public class UserController {
 
 	private final UserService userService;
 
+	@GetMapping
+	public ResponseEntity<PageDTO<UserDTO>> findAll(Pageable pageable) {
+		return ResponseEntity.ok(this.userService.findAll(pageable));
+	}
+
+	@GetMapping(value = "/authorities")
+	public ResponseEntity<List<Authority>> findAllAuthorities() {
+		return ResponseEntity.ok(this.userService.findAllAuthorities());
+	}
+
 	@PostMapping
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
-		try {
-			return ResponseEntity.ok(this.userService.create(userDTO));
-		} 
-		catch (MessagingException e) {
-			return ResponseEntity.badRequest().build();
-		}
+		return ResponseEntity.ok(this.userService.create(userDTO));
 	}
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
-		userDTO.setId(id);
-		return ResponseEntity.ok(this.userService.update(userDTO));
+		return ResponseEntity.ok(this.userService.update(id, userDTO));
 	}
 
 	@DeleteMapping(value = "{id}")
@@ -47,26 +50,10 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping
-	public ResponseEntity<PageDTO<UserDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.findAll(pageable));
-	}
-
-	@GetMapping(value = "/authorities")
-	public ResponseEntity<List<Authority>> getAuthorities() {
-		return ResponseEntity.ok(this.userService.getAuthorities());
-	}
-
 	@PostMapping(value = "/send/{id}")
 	public ResponseEntity<Void> sendActivationMail(@PathVariable long id) {
-		try {
-			this.userService.sendActivationMail(id);
-			return ResponseEntity.ok().build();
-
-		} 
-		catch (MessagingException e) {
-			return ResponseEntity.badRequest().build();
-		}
+		this.userService.sendActivationMail(id);
+		return ResponseEntity.ok().build();
 	}
 
 }

@@ -1,10 +1,16 @@
-@import "../../../../styles/theme";
-
-.error {
-    color: $warn;
-    margin-top: 10px;
+form{
+    width: 450px;
+    padding: 15px;
 }
 
 h6{
     text-align: left;
+    margin-top: 30px;
+}
+
+.mat-radio-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }

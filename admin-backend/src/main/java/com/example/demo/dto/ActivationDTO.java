@@ -14,4 +14,5 @@ public class ActivationDTO {
 	
 	@NotBlank(message = "Password cannot be empty")
     private String password;
+	
 }

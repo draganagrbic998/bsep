@@ -1,19 +1,21 @@
 package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateInfo;
+import com.example.demo.model.Extensions;
 import com.example.demo.model.Template;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 public class CertificateInfoDTO {
 
 	private long id;
+	private String issuerAlias;
 	private String alias;
 	private String commonName;
 	private String organization;
@@ -21,11 +23,6 @@ public class CertificateInfoDTO {
 	private String country;
 	private String email;
 	private Template template;
-	private boolean basicConstraints;
-	private String keyUsage;
-	private String extendedKeyUsage;
-	private String issuerAlias;
-	private boolean isCA;
 	private Date startDate;
 	private Date endDate;
 	private boolean revoked;
@@ -34,8 +31,13 @@ public class CertificateInfoDTO {
 	private long numIssued;
 	private List<CertificateInfoDTO> issued;
 
-	public CertificateInfoDTO(CertificateInfo certificate, int mappingLevel) {
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Extensions extensions;
+	private boolean isCA;
+
+	public CertificateInfoDTO(CertificateInfo certificate) {
 		this.id = certificate.getId();
+		this.issuerAlias = certificate.getIssuerAlias();
 		this.alias = certificate.getAlias();
 		this.commonName = certificate.getCommonName();
 		this.organization = certificate.getOrganization();
@@ -43,20 +45,13 @@ public class CertificateInfoDTO {
 		this.country = certificate.getCountry();
 		this.email = certificate.getEmail();
 		this.template = certificate.getTemplate();
-		this.basicConstraints = certificate.isBasicConstraints();
-		this.keyUsage = certificate.getKeyUsage();
-		this.extendedKeyUsage = certificate.getExtendedKeyUsage();
-		this.issuerAlias = certificate.getIssuerAlias();
-		this.isCA = certificate.isCA();
 		this.startDate = certificate.getStartDate();
 		this.endDate = certificate.getEndDate();
 		this.revoked = certificate.isRevoked();
 		this.revocationDate = certificate.getRevocationDate();
 		this.revocationReason = certificate.getRevocationReason();
-		this.numIssued = certificate.getIssued().size();
-        if (mappingLevel > 0) {
-            this.issued = certificate.getIssued().stream().map(ci -> new CertificateInfoDTO(ci, mappingLevel - 1)).collect(Collectors.toList());
-        }
+		this.extensions = certificate.getExtensions();
+		this.isCA = certificate.getTemplate().equals(Template.SUB_CA);
 	}
 	
 }

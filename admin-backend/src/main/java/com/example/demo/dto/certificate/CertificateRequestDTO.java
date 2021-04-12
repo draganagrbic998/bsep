@@ -1,12 +1,14 @@
 package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateRequest;
+import com.example.demo.model.Template;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -28,17 +30,17 @@ public class CertificateRequestDTO {
 	private String organizationUnit;
 
 	@NotBlank(message = "Country cannot be empty")
-	@Size(min = 2, max = 2)
+	@Size(min = 2, max = 2, message = "Country must have two letters")
 	private String country;
 
 	@NotBlank(message = "Email cannot be empty")
-	@Email
+	@Email(message = "Email must be valid")
 	private String email;
 
-	@NotBlank(message = "Template cannot be empty")
-	private String template;
+	@NotNull(message = "Template cannot be null")
+	private Template template;
 
-	@NotBlank(message = "Template cannot be empty")
+	@NotBlank(message = "Type cannot be empty")
 	private String type;
 	
 	@NotBlank(message = "Path cannot be empty")
@@ -52,7 +54,7 @@ public class CertificateRequestDTO {
 		this.organizationUnit = certificateRequest.getOrganizationUnit();
 		this.country = certificateRequest.getCountry();
 		this.email = certificateRequest.getEmail();
-		this.template = certificateRequest.getTemplate().toString();
+		this.template = certificateRequest.getTemplate();
 		this.type = certificateRequest.getType().name();
 		this.path = certificateRequest.getPath();
 	}

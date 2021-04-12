@@ -17,11 +17,6 @@ public class CertificateRequestService {
 
 	private final CertificateRequestRepository certificateRequestRepository;
 
-	@Transactional(readOnly = false)
-	public CertificateRequest save(CertificateRequest certificateRequest) {
-		return this.certificateRequestRepository.save(certificateRequest);
-	}
-
 	public Page<CertificateRequest> findAll(Pageable pageable) {
 		return this.certificateRequestRepository.findAll(pageable);
 	}
@@ -30,6 +25,11 @@ public class CertificateRequestService {
 		return this.certificateRequestRepository.findById(id).get();
 	}
 	
+	@Transactional(readOnly = false)
+	public CertificateRequest save(CertificateRequest request) {
+		return this.certificateRequestRepository.save(request);
+	}
+
 	@Transactional(readOnly = false)
 	public void delete(long id) {
 		this.certificateRequestRepository.deleteById(id);

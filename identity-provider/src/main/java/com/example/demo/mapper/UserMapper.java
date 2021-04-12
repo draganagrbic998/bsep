@@ -1,7 +1,6 @@
 package com.example.demo.mapper;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.exception.UserDoesNotExistException;
 import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.repository.AuthorityRepository;
@@ -21,27 +20,31 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 	
 	private final PasswordEncoder passwordEncoder;
-	private final UserRepository userRepository;
 	private final AuthorityRepository authorityRepository;
+	private final UserRepository userRepository;
 	
     public User map(UserDTO userDTO) {
-        User user;
-        if (userDTO.getId() != null) {
-        	user = this.userRepository.findById(userDTO.getId()).orElseThrow(UserDoesNotExistException::new);
-        }
-        else {
-        	user = new User();
-        	if (userDTO.getPassword() != null) {
-            	user.setPassword(this.passwordEncoder.encode(userDTO.getPassword()));        		
-        	}
-        }
+    	User user = new User();
+    	if (userDTO.getPassword() != null) {
+        	user.setPassword(this.passwordEncoder.encode(userDTO.getPassword()));        		
+    	}
+    	this.setModel(user, userDTO);
+        return user;
+    }
+    
+    public User map(long id, UserDTO userDTO) {
+    	User user = this.userRepository.findById(userDTO.getId()).get();
+    	this.setModel(user, userDTO);
+        return user;
+    }
+    
+    private void setModel(User user, UserDTO userDTO) {
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         List<Authority> authorities = this.authorityRepository.findAllById(userDTO.getAuthorities()
                 .stream().map(Authority::getId).collect(Collectors.toList()));
         user.setAuthorities(new HashSet<>(authorities));
-        return user;
     }
-    
+
 }

@@ -6,8 +6,6 @@ import com.example.demo.service.CertificateService;
 
 import lombok.AllArgsConstructor;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,32 +13,29 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
+@PreAuthorize("hasAuthority('ADMIN')")
 @AllArgsConstructor
 public class CertificateController {
 
 	private final CertificateService certificateService;
 
-	@PreAuthorize("permitAll()")
+	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	@PostMapping
-	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO, HttpServletRequest request) {
-		//ovde ne radim validaciju sertifikata
-		//a ovde ne treba da se poziva truststore jer je prvi put
-		//dodaj ti ipa ovde validaciju roota
-		this.certificateService.save(certificateDTO);
+	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO) {
+		this.certificateService.create(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);			
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(value = "/request")
 	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
-		this.certificateService.sendRequest(requestDTO);
+		this.certificateService.request(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping(value = "/{fileName}")
 	public ResponseEntity<Void> revoke(@PathVariable String fileName) {
-		this.certificateService.sendRevokeRequest(fileName);
+		this.certificateService.revoke(fileName);
 		return ResponseEntity.noContent().build();
 	}
+
 }

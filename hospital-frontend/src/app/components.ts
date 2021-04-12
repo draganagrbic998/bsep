@@ -4,7 +4,7 @@ import { AdminToolbarComponent } from './components/toolbar/admin-toolbar/admin-
 import { LogSearchComponent } from './components/log/log-search/log-search.component';
 import { AdminAlarmDetailsComponent } from './components/admin-alarm/admin-alarm-details/admin-alarm-details.component';
 import { AdminAlarmListComponent } from './components/admin-alarm/admin-alarm-list/admin-alarm-list.component';
-import { AdminAlarmDialogComponent } from './components/admin-alarm/admin-alarm-dialog/admin-alarm-dialog.component';
+import { AdminAlarmFormComponent } from './components/admin-alarm/admin-alarm-form/admin-alarm-form.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
 import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
@@ -20,7 +20,7 @@ import { MessageListComponent } from './components/message/message-list/message-
 import { DoctorAlarmDetailsComponent } from './components/doctor-alarm/doctor-alarm-details/doctor-alarm-details.component';
 import { DoctorAlarmListComponent } from './components/doctor-alarm/doctor-alarm-list/doctor-alarm-list.component';
 import { MessageSearchComponent } from './components/message/message-search/message-search.component';
-import { DoctorAlarmDialogComponent } from './components/doctor-alarm/doctor-alarm-dialog/doctor-alarm-dialog.component';
+import { DoctorAlarmFormComponent } from './components/doctor-alarm/doctor-alarm-form/doctor-alarm-form.component';
 import { AlarmTriggeringDetailsComponent } from './components/alarm-triggering/alarm-triggering-details/alarm-triggering-details.component';
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
@@ -49,7 +49,7 @@ export const COMPONENTS = [
     DoctorAlarmDetailsComponent,
     DoctorAlarmListComponent,
     MessageSearchComponent,
-    DoctorAlarmDialogComponent,
+    DoctorAlarmFormComponent,
     AlarmTriggeringDetailsComponent,
     AlarmTriggeringListComponent,
     LogDetailsComponent,
@@ -58,7 +58,7 @@ export const COMPONENTS = [
     LogSearchComponent,
     AdminAlarmDetailsComponent,
     AdminAlarmListComponent,
-    AdminAlarmDialogComponent,
+    AdminAlarmFormComponent,
     ReportComponent,
     LoginFormComponent,
     CertificateFormComponent,

@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/common/delete-confirmation/delete-confirmation.component';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
 import { AlarmService } from 'src/app/services/alarm.service';
+import { DeleteData } from 'src/app/models/delete-data';
 
 @Component({
   selector: 'app-doctor-alarm-details',
@@ -21,13 +22,11 @@ export class DoctorAlarmDetailsComponent implements OnInit {
   @Input() index = 0;
 
   delete(): void{
-    const options: MatDialogConfig = {...DIALOG_OPTIONS, ...{data: () => this.alarmService.delete(this.alarm.id)}};
-    // tslint:disable-next-line: deprecation
-    this.dialog.open(DeleteConfirmationComponent, options).afterClosed().subscribe(result => {
-      if (result){
-        this.alarmService.announceRefreshDoctorData();
-      }
-    });
+    const deleteData: DeleteData = {
+      deleteFunction: () => this.alarmService.delete(this.alarm.id),
+      refreshFunction: () => this.alarmService.announceRefreshDoctorData()
+    };
+    this.dialog.open(DeleteConfirmationComponent, {...DIALOG_OPTIONS, ...{data: deleteData}});
   }
 
   ngOnInit(): void {

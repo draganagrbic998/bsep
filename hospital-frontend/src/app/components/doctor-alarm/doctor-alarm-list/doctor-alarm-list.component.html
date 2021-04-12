@@ -1,5 +1,5 @@
 <app-list-container title="NO ALARMS" [pagination]="pagination"  
-[pending]="fetchPending" [empty]="!alarms.length" [alarm]="true" 
+[pending]="pending" [empty]="!alarms.length" [alarm]="true" 
 (alarmWanted)="addAlarm()" (changedPage)="changePage($event)">
     <app-doctor-alarm-details
     *ngFor="let alarm of alarms; let i = index"

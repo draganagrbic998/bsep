@@ -1,6 +1,6 @@
-<app-preloader *ngIf="fetchPending"></app-preloader>
+<app-preloader *ngIf="pending"></app-preloader>
 
-<div class="root" *ngIf="!fetchPending">
+<div *ngIf="!pending" class="root">
   <div class="mat-elevation-z24">
     <table mat-table [dataSource]="patients">
       
@@ -35,28 +35,28 @@
           <app-spacer-container>
             <span>
               <button 
-              matTooltip="Edit"
+              (click)="edit(patient)"
               mat-icon-button 
-              color="primary"
-              (click)="edit(patient)">
+              matTooltip="Edit"
+              color="primary">
                   <mat-icon>edit</mat-icon>
               </button>
             </span>
             <span>
               <button 
-              matTooltip="Delete"
-              mat-icon-button 
-              color="warn"
-              (click)="delete(patient.id)">
+              (click)="delete(patient.id)"
+              mat-icon-button
+              matTooltip="Delete" 
+              color="warn">
                   <mat-icon>delete</mat-icon>
               </button>
             </span>
             <span>
               <button 
-              matTooltip="Open medical record"
+              (click)="details(patient)"
               mat-icon-button 
-              color="accent"
-              (click)="openDetails(patient)">
+              matTooltip="Open medical record"
+              color="accent">
                   <mat-icon>details</mat-icon>
               </button>
             </span>
@@ -76,12 +76,13 @@
         <span>
           <app-paginator 
           [small]="true" 
-          [pending]="fetchPending"
+          [pending]="pending"
           [pagination]="pagination" 
           (changedPage)="changePage($event)"
           ></app-paginator>
         </span>
       </app-spacer-container>
     </div>
+
   </div>
 </div>

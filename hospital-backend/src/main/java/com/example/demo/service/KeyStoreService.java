@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.config.PkiProperties;
 import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
+import com.example.demo.utils.PkiProperties;
 
 import lombok.AllArgsConstructor;
 
@@ -26,7 +26,7 @@ public class KeyStoreService {
 	public void updateTruststore(String deviceAlias, String certificatePath) {
 		X509Certificate certificate = (X509Certificate) this.keyStoreReader.readCertificate(certificatePath,
 				this.pkiProperties.getKeystorePassword(), deviceAlias);
-		this.keyStoreWriter.addToTruststore(this.pkiProperties.getKeyAlias(), deviceAlias, certificate,
+		this.keyStoreWriter.updateTrustStore(this.pkiProperties.getKeyAlias(), deviceAlias, certificate,
 				this.pkiProperties.getKeystore(), certificatePath, this.pkiProperties.getKeystorePassword());
 	}
 

@@ -6,36 +6,20 @@ import { AuthGuard } from './utils/auth.guard';
 import { ADMIN, DOCTOR } from './utils/constants';
 
 import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
-import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
-import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
-import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
-import { RevokeFormComponent } from './components/certificate/revoke-form/revoke-form.component';
 
 const routes: Routes = [
   {
-    path: environment.loginRoute,
+    path: environment.loginFormRoute,
     component: LoginFormComponent,
-  },
-  {
-    path: `${environment.patientFormRoute}/:mode`,
-    component: PatientFormComponent,
-    canActivate: [AuthGuard],
-    data: {authorities: [DOCTOR]}
   },
   {
     path: environment.patientListRoute,
     component: PatientListComponent,
-    canActivate: [AuthGuard],
-    data: {authorities: [DOCTOR]}
-  },
-  {
-    path: environment.patientDetailsRoute,
-    component: PatientDetailsComponent,
     canActivate: [AuthGuard],
     data: {authorities: [DOCTOR]}
   },
@@ -46,7 +30,7 @@ const routes: Routes = [
     data: {authorities: [DOCTOR]}
   },
   {
-    path: environment.alarmTriggeringListRoute,
+    path: environment.alarmListRoute,
     component: AlarmTriggeringListComponent,
     canActivate: [AuthGuard],
     data: {authorities: [DOCTOR, ADMIN]}
@@ -64,21 +48,9 @@ const routes: Routes = [
     data: {authorities: [ADMIN]}
   },
   {
-    path: environment.certificateFormRoute,
-    component: CertificateFormComponent,
-    canActivate: [AuthGuard],
-    data: {authorities: [ADMIN]}
-  },
-  {
-    path: environment.revokeFormRoute,
-    component: RevokeFormComponent,
-    canActivate: [AuthGuard],
-    data: {authorities: [ADMIN]}
-  },
-  {
     path: '**',
     pathMatch: 'full',
-    redirectTo: environment.loginRoute
+    redirectTo: environment.loginFormRoute
   }
 ];
 

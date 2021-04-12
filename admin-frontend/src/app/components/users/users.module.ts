@@ -32,7 +32,6 @@ import { PasswordModule } from 'primeng/password';
   ],
   imports: [
     CommonModule,
-    CommonModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

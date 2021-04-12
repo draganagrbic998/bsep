@@ -4,22 +4,27 @@ import java.text.SimpleDateFormat;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dto.LogMeasureDTO;
-import com.example.demo.exception.MyException;
 import com.example.demo.model.Log;
 import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
+import com.example.demo.utils.DatabaseCipher;
+
+import lombok.AllArgsConstructor;
 
 @Component
+@AllArgsConstructor
 public class LogMapper {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
-	public Log map(LogMeasureDTO logDTO) {
+	private final DatabaseCipher logCipher;
+	
+	public Log map(String line) {
 		try {
+			line = this.logCipher.decrypt(line);
 			Log log = new Log();
-			logDTO.setText(logDTO.getText().replace(',', '.'));
-			String[] array = logDTO.getText().split("\\|");
+			line = line.replace(',', '.');
+			String[] array = line.split("\\|");
 			log.setDate(DATE_FORMAT.parse(array[0].trim()));
 			log.setMode(LogMode.valueOf(array[1].trim().toUpperCase()));
 			log.setStatus(LogStatus.valueOf(array[2].trim().toUpperCase()));
@@ -28,7 +33,7 @@ public class LogMapper {
 			return log;
 		}
 		catch(Exception e) {
-			throw new MyException();
+			throw new RuntimeException(e);
 		}
 	}
 	

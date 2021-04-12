@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 public class LogController {
 
 	private final LogService logService;
-		
+
 	@PostMapping
 	public ResponseEntity<Page<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogSearchDTO searchDTO){
 		return ResponseEntity.ok(this.logService.findAll(pageable, searchDTO).map(LogDTO::new));

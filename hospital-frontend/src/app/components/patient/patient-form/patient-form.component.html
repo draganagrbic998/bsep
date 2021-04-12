@@ -1,131 +1,108 @@
-<app-form-container>
-    <h2>{{patient.id ? 'Edit' : 'New'}} Patient</h2>
-    <br><br>
-    <form [formGroup]="patientForm">
-        <div class="root" [class.disabled]="savePending">
-            <div>
-                <mat-form-field>
-                    <mat-label>First name</mat-label>
-                    <input 
-                    formControlName="firstName" 
-                    matInput 
-                    placeholder="Enter first name">
-                    <mat-error>
-                        Valid first name is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Last name</mat-label>
-                    <input 
-                    formControlName="lastName" 
-                    matInput 
-                    placeholder="Enter last name">
-                    <mat-error>
-                        Valid last name is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field> 
-                    <mat-label>Birth date</mat-label>
-                    <input 
-                    formControlName="birthDate"
-                    matInput 
-                    placeholder="Enter birth date"
-                    [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                    <mat-error>
-                        Valid birth date is required!
-                    </mat-error>    
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Address</mat-label>
-                    <input 
-                    formControlName="address" 
-                    matInput 
-                    placeholder="Enter address">
-                    <mat-error>
-                        Valid address is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>City</mat-label>
-                    <input 
-                    formControlName="city" 
-                    matInput 
-                    placeholder="Enter city">
-                    <mat-error>
-                        Valid city is required!
-                    </mat-error>
-                </mat-form-field>    
-            </div>
-            <div>
-                <mat-form-field>
-                    <mat-label>Gender</mat-label>
-                    <mat-select formControlName="gender">
-                        <mat-option value="MALE">Male</mat-option>
-                        <mat-option value="FEMALE">Female</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Valid gender is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Blod type</mat-label>
-                    <mat-select formControlName="blodType">
-                        <mat-option value="O_PLUS">O+</mat-option>
-                        <mat-option value="O_MINUS">O-</mat-option>
-                        <mat-option value="A_PLUS">A+</mat-option>
-                        <mat-option value="A_MINUS">A-</mat-option>
-                        <mat-option value="B_PLUS">B+</mat-option>
-                        <mat-option value="B_MINUS">B-</mat-option>
-                        <mat-option value="AB_PLUS">AB+</mat-option>
-                        <mat-option value="AB_MINSU">AB-</mat-option>
-                    </mat-select>
-                    <mat-error>
-                        Valid gender is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Height</mat-label>
-                    <input 
-                    appOnlyNumbers
-                    formControlName="height" 
-                    matInput 
-                    placeholder="Enter height">
-                    <mat-error>
-                        Valid height is required!
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Weight</mat-label>
-                    <input 
-                    appOnlyNumbers
-                    formControlName="weight" 
-                    matInput 
-                    placeholder="Enter weight">
-                    <mat-error>
-                        Valid weight is required!
-                    </mat-error>
-                </mat-form-field>    
-            </div>
+<app-dialog-container [title]="patient.id ? 'Edit Patient' : 'New Patient'" 
+[disabled]="patientForm.invalid" [pending]="pending" (confirmed)="confirm()">
+    <form [formGroup]="patientForm" [class.disabled]="pending">
+        <div>
+            <mat-form-field>
+                <mat-label>First name</mat-label>
+                <input 
+                formControlName="firstName" 
+                matInput 
+                placeholder="Enter first name">
+                <mat-error>
+                    Valid first name is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Last name</mat-label>
+                <input 
+                formControlName="lastName" 
+                matInput 
+                placeholder="Enter last name">
+                <mat-error>
+                    Valid last name is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input 
+                formControlName="address" 
+                matInput 
+                placeholder="Enter address">
+                <mat-error>
+                    Valid address is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>City</mat-label>
+                <input 
+                formControlName="city" 
+                matInput 
+                placeholder="Enter city">
+                <mat-error>
+                    Valid city is required!
+                </mat-error>
+            </mat-form-field>    
         </div>
-        <br><br>
-        <app-spacer-container>
-            <span>
-                <button 
-                *ngIf="!savePending"
-                mat-raised-button 
-                color="primary"
-                (click)="location.back()">Back</button>
-            </span>
-            <span>
-                <button 
-                *ngIf="!savePending"
-                mat-raised-button 
-                color="accent"
-                (click)="save()">Save</button>
-                <app-spinner-button *ngIf="savePending"></app-spinner-button>    
-            </span>
-        </app-spacer-container>
+        <div>
+            <mat-form-field> 
+                <mat-label>Birth date</mat-label>
+                <input 
+                formControlName="birthDate"
+                matInput 
+                placeholder="Enter birth date"
+                [matDatepicker]="date">
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+                <mat-error>
+                    Valid birth date is required!
+                </mat-error>    
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option value="MALE">Male</mat-option>
+                    <mat-option value="FEMALE">Female</mat-option>
+                </mat-select>
+                <mat-error>
+                    Valid gender is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Blod type</mat-label>
+                <mat-select formControlName="blodType">
+                    <mat-option value="O_PLUS">O+</mat-option>
+                    <mat-option value="O_MINUS">O-</mat-option>
+                    <mat-option value="A_PLUS">A+</mat-option>
+                    <mat-option value="A_MINUS">A-</mat-option>
+                    <mat-option value="B_PLUS">B+</mat-option>
+                    <mat-option value="B_MINUS">B-</mat-option>
+                    <mat-option value="AB_PLUS">AB+</mat-option>
+                    <mat-option value="AB_MINSU">AB-</mat-option>
+                </mat-select>
+                <mat-error>
+                    Valid gender is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Height</mat-label>
+                <input 
+                formControlName="height" 
+                matInput 
+                placeholder="Enter height">
+                <mat-error>
+                    Valid height is required!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Weight</mat-label>
+                <input 
+                formControlName="weight" 
+                matInput 
+                placeholder="Enter weight">
+                <mat-error>
+                    Valid weight is required!
+                </mat-error>
+            </mat-form-field>    
+        </div>
     </form>
-</app-form-container>
+</app-dialog-container>

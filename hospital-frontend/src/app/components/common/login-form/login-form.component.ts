@@ -23,7 +23,7 @@ export class LoginFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  loginPending = false;
+  pending = false;
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
     password: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
@@ -33,19 +33,18 @@ export class LoginFormComponent implements OnInit {
     if (this.loginForm.invalid){
       return;
     }
-    this.loginPending = true;
+    this.pending = true;
     // tslint:disable-next-line: deprecation
     this.userService.login(this.loginForm.value).subscribe(
       (user: User) => {
-        this.loginPending = false;
-        if (user){
+        this.pending = false;
+        if (user && user.authorities.includes(ADMIN)){
           this.storageService.setUser(user);
-          if (user.authorities[0] === ADMIN){
-            this.router.navigate([environment.reportRoute]);
-          }
-          else if (user.authorities[0] === DOCTOR){
-            this.router.navigate([environment.patientListRoute]);
-          }
+          this.router.navigate([environment.reportRoute]);
+        }
+        else if (user && user.authorities.includes(DOCTOR)){
+          this.storageService.setUser(user);
+          this.router.navigate([environment.patientListRoute]);
         }
         else{
           this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);

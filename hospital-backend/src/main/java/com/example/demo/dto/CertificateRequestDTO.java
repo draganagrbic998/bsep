@@ -5,7 +5,11 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.example.demo.model.CertificateType;
+import com.example.demo.model.Template;
 
 @Data
 @NoArgsConstructor
@@ -24,18 +28,19 @@ public class CertificateRequestDTO {
 	private String organizationUnit;
 
 	@NotBlank(message = "Country cannot be empty")
-	@Size(min = 2, max = 2)
+	@Size(min = 2, max = 2, message = "Country must have two letters")
 	private String country;
 
 	@NotBlank(message = "Email cannot be empty")
-	@Email
+	@Email(message = "Email must be valid")
 	private String email;
 
-	@NotBlank(message = "Template cannot be empty")
-	private String template;
+	@NotNull(message = "Template cannot be null")
+	private Template template;
 
-	@NotBlank(message = "Type cannot be empty")
-	private String type;
+	@NotNull(message = "Type cannot be null")
+	private CertificateType type;
 	
 	private String path;
+	
 }
