@@ -32,4 +32,10 @@ public class ConfigurationController {
 	public ResponseEntity<Configuration> getConfiguration(@RequestBody ConfigurationTarget target) {
 		return ResponseEntity.ok(configurationService.getConfiguration(target.getUrl()));
 	}
+
+	@PutMapping
+	public ResponseEntity<Void> saveConfiguration(@RequestBody ConfigurationTarget target) {
+		this.configurationService.set(target.getUrl(), target.getConfiguration());
+		return ResponseEntity.ok().build();
+	}
 }

@@ -9,11 +9,15 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class ConfigurationService {
 
-    private final String config = "%s/configuration";
+    private final String config = "%s/api/configuration";
 
     private final RestTemplate restTemplate;
 
     public Configuration getConfiguration(String url) {
         return restTemplate.getForEntity(String.format(config, url), Configuration.class).getBody();
+    }
+
+    public void set(String url, Configuration configuration) {
+        restTemplate.put(String.format(config, url), configuration);
     }
 }

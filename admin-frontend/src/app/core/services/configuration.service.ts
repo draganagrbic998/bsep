@@ -18,4 +18,8 @@ export class ConfigurationService {
     return this.httpClient.post<Configuration>(this.API, {url: `https://${hospitalApi}`});
   }
 
+  save(hospitalApi: string, configuration: Configuration): Observable<null> {
+    return this.httpClient.put<null>(this.API, {url: `https://${hospitalApi}`, configuration});
+  }
+
 }

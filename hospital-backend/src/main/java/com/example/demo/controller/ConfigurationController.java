@@ -12,7 +12,6 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 @AllArgsConstructor
 public class ConfigurationController {
 
@@ -23,7 +22,7 @@ public class ConfigurationController {
         return ResponseEntity.ok(configurationService.get());
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<Void> set(@RequestBody Configuration configuration) throws IOException {
         configurationService.set(configuration);
         return ResponseEntity.ok().build();

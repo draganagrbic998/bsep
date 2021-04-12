@@ -1,7 +1,7 @@
-class LogConfiguration {
-  path: string;
-  interval: number;
-  regExp: string;
+export class LogConfiguration {
+  path = 'path';
+  interval = 0;
+  regExp = '.*';
 }
 
 export class Configuration {

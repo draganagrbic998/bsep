@@ -20,7 +20,10 @@ public class ConfigurationService {
     public Configuration get() {
         try {
             File f = new ClassPathResource("configuration.json").getFile();
-            return g.fromJson(new FileReader(f), Configuration.class);
+            FileReader fr = new FileReader(f);
+            Configuration c = g.fromJson(fr, Configuration.class);
+            fr.close();
+            return c;
         } catch (IOException e) {
             return new Configuration();
         }
@@ -38,5 +41,6 @@ public class ConfigurationService {
 
         FileWriter fw = new FileWriter(f, false);
         g.toJson(configuration, Configuration.class, fw);
+        fw.close();
     }
 }
