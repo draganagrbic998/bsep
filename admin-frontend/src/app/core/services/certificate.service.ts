@@ -12,6 +12,8 @@ import { Revoke } from '../model/revoke';
 })
 export class CertificateService {
 
+  private readonly API_PATH = 'api/certificates';
+
   ca: BehaviorSubject<CertificateInfo | null> = new BehaviorSubject<CertificateInfo | null>(null);
   certificates: CertificateInfo[] = [];
   certificateRequests: CertificateRequest[] = [];
@@ -20,8 +22,6 @@ export class CertificateService {
   constructor(
     private httpClient: HttpClient
   ) { }
-
-  private readonly API_PATH = 'api/certificates';
 
   findAll(page: number, size: number): Observable<Page<CertificateInfo>> {
     const params = new HttpParams().set('page', page + '').set('size', size + '');

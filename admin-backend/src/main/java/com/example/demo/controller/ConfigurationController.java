@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ConfigurationTarget;
 import com.example.demo.dto.RevokeDTO;
 import com.example.demo.dto.certificate.CertificateInfoDTO;
 import com.example.demo.dto.certificate.CertificateRequestDTO;
@@ -27,10 +28,8 @@ public class ConfigurationController {
 
 	private final ConfigurationService configurationService;
 
-	@GetMapping(value = "{url}")
-	public ResponseEntity<Configuration> getConfiguration(@PathVariable String url) {
-		return ResponseEntity.ok(configurationService.getConfiguration(url));
+	@PostMapping
+	public ResponseEntity<Configuration> getConfiguration(@RequestBody ConfigurationTarget target) {
+		return ResponseEntity.ok(configurationService.getConfiguration(target.getUrl()));
 	}
-
-
 }

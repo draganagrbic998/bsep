@@ -2,19 +2,23 @@
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
       <span class="p-d-flex p-ai-center">
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">https://</span>
-          <input type="text" pInputText placeholder="Address">
-          <button type="button"
-                  [label]="connected ? 'Disconnect' : 'Connect'"
-                  pButton
-          ></button>
-        </div>
+          <form (ngSubmit)="connect()">
+            <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">https://</span>
+              <input type="text" pInputText placeholder="Hospital API" [formControl]="hospitalApiControl">
+              <button type="button"
+                      class="p-button-success"
+                      [label]="connected ? 'Disconnect' : 'Connect'"
+                      pButton
+              ></button>
+            </div>
+
+          </form>
       </span>
     </ng-template>
     <ng-template pTemplate="right">
       <span class="p-d-flex p-ai-center">
-        <p-badge [severity]="connected ? 'success' : 'warning'"
+        <p-badge [severity]="connected ? 'success' : 'danger'"
                  [value]="connected ? 'Connected' : 'Disconnected'"
         ></p-badge>
       </span>

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(value = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
@@ -22,7 +24,7 @@ public class ConfigurationController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> set(@RequestBody Configuration configuration) {
+    public ResponseEntity<Void> set(@RequestBody Configuration configuration) throws IOException {
         configurationService.set(configuration);
         return ResponseEntity.ok().build();
     }
