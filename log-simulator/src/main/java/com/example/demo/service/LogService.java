@@ -28,12 +28,7 @@ public class LogService {
 	
 	@PostConstruct
 	public void init() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				generateLogs();
-			}
-		}).start();
+		new Thread(() -> this.generateLogs()).start();
 	}
 
 	private void generateLogs() {
@@ -45,7 +40,8 @@ public class LogService {
 				writer.println(this.logCipher.encrypt(line));
 				writer.close();
 				Thread.sleep(SLEEP_INTERVAL);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

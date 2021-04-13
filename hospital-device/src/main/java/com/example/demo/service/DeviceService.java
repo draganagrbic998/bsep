@@ -27,12 +27,7 @@ public class DeviceService {
 	
 	@PostConstruct
 	public void init() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				monitorPatients();
-			}
-		}).start();
+		new Thread(() -> this.monitorPatients()).start();
 	}
 	
 	private void monitorPatients() {

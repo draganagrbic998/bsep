@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ConfigurationService} from '../../../core/services/configuration.service';
-import {FormControl} from '@angular/forms';
-import {Configuration, LogConfiguration} from '../../../core/model/configuration';
-import {InputText} from 'primeng/inputtext';
-import {MessageService} from 'primeng/api';
+import { ConfigurationService } from '../../../core/services/configuration.service';
+import { FormControl } from '@angular/forms';
+import { Configuration, LogConfiguration } from '../../../core/model/configuration';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-configuration',

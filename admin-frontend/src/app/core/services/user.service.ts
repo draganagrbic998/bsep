@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Authority } from '../model/authority';
 import { Activation } from '../model/activation';
 import { Page } from '../model/page';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
