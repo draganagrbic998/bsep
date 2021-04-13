@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.dto.MessageSearchDTO;
 import com.example.demo.model.Message;
 import com.example.demo.repository.MessageRepository;
+import com.example.demo.utils.DatabaseCipher;
 
 import lombok.AllArgsConstructor;
 
@@ -18,12 +19,13 @@ public class MessageService {
 
 	private final MessageRepository messageRepository;
 	private final MessageEventService eventService;
+	private final DatabaseCipher databaseCipher;
 	
 	public Page<Message> findAll(Pageable pageable, MessageSearchDTO searchDTO) {
 		return this.messageRepository.findAll(pageable, 
-			searchDTO.getInsuredNumber(), 
-			searchDTO.getFirstName(), 
-			searchDTO.getLastName(), 
+			this.databaseCipher.encrypt(searchDTO.getInsuredNumber()), 
+			this.databaseCipher.encrypt(searchDTO.getFirstName()), 
+			this.databaseCipher.encrypt(searchDTO.getLastName()), 
 			searchDTO.getDate());
 	}
 

@@ -2,11 +2,14 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.MessageDTO;
 import com.example.demo.dto.MessageMeasureDTO;
 import com.example.demo.model.Message;
 import com.example.demo.service.PatientService;
+import com.example.demo.utils.DatabaseCipher;
 
 import lombok.AllArgsConstructor;
 
@@ -17,6 +20,7 @@ public class MessageMapper {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
 	private final PatientService patientService;
+	private final DatabaseCipher databaseCipher;
 
 	public Message map(MessageMeasureDTO messageDTO) {
 		try {
@@ -34,6 +38,10 @@ public class MessageMapper {
 		catch(Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public Page<MessageDTO> map(Page<Message> messages) {
+		return messages.map(message -> new MessageDTO(this.databaseCipher.decrypt(message)));
 	}
 		
 }

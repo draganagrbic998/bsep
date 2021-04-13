@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AlarmTriggeringDTO;
+import com.example.demo.mapper.AlarmTriggeringMapper;
 import com.example.demo.service.AlarmTriggeringService;
 import com.example.demo.service.UserService;
 
@@ -23,13 +24,14 @@ public class AlarmTriggeringController {
 
 	private final UserService userService;
 	private final AlarmTriggeringService alarmTriggeringService;
-	
+	private final AlarmTriggeringMapper alarmTriggeringMapper;
+
 	@GetMapping
 	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable){
 		if (this.userService.currentUser().isAdmin()) {
 			return ResponseEntity.ok(this.alarmTriggeringService.findAllForAdmin(pageable).map(AlarmTriggeringDTO::new));
 		}
-		return ResponseEntity.ok(this.alarmTriggeringService.findAllForDoctor(pageable).map(AlarmTriggeringDTO::new));
+		return ResponseEntity.ok(this.alarmTriggeringMapper.map(this.alarmTriggeringService.findAllForDoctor(pageable)));
 	}
 	
 }
