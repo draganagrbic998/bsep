@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import {MenuItem} from 'primeng/api';
+import {menuItems} from '../../../core/utils/menu-items';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
+
+  items: MenuItem[] = menuItems;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

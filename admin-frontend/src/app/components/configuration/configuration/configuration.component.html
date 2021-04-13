@@ -10,7 +10,15 @@
                       class="p-button-success"
                       [label]="connected ? 'Disconnect & Save' : 'Connect'"
                       pButton
+                      *ngIf="!loading; else spinner"
               ></button>
+              <ng-template #spinner>
+                <button type="button"
+                        class="p-button-success"
+                        icon="pi pi-spin pi-spinner"
+                        pButton
+                ></button>
+              </ng-template>
             </div>
           </form>
       </span>

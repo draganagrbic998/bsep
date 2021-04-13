@@ -13,6 +13,7 @@ export class ConfigurationComponent implements OnInit {
 
   hospitalApiControl: FormControl = new FormControl();
   oldConfig: { [s: number]: LogConfiguration; } = {};
+  loading = false;
 
   constructor(private configurationService: ConfigurationService,
               private messageService: MessageService) { }
@@ -21,17 +22,19 @@ export class ConfigurationComponent implements OnInit {
   }
 
   toggleConnection(): void {
+    this.loading = true;
     if (this.connected) {
-
       if (this.checkConfiguration()) {
         this.configurationService.save(this.hospitalApiControl.value, this.configuration).subscribe(() => {
           this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration successfully saved'});
           this.configurationService.configuration.next(null);
           this.hospitalApiControl.enable();
+          this.loading = false;
         }, () => {
           this.messageService.add({severity: 'error', summary: 'Error', detail: 'Configuration wasn\'t saved'});
           this.configurationService.configuration.next(null);
           this.hospitalApiControl.enable();
+          this.loading = false;
         });
       }
 
@@ -39,7 +42,14 @@ export class ConfigurationComponent implements OnInit {
     }
     this.configurationService.connect(this.hospitalApiControl.value).subscribe((val: Configuration) => {
       this.configurationService.configuration.next(val);
+      this.messageService.add({severity: 'success', summary: 'Success', detail: 'Connection successfully established.'});
       this.hospitalApiControl.disable();
+      this.loading = false;
+    }, () => {
+      this.configurationService.configuration.next(null);
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Connection not established.'});
+      this.hospitalApiControl.enable();
+      this.loading = false;
     });
   }
 

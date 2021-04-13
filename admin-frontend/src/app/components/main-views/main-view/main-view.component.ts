@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import {menuItems} from '../../../core/utils/menu-items';
 
 @Component({
   selector: 'app-main-view',
@@ -10,25 +11,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class MainViewComponent {
 
-  items: MenuItem[] = [
-    {
-      label: 'Dashboard',
-      routerLink: '/',
-      routerLinkActiveOptions: {exact: true}
-    },
-    {
-      label: 'Certificates',
-      routerLink: '/certificates'
-    },
-    {
-      label: 'Users',
-      routerLink: '/users'
-    },
-    {
-      label: 'Configuration',
-      routerLink: '/configuration'
-    }
-  ];
+  items: MenuItem[] = menuItems;
 
   constructor(
     private authService: AuthService,
