@@ -1,10 +1,8 @@
-import { LogDetailsComponent } from './components/log/log-details/log-details.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
 import { AdminToolbarComponent } from './components/toolbar/admin-toolbar/admin-toolbar.component';
 import { LogSearchComponent } from './components/log/log-search/log-search.component';
-import { AdminAlarmDetailsComponent } from './components/admin-alarm/admin-alarm-details/admin-alarm-details.component';
-import { AdminAlarmListComponent } from './components/admin-alarm/admin-alarm-list/admin-alarm-list.component';
-import { AdminAlarmFormComponent } from './components/admin-alarm/admin-alarm-form/admin-alarm-form.component';
+import { AdminAlarmListComponent } from './components/alarm/admin-alarm-list/admin-alarm-list.component';
+import { AdminAlarmFormComponent } from './components/alarm/admin-alarm-form/admin-alarm-form.component';
 import { ReportComponent } from './components/common/report/report.component';
 import { LoginFormComponent } from './components/common/login-form/login-form.component';
 import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
@@ -15,14 +13,11 @@ import { EmptyContainerComponent } from './components/containers/empty-container
 import { PaginatorComponent } from './components/common/paginator/paginator.component';
 import { DoctorToolbarComponent } from './components/toolbar/doctor-toolbar/doctor-toolbar.component';
 import { DeleteConfirmationComponent } from './components/common/delete-confirmation/delete-confirmation.component';
-import { MessageDetailsComponent } from './components/message/message-details/message-details.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
-import { DoctorAlarmDetailsComponent } from './components/doctor-alarm/doctor-alarm-details/doctor-alarm-details.component';
-import { DoctorAlarmListComponent } from './components/doctor-alarm/doctor-alarm-list/doctor-alarm-list.component';
+import { DoctorAlarmListComponent } from './components/alarm/doctor-alarm-list/doctor-alarm-list.component';
 import { MessageSearchComponent } from './components/message/message-search/message-search.component';
-import { DoctorAlarmFormComponent } from './components/doctor-alarm/doctor-alarm-form/doctor-alarm-form.component';
-import { AlarmTriggeringDetailsComponent } from './components/alarm-triggering/alarm-triggering-details/alarm-triggering-details.component';
-import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
+import { DoctorAlarmFormComponent } from './components/alarm/doctor-alarm-form/doctor-alarm-form.component';
+import { AlarmTriggeringListComponent } from './components/alarm/alarm-triggering-list/alarm-triggering-list.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { FormContainerComponent } from './components/containers/form-container/form-container.component';
 import { SpacerContainerComponent } from './components/containers/spacer-container/spacer-container.component';
@@ -44,19 +39,14 @@ export const COMPONENTS = [
     PaginatorComponent,
     DoctorToolbarComponent,
     DeleteConfirmationComponent,
-    MessageDetailsComponent,
     MessageListComponent,
-    DoctorAlarmDetailsComponent,
     DoctorAlarmListComponent,
     MessageSearchComponent,
     DoctorAlarmFormComponent,
-    AlarmTriggeringDetailsComponent,
     AlarmTriggeringListComponent,
-    LogDetailsComponent,
     LogListComponent,
     AdminToolbarComponent,
     LogSearchComponent,
-    AdminAlarmDetailsComponent,
     AdminAlarmListComponent,
     AdminAlarmFormComponent,
     ReportComponent,

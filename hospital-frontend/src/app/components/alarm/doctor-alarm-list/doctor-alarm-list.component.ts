@@ -6,6 +6,8 @@ import { Pagination } from 'src/app/models/pagination';
 import { DoctorAlarmFormComponent } from '../doctor-alarm-form/doctor-alarm-form.component';
 import { AlarmService } from 'src/app/services/alarm.service';
 import { Page } from 'src/app/models/page';
+import { DeleteData } from 'src/app/models/delete-data';
+import { DeleteConfirmationComponent } from '../../common/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-alarm-list',
@@ -48,6 +50,14 @@ export class DoctorAlarmListComponent implements OnInit {
         this.pagination.lastPage = page.last;
       }
     );
+  }
+
+  delete(id: number): void{
+    const deleteData: DeleteData = {
+      deleteFunction: () => this.alarmService.delete(id),
+      refreshFunction: () => this.alarmService.announceRefreshDoctorData()
+    };
+    this.dialog.open(DeleteConfirmationComponent, {...DIALOG_OPTIONS, ...{data: deleteData}});
   }
 
   ngOnInit(): void {

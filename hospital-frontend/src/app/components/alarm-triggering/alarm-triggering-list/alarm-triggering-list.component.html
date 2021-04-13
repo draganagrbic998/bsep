@@ -1,9 +1,0 @@
-<div>
-    <app-list-container title="NO ALARMS" [pending]="pending" [empty]="!alarmTriggerings.length" 
-    [pagination]="pagination" [refresh]="true" (changedPage)="changePage($event)">
-        <app-alarm-triggering-details
-        *ngFor="let alarmTriggering of alarmTriggerings"
-        [alarmTriggering]="alarmTriggering"
-        ></app-alarm-triggering-details>
-    </app-list-container>
-</div>

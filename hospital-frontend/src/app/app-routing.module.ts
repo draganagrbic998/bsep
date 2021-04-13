@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { AuthGuard } from './utils/auth.guard';
 import { ADMIN, DOCTOR } from './utils/constants';
 
-import { AlarmTriggeringListComponent } from './components/alarm-triggering/alarm-triggering-list/alarm-triggering-list.component';
+import { AlarmTriggeringListComponent } from './components/alarm/alarm-triggering-list/alarm-triggering-list.component';
 import { LogListComponent } from './components/log/log-list/log-list.component';
 import { MessageListComponent } from './components/message/message-list/message-list.component';
 import { PatientListComponent } from './components/patient/patient-list/patient-list.component';

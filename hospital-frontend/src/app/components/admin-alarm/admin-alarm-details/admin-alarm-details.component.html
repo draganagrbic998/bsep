@@ -1,6 +1,0 @@
-<app-details-container 
-[delete]="'Alarm #' + index" (deleted)="delete()" 
-[details]="[
-    {key: 'Tracking field', value: alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'},
-    {key: 'Search parameter', value: alarm.param}, {key: 'Minimum count of events', value: alarm.counts}
-]"></app-details-container>

@@ -1,8 +1,0 @@
-<app-details-container 
-[delete]="'Alarm #' + index" (deleted)="delete()"
-[details]="[
-    {key: 'Min pulse', value: alarm.minPulse}, {key: 'Max pulse', value: alarm.maxPulse},
-    {key: 'Min pressure', value: alarm.minPressure}, {key: 'Max pressure', value: alarm.maxPressure},
-    {key: 'Min temperature', value: alarm.minTemperature}, {key: 'Max temperature', value: alarm.maxTemperature},
-    {key: 'Min oxygen level', value: alarm.minOxygenLevel}, {key: 'Max oxygen level', value: alarm.maxOxygenLevel}
-]"></app-details-container>

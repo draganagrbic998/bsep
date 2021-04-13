@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
-import { AdminAlarmFormComponent } from '../../admin-alarm/admin-alarm-form/admin-alarm-form.component';
-import { AdminAlarmListComponent } from '../../admin-alarm/admin-alarm-list/admin-alarm-list.component';
+import { AdminAlarmFormComponent } from '../../alarm/admin-alarm-form/admin-alarm-form.component';
+import { AdminAlarmListComponent } from '../../alarm/admin-alarm-list/admin-alarm-list.component';
 import { CertificateFormComponent } from '../../certificate/certificate-form/certificate-form.component';
 import { RevokeFormComponent } from '../../certificate/revoke-form/revoke-form.component';
 
