@@ -29,12 +29,7 @@ public class LogEventService {
 		this.kieSession = this.kieContainer.newKieSession(Constants.ADMIN_ALARMS);
 		this.kieSession.setGlobal("alarmService", this.alarmService);
 		this.kieSession.setGlobal("alarmTriggeringService", this.alarmTriggeringService);
-        new Thread() {
-            @Override
-            public void run() {
-                kieSession.fireUntilHalt();
-            }
-        }.start();
+        new Thread(() -> this.kieSession.fireUntilHalt()).start();
 	}
 
 	public void addLog(Log log) {

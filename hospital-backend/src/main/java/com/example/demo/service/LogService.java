@@ -12,18 +12,19 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 
 import com.example.demo.dto.LogSearchDTO;
 import com.example.demo.mapper.LogMapper;
+import com.example.demo.model.Configuration;
 import com.example.demo.model.Log;
+import com.example.demo.model.LogConfiguration;
 import com.example.demo.repository.LogRepository;
-import com.example.demo.utils.Configuration;
-import com.example.demo.utils.LogConfiguration;
+import com.example.demo.utils.Constants;
 import com.google.gson.Gson;
 
 import lombok.AllArgsConstructor;
@@ -32,6 +33,8 @@ import lombok.AllArgsConstructor;
 @Transactional(readOnly = true)
 @AllArgsConstructor
 public class LogService {
+
+    private final static Gson GSON = new Gson();
 
 	private final LogRepository logRepository;
 	private final LogMapper logMapper;
@@ -49,19 +52,18 @@ public class LogService {
 	}
 
 	@Transactional(readOnly = false)
-	protected List<Log> save(List<Log> logs) {
+	private List<Log> save(List<Log> logs) {
 		return this.logRepository.saveAll(logs);
 	}
 
 	@PostConstruct
 	public void init() {
 		try {
-			Gson gson = new Gson();
-            File file = ResourceUtils.getFile("classpath:configuration.json");
-			Configuration configuration = gson.fromJson(new FileReader(file), Configuration.class);
+            File file = new ClassPathResource(Constants.CONFIGURATION_FILE).getFile();
+			Configuration configuration = GSON.fromJson(new FileReader(file), Configuration.class);
 		
 			for (LogConfiguration lc: configuration.getConfigurations()) {
-				new Thread(() -> readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp())).start();
+				new Thread(() -> this.readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp())).start();
 			}
 		}
 		catch(Exception e) {

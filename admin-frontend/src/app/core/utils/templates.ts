@@ -1,5 +1,4 @@
 import {Template} from '../model/template';
-import {Extensions} from '../model/extensions';
 import {
   cRLSign,
   digitalSignature,

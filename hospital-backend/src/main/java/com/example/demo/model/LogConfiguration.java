@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +10,13 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class LogConfiguration {
 
-	@NotBlank
+	@NotBlank(message = "Path cannot be empty")
 	private String path;
 
-	@Positive
+	@Positive(message = "Interval must be positive integer")
 	private long interval;
 
-	@NotBlank
+	@NotBlank(message = "Regular expression cannot be blank")
 	private String regExp;
+	
 }
