@@ -10,6 +10,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
+import com.example.demo.model.AlarmTriggering;
+import com.example.demo.model.Message;
 import com.example.demo.model.Patient;
 
 import lombok.AllArgsConstructor;
@@ -69,6 +71,24 @@ public class DatabaseCipher {
 		patient.setLastName(this.decrypt(patient.getLastName()));
 		patient.setInsuredNumber(this.decrypt(patient.getInsuredNumber()));
 		return patient;
+	}
+
+	public Message decrypt(Message message) {
+		Patient p = new Patient();
+		p.setFirstName(this.decrypt(message.getPatient().getFirstName()));
+		p.setLastName(this.decrypt(message.getPatient().getLastName()));
+		p.setInsuredNumber(this.decrypt(message.getPatient().getInsuredNumber()));
+		message.setPatient(p);
+		return message;
+	}
+
+	public AlarmTriggering decrypt(AlarmTriggering alarmTriggering) {
+		Patient p = new Patient();
+		p.setFirstName(this.decrypt(alarmTriggering.getPatient().getFirstName()));
+		p.setLastName(this.decrypt(alarmTriggering.getPatient().getLastName()));
+		p.setInsuredNumber(this.decrypt(alarmTriggering.getPatient().getInsuredNumber()));
+		alarmTriggering.setPatient(p);
+		return alarmTriggering;
 	}
 	
 }

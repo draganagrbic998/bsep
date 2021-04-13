@@ -32,7 +32,7 @@ public class MessageController {
 	@PreAuthorize("hasAuthority('DOCTOR')")
 	@PostMapping(value = "/search")
 	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody MessageSearchDTO searchDTO) {
-		return ResponseEntity.ok(this.messageService.findAll(pageable, searchDTO).map(MessageDTO::new));
+		return ResponseEntity.ok(this.messageMapper.map(this.messageService.findAll(pageable, searchDTO)));
 	}
 
 	@PostMapping
