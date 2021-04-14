@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { FormControl } from '@angular/forms';
 import { Configuration, LogConfiguration } from '../../../core/model/configuration';
@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './configuration.component.html',
   styleUrls: ['./configuration.component.scss']
 })
-export class ConfigurationComponent implements OnInit {
+export class ConfigurationComponent implements OnDestroy {
 
   hospitalApiControl: FormControl = new FormControl();
   oldConfig: { [s: number]: LogConfiguration; } = {};
@@ -18,28 +18,17 @@ export class ConfigurationComponent implements OnInit {
   constructor(private configurationService: ConfigurationService,
               private messageService: MessageService) { }
 
-  ngOnInit(): void {
-  }
 
   toggleConnection(): void {
     this.loading = true;
     if (this.connected) {
-      if (this.checkConfiguration()) {
-        this.configurationService.save(this.hospitalApiControl.value, this.configuration).subscribe(() => {
-          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration successfully saved'});
-          this.configurationService.configuration.next(null);
-          this.hospitalApiControl.enable();
-          this.loading = false;
-        }, () => {
-          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Configuration wasn\'t saved'});
-          this.configurationService.configuration.next(null);
-          this.hospitalApiControl.enable();
-          this.loading = false;
-        });
-      }
-
+      this.save();
       return;
     }
+    this.connect();
+  }
+
+  connect(): void {
     this.configurationService.connect(this.hospitalApiControl.value).subscribe((val: Configuration) => {
       this.configurationService.configuration.next(val);
       this.messageService.add({severity: 'success', summary: 'Success', detail: 'Connection successfully established.'});
@@ -51,6 +40,28 @@ export class ConfigurationComponent implements OnInit {
       this.hospitalApiControl.enable();
       this.loading = false;
     });
+  }
+
+  save(): void {
+    if (this.checkConfiguration()) {
+      this.configurationService.save(this.hospitalApiControl.value, this.configuration).subscribe(() => {
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration successfully saved'});
+        this.configurationService.configuration.next(null);
+        this.hospitalApiControl.enable();
+        this.loading = false;
+      }, () => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Configuration wasn\'t saved'});
+        this.configurationService.configuration.next(null);
+        this.hospitalApiControl.enable();
+        this.loading = false;
+      });
+    }
+  }
+
+  cancel(): void {
+    this.configurationService.configuration.next(null);
+    this.hospitalApiControl.enable();
+    this.loading = false;
   }
 
   checkConfiguration(): boolean {
@@ -111,6 +122,10 @@ export class ConfigurationComponent implements OnInit {
 
   get connected(): boolean {
     return !!this.configurationService.configuration.getValue();
+  }
+
+  ngOnDestroy(): void {
+    this.cancel();
   }
 
 }
