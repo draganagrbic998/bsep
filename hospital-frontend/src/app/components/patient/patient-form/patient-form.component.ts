@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
 import { Patient } from 'src/app/models/patient';
@@ -17,21 +17,22 @@ export class PatientFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public patient: Patient,
     private patientService: PatientService,
     private dialogRef: MatDialogRef<PatientFormComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) { }
 
-  patientForm: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    lastName: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    birthDate: new FormControl('', [Validators.required, this.birthDateValidator()]),
-    gender: new FormControl('', [Validators.required]),
-    blodType: new FormControl('', [Validators.required]),
-    height: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
-    weight: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]),
-    address: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))]),
-    city: new FormControl('', [Validators.required, Validators.pattern(new RegExp('\\S'))])
-  });
   pending = false;
+  patientForm = this.formBuilder.group({
+    firstName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    lastName: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    gender: ['', [Validators.required]],
+    blodType: ['', [Validators.required]],
+    height: ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
+    weight: ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
+    address: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    city: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+    birthDate: ['', [Validators.required, this.birthDateValidator()]]
+  });
 
   confirm(): void{
     if (this.patientForm.invalid){

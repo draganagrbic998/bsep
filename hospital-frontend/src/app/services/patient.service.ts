@@ -4,16 +4,14 @@ import { Observable, of, Subject } from 'rxjs';
 import { Patient } from 'src/app/models/patient';
 import { catchError, map } from 'rxjs/operators';
 import { Page } from 'src/app/models/page';
-import { PAGE_SIZE } from 'src/app/utils/constants';
+import { EMPTY_PAGE, PAGE_SIZE } from 'src/app/utils/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   private readonly API_PATH = 'api/patients';
 
@@ -26,7 +24,7 @@ export class PatientService {
   findAll(page: number, search: string): Observable<Page<Patient>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '').set('search', search);
     return this.http.get<Page<Patient>>(this.API_PATH, {params}).pipe(
-      catchError(() => of({content: [], first: true, last: true}))
+      catchError(() => of(EMPTY_PAGE))
     );
   }
 

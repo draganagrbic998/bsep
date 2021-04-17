@@ -5,12 +5,10 @@ import { Directive, HostListener } from '@angular/core';
 })
 export class OnlyNumbersDirective {
 
-  constructor() { }
-
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
     // tslint:disable-next-line: deprecation
-    const charCode: number = event.which ? event.which : event.keyCode;
+    const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)){
       event.preventDefault();
     }

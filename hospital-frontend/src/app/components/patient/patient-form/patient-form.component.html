@@ -1,4 +1,4 @@
-<app-dialog-container [title]="patient.id ? 'Edit Patient' : 'New Patient'" 
+<app-dialog [title]="patient.id ? 'Edit Patient' : 'New Patient'" 
 [disabled]="patientForm.invalid" [pending]="pending" (confirmed)="confirm()">
     <form [formGroup]="patientForm" [class.disabled]="pending">
         <div>
@@ -105,4 +105,4 @@
             </mat-form-field>    
         </div>
     </form>
-</app-dialog-container>
+</app-dialog>

@@ -1,0 +1,29 @@
+@import "../../../../styles/theme";
+
+.root{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 85%;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.left{
+    width: 50%;
+}
+
+.right{
+    width: 40%;
+    margin-top: 40px;
+}
+
+form{
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+button{
+    background-color: $main;
+    color: white;
+}

@@ -1,0 +1,37 @@
+<div class="root mat-elevation-z24">
+    <mat-card [class.no-padding]="date">
+        <mat-card-content>
+            <app-spacer *ngIf="delete">
+                <h5>{{delete}}</h5>
+                <button 
+                (click)="deleted.emit()"
+                mat-icon-button 
+                matTooltip="Delete"
+                color="warn">
+                    <mat-icon>delete</mat-icon>
+                </button>  
+            </app-spacer>
+            
+            <div *ngIf="date" class="date" [class.warn]="warn">
+                <app-spacer>
+                    <span></span>
+                    <span class="bold">{{date | date: "dd/mm/yyyy HH:mm:ss"}}</span>    
+                </app-spacer>
+            </div>
+
+            <div [class.padding]="date">
+                <div *ngFor="let detail of filteredDetails">
+                    <span class="bold">{{detail.key}}: </span>
+                    <span>{{detail.value}}</span>
+                </div>
+                <br *ngIf="filteredMainDetails.length">
+                <div *ngIf="filteredMainDetails.length" class="main">
+                    <div *ngFor="let detail of filteredMainDetails">
+                        <span class="bold">{{detail.key}}: </span>
+                        <span>{{detail.value}}</span>
+                    </div>    
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

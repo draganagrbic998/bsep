@@ -1,0 +1,13 @@
+<div>
+    <app-list title="NO ALARMS" [pending]="pending" [empty]="!page.content.length" 
+    [page]="page" [refresh]="true" (changedPage)="fetchAlarmTriggerings($event)">
+        <app-details 
+        *ngFor="let alarmTriggering of page.content"
+        [date]="alarmTriggering.date" [warn]="true"
+        [details]="[
+            {key: 'Patient', value: alarmTriggering.patient},
+            {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
+        [mainDetails]="[{key: 'Message', value: alarmTriggering.message}]"
+        ></app-details>
+    </app-list>
+</div>

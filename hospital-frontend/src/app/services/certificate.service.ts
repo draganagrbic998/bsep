@@ -9,9 +9,7 @@ import { CertificateRequest } from '../models/certificate-request';
 })
 export class CertificateService {
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   private readonly API_PATH = 'api/certificates';
 

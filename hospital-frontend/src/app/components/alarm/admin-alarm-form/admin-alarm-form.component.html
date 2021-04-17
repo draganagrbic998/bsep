@@ -1,7 +1,8 @@
-<app-dialog-container title="Create new alarm" [pending]="pending" 
+<app-dialog title="Create new alarm" [pending]="pending" 
 [disabled]="alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm" [class.disabled]="pending">
-        <mat-slide-toggle formControlName="status">
+        <mat-slide-toggle formControlName="status" 
+        (change)="alarmForm.controls.param.reset(); alarmForm.controls.counts.reset()">
             {{alarmForm.controls.status.value ? 
                 'Alarm for tracking logs status' : 
                 'Alarm for tracking logs description'}}
@@ -40,4 +41,4 @@
             placeholder="Enter number of counts">     
         </div>
     </form>
-</app-dialog-container>
+</app-dialog>

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
@@ -11,19 +11,20 @@ import { AlarmService } from 'src/app/services/alarm.service';
   templateUrl: './admin-alarm-form.component.html',
   styleUrls: ['./admin-alarm-form.component.scss']
 })
-export class AdminAlarmFormComponent implements OnInit {
+export class AdminAlarmFormComponent {
 
   constructor(
     private alarmService: AlarmService,
     private dialogRef: MatDialogRef<AdminAlarmFormComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) { }
 
   pending = false;
-  alarmForm: FormGroup = new FormGroup({
-    status: new FormControl(true, [Validators.required]),
-    param: new FormControl('', []),
-    counts: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]\d*$/)])
+  alarmForm = this.formBuilder.group({
+    status: [true, Validators.required],
+    param: ['', Validators.required],
+    counts: ['', Validators.required]
   });
 
   confirm(): void{
@@ -42,9 +43,6 @@ export class AdminAlarmFormComponent implements OnInit {
         }
       }
     );
-  }
-
-  ngOnInit(): void {
   }
 
 }

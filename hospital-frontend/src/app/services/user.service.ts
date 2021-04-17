@@ -10,9 +10,7 @@ import { User } from 'src/app/models/user';
 })
 export class UserService {
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   private readonly AUTH_PATH = 'auth';
 

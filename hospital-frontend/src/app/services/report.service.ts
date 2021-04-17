@@ -10,9 +10,7 @@ import { ReportSearch } from 'src/app/models/report-search';
 })
 export class ReportService {
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   private readonly API_PATH = 'api/report';
 

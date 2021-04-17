@@ -1,59 +1,53 @@
-import { LogListComponent } from './components/log/log-list/log-list.component';
-import { AdminToolbarComponent } from './components/toolbar/admin-toolbar/admin-toolbar.component';
-import { LogSearchComponent } from './components/log/log-search/log-search.component';
-import { AdminAlarmListComponent } from './components/alarm/admin-alarm-list/admin-alarm-list.component';
+import { LogsComponent } from './components/log-message/logs/logs.component';
+import { ToolbarComponent } from './components/common/toolbar/toolbar.component';
+import { AdminAlarmsComponent } from './components/alarm/admin-alarms/admin-alarms.component';
 import { AdminAlarmFormComponent } from './components/alarm/admin-alarm-form/admin-alarm-form.component';
-import { ReportComponent } from './components/common/report/report.component';
-import { LoginFormComponent } from './components/common/login-form/login-form.component';
-import { CertificateFormComponent } from './components/certificate/certificate-form/certificate-form.component';
-import { DetailsContainerComponent } from './components/containers/details-container/details-container.component';
-import { DialogContainerComponent } from './components/containers/dialog-container/dialog-container.component';
-import { ListContainerComponent } from './components/containers/list-container/list-container.component';
-import { EmptyContainerComponent } from './components/containers/empty-container/empty-container.component';
+import { ReportComponent } from './components/log-message/report/report.component';
+import { LoginComponent } from './components/common/login/login.component';
+import { RequestComponent } from './components/certificate/request/request.component';
+import { DetailsComponent } from './components/containers/details/details.component';
+import { DialogComponent } from './components/containers/dialog/dialog.component';
+import { ListComponent } from './components/containers/list/list.component';
+import { EmptyComponent } from './components/containers/empty/empty.component';
 import { PaginatorComponent } from './components/common/paginator/paginator.component';
-import { DoctorToolbarComponent } from './components/toolbar/doctor-toolbar/doctor-toolbar.component';
-import { DeleteConfirmationComponent } from './components/common/delete-confirmation/delete-confirmation.component';
-import { MessageListComponent } from './components/message/message-list/message-list.component';
-import { DoctorAlarmListComponent } from './components/alarm/doctor-alarm-list/doctor-alarm-list.component';
-import { MessageSearchComponent } from './components/message/message-search/message-search.component';
+import { DeleteComponent } from './components/common/delete/delete.component';
+import { MessagesComponent } from './components/log-message/messages/messages.component';
+import { DoctorAlarmsComponent } from './components/alarm/doctor-alarms/doctor-alarms.component';
 import { DoctorAlarmFormComponent } from './components/alarm/doctor-alarm-form/doctor-alarm-form.component';
-import { AlarmTriggeringListComponent } from './components/alarm/alarm-triggering-list/alarm-triggering-list.component';
+import { AlarmTriggeringsComponent } from './components/alarm/alarm-triggerings/alarm-triggerings.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
-import { FormContainerComponent } from './components/containers/form-container/form-container.component';
-import { SpacerContainerComponent } from './components/containers/spacer-container/spacer-container.component';
+import { FormComponent } from './components/containers/form/form.component';
+import { SpacerComponent } from './components/containers/spacer/spacer.component';
 import { PreloaderComponent } from './components/loaders/preloader/preloader.component';
-import { SpinnerButtonComponent } from './components/loaders/spinner-button/spinner-button.component';
-import { PatientDetailsComponent } from './components/patient/patient-details/patient-details.component';
-import { PatientListComponent } from './components/patient/patient-list/patient-list.component';
-import { RevokeFormComponent } from './components/certificate/revoke-form/revoke-form.component';
+import { SpinnerComponent } from './components/loaders/spinner/spinner.component';
+import { PatientComponent } from './components/patient/patient/patient.component';
+import { PatientsComponent } from './components/patient/patients/patients.component';
+import { RevokeComponent } from './components/certificate/revoke/revoke.component';
 
 export const COMPONENTS = [
     PatientFormComponent,
-    FormContainerComponent,
-    SpacerContainerComponent,
+    FormComponent,
+    SpacerComponent,
     PreloaderComponent,
-    SpinnerButtonComponent,
-    PatientDetailsComponent,
-    PatientListComponent,
-    EmptyContainerComponent,
+    SpinnerComponent,
+    PatientComponent,
+    PatientsComponent,
+    EmptyComponent,
     PaginatorComponent,
-    DoctorToolbarComponent,
-    DeleteConfirmationComponent,
-    MessageListComponent,
-    DoctorAlarmListComponent,
-    MessageSearchComponent,
+    DeleteComponent,
+    MessagesComponent,
+    DoctorAlarmsComponent,
     DoctorAlarmFormComponent,
-    AlarmTriggeringListComponent,
-    LogListComponent,
-    AdminToolbarComponent,
-    LogSearchComponent,
-    AdminAlarmListComponent,
+    AlarmTriggeringsComponent,
+    LogsComponent,
+    ToolbarComponent,
+    AdminAlarmsComponent,
     AdminAlarmFormComponent,
     ReportComponent,
-    LoginFormComponent,
-    CertificateFormComponent,
-    DetailsContainerComponent,
-    DialogContainerComponent,
-    ListContainerComponent,
-    RevokeFormComponent
+    LoginComponent,
+    RequestComponent,
+    DetailsComponent,
+    DialogComponent,
+    ListComponent,
+    RevokeComponent
 ];

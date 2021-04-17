@@ -1,0 +1,19 @@
+<div class="root">
+    <mat-card>
+        <mat-card-content>
+            <div class="left">
+                <span>Insured number: </span>{{patient.insuredNumber}}<br><br><br>
+                <span>Patient: </span>{{patient.firstName}} {{patient.lastName}}<br>
+                <span>Address: </span>{{patient.address}}, {{patient.city}}<br>
+                <span>Birth date: </span>{{patient.birthDate | date: "dd MMM yyyy" }}<br><br><br>
+                <span>Gender: </span>{{patient.gender | lowercase}}<br>
+                <span>Blod type: </span>{{patient.blodType | blodType}}<br>
+                <span>Height: </span>{{patient.height | number: '.2'}}<br>
+                <span>Weight: </span>{{patient.weight | number: '.2'}}<br>
+            </div>
+            <div class="right">
+                <app-alarms [patientId]="patient.id"></app-alarms>    
+            </div>        
+        </mat-card-content>
+    </mat-card>
+</div>

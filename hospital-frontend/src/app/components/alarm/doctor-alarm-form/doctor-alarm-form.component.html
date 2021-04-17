@@ -1,4 +1,4 @@
-<app-dialog-container title="Create new alarm" [pending]="pending" 
+<app-dialog title="Create new alarm" [pending]="pending" 
 [disabled]="emptyForm || alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm" [class.disabled]="pending">
         <div>
@@ -54,4 +54,4 @@
             placeholder="Enter max oxygen level">
         </div>
     </form>
-</app-dialog-container>
+</app-dialog>

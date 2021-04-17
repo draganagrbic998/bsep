@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS, SNACKBAR_SUCCESS_OPTIONS } from 'src/app/utils/dialog';
@@ -11,27 +11,28 @@ import { AlarmService } from 'src/app/services/alarm.service';
   templateUrl: './doctor-alarm-form.component.html',
   styleUrls: ['./doctor-alarm-form.component.scss']
 })
-export class DoctorAlarmFormComponent implements OnInit {
+export class DoctorAlarmFormComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private patientId: number,
     private alarmService: AlarmService,
     private dialogRef: MatDialogRef<DoctorAlarmFormComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder
   ) { }
 
   pending = false;
-  alarmForm: FormGroup = new FormGroup({
-    minPulse: new FormControl(''),
-    maxPulse: new FormControl(''),
-    minPressure: new FormControl(''),
-    maxPressure: new FormControl(''),
-    minTemperature: new FormControl(''),
-    maxTemperature: new FormControl(''),
-    minOxygenLevel: new FormControl(''),
-    maxOxygenLevel: new FormControl('')
+  alarmForm = this.formBuilder.group({
+    minPulse: [''],
+    maxPulse: [''],
+    minPressure: [''],
+    maxPressure: [''],
+    minTemperature: [''],
+    maxTemperature: [''],
+    minOxygenLevel: [''],
+    maxOxygenLevel: ['']
   }, {
-    validators: [this.minMaxValidator()]
+    validators: this.minMaxValidator()
   });
 
   confirm(): void{
@@ -66,14 +67,11 @@ export class DoctorAlarmFormComponent implements OnInit {
 
   get emptyForm(): boolean{
     for (const control in this.alarmForm.controls){
-      if (this.alarmForm.controls[control].value.trim() !== ''){
+      if (this.alarmForm.controls[control].value.trim().length !== 0){
         return false;
       }
     }
     return true;
-  }
-
-  ngOnInit(): void {
   }
 
 }

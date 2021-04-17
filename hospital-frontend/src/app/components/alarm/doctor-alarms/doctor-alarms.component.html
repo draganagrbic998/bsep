@@ -1,0 +1,13 @@
+<app-list title="NO ALARMS" [page]="page"  
+[pending]="pending" [empty]="!page.content.length" [alarm]="true" 
+(alarmWanted)="addAlarm()" (changedPage)="fetchAlarms($event)">
+    <app-details 
+    *ngFor="let alarm of page.content; let i = index"
+    [delete]="'Alarm #' + (i + 1)" (deleted)="delete(alarm.id)"
+    [details]="[
+        {key: 'Min pulse', value: alarm.minPulse}, {key: 'Max pulse', value: alarm.maxPulse},
+        {key: 'Min pressure', value: alarm.minPressure}, {key: 'Max pressure', value: alarm.maxPressure},
+        {key: 'Min temperature', value: alarm.minTemperature}, {key: 'Max temperature', value: alarm.maxTemperature},
+        {key: 'Min oxygen level', value: alarm.minOxygenLevel}, {key: 'Max oxygen level', value: alarm.maxOxygenLevel}
+    ]"></app-details>
+</app-list>

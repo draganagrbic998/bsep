@@ -1,0 +1,17 @@
+.scroller{
+    height: 500px;
+}
+
+.content{
+    padding: 10px;
+    padding-bottom: 50px;
+}
+
+.center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+}

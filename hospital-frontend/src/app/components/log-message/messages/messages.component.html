@@ -1,0 +1,68 @@
+<div class="root">
+    <div class="left">
+        <app-list title="NO MESSAGES" [pending]="pending" [empty]="!page.content.length" 
+        [refresh]="true" [page]="page" (changedPage)="fetchMessages($event)">
+            <app-details 
+            *ngFor="let message of page.content"
+            [date]="message.date"
+            [details]="[
+                {key: 'Patient', value: message.patient},
+                {key: 'Insured number', value: message.insuredNumber}]"
+            [mainDetails]="[
+                {key: 'Pulse', value: message.pulse},
+                {key: 'Pressure', value: message.pressure},
+                {key: 'Temperature', value: message.temperature},
+                {key: 'Oxygen level', value: message.oxygenLevel}]"
+            ></app-details>
+        </app-list>
+    </div>
+    <div class="right">
+        <app-form>
+            <h2>Search</h2>
+            <form [formGroup]="searchForm" [class.disabled]="pending">
+                <mat-form-field>
+                    <mat-label>Patient insured number</mat-label>
+                    <input 
+                    formControlName="insuredNumber" 
+                    matInput 
+                    placeholder="Enter insured number">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Patient first name</mat-label>
+                    <input 
+                    formControlName="firstName" 
+                    matInput 
+                    placeholder="Enter first name">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Patient last name</mat-label>
+                    <input 
+                    formControlName="lastName" 
+                    matInput 
+                    placeholder="Enter last name">
+                </mat-form-field>
+                <mat-form-field> 
+                    <mat-label>Date</mat-label>
+                    <input 
+                    formControlName="date"
+                    matInput 
+                    placeholder="Enter date"
+                    [matDatepicker]="date">
+                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+                </mat-form-field>
+            </form>
+            <app-spacer>
+                <span></span>
+                <span>
+                    <button 
+                    *ngIf="!pending" 
+                    (click)="fetchMessages(0)"
+                    mat-raised-button>Search</button>
+                    <app-spinner *ngIf="pending"></app-spinner>    
+                </span>
+            </app-spacer>        
+        </app-form>        
+    </div>
+</div>
+

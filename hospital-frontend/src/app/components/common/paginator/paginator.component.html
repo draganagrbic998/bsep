@@ -1,14 +1,14 @@
-<app-spacer-container>
-    <span class="left" cdkFocusInitial>
+<app-spacer>
+    <span class="left" [class.small]="small" cdkFocusInitial>
         <button 
-        *ngIf="!pending && !pagination.firstPage" 
+        *ngIf="!pending && !page.first" 
         (click)="changedPage.emit(-1)"
         mat-icon-button
         matTooltip="Previous page">
-            <mat-icon [class.small]="small">navigate_before</mat-icon>
+            <mat-icon>navigate_before</mat-icon>
         </button>
     </span>
-    <span *ngIf="refresh && !pending && !pagination.pageNumber">
+    <span *ngIf="refresh && !pending && !page.pageNumber">
         <button 
         (click)="changedPage.emit(0)"
         mat-icon-button 
@@ -24,13 +24,13 @@
             <mat-icon class="more">alarm_on</mat-icon>
         </button>
     </span>
-    <span class="right">
+    <span class="right" [class.small]="small">
         <button 
-        *ngIf="!pending && !pagination.lastPage" 
+        *ngIf="!pending && !page.last" 
         (click)="changedPage.emit(1)"
         mat-icon-button
         matTooltip="Next page">
-            <mat-icon [class.small]="small">navigate_next</mat-icon>
+            <mat-icon>navigate_next</mat-icon>
         </button>
     </span>
-</app-spacer-container>    
+</app-spacer>    

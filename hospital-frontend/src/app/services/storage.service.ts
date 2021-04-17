@@ -6,21 +6,7 @@ import { User } from 'src/app/models/user';
 })
 export class StorageService {
 
-  constructor() { }
-
   private readonly USER_KEY = 'user';
-
-  private set(key: string, value: object): void{
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-
-  private remove(key: string): void{
-    localStorage.removeItem(key);
-  }
-
-  private get(key: string): object{
-    return JSON.parse(localStorage.getItem(key));
-  }
 
   setUser(user: User): void{
     this.set(this.USER_KEY, user);
@@ -32,6 +18,18 @@ export class StorageService {
 
   getUser(): User{
     return this.get(this.USER_KEY) as User;
+  }
+
+  private set(key: string, value: object): void{
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  private remove(key: string): void{
+    localStorage.removeItem(key);
+  }
+
+  private get(key: string): object{
+    return JSON.parse(localStorage.getItem(key));
   }
 
 }
