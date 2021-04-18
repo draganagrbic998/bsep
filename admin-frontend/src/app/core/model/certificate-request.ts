@@ -7,6 +7,4 @@ export class CertificateRequest {
   country: string;
   email: string;
   template: string;
-  path: string;
-  type: string;
 }

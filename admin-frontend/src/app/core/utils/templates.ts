@@ -1,4 +1,5 @@
-import {Template} from '../model/template';
+import { Template } from '../model/template';
+import { id_kp_clientAuth, id_kp_serverAuth } from './key-purpose-ids';
 import {
   cRLSign,
   digitalSignature,
@@ -8,7 +9,17 @@ import {
   keyEncipherment,
   nonRepudiation
 } from './key-usages';
-import {id_kp_clientAuth, id_kp_serverAuth} from './key-purpose-ids';
+
+export const CUSTOM: Template = {
+  label: 'Custom',
+  enumValue: null,
+  icon: 'pi pi-cog',
+  extensions: {
+    basicConstraints: null,
+    keyUsage: null,
+    extendedKeyUsage: null
+  }
+};
 
 export const SUB_CA: Template = {
   label: 'CA',
@@ -32,7 +43,7 @@ export const TLS: Template = {
   }
 };
 
-export const USER: Template =   {
+export const USER: Template = {
   label: 'User',
   enumValue: 'USER',
   icon: 'pi pi-user',
@@ -43,18 +54,6 @@ export const USER: Template =   {
   }
 };
 
-export const CUSTOM: Template =   {
-  label: 'Custom',
-  enumValue: null,
-  icon: 'pi pi-cog',
-  extensions: {
-    basicConstraints: null,
-    keyUsage: null,
-    extendedKeyUsage: null
-  }
-};
-
-
 export const extensionTemplates = {
   SUB_CA,
   TLS,
@@ -62,6 +61,9 @@ export const extensionTemplates = {
 };
 
 export const getTemplate: (enumValue: string) => Template = (enumValue: string) => {
+  if (!(enumValue in extensionTemplates)){
+    return CUSTOM;
+  }
   return extensionTemplates[enumValue];
 };
 

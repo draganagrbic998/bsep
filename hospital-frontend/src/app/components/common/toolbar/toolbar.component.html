@@ -1,64 +1,65 @@
 <mat-toolbar class="mat-elevation-z24">
     <span>
         <button
-        *ngIf="isDoctor && (onRoute('report') || onRoute('messages') || (onRoute('alarms') && !isAdmin))"
-        [routerLink]="'patients'"
+        *ngIf="isDoctor && (onRoute(routes.reportRoute) || onRoute(routes.messagesRoute)
+        || (onRoute(routes.alarmsRoute) && !isAdmin))"
+        [routerLink]="routes.patientsRoute"
         mat-button
         matTooltip="Patients">
             Patients
         </button>
         
         <button
-        *ngIf="onRoute('patients')"
+        *ngIf="onRoute(routes.patientsRoute)"
         (click)="openPatientForm()"
         mat-button
         matTooltip="New Patient">
             New Patient
         </button>
         <button
-        *ngIf="onRoute('patients')"
-        [routerLink]="'messages'"
+        *ngIf="onRoute(routes.patientsRoute)"
+        [routerLink]="routes.messagesRoute"
         mat-button
         matTooltip="Messages">
             Messages
         </button>
         <button
-        *ngIf="onRoute('report')"
-        [routerLink]="'logs'"
+        *ngIf="onRoute(routes.reportRoute)"
+        [routerLink]="routes.logsRoute"
         mat-button
         matTooltip="Logs">
             Logs
         </button>
         <button
-        *ngIf="onRoute('report') || (onRoute('patients') && !isAdmin)"
-        [routerLink]="'alarms'"
+        *ngIf="onRoute(routes.reportRoute) || (onRoute(routes.patientsRoute) && !isAdmin)"
+        [routerLink]="routes.alarmsRoute"
         mat-button
         matTooltip="Alarms">
             Alarms
         </button>
         <button
-        *ngIf="onRoute('alarms') && isAdmin"
+        *ngIf="onRoute(routes.alarmsRoute) && isAdmin"
         (click)="openAlarmForm()"
         mat-button
         matTooltip="New alarm">
             New alarm
         </button>
         <button
-        *ngIf="onRoute('alarms') && isAdmin"
+        *ngIf="onRoute(routes.alarmsRoute) && isAdmin"
         (click)="openAlarmList()"
         mat-button
         matTooltip="List">
             List
         </button>
         <button
-        *ngIf="onRoute('report')"
+        *ngIf="onRoute(routes.reportRoute)"
         (click)="openRequestForm()"
         mat-button
         matTooltip="Certificate request">
             Certificate request
         </button>
         <button
-        *ngIf="onRoute('report')"
+        *ngIf="onRoute(routes.reportRoute)"
         (click)="openRevokeForm()"
         mat-button
         matTooltip="Certificate revoke">
@@ -66,21 +67,22 @@
         </button>
 
         <button
-        *ngIf="isAdmin && (onRoute('patients') || onRoute('logs') || (onRoute('alarms')))"
-        [routerLink]="'report'"
+        *ngIf="isAdmin && (onRoute(routes.patientsRoute) || onRoute(routes.logsRoute)
+        || (onRoute(routes.alarmsRoute)))"
+        [routerLink]="routes.reportRoute"
         mat-button
         matTooltip="Dashboard">
             Dashboard
         </button>
     </span>
     <span class="main">
-        <form *ngIf="onRoute('patients')" (ngSubmit)="announceSearchData()">
+        <form *ngIf="onRoute(routes.patientsRoute)" (ngSubmit)="announceSearchData()">
             <input
             [formControl]="search"
             [classList]="'form-control'"
             placeholder="Search...">   
         </form>
-        <button *ngIf="!onRoute('login')" [matMenuTriggerFor]="more" mat-icon-button matTooltip="More">
+        <button *ngIf="!onRoute(routes.loginRoute)" [matMenuTriggerFor]="more" mat-icon-button matTooltip="More">
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #more="matMenu">

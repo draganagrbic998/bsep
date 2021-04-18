@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersComponent } from './users/users.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BadgeModule } from 'primeng/badge';
@@ -20,9 +19,11 @@ import { MenubarModule } from 'primeng/menubar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ActivateComponent } from './activate/activate.component';
 import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
+
+import { UsersComponent } from './users/users.component';
+import { ActivateComponent } from './activate/activate.component';
 
 
 @NgModule({

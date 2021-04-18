@@ -6,6 +6,7 @@ import { Authority } from '../../../core/model/authority';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { AuthService } from '../../../core/services/auth.service';
+import { Page } from 'src/app/core/model/page';
 
 @Component({
   selector: 'app-users',
@@ -14,226 +15,152 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class UsersComponent implements OnInit {
 
-  user: User = new User();
-  submitted = false;
-  newDialog = false;
-  detailsDialog = false;
+  @ViewChild('table') table: Table;
+  userForm: FormGroup;
+  user: User;
+  users: User[] = [];
+  authorities: Authority[];
+
+  loading = true;
+  formDialog = false;
   rows = 10;
   totalRecords = 0;
-  first = 0;
-  loading = true;
-  mode = 'create';
-  userForm: FormGroup;
 
-  @ViewChild('table')
-  table: Table;
-
-  constructor(private userService: UserService,
-              private formBuilder: FormBuilder,
-              private messageService: MessageService,
-              private authService: AuthService,
-              private confirmationService: ConfirmationService) { }
-
-  ngOnInit(): void {
-    this.userForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      authorities: [[], Validators.required],
-      email: ['', [Validators.required, Validators.email]]
-    });
-    this.userService.findAllAuthorities().subscribe(val => {
-      this.userService.authorities = val;
-    });
-  }
-
-  openNew(): void {
-    this.user = new User();
-    this.userForm.reset();
-    this.userForm.get('email').enable();
-    this.userForm.get('authorities').enable();
-
-    this.submitted = false;
-    this.newDialog = true;
-    this.mode = 'create';
-  }
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private formBuilder: FormBuilder
+  ) { }
 
   getUsers(event: LazyLoadEvent): void {
     this.loading = true;
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.userService.findAll(page, size).subscribe(val => {
-      this.userService.users = val.content;
-      this.totalRecords = val.totalElements;
+    this.userService.findAll(page, size).subscribe((response: Page<User>) => {
       this.loading = false;
+      this.users = response.content;
+      this.totalRecords = response.totalElements;
     });
   }
 
-  hideNew(): void {
-    this.user = new User();
-    this.userForm.reset();
-    this.newDialog = false;
-    this.submitted = false;
-  }
-
   saveUser(): void {
-    this.submitted = true;
-
-    if (this.userForm.valid) {
-      this.user.firstName = this.userForm.get('firstName').value;
-      this.user.lastName = this.userForm.get('lastName').value;
-      this.user.email = this.userForm.get('email').value;
-      this.user.authorities = this.userForm.get('authorities').value;
-      if (this.mode === 'create') {
-        this.createUser(this.user);
-      } else if (this.mode === 'edit') {
-        this.updateUser(this.user);
-      }
+    if (this.userForm.invalid){
+      return;
     }
-  }
 
-  createUser(user: User): void {
-    this.userService.create(user).subscribe(() => {
-        if (!!this.table) {
-          this.table.reset();
-        }
-        this.userForm.reset();
-        this.newDialog = false;
-        this.messageService.add(
-          {
-            severity: 'success',
-            summary: 'Success',
-            detail: `The account for ${this.user.firstName} ${this.user.lastName} successfully created.
-            The activation link was sent to ${this.user.email}`
-          });
-        this.user = new User();
-      },
-      er => {
-        if (!!this.table) {
-          this.table.reset();
-        }
-        this.userForm.reset();
-        this.newDialog = false;
-        this.messageService.add(
-          {
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error while creating!'
-          });
-        this.user = new User();
-      });
-  }
-
-  updateUser(user: User): void {
-    this.userService.update(user).subscribe(() => {
-        if (!!this.table) {
-          this.table.reset();
-        }
-        this.userForm.reset();
-        this.newDialog = false;
+    // tslint:disable-next-line: deprecation
+    this.userService.save({...this.user, ...this.userForm.value}).subscribe((response: User) => {
+      if (this.table) {
+        this.table.reset();
+      }
+      if (response){
+        this.formDialog = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: `The account for ${this.user.firstName} ${this.user.lastName} successfully modified.`
+          detail: `The account for ${this.user.firstName} ${this.user.lastName} saved.`
         });
-      },
-      er => {
-        if (!!this.table) {
-          this.table.reset();
-        }
-        this.userForm.reset();
-        this.newDialog = false;
+      }
+      else{
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error while updating!'
+          detail: 'Error occured while saving!'
         });
-      });
+      }
+    });
+
+  }
+
+  deleteUser(user: User): void {
+    // tslint:disable-next-line: deprecation
+    this.userService.delete(user.id).subscribe((response: boolean) => {
+      if (this.table) {
+        this.table.reset();
+      }
+      if (response){
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `The account for ${user.firstName} ${user.lastName} deleted.`
+        });
+      }
+      else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error occured while deleting!'
+        });
+      }
+    });
+  }
+
+  sendActivationMail(user: User): void {
+    // tslint:disable-next-line: deprecation
+    this.userService.sendActivationMail(user.id).subscribe((response: boolean) => {
+      if (response){
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `The activation email send to ${user.email}.`}
+        );
+      }
+      else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error occured while sending activation mail!'
+        });
+      }
+    });
+  }
+
+  saveDialog(user?: User): void {
+    this.user = user || new User();
+    this.userForm.reset(user);
+    this.userForm.enable();
+    if (this.user.id === this.authService.getToken().id) {
+      this.userForm.get('email').disable();
+      this.userForm.get('authorities').disable();
+    }
+    this.formDialog = true;
   }
 
   getMenuItems(user: User): MenuItem[] {
     const items = [
-      {icon: 'pi pi-pencil', label: 'Edit', command: () => this.editDialog(user)},
+      {icon: 'pi pi-pencil', label: 'Edit', command: () => this.saveDialog(user)},
     ];
-    if (this.authService.getUser().id !== user.id && user.id !== 1) {
-      items.push({icon: 'pi pi-trash', label: 'Delete', command: () => this.deleteUser(user)});
+    if (user.id !== this.authService.getToken().id) {
+      items.push({icon: 'pi pi-trash', label: 'Delete', command: () => this.deleteDialog(user)});
     }
     if (!user.enabled) {
-      items.push({icon: 'pi pi-envelope', label: 'Send activation mail', command: () => this.sendActivation(user)});
+      items.push({icon: 'pi pi-envelope', label: 'Send activation mail', command: () => this.sendActivationMail(user)});
     }
     return items;
   }
 
-  editDialog(user: User): void {
-    this.userForm.patchValue(
-      {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        authorities: user.authorities,
-        email: user.email
-      });
-    this.user = user;
-    if (this.user.id === 1) {
-      this.userForm.get('email').disable();
-      this.userForm.get('authorities').disable();
-    } else {
-      this.userForm.get('email').enable();
-      this.userForm.get('authorities').enable();
-    }
-    this.submitted = false;
-    this.newDialog = true;
-    this.mode = 'edit';
-  }
-
-  deleteUser(user: User): void {
+  private deleteDialog(user: User): void {
     this.confirmationService.confirm({
       message: `Are you sure that you want to delete ${user.firstName} ${user.lastName}'s account?`,
-      accept: () => this.confirmDeletion(user)
+      accept: () => this.deleteUser(user)
     });
   }
 
-  confirmDeletion(user: User): void {
-    this.userService.delete(user).subscribe((response: boolean) => {
-      if (!!this.table) {
-        this.table.reset();
-      }
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: `The account for ${user.firstName} ${user.lastName} was deleted.`
-      });
-    }, () => {
-      this.messageService.add(
-        {
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error while deleting'
-        });
+  ngOnInit(): void {
+    this.userService.findAllAuthorities()
+    // tslint:disable-next-line: deprecation
+    .subscribe((response: Authority[]) => this.authorities = response);
+
+    this.userForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      authorities: [[], Validators.required],
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  sendActivation(user: User): void {
-    this.userService.sendActivationMail(user.id).subscribe(() => {
-      this.messageService.add(
-        {severity: 'success', summary: 'Email sent', detail: 'The activation email has been sent successfully.'}
-        );
-    }, () => {
-      this.messageService.add(
-        {
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error while sending activation mail'
-        });
-    });
-  }
-
-
-  get users(): User[] {
-    return this.userService.users;
-  }
-
-  get authorities(): Authority[] {
-    return this.userService.authorities;
-  }
 }
 

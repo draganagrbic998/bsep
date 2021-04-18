@@ -1,7 +1,7 @@
-<p-table [value]="certificateRequests"
+<p-table [value]="requests"
          [rows]="rows"
          [lazy]="true"
-         (onLazyLoad)="getCertificateRequests($event)"
+         (onLazyLoad)="getRequests($event)"
          [paginator]="true"
          [rowHover]="true"
          dataKey="id"
@@ -9,8 +9,7 @@
          [loading]="loading"
          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
          [showCurrentPageReport]="true"
-         #requestsTable
->
+         #table>
   <ng-template pTemplate="caption">
     <div class="p-d-flex p-ai-center p-jc-between">
       <h5 class="p-m-0">Manage Certificate Requests</h5>
@@ -47,7 +46,7 @@
   </ng-template>
   <ng-template pTemplate="summary">
     <div class="p-d-flex p-ai-center p-jc-between">
-      In total there are {{totalRecords}} certificate requests.
+      In total there are {{totalRecords}} requests.
     </div>
   </ng-template>
 </p-table>

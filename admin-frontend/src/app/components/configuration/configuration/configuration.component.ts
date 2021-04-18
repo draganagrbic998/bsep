@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { ConfigurationService } from '../../../core/services/configuration.service';
 import { FormControl } from '@angular/forms';
 import { Configuration, LogConfiguration } from '../../../core/model/configuration';
@@ -9,123 +9,115 @@ import { MessageService } from 'primeng/api';
   templateUrl: './configuration.component.html',
   styleUrls: ['./configuration.component.scss']
 })
-export class ConfigurationComponent implements OnDestroy {
+export class ConfigurationComponent {
 
-  hospitalApiControl: FormControl = new FormControl();
-  oldConfig: { [s: number]: LogConfiguration; } = {};
+  configuration: Configuration;
+  oldConfiguration: { [s: number]: LogConfiguration; } = {};
   loading = false;
+  hospitalApiControl: FormControl = new FormControl('');
 
-  constructor(private configurationService: ConfigurationService,
-              private messageService: MessageService) { }
+  constructor(
+    private configurationService: ConfigurationService,
+    private messageService: MessageService
+  ) { }
 
-
-  toggleConnection(): void {
-    this.loading = true;
-    if (this.connected) {
-      this.save();
-      return;
-    }
-    this.connect();
+  get connected(): boolean {
+    return !!this.configuration;
   }
 
   connect(): void {
-    this.configurationService.connect(this.hospitalApiControl.value).subscribe((val: Configuration) => {
-      this.configurationService.configuration.next(val);
-      this.messageService.add({severity: 'success', summary: 'Success', detail: 'Connection successfully established.'});
-      this.hospitalApiControl.disable();
+    this.loading = true;
+    // tslint:disable-next-line: deprecation
+    this.configurationService.connect(this.hospitalApiControl.value.trim()).subscribe((response: Configuration) => {
       this.loading = false;
-    }, () => {
-      this.configurationService.configuration.next(null);
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Connection not established.'});
-      this.hospitalApiControl.enable();
-      this.loading = false;
+      this.configuration = response;
+      if (this.configuration){
+        this.hospitalApiControl.disable();
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Connection established.'});
+      }
+      else{
+        this.hospitalApiControl.enable();
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Connection not established.'});
+      }
     });
   }
 
   save(): void {
     if (this.checkConfiguration()) {
-      this.configurationService.save(this.hospitalApiControl.value, this.configuration).subscribe(() => {
-        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration successfully saved'});
-        this.configurationService.configuration.next(null);
-        this.hospitalApiControl.enable();
+      this.loading = true;
+      // tslint:disable-next-line: deprecation
+      this.configurationService.save(this.hospitalApiControl.value.trim(), this.configuration).subscribe((response: boolean) => {
         this.loading = false;
-      }, () => {
-        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Configuration wasn\'t saved'});
-        this.configurationService.configuration.next(null);
+        this.configuration = null;
         this.hospitalApiControl.enable();
-        this.loading = false;
+        if (response){
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration saved'});
+        }
+        else{
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Configuration not saved'});
+        }
       });
     }
   }
 
   cancel(): void {
-    this.configurationService.configuration.next(null);
+    this.configuration = null;
     this.hospitalApiControl.enable();
-    this.loading = false;
   }
 
-  checkConfiguration(): boolean {
-    return this.configuration.configurations.every(c => this.isValid(c));
-  }
-
-  isValid(logConfiguration: LogConfiguration): boolean {
-    if (logConfiguration.path.length < 1) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Path is invalid'});
-      return false;
-    }
-    if (logConfiguration.interval < 1000) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Interval has to be larger than 1000'});
-      return false;
-    }
-
-    try {
-      // tslint:disable-next-line:no-unused-expression
-      new RegExp(logConfiguration.regExp);
-    } catch (e) {
-      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Regular expression is not valid'});
-      return false;
-    }
-
-    return true;
-  }
-
-  addNew(): void {
+  addConfiguration(): void {
     this.configuration.configurations.push(new LogConfiguration());
-  }
-
-  onRowEditInit(logConfiguration: LogConfiguration, index: number): void {
-    this.oldConfig[index] = logConfiguration;
-  }
-
-  onRowEditSave(tableRowElement: HTMLTableRowElement, logConfiguration: LogConfiguration, index: number): void {
-    if (!this.isValid(logConfiguration)) {
-      return;
-    }
-
-    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration successfully modified'});
-    delete this.oldConfig[index];
-  }
-
-  onRowEditCancel(product: LogConfiguration, index: number): void {
-    this.configuration.configurations[index] = this.oldConfig[index];
-    delete this.oldConfig[index];
   }
 
   deleteConfiguration(index: number): void {
     this.configuration.configurations.splice(index, 1);
   }
 
-
-  get configuration(): Configuration {
-    return this.configurationService.configuration.getValue();
+  onRowEditInit(logConfiguration: LogConfiguration, index: number): void {
+    this.oldConfiguration[index] = logConfiguration;
   }
 
-  get connected(): boolean {
-    return !!this.configurationService.configuration.getValue();
+  onRowEditSave(configuration: LogConfiguration, index: number): void {
+    if (!this.isValid(configuration)) {
+      return;
+    }
+    delete this.oldConfiguration[index];
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration modified'});
   }
 
-  ngOnDestroy(): void {
-    this.cancel();
+  onRowEditCancel(index: number): void {
+    this.configuration.configurations[index] = this.oldConfiguration[index];
+    delete this.oldConfiguration[index];
+  }
+
+  private checkConfiguration(): boolean {
+    return this.configuration.configurations.every(conf => this.isValid(conf));
+  }
+
+  private isValid(configuration: LogConfiguration): boolean {
+    if (configuration.path.length < 1) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Path invalid'});
+      return false;
+    }
+    if (configuration.interval < 1000) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Interval has to be larger than 1000 ms'
+      });
+      return false;
+    }
+
+    try {
+      // tslint:disable-next-line:no-unused-expression
+      new RegExp(configuration.regExp);
+    }
+    catch {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: 'Regular expression invalid'});
+      return false;
+    }
+
+    return true;
   }
 
 }

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { CertificateRequest } from 'src/app/core/model/certificate-request';
+import { Page } from 'src/app/core/model/page';
 
 @Component({
   selector: 'app-request-view',
@@ -11,49 +12,36 @@ import { CertificateRequest } from 'src/app/core/model/certificate-request';
 })
 export class RequestViewComponent {
 
+  @ViewChild('table') table: Table;
+  @Output() openRequest: EventEmitter<CertificateRequest> = new EventEmitter<CertificateRequest>();
+
+  requests: CertificateRequest[] = [];
+  loading = true;
   rows = 10;
   totalRecords = 0;
-  first = 0;
-  loading = true;
-  @ViewChild('requestsTable')
-  requestsTable: Table;
 
-  @Input()
-  templates!: any[];
+  constructor(private certificateService: CertificateService) { }
 
-  @Output()
-  openRequest: EventEmitter<CertificateRequest> = new EventEmitter<CertificateRequest>();
-
-  constructor(
-    private certificateService: CertificateService
-  ) { }
-
-  getCertificateRequests(event: LazyLoadEvent): void {
+  getRequests(event: LazyLoadEvent): void {
     this.loading = true;
     const page = Math.floor(event.first / this.rows);
     const size = this.rows;
     // tslint:disable-next-line: deprecation
-    this.certificateService.findAllRequests(page, size).subscribe(val => {
-      this.certificateService.certificateRequests = val.content;
-      this.totalRecords = val.totalElements;
+    this.certificateService.findAllRequests(page, size).subscribe((response: Page<CertificateRequest>) => {
       this.loading = false;
+      this.requests = response.content;
+      this.totalRecords = response.totalElements;
     });
   }
 
-  // Neka ga ovako mozda budemo dodavali jos opcija
+  reset(): void {
+    this.table.reset();
+  }
+
   getMenuItems(certificateRequest: CertificateRequest): MenuItem[] {
-    const items = [
+    return [
       {icon: 'pi pi-info', label: 'Details', command: () => this.openRequest.emit(certificateRequest)},
     ];
-    return items;
-  }
-
-  reset(): any {
-    this.requestsTable.reset();
-  }
-
-  get certificateRequests(): CertificateRequest[] {
-    return this.certificateService.certificateRequests;
   }
 
 }

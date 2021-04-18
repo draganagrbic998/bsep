@@ -1,64 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { Login } from '../../core/model/login';
 import { AuthToken } from 'src/app/core/model/auth-token';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   loginForm: FormGroup;
   loading = false;
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder,
+    private userService: UserService,
     private messageService: MessageService,
+    private formBuilder: FormBuilder,
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(4)]],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+      password: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]]
     });
   }
 
-  onSubmitLogin(): void {
+  login(): void {
     if (this.loginForm.invalid) {
-      this.messageService.add({severity: 'error', summary: 'Unsuccessful login', detail: 'Username and password are required'});
       return;
     }
 
-    const login = new Login();
-    login.email = this.loginForm.get('username').value;
-    login.password = this.loginForm.get('password').value;
-
     this.loading = true;
     // tslint:disable-next-line: deprecation
-    this.authService.login(login).subscribe(
+    this.userService.login(this.loginForm.value).subscribe(
       (token: AuthToken) => {
         this.loading = false;
         if (token) {
           if (token.authorities.includes('SUPER_ADMIN')) {
-            this.authService.loggedIn(token);
+            this.authService.setToken(token);
             this.router.navigate(['']);
           }
           else {
-            this.messageService.add({severity: 'error', summary: 'Invalid role', detail: 'Only superadmins permitted.'});
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Invalid role',
+              detail: 'Only super admins permitted.'
+            });
           }
         }
         else {
-          this.messageService.add({severity: 'error', summary: 'Invalid credentials', detail: 'Please check your username and password.'});
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Invalid credentials',
+            detail: 'Please check your email and password.'
+          });
         }
-      });
-  }
-
-  ngOnInit(): void {
+    });
   }
 
 }

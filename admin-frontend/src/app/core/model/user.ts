@@ -5,7 +5,6 @@ export class User {
   email: string;
   firstName: string;
   lastName: string;
-  password: string;
   enabled: boolean;
   activationLink: string;
   activationExpiration: Date;

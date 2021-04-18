@@ -33,7 +33,6 @@ public class CertificateInfoDTO {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Extensions extensions;
-	private boolean isCA;
 
 	public CertificateInfoDTO(CertificateInfo certificate) {
 		this.id = certificate.getId();
@@ -51,7 +50,6 @@ public class CertificateInfoDTO {
 		this.revocationDate = certificate.getRevocationDate();
 		this.revocationReason = certificate.getRevocationReason();
 		this.extensions = certificate.getExtensions();
-		this.isCA = certificate.getTemplate().equals(Template.SUB_CA);
 	}
 	
 }

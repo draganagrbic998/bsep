@@ -53,7 +53,7 @@ export class DoctorAlarmFormComponent {
     );
   }
 
-  minMaxValidator(): ValidatorFn{
+  private minMaxValidator(): ValidatorFn{
     return (control: AbstractControl): ValidationErrors => {
       const params: string[] = ['Pulse', 'Pressure', 'Temperature', 'OxygenLevel'];
       for (const param of params){

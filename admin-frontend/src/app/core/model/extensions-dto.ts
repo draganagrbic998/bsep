@@ -1,5 +1,5 @@
-export class ExtensionsDto {
-  keyPurposeIds: string[] | null = null;
-  basicConstraints: boolean | null = null;
-  keyUsage: number | null = null;
+export class ExtensionsDTO {
+  basicConstraints: boolean = null;
+  keyUsage: number = null;
+  keyPurposeIds: string[] = null;
 }

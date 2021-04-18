@@ -97,7 +97,7 @@ public class CertificateService {
 			throw new RuntimeException(e);
 		}
 
-		if (certificateDTO.getId() != 0) {
+		if (certificateDTO.getId() != null) {
 			CertificateRequest request = this.certificateRequestService.findOne(certificateDTO.getId());
 			CreatedCertificateDTO created = new CreatedCertificateDTO(
 				issuerInfo.getAlias(), cert.getAlias(), cert.getOrganizationUnit(),

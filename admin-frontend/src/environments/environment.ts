@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  loginRoute: 'login',
+  activateRoute: 'activate',
+  certificatesRoute: 'certificates',
+  usersRoute: 'users',
+  configurationRoute: 'configuration',
+  addCertificateRoute: 'add-certificate'
 };
 
 /*

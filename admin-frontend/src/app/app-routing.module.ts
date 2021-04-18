@@ -1,27 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { environment } from 'src/environments/environment';
+
 import { AuthGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
+import { ActivateComponent } from './components/users/activate/activate.component';
 import { MainViewComponent } from './components/main-views/main-view/main-view.component';
 import { DashboardComponent } from './components/main-views/dashboard/dashboard.component';
 import { CertificatesComponent } from './components/certificates/certificates/certificates.component';
-import { TableViewComponent } from './components/certificates/table-view/table-view.component';
-import { TreeViewComponent } from './components/certificates/tree-view/tree-view.component';
-import { RequestViewComponent } from './components/certificates/request-view/request-view.component';
 import { UsersComponent } from './components/users/users/users.component';
-import { ActivateComponent } from './components/users/activate/activate.component';
-import {ConfigurationComponent} from './components/configuration/configuration/configuration.component';
-import {AddCertificateComponent} from './components/certificates/add-certificate/add-certificate.component';
+import { ConfigurationComponent } from './components/configuration/configuration/configuration.component';
+import { AddCertificateComponent } from './components/certificates/add-certificate/add-certificate.component';
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: environment.loginRoute,
     component: LoginComponent,
     data: {unauthorized: true},
     canActivate: [AuthGuard]
   },
   {
-    path: 'activate',
+    path: environment.activateRoute,
     component: ActivateComponent,
     data: {unauthorized: true},
     canActivate: [AuthGuard]
@@ -29,57 +28,36 @@ const routes: Routes = [
   {
     path: '',
     component: MainViewComponent,
+    data: {authorities: ['SUPER_ADMIN']},
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
         component: DashboardComponent,
-        data: {authorities: ['SUPER_ADMIN']},
-        canActivate: [AuthGuard]},
-      {
-        path: 'certificates',
-        component: CertificatesComponent,
-        data: {authorities: ['SUPER_ADMIN']},
-        canActivate: [AuthGuard],
-        children: [
-          {
-            path: '',
-            component: TableViewComponent
-          },
-          {
-            path: 'tree',
-            component: TreeViewComponent
-          },
-          {
-            path: 'requests',
-            component: RequestViewComponent
-          }
-        ]
       },
       {
-        path: 'users',
-        component: UsersComponent,
-        data: {authorities: ['SUPER_ADMIN']},
-        canActivate: [AuthGuard],
+        path: environment.certificatesRoute,
+        component: CertificatesComponent
       },
       {
-        path: 'configuration',
-        component: ConfigurationComponent,
-
-        data: {authorities: ['SUPER_ADMIN']},
-        canActivate: [AuthGuard],
+        path: environment.usersRoute,
+        component: UsersComponent
       },
       {
-        path: 'add-certificate',
-        component: AddCertificateComponent,
-        data: {authorities: ['SUPER_ADMIN']},
-        canActivate: [AuthGuard],
+        path: environment.configurationRoute,
+        component: ConfigurationComponent
+      },
+      {
+        path: environment.addCertificateRoute,
+        component: AddCertificateComponent
       }
-    ]},
-    {
-      path: '**',
-      pathMatch: 'full',
-      redirectTo: 'login'
-    }
+    ]
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'login'
+  }
 ];
 
 @NgModule({

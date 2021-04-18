@@ -1,140 +1,80 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { CollapsibleNode } from '../../../core/model/collapsible-node';
 import { CertificateService } from '../../../core/services/certificate.service';
 import { CertificateInfo } from '../../../core/model/certificate-info';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
+import { ROOT_ALIAS } from 'src/app/core/utils/constants';
 
 @Component({
   selector: 'app-tree-view',
   templateUrl: './tree-view.component.html',
   styleUrls: ['./tree-view.component.scss']
 })
-export class TreeViewComponent implements OnInit, AfterViewInit {
+export class TreeViewComponent implements AfterViewInit {
 
-  @ViewChild('canvas')
-  canvas: ElementRef;
+  @ViewChild('canvas') canvas: ElementRef;
+  @ViewChild('contextMenu') contextMenu: ContextMenu;
+  @Output() openCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() downloadKey: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
-  width = 0;
-  height = 0;
-  tree: d3.TreeLayout<any>;
-  g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-  root: CollapsibleNode;
-  loading = false;
-  noChildren = false;
-  context: CertificateInfo | null = null;
   menuItems: MenuItem[] = [
-    {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
+    {icon: 'pi pi-info', label: 'Details', command: () => this.openCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
     {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
   oldMenuItems: MenuItem[] = [
-    {icon: 'pi pi-info', label: 'Details', command: () => this.openDetails.emit(this.context)},
+    {icon: 'pi pi-info', label: 'Details', command: () => this.openCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
     {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
   ];
 
-  @Output()
-  revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-  @Output()
-  openDetails: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-  @Output()
-  switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-  @Output()
-  downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
-  @Output()
-  downloadKey: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+  tree: d3.TreeLayout<any>;
+  root: CollapsibleNode;
+  width = 0;
+  height = 0;
 
-  @ViewChild('contextMenu')
-  contextMenu!: ContextMenu;
+  context: CertificateInfo;
+  noChildren = false;
 
-  constructor(
-    private certificateService: CertificateService
-  ) { }
-
-  ngOnInit(): void {
-    this.loading = true;
-  }
+  constructor(private certificateService: CertificateService) { }
 
   ngAfterViewInit(): void {
-    if (this.certificateService.ca.getValue().alias !== 'root') {
+    if (this.certificateService.ca.alias !== ROOT_ALIAS) {
       // tslint:disable-next-line: deprecation
-      this.certificateService.findByAlias('root').subscribe(val => {
-        this.switchCA.emit(val);
+      this.certificateService.findByAlias(ROOT_ALIAS).subscribe((ca: CertificateInfo) => {
+        this.certificateService.ca = ca;
+        this.setup();
       });
     }
-
-    const rect: ClientRect = this.canvas.nativeElement.getBoundingClientRect();
-    this.width = rect.width;
-    this.height = rect.height;
-
-
-    this.setupCanvas();
-    this.setupTree();
-  }
-
-  setupCanvas(): void {
-    const svg = d3.select('.canvas')
-      .append('svg').on('contextmenu', ev => this.svgContextMenu(ev));
-
-    const outerMain = svg.attr('width', this.width)
-      .attr('height', this.height)
-      .append('g')
-      .attr('id', 'outerMain');
-
-    this.g = outerMain.append('g')
-      .attr('id', 'main')
-      .attr('transform', `translate(${Math.floor(this.height / 10)}, ${Math.floor(this.width / 10)})`);
-
-
-    const zoom = d3.zoom().scaleExtent([.3, 5])
-      .on('zoom', event => {
-        svg.select('#outerMain')
-          .attr('transform', event.transform);
-      });
-
-    svg.call(zoom).on('dblclick.zoom', null);
-  }
-
-  setupTree(): void {
-    this.tree = d3.tree().size([this.height, this.width]);
-    this.root = d3.hierarchy(this.ca, d => d.issued) as CollapsibleNode;
-
-    this.root.x0 = this.height / 2;
-    this.root.y0 = 0;
-
-    if (!this.root.children) {
-      this.noChildren = true;
-    }
-
-    this.root.children.forEach(it => this.collapse(it));
-
-    this.update(this.root);
-
-  }
-
-  collapse(d: CollapsibleNode): void {
-    if (d.children) {
-      d._children = d.children;
-      d._children.forEach(it => this.collapse(it));
-      d.children = null;
+    else{
+      this.setup();
     }
   }
 
-  update(source: CollapsibleNode): void {
+  reset(): void {
+    // tslint:disable-next-line: deprecation
+    this.certificateService.findByAlias(ROOT_ALIAS).subscribe((ca: CertificateInfo) => {
+      this.certificateService.ca = ca;
+      this.setupTree();
+    });
+  }
+
+  private update(source: CollapsibleNode): void {
     const duration = 400;
-
     const treeData = this.tree(this.root);
-
     const nodes = treeData.descendants();
     const links = treeData.descendants().splice(1);
-
     nodes.forEach(n => { n.y = n.depth * 180; });
 
     // ****************** Nodes section ***************************
 
-    // Update the nodes...
+    // Update the nodes
     const node = this.g.selectAll('g.node')
       .data(nodes, (d: any) => `N${d.data.id}`);
 
@@ -182,7 +122,6 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     nodeUpdate.select('text')
       .style('fill-opacity', 1);
 
-
     // // Remove any exiting nodes
     const nodeExit = node.exit().transition()
       .duration(duration)
@@ -196,7 +135,7 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
 
     // ****************** links section ***************************
 
-    // Update the links...
+    // Update the links
     const link = this.g.selectAll('path.link')
       .data(links, (d: any) => `L${d.data.alias}`);
 
@@ -208,7 +147,6 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
         return this.diagonal(o, o);
       });
 
-    // UPDATE
     // @ts-ignore
     const linkUpdate = linkEnter.merge(link);
 
@@ -232,39 +170,91 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     });
   }
 
-  diagonal(s: any, d: any): string {
-    return `M ${s.x}, ${s.y}
-            C ${s.x}, ${(s.y + d.y) / 2}
-            ${d.x}, ${(s.y + d.y) / 2}
-            ${d.x}, ${d.y}`;
+  private setup(): void{
+    const rect: ClientRect = this.canvas.nativeElement.getBoundingClientRect();
+    this.width = rect.width;
+    this.height = rect.height;
+    this.setupCanvas();
+    this.setupTree();
   }
 
-  click(ev: Event, d: any): void {
+  private setupCanvas(): void {
+    const svg = d3.select('.canvas')
+      .append('svg').on('contextmenu', ev => this.svgContextMenu(ev));
+
+    const outerMain = svg.attr('width', this.width)
+      .attr('height', this.height)
+      .append('g')
+      .attr('id', 'outerMain');
+
+    this.g = outerMain.append('g')
+      .attr('id', 'main')
+      .attr('transform', `translate(${Math.floor(this.height / 10)}, ${Math.floor(this.width / 10)})`);
+
+    const zoom = d3.zoom().scaleExtent([.3, 5])
+      .on('zoom', event => {
+        svg.select('#outerMain')
+          .attr('transform', event.transform);
+      });
+
+    svg.call(zoom).on('dblclick.zoom', null);
+  }
+
+  private setupTree(): void {
+    this.tree = d3.tree().size([this.height, this.width]);
+    this.root = d3.hierarchy(this.certificateService.ca, d => d.issued) as CollapsibleNode;
+    this.root.x0 = this.height / 2;
+    this.root.y0 = 0;
+
+    this.root.children.forEach(it => this.collapse(it));
+    this.update(this.root);
+    if (!this.root.children) {
+      this.noChildren = true;
+    }
+  }
+
+  private click(ev: Event, d: any): void {
     ev.preventDefault();
     ev.stopPropagation();
     if (!!d.children) {
       d._children = d.children;
       d.children = null;
       this.update(d);
-    } else if (!!d._children) {
+    }
+    else if (!!d._children) {
       d.children = d._children;
       d._children = null;
       this.update(d);
-    } else if (d.data.numIssued > 0) {
+    }
+    else if (d.data.numIssued > 0) {
       this.loadNode(d);
     }
   }
 
-  loadNode(d: CollapsibleNode): void {
+  private diagonal(s: any, d: any): string {
+    return `M ${s.x}, ${s.y}
+            C ${s.x}, ${(s.y + d.y) / 2}
+            ${d.x}, ${(s.y + d.y) / 2}
+            ${d.x}, ${d.y}`;
+  }
+
+  private collapse(d: CollapsibleNode): void {
+    if (d.children) {
+      d._children = d.children;
+      d._children.forEach(it => this.collapse(it));
+      d.children = null;
+    }
+  }
+
+  private loadNode(d: CollapsibleNode): void {
     const node = this.g.select(`#N${d.data.id} circle`);
     node.transition().delay(50)
       .attr('r', 12)
       .style('fill', 'red');
 
     // tslint:disable-next-line: deprecation
-    this.certificateService.findByAlias(d.data.alias).subscribe(val => {
-      const children = val.issued.map(i => d3.hierarchy(i, j => j.issued));
-
+    this.certificateService.findByAlias(d.data.alias).subscribe((response: any) => {
+      const children = response.issued.map(ci => d3.hierarchy(ci, j => j.issued));
       for (const child of children) {
         child[`depth`] = d.depth + 1;
         child.parent = d;
@@ -277,53 +267,29 @@ export class TreeViewComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openContextMenu(ev: MouseEvent, d: any): void {
-    this.menuItems = [...this.oldMenuItems];
+  private openContextMenu(ev: MouseEvent, d: any): void {
     ev.preventDefault();
     ev.stopPropagation();
+    this.menuItems = [...this.oldMenuItems];
     this.context = d.data;
-    if (this.context.alias !== this.certificateService.ca.getValue().alias &&
-      !this.context.revoked &&
-      this.context.alias !== 'root') {
+    if (this.context.alias !== this.certificateService.ca.alias &&
+      this.context.alias !== ROOT_ALIAS &&
+      !this.context.revoked) {
       this.menuItems.push({icon: 'pi pi-trash', label: 'Revoke', command: () => this.revokeCertificate.emit(this.context)});
     }
-    if (!this.context.revoked &&
+    if (this.context.alias !== this.certificateService.ca.alias &&
       this.context.template === 'SUB_CA' &&
-      this.context.alias !== this.certificateService.ca.getValue().alias) {
+      !this.context.revoked) {
       this.menuItems.push({icon: 'pi pi-replay', label: 'Use CA', command: () => this.switchCA.emit(this.context)});
     }
     this.contextMenu.show(ev);
   }
 
-  svgContextMenu(ev: MouseEvent): void {
+  private svgContextMenu(ev: MouseEvent): void {
     ev.preventDefault();
-    this.context = null;
     this.menuItems = [...this.oldMenuItems];
+    this.context = null;
     this.contextMenu.hide();
-  }
-
-  @Input()
-  set caAlias(val: string) {
-    if (val === this.certificateService.ca.getValue().alias) {
-      return;
-    }
-    // tslint:disable-next-line: deprecation
-    this.certificateService.findByAlias(val).subscribe(v => {
-      this.certificateService.ca.next(v);
-    });
-  }
-
-  reset(): void {
-    // tslint:disable-next-line: deprecation
-    this.certificateService.findByAlias('root').subscribe(val => {
-      this.certificateService.ca.next(val);
-      this.switchCA.emit(val);
-      this.setupTree();
-    });
-  }
-
-  get ca(): CertificateInfo {
-    return this.certificateService.ca.getValue();
   }
 
 }

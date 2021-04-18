@@ -35,14 +35,15 @@ public class CertificateInfoService {
 	}
 	
 	@Transactional(readOnly = false)
-	public void revoke(long id, String reason) {
+	public CertificateInfo revoke(long id, String reason) {
 		CertificateInfo certificate = this.certificateInfoRepository.findById(id).get();
 		certificate.setRevoked(true);
 		certificate.setRevocationDate(new Date());
 		certificate.setRevocationReason(reason);
-		this.certificateInfoRepository.save(certificate);
+		certificate = this.certificateInfoRepository.save(certificate);
 		String fileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + "_" + certificate.getOrganizationUnit() + ".jks";
 		this.emailService.sendInfoMail(certificate.getEmail(), fileName, reason, "Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
+		return certificate;
 	}
 
 }

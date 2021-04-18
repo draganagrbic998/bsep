@@ -56,7 +56,7 @@ export class PatientFormComponent implements OnInit {
     );
   }
 
-  birthDateValidator(): ValidatorFn{
+  private birthDateValidator(): ValidatorFn{
     return (control: AbstractControl): ValidationErrors => {
       let dateValid = true;
       if (control.value >= new Date()){

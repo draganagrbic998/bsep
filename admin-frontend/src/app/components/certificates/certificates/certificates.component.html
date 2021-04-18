@@ -2,21 +2,17 @@
   <p-toolbar styleClass="p-mb-4">
     <ng-template pTemplate="left">
       <span class="p-d-flex p-ai-center">
-        <button *ngIf="activeIndex !== 2" pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
-        <p-progressSpinner class="p-as-center"
-                           [style]="{width: '30px', height: '30px', 'margin-left': '1rem'}"
-                           *ngIf="loadingTab"
-        ></p-progressSpinner>
+        <button *ngIf="activeIndex !== 2" pButton label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openForm()"></button>
       </span>
     </ng-template>
     <ng-template pTemplate="right">
       Current CA:
-      <button pButton [label]="!!ca ? ca.commonName : 'Details'" class="p-button p-button-outlined p-ml-3" (click)="openDetails(ca)"></button>
-      <button *ngIf="caAlias.getValue() !== 'root'"
+      <button pButton [label]="caAlias" class="p-button p-button-outlined p-ml-3" (click)="openCertificate()"></button>
+      <button *ngIf="caAlias !== 'root'"
               pButton
               label="Reset"
               class="p-button p-button-warning p-ml-3"
-              (click)="resetCA()"
+              (click)="switchCA()"
       ></button>
     </ng-template>
 
@@ -25,32 +21,29 @@
   <p-tabMenu [model]="tabItems" [activeItem]="tabItems[activeIndex]"></p-tabMenu>
   <div>
     <div *ngIf="activeIndex === 0">
-      <app-table-view [templates]="templates"
-                      [caAlias]="caAlias.getValue()"
-                      (switchCA)="this.switchCA($event)"
-                      (revokeCertificate)="this.openRevoke($event)"
-                      (openDetails)="this.openDetails($event)"
-                      (downloadCrt)="this.downloadCrt($event)"
-                      (downloadKey)="this.downloadKey($event)"
-                      #table
-      >
+      <app-table-view 
+        (openCertificate)="openCertificate($event)"
+        (revokeCertificate)="openRevoke($event)"
+        (downloadCrt)="downloadCrt($event)"
+        (downloadKey)="downloadKey($event)"
+        (switchCA)="switchCA($event)"
+        #table>
       </app-table-view>
     </div>
     <div *ngIf="activeIndex === 1">
-      <app-tree-view [caAlias]="caAlias.getValue()"
-                     (switchCA)="this.switchCA($event)"
-                     (revokeCertificate)="this.openRevoke($event)"
-                     (openDetails)="this.openDetails($event)"
-                     (downloadCrt)="this.downloadCrt($event)"
-                     (downloadKey)="this.downloadKey($event)"
-                     #tree
+      <app-tree-view 
+        (openCertificate)="openCertificate($event)"
+        (revokeCertificate)="openRevoke($event)"
+        (downloadCrt)="downloadCrt($event)"
+        (downloadKey)="downloadKey($event)"
+        (switchCA)="switchCA($event)"
+        #tree
       ></app-tree-view>
     </div>
     <div *ngIf="activeIndex === 2">
-      <app-request-view [templates]="templates"
-                      (openRequest)="this.openRequest($event)"
-                      #requestsTable
-      >
+      <app-request-view
+        (openRequest)="openRequest($event)"
+        #requestsTable>
       </app-request-view>
     </div>
   </div>
@@ -102,7 +95,7 @@
           </div>
         </div>
         <div class="p-col-12 p-text-left p-as-center"
-             *ngIf="!!certificate.extensions.keyUsage && certificate.extensions.keyUsage > 0">
+             *ngIf="certificate.extensions.keyUsage && certificate.extensions.keyUsage > 0">
           <div class="p-grid">
             <div class="p-col-4 p-md-3 p-text-light">Key usages:</div>
             <div class="p-col-8 p-md-9">
@@ -111,7 +104,7 @@
           </div>
         </div>
         <div class="p-col-12 p-text-left p-as-center"
-             *ngIf="!!certificate.extensions.keyPurposeIds && certificate.extensions.keyPurposeIds.length > 0">
+             *ngIf="certificate.extensions.keyPurposeIds && certificate.extensions.keyPurposeIds.length > 0">
           <div class="p-grid">
             <div class="p-col-4 p-md-3 p-text-light">Extended key usages:</div>
             <div class="p-col-8 p-md-9">
@@ -132,7 +125,7 @@
           <span class="p-text-light">Issued by: </span> <span class="p-text-bold">{{certificate.issuerAlias}}</span>
         </div>
         <div class="p-col p-d-flex p-ai-center">
-          <p-chip *ngIf="caAlias.getValue() === certificate.alias; else noBadge"
+          <p-chip *ngIf="caAlias === certificate.alias; else noBadge"
                   [label]="getTemplate(certificate.template).label" [icon]="getTemplate(certificate.template).icon"
                   pBadge></p-chip>
           <ng-template #noBadge>
@@ -149,11 +142,11 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button pButton  label="Close" icon="pi pi-times" class="p-button p-button-text" (click)="hideDetails()"></button>
+    <button pButton  label="Close" icon="pi pi-times" class="p-button p-button-text" (click)="detailsDialog = false"></button>
   </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="revokeDialog" [style]="{width: '600px'}" header="Revoke certificate" [modal]="true" styleClass="p-fluid">
+<p-dialog (onHide)="submitted=false" [(visible)]="revokeDialog" [style]="{width: '600px'}" header="Revoke certificate" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="content">
     <div class="p-field reason">
       <label for="reason">Reason</label>
@@ -164,7 +157,7 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button pButton  label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideRevoke()"></button>
-    <button pButton  label="Save" icon="pi pi-check" class="p-button-text" (click)="revokeCertificate()"></button>
+    <button pButton label="Cancel" icon="pi pi-times" class="p-button-text" (click)="revokeDialog=false"></button>
+    <button pButton label="Save" icon="pi pi-check" class="p-button-text" (click)="revokeCertificate(); submitted=true"></button>
   </ng-template>
 </p-dialog>

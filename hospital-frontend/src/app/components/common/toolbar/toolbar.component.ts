@@ -27,6 +27,7 @@ export class ToolbarComponent {
     private dialog: MatDialog
   ) { }
 
+  routes = environment;
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
@@ -38,7 +39,7 @@ export class ToolbarComponent {
   }
 
   onRoute(param: string): boolean{
-    return this.router.url.substr(1).includes(param);
+    return this.router.url.substr(1) === param;
   }
 
   signOut(): void{

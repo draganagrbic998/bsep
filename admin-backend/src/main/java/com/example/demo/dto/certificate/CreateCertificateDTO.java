@@ -15,7 +15,7 @@ import com.example.demo.model.Template;
 @NoArgsConstructor
 public class CreateCertificateDTO {
 
-	long id;
+	private Long id;
 	
 	@NotBlank(message = "Issuer alias cannot be empty")
 	private String issuerAlias;

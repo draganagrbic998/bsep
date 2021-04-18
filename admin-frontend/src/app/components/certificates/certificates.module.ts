@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CertificatesComponent } from './certificates/certificates.component';
-import { TableViewComponent } from './table-view/table-view.component';
-import { TreeViewComponent } from './tree-view/tree-view.component';
 import { BadgeModule } from 'primeng/badge';
 import { ChipModule } from 'primeng/chip';
 import { TabViewModule } from 'primeng/tabview';
@@ -23,11 +20,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BrowserModule } from '@angular/platform-browser';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
-import { RequestViewComponent } from './request-view/request-view.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { MultiSelectModule } from 'primeng/multiselect';
+
+import { CertificatesComponent } from './certificates/certificates.component';
+import { TableViewComponent } from './table-view/table-view.component';
+import { TreeViewComponent } from './tree-view/tree-view.component';
+import { RequestViewComponent } from './request-view/request-view.component';
 import { AddCertificateComponent } from './add-certificate/add-certificate.component';
-import {CardModule} from 'primeng/card';
-import {MultiSelectModule} from 'primeng/multiselect';
 
 
 @NgModule({

@@ -1,24 +1,17 @@
-import {Extensions} from './extensions';
-import {ExtensionsDto} from './extensions-dto';
+import { ExtensionsDTO } from './extensions-dto';
 
 export class CertificateInfo {
     id: number;
-    alias: string;
     issuerAlias: string;
+    alias: string;
     commonName: string;
-    serialNumber: string;
     organization: string;
     organizationUnit: string;
     country: string;
-    startDate: Date;
-    endDate: Date;
-    revoked: boolean;
-    revocationReason: string;
-    revocationDate: Date;
     email: string;
     template: string;
+    revoked: boolean;
     numIssued: number;
     issued: CertificateInfo[];
-    path: string;
-    extensions: ExtensionsDto = new ExtensionsDto();
+    extensions: ExtensionsDTO = new ExtensionsDTO();
 }

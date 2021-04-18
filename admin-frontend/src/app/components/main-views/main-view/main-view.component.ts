@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import {menuItems} from '../../../core/utils/menu-items';
+import { menuItems } from '../../../core/utils/menu-items';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-main-view',
@@ -19,8 +20,8 @@ export class MainViewComponent {
   ) { }
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['login']);
+    this.authService.removeToken();
+    this.router.navigate([environment.loginRoute]);
   }
 
 }

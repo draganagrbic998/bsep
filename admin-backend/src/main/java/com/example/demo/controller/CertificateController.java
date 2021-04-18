@@ -58,9 +58,8 @@ public class CertificateController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
-		this.certificateInfoService.revoke(revokeDTO.getId(), revokeDTO.getReason());
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<CertificateInfoDTO> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
+		return ResponseEntity.ok(new CertificateInfoDTO(this.certificateInfoService.revoke(revokeDTO.getId(), revokeDTO.getReason())));
 	}
 
 	@GetMapping(value = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

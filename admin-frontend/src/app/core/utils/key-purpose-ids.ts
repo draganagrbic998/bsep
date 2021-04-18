@@ -1,4 +1,4 @@
-import {KeyPurposeId} from '../model/key-purpose-id';
+import { KeyPurposeId } from '../model/key-purpose-id';
 
 export const id_kp_serverAuth: KeyPurposeId = {
   option: 'id_kp_serverAuth',
@@ -117,8 +117,7 @@ export const keyPurposeIds = {
   id_kp_capwapWTP
 };
 
-export const getExtendedKeyUsages: (keyPurposeIdValues: string[]) => KeyPurposeId[] = keyPurposeIdValues => {
-  const keyPurposes: KeyPurposeId[] = Object.values(keyPurposeIds);
-  return keyPurposeIdValues.map(v => keyPurposes[parseInt(v, 10)]);
+export const getExtendedKeyUsages: (values: string[]) => KeyPurposeId[] = values => {
+  return values.map(v => Object.values(keyPurposeIds)[parseInt(v, 10)]);
 };
 

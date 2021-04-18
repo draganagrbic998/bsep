@@ -1,12 +1,12 @@
 <div class="p-d-flex p-justify-center p-px-6 p-pt-6 p-pb-5">
   <p-card class="p-mx-6">
-    <form [formGroup]="certificateForm" (ngSubmit)="checkExtensions()">
+    <form [formGroup]="certificateForm" (ngSubmit)="save()">
       <div class="p-d-flex p-ai-center p-pt-4 p-ml-4 p-mr-4">
         <h2 class="p-text-bold p-mt-3 p-ml-4">Add a certificate</h2>
         <button class="p-ml-auto p-mr-4 p-button-outlined"
                 icon="pi pi-check"
                 label="Save"
-                (click)="checkExtensions()"
+                (click)="save()"
                 pButton
                 *ngIf="!loading; else spinner1"
         ></button>
@@ -27,7 +27,7 @@
             </div>
             <small class="p-error"
                    *ngIf="certificateForm.get('commonName').dirty && !certificateForm.get('commonName').valid"
-            >Common name is required.</small>
+            >Common name invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
             <div class="p-field">
@@ -38,7 +38,7 @@
             </div>
             <small class="p-error"
                    *ngIf="certificateForm.get('alias').dirty && !certificateForm.get('alias').valid"
-            >Alias is required.</small>
+            >Alias invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
             <div class="p-field">
@@ -49,7 +49,7 @@
             </div>
             <small class="p-error"
                    *ngIf="certificateForm.get('organization').dirty && !certificateForm.get('organization').valid"
-            >Organization is required.</small>
+            >Organization invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
             <div class="p-field">
@@ -65,19 +65,19 @@
               </span>
               <small class="p-error"
                      *ngIf="certificateForm.get('organizationUnit').dirty && !certificateForm.get('organizationUnit').valid"
-              >Organization unit is required.</small>
+              >Organization unit invalid.</small>
             </div>
           </div>
 
           <div class="p-col-12 p-md-6">
             <div class="p-field">
               <span class="p-float-label">
-                <input type="text" pInputText id="country" formControlName="countryCode" required autofocus/>
+                <input type="text" pInputText id="country" formControlName="country" required autofocus/>
                 <label for="country">Country code</label>
               </span>
               <small class="p-error"
-                     *ngIf="certificateForm.get('countryCode').dirty && !certificateForm.get('countryCode').valid"
-              >Common name is required.</small>
+                     *ngIf="certificateForm.get('country').dirty && !certificateForm.get('country').valid"
+              >Country code invalid.</small>
             </div>
           </div>
 
@@ -90,7 +90,7 @@
             </div>
             <small class="p-error"
                    *ngIf="certificateForm.get('email').dirty && !certificateForm.get('email').valid"
-            >Email is required.</small>
+            >Email invalid.</small>
           </div>
 
           <div class="p-col-12 p-md-6">
@@ -117,35 +117,33 @@
                                optionLabel="label"
                                formControlName="extensions"
                                [showToggleAll]="false"
-                               (onChange)="itemClicked($event)"
+                               (onChange)="extensionClicked($event)"
                 ></p-multiSelect>
                 <label for="extensions" class="p-mb-3">Extensions</label>
               </span>
             </div>
           </div>
 
-          <div class="p-col-12 p-md-6" *ngIf="!!certificateForm.get('keyUsage').value">
+          <div class="p-col-12 p-md-6" *ngIf="certificateForm.get('keyUsage').value">
             <div class="p-field">
               <span class="p-float-label">
                 <p-multiSelect [options]="keyUsages"
                                optionLabel="option"
                                [showToggleAll]="false"
                                formControlName="keyUsage"
-                               (onChange)="certificateForm.get('template').setValue(null)"
                 ></p-multiSelect>
                 <label class="p-mb-3">Key usage</label>
               </span>
             </div>
           </div>
 
-          <div class="p-col-12 p-md-6" *ngIf="!!certificateForm.get('extendedKeyUsage').value">
+          <div class="p-col-12 p-md-6" *ngIf="certificateForm.get('extendedKeyUsage').value">
             <div class="p-field">
               <span class="p-float-label">
                 <p-multiSelect [options]="keyPurposeIds"
                                optionLabel="option"
                                [showToggleAll]="false"
                                formControlName="extendedKeyUsage"
-                               (onChange)="certificateForm.get('template').setValue(null)"
                 ></p-multiSelect>
                 <label class="p-mb-3">Extended key usage</label>
               </span>
@@ -154,14 +152,13 @@
           <div class="p-col-12 p-md-6" *ngIf="certificateForm.get('basicConstraints').value !== null">
             <div class="p-field-checkbox">
               <label for="basic"
-                     (click)="certificate.extensions.basicConstraints = !certificate.extensions.basicConstraints">
+                     (click)="certificateForm.get('basicConstraints').setValue(!certificateForm.get('basicConstraints').value)">
                 Basic constraints
               </label>
               <p-checkbox id="basic"
                           class="p-ml-2"
                           [binary]="true"
                           formControlName="basicConstraints"
-                          (onChange)="certificateForm.get('template').setValue(null)"
               ></p-checkbox>
             </div>
           </div>

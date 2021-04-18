@@ -1,6 +1,6 @@
-import {Extensions} from './extensions';
+import { Extensions } from './extensions';
 
-export interface Template {
+export class Template {
   label: string;
   enumValue: string;
   icon: string;

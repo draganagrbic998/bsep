@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/model/user';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Activation } from '../../../core/model/activation';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-activate',
@@ -13,68 +13,83 @@ import { MessageService } from 'primeng/api';
 })
 export class ActivateComponent implements OnInit {
 
-  user: User;
   activateForm: FormGroup;
+  user: User;
   loading = false;
   expired = true;
   activated = false;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private userService: UserService,
-              private formBuilder: FormBuilder,
-              private messageService: MessageService) { }
+  constructor(
+    private userService: UserService,
+    private messageService: MessageService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
 
     this.activateForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      repeat: ['', Validators.required]
+      password: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+      repeat: ['', [this.passwordConfirmed()]]
     });
 
+    this.activateForm.controls.password.valueChanges
+    // tslint:disable-next-line: deprecation
+    .subscribe(() => this.activateForm.controls.repeat.updateValueAndValidity());
+
+    // tslint:disable-next-line: deprecation
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (!params.q) {
-        this.router.navigate(['login']);
+        this.router.navigate([environment.loginRoute]);
         return;
       }
 
+      // tslint:disable-next-line: deprecation
       this.userService.getDisabled(params.q).subscribe((user: User) => {
+        if (user){
           this.user = user;
           this.expired = new Date(this.user.activationExpiration).getTime() <= new Date().getTime();
-        },
-        () => {
-          this.router.navigate(['login']);
-        });
+        }
+        else{
+          this.router.navigate([environment.loginRoute]);
+        }
+      });
     });
   }
 
   activate(): void {
-    this.loading = true;
-
     if (!this.activateForm.valid) {
-      this.loading = false;
       return;
     }
 
-    const password = this.activateForm.get('password').value;
-    const repeat = this.activateForm.get('repeat').value;
-
-    if (password !== repeat) {
-      this.loading = false;
-      this.activateForm.get('repeat').setErrors(['Passwords don\'t match']);
-      return;
-    }
-
-    const activate = new Activation();
-    activate.password = this.activateForm.get('password').value;
-    activate.uuid = this.user.activationLink;
-
-    this.userService.activate(activate).subscribe(() => {
-      this.activated = true;
-      this.messageService.add({severity: 'success', summary: 'Successful activation', detail: 'You can now log into our services.'});
-    }, () => {
-      this.messageService.add({severity: 'error', summary: 'Failure', detail: `Error occured while activating`});
+    this.loading = true;
+    // tslint:disable-next-line: deprecation
+    this.userService.activate({...this.activateForm.value, ...{uuid: this.user.activationLink}}).subscribe((response: User) => {
+      if (response){
+        this.activated = true;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'You can now log into our services.'
+        });
+      }
+      else{
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: `Error occured while activating!`
+        });
+      }
     });
+  }
+
+  private passwordConfirmed(): ValidatorFn{
+    return (control: AbstractControl): ValidationErrors => {
+      const passwordConfirmed = control.parent ?
+      control.value === control.parent.get('password').value : true;
+      return passwordConfirmed ? null : {passwordError: true};
+    };
   }
 
 }

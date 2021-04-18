@@ -23,11 +23,10 @@
                        [feedback]="false"
                        formControlName="password"
                        [style]="{width: '100%'}"
-                       pPassword
-                >
+                       pPassword>
                 <label for="password">Password</label>
               </span>
-              <small class="p-error" *ngIf="activateForm.get('password').dirty && !activateForm.get('password').valid">Password is not valid.</small>
+              <small class="p-error" *ngIf="activateForm.get('password').dirty && !activateForm.get('password').valid">Password invalid.</small>
             </div>
             <div class="p-col-12 p-mt-2 p-field">
               <span class="p-float-label">
@@ -36,11 +35,10 @@
                        [feedback]="false"
                        formControlName="repeat"
                        [style]="{width: '100%'}"
-                       pPassword
-                >
+                       pPassword>
                 <label for="repeat">Repeat password</label>
               </span>
-              <small class="p-error" *ngIf="activateForm.get('repeat').dirty && !activateForm.get('repeat').valid">Passwords should match.</small>
+              <small class="p-error" *ngIf="activateForm.get('repeat').dirty && !activateForm.get('repeat').valid">Passwords do not match.</small>
             </div>
           </div>
         </div>

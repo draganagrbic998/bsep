@@ -21,7 +21,7 @@ export class DoctorAlarmsComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
-  @Input() patientId!: number;
+  @Input() private patientId!: number;
   page: Page<DoctorAlarm> = EMPTY_PAGE;
   pending = true;
 

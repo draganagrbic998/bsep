@@ -1,4 +1,5 @@
-import {MenuItem} from 'primeng/api';
+import { MenuItem } from 'primeng/api';
+import { environment } from 'src/environments/environment';
 
 export const menuItems: MenuItem[] =  [
   {
@@ -8,14 +9,14 @@ export const menuItems: MenuItem[] =  [
   },
   {
     label: 'Certificates',
-    routerLink: '/certificates'
+    routerLink: `/${environment.certificatesRoute}`
   },
   {
     label: 'Users',
-    routerLink: '/users'
+    routerLink: `/${environment.usersRoute}`
   },
   {
     label: 'Configuration',
-    routerLink: '/configuration'
+    routerLink: `/${environment.configurationRoute}`
   }
 ];

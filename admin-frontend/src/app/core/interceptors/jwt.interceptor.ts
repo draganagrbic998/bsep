@@ -11,7 +11,7 @@ export class JwtInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.authService.getUser()?.token;
+    const token = this.authService.getToken()?.token;
     if (!token){
       return next.handle(request);
     }
@@ -21,6 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
         Authorization: token
       }
     });
+
     return next.handle(request);
   }
 }
