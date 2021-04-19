@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import java.io.PrintWriter;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,28 +21,28 @@ public class LogService {
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	private static Random RAND = new Random();
-	private static final long SLEEP_INTERVAL = 5000;
+	private static final long SLEEP_INTERVAL = 1000;
 	private static final String FILE_PATH = "log.txt";
 	
 	private final LogCipher logCipher;
 	
 	@PostConstruct
 	public void init() {
-		new Thread(() -> this.generateLogs()).start();
+		new Thread(() -> this.writeLogs()).start();
 	}
 
-	private void generateLogs() {
+	private void writeLogs() {
 		while (true) {
 			try {
-				PrintWriter writer = new PrintWriter(FILE_PATH);
+				FileWriter writer = new FileWriter(FILE_PATH, true);
 				String line = String.format("%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), this.getMode(),
 						this.getStatus(), this.getIpAddress(), this.getDescription());
-				writer.println(this.logCipher.encrypt(line));
+				writer.write(this.logCipher.encrypt(line) + "\n");
 				writer.close();
 				Thread.sleep(SLEEP_INTERVAL);
 			} 
 			catch (Exception e) {
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		}
 	}

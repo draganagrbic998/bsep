@@ -2,13 +2,13 @@
     <span class="left" [class.small]="small" cdkFocusInitial>
         <button 
         *ngIf="!pending && !page.first" 
-        (click)="changedPage.emit(page.pageNumber - 1)"
+        (click)="changedPage.emit(page.pageable.pageNumber - 1)"
         mat-icon-button
         matTooltip="Previous page">
             <mat-icon>navigate_before</mat-icon>
         </button>
     </span>
-    <span *ngIf="refresh && !pending && !page.pageNumber">
+    <span *ngIf="refresh && !pending && !page.pageable.pageNumber">
         <button 
         (click)="changedPage.emit(0)"
         mat-icon-button 
@@ -27,7 +27,7 @@
     <span class="right" [class.small]="small">
         <button 
         *ngIf="!pending && !page.last" 
-        (click)="changedPage.emit(page.pageNumber + 1)"
+        (click)="changedPage.emit(page.pageable.pageNumber + 1)"
         mat-icon-button
         matTooltip="Next page">
             <mat-icon>navigate_next</mat-icon>

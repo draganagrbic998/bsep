@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,11 +34,12 @@ import lombok.AllArgsConstructor;
 public class LogService {
 
     private final static Gson GSON = new Gson();
+	private static long CONFIG_VERSION = 0;
 
 	private final LogRepository logRepository;
 	private final LogMapper logMapper;
 	private final LogEventService eventService;
-
+	
 	public Page<Log> findAll(Pageable pageable, LogSearchDTO searchDTO) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String stringDate = searchDTO.getDate() == null ? "empty" : format.format(searchDTO.getDate());
@@ -58,23 +58,30 @@ public class LogService {
 
 	@PostConstruct
 	public void init() {
+		this.readConfiguration();
+	}
+	
+	public void readConfiguration() {
 		try {
-            File file = new ClassPathResource(Constants.CONFIGURATION_FILE).getFile();
-			Configuration configuration = GSON.fromJson(new FileReader(file), Configuration.class);
-		
+			FileReader reader = new FileReader(new File(Constants.CONFIGURATION_FILE));
+			Configuration configuration = GSON.fromJson(reader, Configuration.class);
+			reader.close();
+			++CONFIG_VERSION;
+			
 			for (LogConfiguration lc: configuration.getConfigurations()) {
-				new Thread(() -> this.readLogs(lc.getPath(), lc.getInterval(), lc.getRegExp())).start();
+				if (new File(lc.getPath()).exists())
+					new Thread(() -> this.readLogs(CONFIG_VERSION, lc.getPath(), lc.getInterval(), lc.getRegExp())).start();
 			}
 		}
 		catch(Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
 		
-	private void readLogs(String path, long interval, String regExp) {
-		while (true) {
+	private void readLogs(long configVersion, String path, long interval, String regExp) {
+		while (configVersion == CONFIG_VERSION) {
 			try {
-				List<String> lines = this.readAll(path, regExp);
+				List<String> lines = this.readLines(path, regExp);
 				List<Log> logs = lines.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
 				logs = this.save(logs);
 				logs.forEach(x -> this.eventService.addLog(x));
@@ -85,8 +92,8 @@ public class LogService {
 			}
 		}
 	}
-	
-	public List<String> readAll(String path, String regExp) throws IOException {
+		
+	private List<String> readLines(String path, String regExp) throws IOException {
 		List<String> lines = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(path));
 		String line;

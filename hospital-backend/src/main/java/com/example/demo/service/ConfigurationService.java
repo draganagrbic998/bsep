@@ -3,20 +3,23 @@ package com.example.demo.service;
 import com.example.demo.model.Configuration;
 import com.example.demo.utils.Constants;
 import com.google.gson.Gson;
-import org.springframework.core.io.ClassPathResource;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 
 @Service
+@AllArgsConstructor
 public class ConfigurationService {
 
     private final Gson GSON = new Gson();
+    private final LogService logService;
 
     public Configuration get() {
         try {
-            File file = new ClassPathResource(Constants.CONFIGURATION_FILE).getFile();
-            FileReader reader = new FileReader(file);
+            FileReader reader = new FileReader(new File(Constants.CONFIGURATION_FILE));
             Configuration config = GSON.fromJson(reader, Configuration.class);
             reader.close();
             return config;
@@ -28,19 +31,10 @@ public class ConfigurationService {
 
     public void set(Configuration configuration) {
     	try {
-            File file;
-            ClassPathResource resource = new ClassPathResource(Constants.CONFIGURATION_FILE);
-            if (resource.isFile()) {
-                file = resource.getFile();
-            } 
-            else {
-                file = new File(resource.getPath());
-                file.createNewFile();
-            }
-
-            FileWriter writer = new FileWriter(file);
-            GSON.toJson(configuration, Configuration.class, writer);
+            FileWriter writer = new FileWriter(Constants.CONFIGURATION_FILE);
+            GSON.toJson(configuration, writer);
             writer.close();
+            this.logService.readConfiguration();
     	}
     	catch(Exception e) {
     		throw new RuntimeException(e);

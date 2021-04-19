@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.persistence.ForeignKey;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,7 +40,8 @@ public class Message {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="patient_id", foreignKey = @ForeignKey(
+        foreignKeyDefinition = "FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE"))
 	private Patient patient;
 	
 }

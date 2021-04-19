@@ -23,9 +23,9 @@ export class PatientsComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
+  private search = '';
   page: Page<Patient> = EMPTY_PAGE;
   pending = true;
-  search = '';
   columns: string[] = ['firstName', 'lastName', 'birthDate', 'address', 'city', 'actions'];
 
   get dataSource(): MatTableDataSource<Patient>{

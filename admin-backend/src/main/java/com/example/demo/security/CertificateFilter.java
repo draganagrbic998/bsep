@@ -25,7 +25,7 @@ public class CertificateFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		if (request.getServletPath().startsWith("/api/requests")) {
+		if (request.getServletPath().startsWith("/api/requests") && request.getMethod().equalsIgnoreCase("delete")) {
 			if (!this.validationService.isCertificateValid(((X509Certificate[]) 
 					request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 				throw new InvalidCertificateException();

@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,8 @@ public class DoctorAlarm {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn
+	@JoinColumn(name="patient_id", foreignKey = @ForeignKey(
+	        foreignKeyDefinition = "FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE"))
 	private Patient patient;
 
 	private Double minPulse;

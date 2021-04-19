@@ -11,7 +11,7 @@ public class Constants {
 
 	public static final String RESOURCES_FOLDER = "src" + File.separator + "main" + File.separator + "resources" + File.separator;
 	public static final String CERTIFICATES_FOLDER = RESOURCES_FOLDER + "certificates" + File.separator;
-	public static final String CONFIGURATION_FILE = "configuration.json";
+	public static final String CONFIGURATION_FILE = RESOURCES_FOLDER + "configuration.json";
 
 	public static final String ADMIN_ALARMS = "admin-alarms";
 	public static final String DOCTOR_ALARMS = "doctor-alarms";
