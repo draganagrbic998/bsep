@@ -15,7 +15,7 @@ public class ErrorHandlingAdvice {
     @ExceptionHandler(ActivationExpiredException.class)
     @ResponseBody
     ResponseEntity<ErrorDTO> onActivationExpiredException(ActivationExpiredException e) {
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ACTIVATION_EXPIRED"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ACTIVATION_EXPIRED"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullPointerException.class)
@@ -24,7 +24,7 @@ public class ErrorHandlingAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Void> handleException(Exception exception){
+    public ResponseEntity<Void> onException(Exception exception){
         exception.printStackTrace();
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

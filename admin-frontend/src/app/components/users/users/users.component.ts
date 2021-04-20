@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/model/user';
 import { ConfirmationService, LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
-import { Authority } from '../../../core/model/authority';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { AuthService } from '../../../core/services/auth.service';
 import { Page } from 'src/app/core/model/page';
+import { Role } from 'src/app/core/model/role';
 
 @Component({
   selector: 'app-users',
@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
   userForm: FormGroup;
   user: User;
   users: User[] = [];
-  authorities: Authority[];
+  roles: Role[];
 
   loading = true;
   formDialog = false;
@@ -124,7 +124,7 @@ export class UsersComponent implements OnInit {
     this.userForm.enable();
     if (this.user.id === this.authService.getToken().id) {
       this.userForm.get('email').disable();
-      this.userForm.get('authorities').disable();
+      this.userForm.get('roles').disable();
     }
     this.formDialog = true;
   }
@@ -150,17 +150,15 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.findAllAuthorities()
     // tslint:disable-next-line: deprecation
-    .subscribe((response: Authority[]) => this.authorities = response);
+    this.userService.findAllRoles().subscribe((response: Role[]) => this.roles = response);
 
     this.userForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      authorities: [[], Validators.required],
+      roles: [[], Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
 }
-

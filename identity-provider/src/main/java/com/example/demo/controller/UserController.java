@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RoleDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.Authority;
 import com.example.demo.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,33 +29,33 @@ public class UserController {
 	private final UserMapper userMapper;
 
 	@GetMapping
-	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable, HttpServletRequest request) {
+	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
 	}
 
-	@GetMapping(value = "/authorities")
-	public ResponseEntity<List<Authority>> findAllAuthorities(HttpServletRequest request) {
-		return ResponseEntity.ok(this.userService.findAllAuthorities());
+	@GetMapping(value = "/roles")
+	public ResponseEntity<List<RoleDTO>> findAllRoles() {
+		return ResponseEntity.ok(this.userService.findAllRoles().stream().map(RoleDTO::new).collect(Collectors.toList()));
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(userDTO))));
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
+	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(id, userDTO))));
 	}
 
 	@DeleteMapping(value = "{id}")
-	public ResponseEntity<Void> delete(@PathVariable long id, HttpServletRequest request) {
+	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping(value = "/send/{id}")
-	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id, HttpServletRequest request) {
+	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
 		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}
 

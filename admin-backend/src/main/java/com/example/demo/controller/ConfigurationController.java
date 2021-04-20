@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ConfigurationTarget;
+import com.example.demo.dto.ConfigurationDTO;
 import com.example.demo.model.Configuration;
 import com.example.demo.service.*;
 import lombok.AllArgsConstructor;
@@ -21,12 +21,12 @@ public class ConfigurationController {
 	private final ConfigurationService configurationService;
 
 	@PostMapping
-	public ResponseEntity<Configuration> get(@Valid @RequestBody ConfigurationTarget target) {
+	public ResponseEntity<Configuration> get(@Valid @RequestBody ConfigurationDTO target) {
 		return ResponseEntity.ok(this.configurationService.get(target.getUrl()));
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> set(@Valid @RequestBody ConfigurationTarget target) {
+	public ResponseEntity<Void> set(@Valid @RequestBody ConfigurationDTO target) {
 		this.configurationService.set(target.getUrl(), target.getConfiguration());
 		return ResponseEntity.ok().build();
 	}

@@ -13,7 +13,6 @@ public class Authority implements GrantedAuthority {
 		SUPER_ADMIN, ADMIN, DOCTOR
 	}
 
-	private Long id;
 	private Auth name;
 
 	public Authority(Auth name) {

@@ -1,5 +1,3 @@
-import { Authority } from './authority';
-
 export class User {
   id: number;
   email: string;
@@ -8,5 +6,5 @@ export class User {
   enabled: boolean;
   activationLink: string;
   activationExpiration: Date;
-  authorities: Authority[];
+  roles: string[];
 }

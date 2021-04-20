@@ -30,7 +30,7 @@
         <th>Last name</th>
         <th class="responsive-column">Email</th>
         <th>Status</th>
-        <th>Authorities</th>
+        <th>Roles</th>
         <th></th>
       </tr>
     </ng-template>
@@ -43,13 +43,13 @@
         <td>
           <p-overlayPanel appendTo="body" #op>
             <ng-template pTemplate>
-              <p-chip *ngFor="let authority of user.authorities" class="p-mx-1" [label]="authority.name"></p-chip>
+              <p-chip *ngFor="let role of user.roles" class="p-mx-1" [label]="role.name"></p-chip>
             </ng-template>
           </p-overlayPanel>
           <button pButton
                   class="p-button-sm p-button-rounded p-button-outlined p-button-warning"
                   icon="pi pi-star-o"
-                  label="Authorities"
+                  label="Roles"
                   (click)="op.toggle($event)"
           ></button>
         </td>
@@ -108,16 +108,16 @@
         </div>
         <div class="p-col-12">
           <div class="p-field">
-            <label for="authorities">Authorities</label>
-            <p-multiSelect inputId="authorities"
-                           formControlName="authorities"
-                           [options]="authorities"
+            <label for="roles">Roles</label>
+            <p-multiSelect inputId="roles"
+                           formControlName="roles"
+                           [options]="roles"
                            optionLabel="name"
                            display="chip"
             ></p-multiSelect>
             <small class="p-error"
-                   *ngIf="userForm.get('authorities').dirty && !userForm.get('authorities').valid">
-              Authorities are required.
+                   *ngIf="userForm.get('roles').dirty && !userForm.get('roles').valid">
+              Roles are required.
             </small>
 
           </div>

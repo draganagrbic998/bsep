@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ActivationDTO;
 import com.example.demo.exception.ActivationExpiredException;
-import com.example.demo.model.Authority;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
-import com.example.demo.repository.AuthorityRepository;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final AuthorityRepository authorityRepository;
+    private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
 
 	@Override
@@ -41,8 +41,8 @@ public class UserService implements UserDetailsService {
 	    return this.userRepository.findAll(pageable);
     }
 
-    public List<Authority> findAllAuthorities() {
-	    return this.authorityRepository.findAll();
+    public List<Role> findAllRoles() {
+	    return this.roleRepository.findAll();
     }
 
 	public User save(User user) {
@@ -60,10 +60,6 @@ public class UserService implements UserDetailsService {
 	    return this.userRepository.save(user);
     }
 	
-    public User getDisabled(String uuid) {
-	    return this.userRepository.findByEnabledFalseAndActivationLink(uuid);
-    }
-
     public User activate(ActivationDTO activationDTO) {
         User user = this.userRepository.findByEnabledFalseAndActivationLink(activationDTO.getUuid());
 
@@ -74,6 +70,10 @@ public class UserService implements UserDetailsService {
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(activationDTO.getPassword()));
         return this.userRepository.save(user);
+    }
+
+    public User getDisabled(String uuid) {
+	    return this.userRepository.findByEnabledFalseAndActivationLink(uuid);
     }
 
 }

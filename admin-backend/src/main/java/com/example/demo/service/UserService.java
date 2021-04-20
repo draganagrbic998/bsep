@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.*;
-import com.example.demo.model.Authority;
 import com.example.demo.model.User;
 import com.example.demo.utils.AuthenticationProvider;
 
@@ -53,10 +52,10 @@ public class UserService implements UserDetailsService {
 				responseType).getBody();
 	}
 
-	public List<Authority> findAllAuthorities() {
-		ParameterizedTypeReference<List<Authority>> responseType = new ParameterizedTypeReference<>() {};
+	public List<RoleDTO> findAllRoles() {
+		ParameterizedTypeReference<List<RoleDTO>> responseType = new ParameterizedTypeReference<>() {};
 		return this.restTemplate.exchange(
-				USERS_API + "/authorities",
+				USERS_API + "/roles",
 				HttpMethod.GET,
 				this.authProvider.getAuthEntity(null),
 				responseType).getBody();

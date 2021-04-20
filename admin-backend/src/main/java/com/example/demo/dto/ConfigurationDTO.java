@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ConfigurationTarget {
+public class ConfigurationDTO {
 	
 	@NotBlank(message = "Url cannot be blank")
     private String url;

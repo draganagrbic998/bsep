@@ -31,11 +31,11 @@ export class ToolbarComponent {
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
-    return this.storageService.getUser()?.authorities.includes(ADMIN);
+    return this.storageService.getUser().authorities.includes(ADMIN);
   }
 
   get isDoctor(): boolean{
-    return this.storageService.getUser()?.authorities.includes(DOCTOR);
+    return this.storageService.getUser().authorities.includes(DOCTOR);
   }
 
   onRoute(param: string): boolean{

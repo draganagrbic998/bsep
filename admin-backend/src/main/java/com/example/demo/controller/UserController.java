@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.PageDTO;
+import com.example.demo.dto.RoleDTO;
 import com.example.demo.dto.UserDTO;
-import com.example.demo.model.Authority;
 import com.example.demo.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -29,9 +29,9 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.findAll(pageable));
 	}
 
-	@GetMapping(value = "/authorities")
-	public ResponseEntity<List<Authority>> findAllAuthorities() {
-		return ResponseEntity.ok(this.userService.findAllAuthorities());
+	@GetMapping(value = "/roles")
+	public ResponseEntity<List<RoleDTO>> findAllRoles() {
+		return ResponseEntity.ok(this.userService.findAllRoles());
 	}
 
 	@PostMapping

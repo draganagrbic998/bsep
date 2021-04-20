@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -9,11 +11,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("serial")
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {
@@ -44,10 +48,10 @@ public class User implements UserDetails {
 	private Instant activationExpiration;
 		
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority", 
+    @JoinTable(name = "user_role", 
     	joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), 
-    	inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private Set<Authority> authorities;
+    	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
 	public User() {
 		super();
@@ -56,8 +60,10 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public Set<Authority> getAuthorities() {
-		return this.authorities;
+	public Set<Privilege> getAuthorities() {
+		Set<Privilege> privileges = new HashSet<>();
+		this.roles.forEach(role -> privileges.addAll(role.getPrivileges()));
+		return privileges;
 	}
 
 	@Override

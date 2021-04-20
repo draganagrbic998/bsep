@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthToken } from 'src/app/core/model/auth-token';
 import { UserService } from 'src/app/core/services/user.service';
+import { SUPER_ADMIN } from 'src/app/core/utils/constants';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent {
       (token: AuthToken) => {
         this.loading = false;
         if (token) {
-          if (token.authorities.includes('SUPER_ADMIN')) {
+          if (token.authorities.includes(SUPER_ADMIN)) {
             this.authService.setToken(token);
             this.router.navigate(['']);
           }

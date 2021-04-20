@@ -32,10 +32,11 @@ public class AuthController {
 			if (user != null && this.tokenUtils.validateToken(user, token)) {
 				return ResponseEntity.ok(new AuthTokenDTO(user, token));
 			}
+			throw new Exception();
 		}
-		catch(Exception ignored) {
+		catch(Exception e) {
+			return ResponseEntity.ok(null);
 		}
-		return ResponseEntity.ok(null);
 	}
 	
 	@PostMapping(value = "/login")
@@ -44,9 +45,9 @@ public class AuthController {
 			User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
 			return ResponseEntity.ok(new AuthTokenDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 		}
-		catch(Exception ignored) {
+		catch(Exception e) {
+			return ResponseEntity.ok(null);
 		}
-		return ResponseEntity.ok(null);
 	}
 
 	@PostMapping(value = "activate")

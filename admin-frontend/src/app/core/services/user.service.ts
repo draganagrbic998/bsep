@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../model/user';
 import { Observable, of } from 'rxjs';
-import { Authority } from '../model/authority';
 import { Activation } from '../model/activation';
 import { Page } from '../model/page';
 import { catchError, map } from 'rxjs/operators';
 import { Login } from '../model/login';
 import { AuthToken } from '../model/auth-token';
 import { EMPTY_PAGE } from '../utils/constants';
+import { Role } from '../model/role';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +33,8 @@ export class UserService {
     );
   }
 
-  findAllAuthorities(): Observable<Authority[]> {
-    return this.httpClient.get<Authority[]>(`${this.API_PATH}/authorities`).pipe(
+  findAllRoles(): Observable<Role[]> {
+    return this.httpClient.get<Role[]>(`${this.API_PATH}/roles`).pipe(
       catchError(() => of([]))
     );
   }
