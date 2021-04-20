@@ -4,6 +4,8 @@ import com.example.demo.dto.ErrorDTO;
 import com.example.demo.exception.RestTemplateMessageException;
 import com.example.demo.exception.RestTemplateVoidException;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import lombok.SneakyThrows;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -34,9 +36,10 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
         try {
             ErrorDTO errorDTO = gson.fromJson(bodyReader, ErrorDTO.class);
             throw new RestTemplateMessageException(errorDTO);
-        } 
-        catch (Exception e) {
+        } catch (JsonIOException | JsonSyntaxException ex) {
+            // ako se stavi samo exception onda ne radi :)
             throw new RestTemplateVoidException();
         }
+
     }
 }

@@ -15,9 +15,7 @@ export class UserService {
   private readonly AUTH_PATH = 'auth';
 
   login(login: Login): Observable<User>{
-    return this.http.post<User>(`${this.AUTH_PATH}/login`, login).pipe(
-      catchError(() => of(null))
-    );
+    return this.http.post<User>(`${this.AUTH_PATH}/login`, login);
   }
 
 }

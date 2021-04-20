@@ -47,9 +47,9 @@ export class LoginComponent implements OnInit {
           this.storageService.setUser(user);
           this.router.navigate([environment.patientsRoute]);
         }
-        else{
-          this.snackBar.open(SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
-        }
+      }, er => {
+        this.pending = false;
+        this.snackBar.open(er.error.text ?? SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
       }
     );
   }
