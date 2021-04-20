@@ -76,6 +76,7 @@ export class ActivateComponent implements OnInit {
         });
       }
       else{
+        this.loading = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
