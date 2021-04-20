@@ -15,7 +15,8 @@ public class ActivationDTO {
     private String uuid;
 	
 	@NotNull(message = "Password cannot be empty")
-	@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$", message = "Password must be atleast 8 characters long and contain alteast one lowercase and uppercase letter and a number")
+	@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$",
+	message = "Password must be at least 8 characters long and contain at least one lowercase and uppercase letter and a number")
     private String password;
 	
 }
