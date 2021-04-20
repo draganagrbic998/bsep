@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ public class UserDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant activationExpiration;
 
+	@NotNull(message = "Roles cannot be null")
     private List<RoleDTO> roles;
     
     public UserDTO(User user) {

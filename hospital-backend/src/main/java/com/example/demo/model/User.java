@@ -1,10 +1,8 @@
 package com.example.demo.model;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
@@ -18,7 +16,7 @@ public class User implements UserDetails {
 	private List<Authority.Auth> authorities;
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public List<Authority> getAuthorities() {
 		return this.authorities.stream().map(Authority::new).collect(Collectors.toList());
 	}
 
@@ -53,11 +51,11 @@ public class User implements UserDetails {
 	}
 	
 	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Auth.ADMIN));
+		return this.authorities.stream().anyMatch(auth -> auth.equals(Authority.Auth.ADMIN));
 	}
 	
 	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(x -> x.equals(Authority.Auth.DOCTOR));
+		return this.authorities.stream().anyMatch(auth -> auth.equals(Authority.Auth.DOCTOR));
 	}
 	
 }

@@ -38,7 +38,7 @@ public class ErrorHandlingAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Void> handleException(Exception exception){
+    public ResponseEntity<Void> onException(Exception exception){
         exception.printStackTrace();
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

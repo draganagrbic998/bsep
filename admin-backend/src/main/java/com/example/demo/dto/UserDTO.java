@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,7 @@ public class UserDTO {
     private String activationLink;
     private Instant activationExpiration;
     
+	@NotNull(message = "Roles cannot be null")
     private List<RoleDTO> roles;
     
 }
