@@ -43,7 +43,7 @@ public class ErrorHandlingAdvice {
 
     @ExceptionHandler(RestTemplateVoidException.class)
     @ResponseBody
-    public ResponseEntity<Void> onRestTemplateVoidException(){
+    public ResponseEntity<Void> onRestTemplateVoidException(RestTemplateVoidException e){
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

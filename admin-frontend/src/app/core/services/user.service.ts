@@ -21,9 +21,7 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   login(login: Login): Observable<AuthToken> {
-    return this.httpClient.post<AuthToken>(`${this.AUTH_PATH}/login`, login).pipe(
-      catchError(() => of(null))
-    );
+    return this.httpClient.post<AuthToken>(`${this.AUTH_PATH}/login`, login);
   }
 
   findAll(page: number, size: number): Observable<Page<User>> {

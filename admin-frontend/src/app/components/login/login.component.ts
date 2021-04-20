@@ -53,14 +53,14 @@ export class LoginComponent {
             });
           }
         }
-        else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Invalid credentials',
-            detail: 'Please check your email and password.'
-          });
-        }
-    });
+      }, er => {
+        this.loading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: er.error.text ?? 'Please check your credentials'
+        });
+      });
   }
 
 }
