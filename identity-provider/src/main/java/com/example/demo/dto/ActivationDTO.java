@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +12,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ActivationDTO {
-	
+
 	@NotBlank(message = "UUID cannot be blank")
-    private String uuid;
-	
-	@NotBlank(message = "Password cannot be blank")
-    private String password;
+	private String uuid;
+
+	@NotNull(message = "Password cannot be empty")
+	@Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$", message = "Password must be atleast 8 characters long and contain alteast one lowercase and uppercase letter and a number")
+	private String password;
 }
