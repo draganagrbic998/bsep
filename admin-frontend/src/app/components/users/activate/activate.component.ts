@@ -30,7 +30,8 @@ export class ActivateComponent implements OnInit {
   ngOnInit(): void {
 
     this.activateForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.pattern(new RegExp('\\S'))]],
+      password: ['', [Validators.required, Validators.pattern(
+        new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$'))]],
       repeat: ['', [this.passwordConfirmed()]]
     });
 
