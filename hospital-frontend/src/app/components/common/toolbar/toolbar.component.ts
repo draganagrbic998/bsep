@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
-import { AdminAlarmFormComponent } from '../../alarm/admin-alarm-form/admin-alarm-form.component';
+import { AdminAlarmComponent } from '../../alarm/admin-alarm/admin-alarm.component';
 import { AdminAlarmsComponent } from '../../alarm/admin-alarms/admin-alarms.component';
 import { RequestComponent } from '../../certificate/request/request.component';
 import { RevokeComponent } from '../../certificate/revoke/revoke.component';
@@ -31,11 +31,11 @@ export class ToolbarComponent {
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
-    return this.storageService.getUser().authorities.includes(ADMIN);
+    return this.storageService.getUser()?.authorities.includes(ADMIN);
   }
 
   get isDoctor(): boolean{
-    return this.storageService.getUser().authorities.includes(DOCTOR);
+    return this.storageService.getUser()?.authorities.includes(DOCTOR);
   }
 
   onRoute(param: string): boolean{
@@ -52,7 +52,7 @@ export class ToolbarComponent {
   }
 
   openAlarmForm(): void{
-    this.dialog.open(AdminAlarmFormComponent, DIALOG_OPTIONS);
+    this.dialog.open(AdminAlarmComponent, DIALOG_OPTIONS);
   }
 
   openAlarmList(): void{

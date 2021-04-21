@@ -9,10 +9,12 @@ import com.example.demo.model.BlodType;
 import com.example.demo.model.Gender;
 import com.example.demo.model.Patient;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class PatientDTO {
 

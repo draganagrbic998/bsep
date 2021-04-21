@@ -1,6 +1,6 @@
 <app-list title="NO ALARMS" [page]="page"  
 [pending]="pending" [empty]="!page.content.length" [alarm]="true" 
-(alarmWanted)="addAlarm()" (changedPage)="fetchAlarms($event)">
+(alarmWanted)="create()" (changedPage)="fetchAlarms($event)">
     <app-details 
     *ngFor="let alarm of page.content; let i = index"
     [delete]="'Alarm #' + (i + 1)" (deleted)="delete(alarm.id)"

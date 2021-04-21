@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -16,18 +16,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Role {
 
-	public enum Roles {
-		SUPER_ADMIN, ADMIN, DOCTOR
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
+	@NotBlank
 	@Column(unique = true)
-	@Enumerated(EnumType.STRING)
-	private Roles name;
+	private String name;
 		
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privilege", 

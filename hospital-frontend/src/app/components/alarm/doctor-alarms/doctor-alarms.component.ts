@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DIALOG_OPTIONS } from 'src/app/utils/dialog';
 import { DoctorAlarm } from 'src/app/models/doctor-alarm';
-import { DoctorAlarmFormComponent } from '../doctor-alarm-form/doctor-alarm-form.component';
+import { DoctorAlarmComponent } from '../doctor-alarm/doctor-alarm.component';
 import { AlarmService } from 'src/app/services/alarm.service';
 import { Page } from 'src/app/models/page';
 import { DeleteData } from 'src/app/models/delete-data';
@@ -36,8 +36,8 @@ export class DoctorAlarmsComponent implements OnInit {
     );
   }
 
-  addAlarm(): void{
-    this.dialog.open(DoctorAlarmFormComponent, {...DIALOG_OPTIONS, ...{data: this.patientId}});
+  create(): void{
+    this.dialog.open(DoctorAlarmComponent, {...DIALOG_OPTIONS, ...{data: this.patientId}});
   }
 
   delete(id: number): void{

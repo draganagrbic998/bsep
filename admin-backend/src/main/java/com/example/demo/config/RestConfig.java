@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.security.KeyStore;
 
 @Configuration
@@ -36,7 +35,7 @@ public class RestConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateErrorHandler()).build();
 		
 		try {
-			File file = new File(Path.of(Constants.KEYSTORE_PATH).toString());
+			File file = new File(Constants.KEYSTORE_PATH);
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());

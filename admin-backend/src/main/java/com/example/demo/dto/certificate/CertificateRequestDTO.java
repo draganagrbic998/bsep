@@ -3,15 +3,17 @@ package com.example.demo.dto.certificate;
 import com.example.demo.model.CertificateRequest;
 import com.example.demo.model.Template;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CertificateRequestDTO {
 
@@ -30,7 +32,7 @@ public class CertificateRequestDTO {
 	private String organizationUnit;
 
 	@NotBlank(message = "Country cannot be empty")
-	@Size(min = 2, max = 2, message = "Country must have two letters")
+	@Pattern(regexp = "[A-Z]{2}", message = "Country code must have two uppercase letters")
 	private String country;
 
 	@NotBlank(message = "Email cannot be empty")

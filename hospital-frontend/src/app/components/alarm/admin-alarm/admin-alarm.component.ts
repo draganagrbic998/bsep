@@ -7,15 +7,15 @@ import { AdminAlarm } from 'src/app/models/admin-alarm';
 import { AlarmService } from 'src/app/services/alarm.service';
 
 @Component({
-  selector: 'app-admin-alarm-form',
-  templateUrl: './admin-alarm-form.component.html',
-  styleUrls: ['./admin-alarm-form.component.scss']
+  selector: 'app-admin-alarm',
+  templateUrl: './admin-alarm.component.html',
+  styleUrls: ['./admin-alarm.component.scss']
 })
-export class AdminAlarmFormComponent {
+export class AdminAlarmComponent {
 
   constructor(
     private alarmService: AlarmService,
-    private dialogRef: MatDialogRef<AdminAlarmFormComponent>,
+    private dialogRef: MatDialogRef<AdminAlarmComponent>,
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder
   ) { }

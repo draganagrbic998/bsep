@@ -7,18 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dto.ErrorDTO;
-import com.example.demo.exception.InvalidCertificateException;
 import com.example.demo.exception.RestTemplateMessageException;
 import com.example.demo.exception.RestTemplateVoidException;
 
 @ControllerAdvice
 public class ErrorHandlingAdvice {
-
-    @ExceptionHandler(InvalidCertificateException.class)
-    @ResponseBody
-    public ResponseEntity<ErrorDTO> onInvalidCertificateException(InvalidCertificateException e){
-    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "CERT_INVALID"));
-    }
 
     @ExceptionHandler(RestTemplateMessageException.class)
     @ResponseBody

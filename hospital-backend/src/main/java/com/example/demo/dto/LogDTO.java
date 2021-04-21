@@ -6,10 +6,12 @@ import com.example.demo.model.Log;
 import com.example.demo.model.LogMode;
 import com.example.demo.model.LogStatus;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class LogDTO {
 	

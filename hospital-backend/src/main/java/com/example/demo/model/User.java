@@ -5,15 +5,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @SuppressWarnings("serial")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User implements UserDetails {
 
-	private List<Authority.Auth> authorities;
+	private List<String> authorities;
 
 	@Override
 	public List<Authority> getAuthorities() {
@@ -51,11 +53,11 @@ public class User implements UserDetails {
 	}
 	
 	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(auth -> auth.equals(Authority.Auth.ADMIN));
+		return this.authorities.stream().anyMatch(auth -> auth.equals("ADMIN"));
 	}
 	
 	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(auth -> auth.equals(Authority.Auth.DOCTOR));
+		return this.authorities.stream().anyMatch(auth -> auth.equals("DOCTOR"));
 	}
 	
 }

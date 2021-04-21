@@ -79,12 +79,8 @@ export class CertificatesComponent implements OnInit {
     if (this.revoke.reason.trim()) {
       // tslint:disable-next-line: deprecation
       this.certificateService.revoke(this.revoke).subscribe((response: CertificateInfo) => {
-        if (this.table) {
-          this.table.reset();
-        }
-        if (this.tree) {
-          this.tree.reset();
-        }
+        this.table?.reset();
+        this.tree?.reset();
         if (response){
           this.certificate.revoked = true;
           this.revokeDialog = false;

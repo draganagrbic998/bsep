@@ -7,6 +7,7 @@ import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
@@ -19,10 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -30,12 +28,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-	private final String COMMON_PASSWORDS_PATH = "src" + File.separatorChar + "main" + File.separatorChar + "resources"
-			+ File.separatorChar + "common_passwords.txt";
+	private static final String COMMON_PASSWORDS_PATH = Constants.RESOURCES_FOLDER + "common_passwords.txt";
+	
 	private final PasswordEncoder passwordEncoder;
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
@@ -53,14 +51,17 @@ public class UserService implements UserDetailsService {
 		return this.roleRepository.findAll();
 	}
 
+	@Transactional(readOnly = false)
 	public User save(User user) {
 		return this.userRepository.save(user);
 	}
 
+	@Transactional(readOnly = false)
 	public void delete(long id) {
 		this.userRepository.deleteById(id);
 	}
 
+	@Transactional(readOnly = false)
 	public User resetActivationLink(long id) {
 		User user = this.userRepository.findById(id).get();
 		user.setActivationExpiration(Instant.now().plus(48, ChronoUnit.HOURS));
@@ -68,6 +69,7 @@ public class UserService implements UserDetailsService {
 		return this.userRepository.save(user);
 	}
 
+	@Transactional(readOnly = false)
 	public User activate(ActivationDTO activationDTO) {
 		User user = this.userRepository.findByEnabledFalseAndActivationLink(activationDTO.getUuid());
 
@@ -75,15 +77,14 @@ public class UserService implements UserDetailsService {
 			throw new ActivationExpiredException();
 		}
 
-		Path path = Paths.get(this.COMMON_PASSWORDS_PATH);
-
 		try {
-			Files.lines(path).forEach(line -> {
+			Files.lines(Paths.get(COMMON_PASSWORDS_PATH)).forEach(line -> {
 				if (activationDTO.getPassword().equals(line))
 					throw new CommonlyUsedPasswordException();
 			});
-		} catch (IOException ex) {
-			System.out.format("I/O Exception:", ex);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		user.setEnabled(true);

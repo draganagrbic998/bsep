@@ -53,9 +53,7 @@ export class UsersComponent implements OnInit {
 
     // tslint:disable-next-line: deprecation
     this.userService.save({...this.user, ...this.userForm.value}).subscribe((response: User) => {
-      if (this.table) {
-        this.table.reset();
-      }
+      this.table?.reset();
       if (response){
         this.formDialog = false;
         this.messageService.add({
@@ -78,9 +76,7 @@ export class UsersComponent implements OnInit {
   deleteUser(user: User): void {
     // tslint:disable-next-line: deprecation
     this.userService.delete(user.id).subscribe((response: boolean) => {
-      if (this.table) {
-        this.table.reset();
-      }
+      this.table?.reset();
       if (response){
         this.messageService.add({
           severity: 'success',

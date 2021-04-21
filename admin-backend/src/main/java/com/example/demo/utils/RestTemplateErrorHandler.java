@@ -37,10 +37,8 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
             ErrorDTO errorDTO = gson.fromJson(bodyReader, ErrorDTO.class);
             throw new RestTemplateMessageException(errorDTO);
         } catch (JsonIOException | JsonSyntaxException ex) {
-            // ako se stavi samo exception onda ne radi :)
             throw new RestTemplateVoidException();
         }
-
 
     }
 }

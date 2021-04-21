@@ -26,7 +26,7 @@
               </span>
             </div>
             <small class="p-error"
-                   *ngIf="certificateForm.get('commonName').dirty && !certificateForm.get('commonName').valid"
+                   *ngIf="certificateForm.get('commonName').dirty && certificateForm.get('commonName').invalid"
             >Common name invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
@@ -37,7 +37,7 @@
               </span>
             </div>
             <small class="p-error"
-                   *ngIf="certificateForm.get('alias').dirty && !certificateForm.get('alias').valid"
+                   *ngIf="certificateForm.get('alias').dirty && certificateForm.get('alias').invalid"
             >Alias invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
@@ -48,7 +48,7 @@
               </span>
             </div>
             <small class="p-error"
-                   *ngIf="certificateForm.get('organization').dirty && !certificateForm.get('organization').valid"
+                   *ngIf="certificateForm.get('organization').dirty && certificateForm.get('organization').invalid"
             >Organization invalid.</small>
           </div>
           <div class="p-col-12 p-md-6">
@@ -64,7 +64,7 @@
 
               </span>
               <small class="p-error"
-                     *ngIf="certificateForm.get('organizationUnit').dirty && !certificateForm.get('organizationUnit').valid"
+                     *ngIf="certificateForm.get('organizationUnit').dirty && certificateForm.get('organizationUnit').invalid"
               >Organization unit invalid.</small>
             </div>
           </div>
@@ -76,7 +76,7 @@
                 <label for="country">Country code</label>
               </span>
               <small class="p-error"
-                     *ngIf="certificateForm.get('country').dirty && !certificateForm.get('country').valid"
+                     *ngIf="certificateForm.get('country').dirty && certificateForm.get('country').invalid"
               >Country code invalid.</small>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </span>
             </div>
             <small class="p-error"
-                   *ngIf="certificateForm.get('email').dirty && !certificateForm.get('email').valid"
+                   *ngIf="certificateForm.get('email').dirty && certificateForm.get('email').invalid"
             >Email invalid.</small>
           </div>
 

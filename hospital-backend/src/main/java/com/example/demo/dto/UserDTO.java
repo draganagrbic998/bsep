@@ -2,14 +2,14 @@ package com.example.demo.dto;
 
 import java.util.List;
 
-import com.example.demo.model.Authority;
-
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserDTO {
 	private String token;
-	private List<Authority.Auth> authorities;
+	private List<String> authorities;
 }

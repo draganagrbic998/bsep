@@ -7,18 +7,18 @@ import { AuthToken } from '../model/auth-token';
 })
 export class AuthService {
 
-  private readonly AUTH_KEY = 'auth-token';
+  private readonly TOKEN_KEY = 'auth';
 
   getToken(): AuthToken{
-    return JSON.parse(localStorage.getItem(this.AUTH_KEY));
+    return JSON.parse(localStorage.getItem(this.TOKEN_KEY));
   }
 
   setToken(token: AuthToken): void{
-    localStorage.setItem(this.AUTH_KEY, JSON.stringify(token));
+    localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
   }
 
   removeToken(): void {
-    localStorage.removeItem(this.AUTH_KEY);
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
 }

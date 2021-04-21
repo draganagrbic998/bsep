@@ -1,15 +1,16 @@
 package com.example.demo.dto;
 
-import com.example.demo.model.Authority;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class AuthTokenDTO {
 	private long id;
 	private String token;
-	private List<Authority.Auth> authorities;
+	private List<String> authorities;
 }

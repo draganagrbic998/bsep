@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CertificateService } from 'src/app/services/certificate.service';
@@ -15,22 +15,19 @@ export class RevokeComponent {
   constructor(
     private certificateService: CertificateService,
     private dialogRef: MatDialogRef<RevokeComponent>,
-    private snackBar: MatSnackBar,
-    private formBulder: FormBuilder
+    private snackBar: MatSnackBar
   ) { }
 
   pending = false;
-  revokeForm = this.formBulder.group({
-    certFileName: ['', [Validators.required, Validators.pattern(new RegExp('.+_.+_.+\.jks'))]],
-  });
+  fileName = new FormControl('', [Validators.required, Validators.pattern(new RegExp('.+_.+_.+\.jks'))]);
 
   confirm(): void {
-    if (this.revokeForm.invalid){
+    if (this.fileName.invalid){
       return;
     }
     this.pending = true;
     // tslint:disable-next-line: deprecation
-    this.certificateService.revoke(this.revokeForm.value.certFileName).subscribe(
+    this.certificateService.revoke(this.fileName.value.trim()).subscribe(
       (response: boolean) => {
         this.pending = false;
         if (response){

@@ -14,10 +14,12 @@ import javax.validation.constraints.NotNull;
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Role(Role.Type.EVENT)

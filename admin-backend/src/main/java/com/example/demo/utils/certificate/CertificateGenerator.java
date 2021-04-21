@@ -1,6 +1,8 @@
 package com.example.demo.utils.certificate;
 
 import com.example.demo.model.Extensions;
+import com.example.demo.model.IssuerData;
+import com.example.demo.model.SubjectData;
 
 import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.cert.X509CertificateHolder;

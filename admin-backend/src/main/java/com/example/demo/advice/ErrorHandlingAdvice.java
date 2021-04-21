@@ -14,54 +14,56 @@ public class ErrorHandlingAdvice {
     @ExceptionHandler(CertificateNotFoundException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onCertificateNotFoundException(CertificateNotFoundException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_FOUND"), HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "CERT_NOT_FOUND"));
     }
 
     @ExceptionHandler(CertificateAuthorityException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onIssuerNotCAException(CertificateAuthorityException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_NOT_CA"), HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "CERT_NOT_CA"));
     }
 
     @ExceptionHandler(InvalidIssuerException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onIssuerNotValidException(InvalidIssuerException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ISSUER_INVALID"), HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "ISSUER_INVALID"));
     }
 
     @ExceptionHandler(AliasTakenException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onAliasAlreadyTakenException(AliasTakenException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "ALIAS_TAKEN"), HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "ALIAS_TAKEN"));
     }
 
     @ExceptionHandler(InvalidCertificateException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onInvalidCertificateException(InvalidCertificateException e){
-        return new ResponseEntity<>(new ErrorDTO(e.getMessage(), "CERT_INVALID"), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(RestTemplateVoidException.class)
-    @ResponseBody
-    public ResponseEntity<Void> onRestTemplateVoidException(RestTemplateVoidException e){
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "CERT_INVALID"));
     }
 
     @ExceptionHandler(RestTemplateMessageException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onRestTemplateMessageException(RestTemplateMessageException e){
-        return new ResponseEntity<>(e.getError(), HttpStatus.BAD_REQUEST);
+    	return ResponseEntity.badRequest().body(e.getError());
+    }
+
+    @ExceptionHandler(RestTemplateVoidException.class)
+    @ResponseBody
+    public ResponseEntity<Void> onRestTemplateVoidException(RestTemplateVoidException e){
+    	return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Void> onNullPointerException(NullPointerException exception){
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @ResponseBody
+    public ResponseEntity<Void> onNullPointerException(NullPointerException e){
+        return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Void> onException(Exception exception){
-        exception.printStackTrace();
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ResponseEntity<Void> onException(Exception e){
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
 }

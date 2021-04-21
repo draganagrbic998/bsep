@@ -4,13 +4,15 @@ import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.Extensions;
 import com.example.demo.model.Template;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CertificateInfoDTO {
 

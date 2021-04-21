@@ -77,8 +77,7 @@
           [style]="{width: '600px'}"
           header="New user"
           [modal]="true"
-          styleClass="p-fluid"
-          (onHide)="userForm.reset()">
+          styleClass="p-fluid">
   <ng-template pTemplate="content">
     <form [formGroup]="userForm" (ngSubmit)="saveUser()">
       <div class="p-grid">
@@ -91,7 +90,7 @@
                    id="first-name"
                    required
                    autofocus>
-            <small class="p-error" *ngIf="userForm.get('firstName').dirty && !userForm.get('firstName').valid">First name invalid.</small>
+            <small class="p-error" *ngIf="userForm.get('firstName').dirty && userForm.get('firstName').invalid">First name invalid.</small>
           </div>
         </div>
         <div class="p-sm-12 p-md-6">
@@ -103,7 +102,7 @@
                    id="last-name"
                    required
                    autofocus/>
-            <small class="p-error" *ngIf="userForm.get('lastName').dirty && !userForm.get('lastName').valid">Last name invalid.</small>
+            <small class="p-error" *ngIf="userForm.get('lastName').dirty && userForm.get('lastName').invalid">Last name invalid.</small>
           </div>
         </div>
         <div class="p-col-12">
@@ -116,7 +115,7 @@
                            display="chip"
             ></p-multiSelect>
             <small class="p-error"
-                   *ngIf="userForm.get('roles').dirty && !userForm.get('roles').valid">
+                   *ngIf="userForm.get('roles').dirty && userForm.get('roles').invalid">
               Roles are required.
             </small>
 
@@ -131,7 +130,7 @@
                    id="email"
                    required
                    autofocus>
-            <small class="p-error" *ngIf="userForm.get('email').dirty && !userForm.get('email').valid">Email invalid.</small>
+            <small class="p-error" *ngIf="userForm.get('email').dirty && userForm.get('email').invalid">Email invalid.</small>
           </div>
         </div>
         <div class="p-col-12">

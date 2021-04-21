@@ -8,7 +8,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class LoginAttemptService {
     public LoginAttemptService(UserRepository userRepository) {
         super();
         this.userRepository = userRepository;
-        attemptsCache = CacheBuilder.newBuilder().
+        this.attemptsCache = CacheBuilder.newBuilder().
                 expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<>() {
             public Long load(String key) {
                 return 0L;
@@ -37,7 +36,7 @@ public class LoginAttemptService {
 
     @EventListener
     public void loginSucceeded(AuthenticationSuccessEvent ev) {
-        attemptsCache.invalidate(((User) ev.getAuthentication().getPrincipal()).getEmail());
+        this.attemptsCache.invalidate(((User) ev.getAuthentication().getPrincipal()).getEmail());
     }
 
     @EventListener
@@ -49,17 +48,17 @@ public class LoginAttemptService {
 
         long attempts;
         try {
-            attempts = attemptsCache.get(email);
+            attempts = this.attemptsCache.get(email);
         } catch (ExecutionException e) {
             attempts = 0;
         }
         if (attempts++ < MAX_ATTEMPT) {
-            attemptsCache.put(email, attempts);
+            this.attemptsCache.put(email, attempts);
             return;
         }
 
         User u = this.userRepository.findByEmail(email);
-        attemptsCache.invalidate(email);
+        this.attemptsCache.invalidate(email);
         if (u == null) return;
         u.setEnabled(false);
         this.userRepository.save(u);

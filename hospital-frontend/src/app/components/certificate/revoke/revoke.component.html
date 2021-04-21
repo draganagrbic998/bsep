@@ -1,10 +1,10 @@
-<app-dialog title="Certificate Revoke" [disabled]="revokeForm.invalid" 
+<app-dialog title="Certificate Revoke" [disabled]="fileName.invalid" 
 [pending]="pending" (confirmed)="confirm()">
-    <form [formGroup]="revokeForm" [class.disabled]="pending">
+    <form [class.disabled]="pending">
         <mat-form-field>
             <mat-label>File name</mat-label>
             <input 
-            formControlName="certFileName" 
+            [formControl]="fileName"
             matInput 
             placeholder="Enter certificate file name">
             <mat-error>

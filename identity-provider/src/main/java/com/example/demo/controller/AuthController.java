@@ -7,6 +7,7 @@ import com.example.demo.service.UserService;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,17 +29,12 @@ public class AuthController {
 	
 	@PostMapping
 	public ResponseEntity<AuthTokenDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
-		try {
-			String token = tokenDTO.getToken();
-			User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
-			if (user != null && this.tokenUtils.validateToken(user, token)) {
-				return ResponseEntity.ok(new AuthTokenDTO(user, token));
-			}
-			throw new Exception();
+		String token = tokenDTO.getToken();
+		User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
+		if (user != null && this.tokenUtils.validateToken(user, token)) {
+			return ResponseEntity.ok(new AuthTokenDTO(user, token));
 		}
-		catch(Exception e) {
-			return ResponseEntity.ok(null);
-		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 	
 	@PostMapping(value = "/login")

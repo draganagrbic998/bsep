@@ -3,7 +3,6 @@ package com.example.demo.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.security.KeyStore;
 
 import org.apache.http.client.HttpClient;
@@ -35,7 +34,7 @@ public class RestConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateErrorHandler()).build();
 
 		try {
-			File file = new File(Path.of(this.pkiProperties.getKeystore()).toString());
+			File file = new File(this.pkiProperties.getKeystore());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());

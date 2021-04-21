@@ -11,8 +11,6 @@ import com.example.demo.utils.AuthenticationProvider;
 import com.example.demo.utils.Constants;
 import com.example.demo.utils.certificate.CertificateGenerator;
 import com.example.demo.utils.certificate.CertificateUtils;
-import com.example.demo.utils.certificate.IssuerData;
-import com.example.demo.utils.certificate.SubjectData;
 
 import lombok.AllArgsConstructor;
 

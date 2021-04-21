@@ -4,7 +4,6 @@ import com.example.demo.dto.ErrorDTO;
 import com.example.demo.exception.AccountBlockedException;
 import com.example.demo.exception.ActivationExpiredException;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,12 +29,6 @@ public class ErrorHandlingAdvice {
 
     }
 
-
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Void> onNullPointerException(NullPointerException exception){
-        return ResponseEntity.notFound().build();
-    }
-
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onAuthenticationException(AuthenticationException exception){
@@ -49,9 +42,16 @@ public class ErrorHandlingAdvice {
         return ResponseEntity.badRequest().body(new ErrorDTO("Bad credentials", "BAD_CREDENTIALS"));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseBody
+    public ResponseEntity<Void> onNullPointerException(NullPointerException e){
+        return ResponseEntity.notFound().build();
+    }
+
     @ExceptionHandler
-    public ResponseEntity<Void> onException(Exception exception){
-        exception.printStackTrace();
+    @ResponseBody
+    public ResponseEntity<Void> onException(Exception e){
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

@@ -1,20 +1,22 @@
 package com.example.demo.dto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 import com.example.demo.model.Role;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class RoleDTO {
 
 	private long id;
 	
-	@NotNull(message = "Name cannot be null")
-	private Role.Roles name;
+	@NotBlank(message = "Name cannot be blank")
+	private String name;
 	
 	public RoleDTO(Role role) {
 		this.id = role.getId();

@@ -19,8 +19,8 @@ export class CertificateService {
     );
   }
 
-  revoke(certFileName: string): Observable<boolean>{
-    return this.http.delete<boolean>(`${this.API_PATH}/${certFileName}`).pipe(
+  revoke(fileName: string): Observable<boolean>{
+    return this.http.delete<boolean>(`${this.API_PATH}/${fileName}`).pipe(
       map(() => true),
       catchError(() => of(false))
     );

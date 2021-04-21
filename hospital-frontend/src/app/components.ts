@@ -1,7 +1,7 @@
 import { LogsComponent } from './components/log-message/logs/logs.component';
 import { ToolbarComponent } from './components/common/toolbar/toolbar.component';
 import { AdminAlarmsComponent } from './components/alarm/admin-alarms/admin-alarms.component';
-import { AdminAlarmFormComponent } from './components/alarm/admin-alarm-form/admin-alarm-form.component';
+import { AdminAlarmComponent } from './components/alarm/admin-alarm/admin-alarm.component';
 import { ReportComponent } from './components/log-message/report/report.component';
 import { LoginComponent } from './components/common/login/login.component';
 import { RequestComponent } from './components/certificate/request/request.component';
@@ -13,7 +13,7 @@ import { PaginatorComponent } from './components/common/paginator/paginator.comp
 import { DeleteComponent } from './components/common/delete/delete.component';
 import { MessagesComponent } from './components/log-message/messages/messages.component';
 import { DoctorAlarmsComponent } from './components/alarm/doctor-alarms/doctor-alarms.component';
-import { DoctorAlarmFormComponent } from './components/alarm/doctor-alarm-form/doctor-alarm-form.component';
+import { DoctorAlarmComponent } from './components/alarm/doctor-alarm/doctor-alarm.component';
 import { AlarmTriggeringsComponent } from './components/alarm/alarm-triggerings/alarm-triggerings.component';
 import { PatientFormComponent } from './components/patient/patient-form/patient-form.component';
 import { FormComponent } from './components/containers/form/form.component';
@@ -37,12 +37,12 @@ export const COMPONENTS = [
     DeleteComponent,
     MessagesComponent,
     DoctorAlarmsComponent,
-    DoctorAlarmFormComponent,
+    DoctorAlarmComponent,
     AlarmTriggeringsComponent,
     LogsComponent,
     ToolbarComponent,
     AdminAlarmsComponent,
-    AdminAlarmFormComponent,
+    AdminAlarmComponent,
     ReportComponent,
     LoginComponent,
     RequestComponent,

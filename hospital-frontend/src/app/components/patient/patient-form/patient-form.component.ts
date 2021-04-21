@@ -36,7 +36,6 @@ export class PatientFormComponent implements OnInit {
 
   confirm(): void{
     if (this.patientForm.invalid){
-      this.patientForm.updateValueAndValidity();
       return;
     }
     this.pending = true;

@@ -26,7 +26,7 @@
                        pPassword>
                 <label for="password">Password</label>
               </span>
-              <small class="p-error" *ngIf="activateForm.get('password').dirty && !activateForm.get('password').valid">Password invalid.</small>
+              <small class="p-error" *ngIf="activateForm.get('password').dirty && activateForm.get('password').invalid">Password invalid.</small>
             </div>
             <div class="p-col-12 p-mt-2 p-field">
               <span class="p-float-label">
@@ -38,7 +38,7 @@
                        pPassword>
                 <label for="repeat">Repeat password</label>
               </span>
-              <small class="p-error" *ngIf="activateForm.get('repeat').dirty && !activateForm.get('repeat').valid">Passwords do not match.</small>
+              <small class="p-error" *ngIf="activateForm.get('repeat').dirty && activateForm.get('repeat').invalid">Passwords do not match.</small>
             </div>
           </div>
         </div>

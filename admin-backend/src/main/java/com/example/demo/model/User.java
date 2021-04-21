@@ -1,18 +1,21 @@
 package com.example.demo.model;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@NoArgsConstructor
 @SuppressWarnings("serial")
+@Getter
+@Setter
+@NoArgsConstructor
 public class User implements UserDetails {
 
-	private List<Authority.Auth> authorities;
+	private List<String> authorities;
 
 	@Override
 	public List<Authority> getAuthorities() {

@@ -3,9 +3,9 @@ package com.example.demo.service;
 import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
 import com.example.demo.model.CertificateInfo;
+import com.example.demo.model.IssuerData;
 import com.example.demo.utils.Constants;
 import com.example.demo.utils.PkiProperties;
-import com.example.demo.utils.certificate.IssuerData;
 
 import lombok.AllArgsConstructor;
 

@@ -57,7 +57,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'login'
+    redirectTo: environment.loginRoute
   }
 ];
 

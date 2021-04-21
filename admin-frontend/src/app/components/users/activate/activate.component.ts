@@ -60,13 +60,14 @@ export class ActivateComponent implements OnInit {
   }
 
   activate(): void {
-    if (!this.activateForm.valid) {
+    if (this.activateForm.invalid) {
       return;
     }
 
     this.loading = true;
     // tslint:disable-next-line: deprecation
     this.userService.activate({...this.activateForm.value, ...{uuid: this.user.activationLink}}).subscribe((response: User) => {
+      this.loading = false;
       if (response){
         this.activated = true;
         this.messageService.add({
@@ -76,7 +77,6 @@ export class ActivateComponent implements OnInit {
         });
       }
       else{
-        this.loading = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

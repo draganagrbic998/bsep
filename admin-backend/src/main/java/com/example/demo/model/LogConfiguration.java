@@ -1,12 +1,14 @@
 package com.example.demo.model;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class LogConfiguration {
 
