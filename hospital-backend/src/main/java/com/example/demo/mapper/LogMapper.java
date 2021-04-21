@@ -19,9 +19,11 @@ public class LogMapper {
 	
 	private final DatabaseCipher logCipher;
 	
-	public Log map(String line) {
+	public Log map(String line, String regExp) {
 		try {
 			line = this.logCipher.decrypt(line);
+			if (!line.matches(regExp))
+				return null;
 			Log log = new Log();
 			line = line.replace(',', '.');
 			String[] array = line.split("\\|");
@@ -33,7 +35,7 @@ public class LogMapper {
 			return log;
 		}
 		catch(Exception e) {
-			throw new RuntimeException(e);
+			return null;
 		}
 	}
 	

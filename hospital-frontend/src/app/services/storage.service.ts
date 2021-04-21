@@ -6,30 +6,29 @@ import { User } from 'src/app/models/user';
 })
 export class StorageService {
 
-  private readonly USER_KEY = 'user';
+  private readonly USER_KEY = 'auth';
 
-  setUser(user: User): void{
-    this.set(this.USER_KEY, user);
-  }
-
-  removeUser(): void{
-    this.remove(this.USER_KEY);
+  constructor(){
+    window.addEventListener('message', e => {
+      if (e.origin === 'https://localhost:4200') {
+        localStorage.setItem(this.USER_KEY, e.data);
+      }
+    });
   }
 
   getUser(): User{
-    return this.get(this.USER_KEY) as User;
+    return JSON.parse(localStorage.getItem(this.USER_KEY));
   }
 
-  private set(key: string, value: object): void{
-    localStorage.setItem(key, JSON.stringify(value));
+  setUser(user: User): void{
+    const message = JSON.stringify(user);
+    const receiver = (document.getElementById('receiver') as any).contentWindow;
+    receiver.postMessage(message, 'https://localhost:4200');
+    localStorage.setItem(this.USER_KEY, message);
   }
 
-  private remove(key: string): void{
-    localStorage.removeItem(key);
-  }
-
-  private get(key: string): object{
-    return JSON.parse(localStorage.getItem(key));
+  removeUser(): void{
+    localStorage.removeItem(this.USER_KEY);
   }
 
 }

@@ -82,7 +82,8 @@ public class LogService {
 		while (configVersion == CONFIG_VERSION) {
 			try {
 				List<String> lines = this.readLines(path, regExp);
-				List<Log> logs = lines.stream().map(x -> this.logMapper.map(x)).collect(Collectors.toList());
+				List<Log> logs = lines.stream().map(log -> this.logMapper.map(log, regExp))
+						.filter(log -> log != null).collect(Collectors.toList());
 				logs = this.save(logs);
 				logs.forEach(x -> this.eventService.addLog(x));
 				Thread.sleep(interval);	
@@ -97,10 +98,8 @@ public class LogService {
 		List<String> lines = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(path));
 		String line;
-		while ((line = reader.readLine()) != null) {
-			if (line.matches(regExp))
-				lines.add(line);
-		}
+		while ((line = reader.readLine()) != null)
+			lines.add(line);
 		reader.close();
 		FileWriter writer = new FileWriter(path);
 		writer.close();
