@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../services/auth.service';
+import { SUPER_ADMIN } from '../utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +15,18 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const isLoggedIn = !!this.authService.getToken();
-    const unauthorized = !!route.data.unauthorized;
-    const authorities = route.data.authorities as string[] || [];
 
-    if (!isLoggedIn && unauthorized) {
+    if (!this.authService.getToken() && route.data.unauthorized) {
       return true;
     }
 
-    for (const authority of authorities){
+    for (const authority of route.data.authorities || []){
       if (this.authService.getToken()?.authorities.includes(authority)){
         return true;
       }
     }
 
-    if (isLoggedIn) {
+    if (this.authService.getToken()?.authorities.includes(SUPER_ADMIN)) {
       this.router.navigate(['']);
     }
     else {

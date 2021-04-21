@@ -16,6 +16,8 @@ const routes: Routes = [
   {
     path: environment.loginRoute,
     component: LoginComponent,
+    canActivate: [AuthGuard],
+    data: {unauthorized: true}
   },
   {
     path: environment.reportRoute,
