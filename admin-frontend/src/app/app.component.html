@@ -1,3 +1,5 @@
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 <p-toast></p-toast>
 <router-outlet></router-outlet>
+<iframe *ngIf="!onFrame" id="receiver" src="https://localhost:4201/frame" style="display: none;">
+</iframe>  

@@ -1,5 +1,6 @@
 import { Page } from '../models/page';
 
+export const SUPER_ADMIN = 'SUPER_ADMIN';
 export const ADMIN = 'ADMIN';
 export const DOCTOR = 'DOCTOR';
 export const PAGE_SIZE = 10;

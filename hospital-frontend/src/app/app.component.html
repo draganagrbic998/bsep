@@ -1,3 +1,5 @@
 <app-toolbar></app-toolbar>
 <div></div>
 <router-outlet></router-outlet>
+<iframe *ngIf="!onFrame" id="receiver" src="https://localhost:4200/frame" style="display: none;">
+</iframe>

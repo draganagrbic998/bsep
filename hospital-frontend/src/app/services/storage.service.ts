@@ -1,30 +1,24 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/models/user';
+import { SUPER_ADMIN } from 'src/app/utils/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  private readonly USER_KEY = 'auth';
-
-  constructor(){
-    window.addEventListener('message', e => {
-      if (e.origin === 'https://localhost:4200') {
-        localStorage.setItem(this.USER_KEY, e.data);
-      }
-    });
-  }
+  readonly USER_KEY = 'auth';
 
   getUser(): User{
     return JSON.parse(localStorage.getItem(this.USER_KEY));
   }
 
   setUser(user: User): void{
-    const message = JSON.stringify(user);
-    const receiver = (document.getElementById('receiver') as any).contentWindow;
-    receiver.postMessage(message, 'https://localhost:4200');
-    localStorage.setItem(this.USER_KEY, message);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    if (user.authorities.includes(SUPER_ADMIN)){
+      (document.getElementById('receiver') as any).contentWindow
+      .postMessage(JSON.stringify(user), 'https://localhost:4200');
+    }
   }
 
   removeUser(): void{

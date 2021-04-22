@@ -12,8 +12,13 @@ import { UsersComponent } from './components/users/users/users.component';
 import { ConfigurationComponent } from './components/configuration/configuration/configuration.component';
 import { AddCertificateComponent } from './components/certificates/add-certificate/add-certificate.component';
 import { SUPER_ADMIN } from './core/utils/constants';
+import { FrameComponent } from './components/frame/frame.component';
 
 const routes: Routes = [
+  {
+    path: environment.frameRoute,
+    component: FrameComponent
+  },
   {
     path: environment.loginRoute,
     component: LoginComponent,

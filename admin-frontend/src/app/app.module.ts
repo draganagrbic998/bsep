@@ -26,13 +26,15 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { FrameComponent } from './components/frame/frame.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainViewComponent,
-    DashboardComponent
+    DashboardComponent,
+    FrameComponent
   ],
   imports: [
     BrowserModule,

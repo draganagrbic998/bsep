@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  frameRoute: 'frame',
   loginRoute: 'login',
   reportRoute: 'report',
   patientsRoute: 'patients',
