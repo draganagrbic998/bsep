@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  frameRoute: 'frame',
   loginRoute: 'login',
   activateRoute: 'activate',
   certificatesRoute: 'certificates',
   usersRoute: 'users',
   configurationRoute: 'configuration',
-  addCertificateRoute: 'add-certificate'
+  addCertificateRoute: 'add-certificate',
+  frameRoute: 'frame'
 };
 
 /*

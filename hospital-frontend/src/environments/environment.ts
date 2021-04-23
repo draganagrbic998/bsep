@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  frameRoute: 'frame',
   loginRoute: 'login',
   reportRoute: 'report',
   patientsRoute: 'patients',
   messagesRoute: 'messages',
   logsRoute: 'logs',
-  alarmsRoute: 'alarms'
+  alarmsRoute: 'alarms',
+  frameRoute: 'frame'
 };
 
 /*

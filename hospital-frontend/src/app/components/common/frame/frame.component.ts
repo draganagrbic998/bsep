@@ -10,8 +10,6 @@ export class FrameComponent {
 
   constructor(private storageService: StorageService) {
     window.addEventListener('message', e => {
-      console.log(e.data);
-      console.log(e.origin);
       if (e.origin === 'https://localhost:4200'){
         localStorage.setItem(this.storageService.USER_KEY, e.data);
       }

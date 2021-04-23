@@ -16,10 +16,6 @@ import { FrameComponent } from './components/frame/frame.component';
 
 const routes: Routes = [
   {
-    path: environment.frameRoute,
-    component: FrameComponent
-  },
-  {
     path: environment.loginRoute,
     component: LoginComponent,
     data: {unauthorized: true},
@@ -58,6 +54,10 @@ const routes: Routes = [
         component: AddCertificateComponent
       }
     ]
+  },
+  {
+    path: environment.frameRoute,
+    component: FrameComponent
   },
   {
     path: '**',
