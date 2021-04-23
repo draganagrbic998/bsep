@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
@@ -41,6 +42,7 @@ public class CertificateService {
 	private final RestTemplate restTemplate;
 	private final AuthenticationProvider authProvider;
 
+	@Transactional(readOnly = false)
 	public void create(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
 		String issuerAlias = certificateDTO.getIssuerAlias();
@@ -72,6 +74,7 @@ public class CertificateService {
 		subjectData.setPublicKey(keyPair.getPublic());
 		
 		CertificateInfo cert = generateCertificate(subjectData, issuerInfo, certificateDTO);
+		cert = this.certificateInfoRepository.save(cert);
 		subjectData.setSerialNumber(cert.getId() + "");
 		X509Certificate certificate = this.certificateGenerator.generateCertificate(
 				subjectData, issuerData, keyPair, issuerChain[0], false, 
@@ -129,7 +132,7 @@ public class CertificateService {
 		certificate.setStartDate(subjectData.getStartDate());
 		certificate.setEndDate(subjectData.getEndDate());
 		certificate.setExtensions(certificateDTO.getExtensions());
-		return this.certificateInfoRepository.save(certificate);
+		return certificate;
 	}
 
 }
