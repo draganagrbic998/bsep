@@ -40,11 +40,11 @@ export class LoginComponent {
       (token: AuthToken) => {
         this.pending = false;
         if (token && token.authorities.includes(ADMIN)){
-          this.storageService.setUser(token);
+          this.storageService.setToken(token);
           this.router.navigate([environment.reportRoute]);
         }
         else if (token && token.authorities.includes(DOCTOR)){
-          this.storageService.setUser(token);
+          this.storageService.setToken(token);
           this.router.navigate([environment.patientsRoute]);
         }
       }, er => {

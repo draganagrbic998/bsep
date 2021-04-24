@@ -16,20 +16,26 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    if (!this.storageService.getUser() && route.data.unauthorized) {
-      return true;
-    }
-
-    for (const authority of route.data.authorities || []){
-      if (this.storageService.getUser()?.authorities.includes(authority)){
+    if (route.data.unauthorized){
+      if (!this.storageService.getToken()){
+        return true;
+      }
+      if (!this.storageService.getToken().authorities?.includes(ADMIN) &&
+        !this.storageService.getToken().authorities?.includes(DOCTOR)){
         return true;
       }
     }
 
-    if (this.storageService.getUser()?.authorities.includes(ADMIN)) {
+    for (const authority of route.data.authorities || []){
+      if (this.storageService.getToken()?.authorities.includes(authority)){
+        return true;
+      }
+    }
+
+    if (this.storageService.getToken()?.authorities.includes(ADMIN)) {
       this.router.navigate([environment.reportRoute]);
     }
-    else if (this.storageService.getUser()?.authorities.includes(DOCTOR)){
+    else if (this.storageService.getToken()?.authorities.includes(DOCTOR)){
       this.router.navigate([environment.patientsRoute]);
     }
     else {

@@ -9,11 +9,11 @@ export class StorageService {
 
   readonly USER_KEY = 'auth';
 
-  getUser(): AuthToken{
+  getToken(): AuthToken{
     return JSON.parse(localStorage.getItem(this.USER_KEY));
   }
 
-  setUser(token: AuthToken): void{
+  setToken(token: AuthToken): void{
     localStorage.setItem(this.USER_KEY, JSON.stringify(token));
     if (token.authorities.includes(SUPER_ADMIN)){
       (document.getElementById('receiver') as any).contentWindow
@@ -21,7 +21,7 @@ export class StorageService {
     }
   }
 
-  removeUser(): void{
+  removeToken(): void{
     localStorage.removeItem(this.USER_KEY);
   }
 

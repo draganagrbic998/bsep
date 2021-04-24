@@ -16,8 +16,13 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
 
-    if (!this.storageService.getToken() && route.data.unauthorized) {
-      return true;
+    if (route.data.unauthorized){
+      if (!this.storageService.getToken()){
+        return true;
+      }
+      if (!this.storageService.getToken().authorities?.includes(SUPER_ADMIN)){
+        return true;
+      }
     }
 
     for (const authority of route.data.authorities || []){
