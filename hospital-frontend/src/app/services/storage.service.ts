@@ -13,11 +13,11 @@ export class StorageService {
     return JSON.parse(localStorage.getItem(this.USER_KEY));
   }
 
-  setUser(user: AuthToken): void{
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-    if (user.authorities.includes(SUPER_ADMIN)){
+  setUser(token: AuthToken): void{
+    localStorage.setItem(this.USER_KEY, JSON.stringify(token));
+    if (token.authorities.includes(SUPER_ADMIN)){
       (document.getElementById('receiver') as any).contentWindow
-      .postMessage(JSON.stringify(user), 'https://localhost:4200');
+      .postMessage(JSON.stringify(token), 'https://localhost:4200');
     }
   }
 

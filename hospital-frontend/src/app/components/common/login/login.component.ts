@@ -37,14 +37,14 @@ export class LoginComponent {
     this.pending = true;
     // tslint:disable-next-line: deprecation
     this.userService.login(this.loginForm.value).subscribe(
-      (user: AuthToken) => {
+      (token: AuthToken) => {
         this.pending = false;
-        if (user && user.authorities.includes(ADMIN)){
-          this.storageService.setUser(user);
+        if (token && token.authorities.includes(ADMIN)){
+          this.storageService.setUser(token);
           this.router.navigate([environment.reportRoute]);
         }
-        else if (user && user.authorities.includes(DOCTOR)){
-          this.storageService.setUser(user);
+        else if (token && token.authorities.includes(DOCTOR)){
+          this.storageService.setUser(token);
           this.router.navigate([environment.patientsRoute]);
         }
       }, er => {
