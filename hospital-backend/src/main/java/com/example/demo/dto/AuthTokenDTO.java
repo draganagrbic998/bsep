@@ -9,7 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO {
+public class AuthTokenDTO {
+	private long id;
 	private String token;
 	private List<String> authorities;
 }

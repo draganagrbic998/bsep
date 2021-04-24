@@ -1,4 +1,5 @@
-export interface User{
+export interface AuthToken{
+    id: number;
     token: string;
     authorities: string[];
 }

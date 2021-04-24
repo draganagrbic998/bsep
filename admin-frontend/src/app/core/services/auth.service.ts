@@ -1,29 +1,35 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Activation } from '../model/activation';
 import { AuthToken } from '../model/auth-token';
-import { ADMIN, DOCTOR } from '../utils/constants';
+import { Login } from '../model/login';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  readonly TOKEN_KEY = 'auth';
+  constructor(private httpClient: HttpClient) { }
 
-  getToken(): AuthToken{
-    return JSON.parse(localStorage.getItem(this.TOKEN_KEY));
+  private readonly AUTH_PATH = 'auth';
+
+  login(login: Login): Observable<AuthToken> {
+    return this.httpClient.post<AuthToken>(`${this.AUTH_PATH}/login`, login);
   }
 
-  setToken(token: AuthToken): void{
-    localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
-    if (token.authorities.includes(ADMIN) || token.authorities.includes(DOCTOR)){
-      (document.getElementById('receiver') as any).contentWindow
-      .postMessage(JSON.stringify(token), 'https://localhost:4201');
-    }
+  activate(activation: Activation): Observable<User> {
+    return this.httpClient.post<User>(`${this.AUTH_PATH}/activate`, activation).pipe(
+      catchError(() => of(null))
+    );
   }
 
-  removeToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+  getDisabled(uuid: string): Observable<User> {
+    return this.httpClient.get<User>(`${this.AUTH_PATH}/disabled/${uuid}`).pipe(
+      catchError(() => of(null))
+    );
   }
 
 }

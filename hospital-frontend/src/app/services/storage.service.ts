@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { AuthToken } from 'src/app/models/auth-token';
 import { SUPER_ADMIN } from 'src/app/utils/constants';
 
 @Injectable({
@@ -9,11 +9,11 @@ export class StorageService {
 
   readonly USER_KEY = 'auth';
 
-  getUser(): User{
+  getUser(): AuthToken{
     return JSON.parse(localStorage.getItem(this.USER_KEY));
   }
 
-  setUser(user: User): void{
+  setUser(user: AuthToken): void{
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
     if (user.authorities.includes(SUPER_ADMIN)){
       (document.getElementById('receiver') as any).contentWindow

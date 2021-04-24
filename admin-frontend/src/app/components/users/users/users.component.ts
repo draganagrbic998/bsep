@@ -4,7 +4,7 @@ import { User } from '../../../core/model/user';
 import { ConfirmationService, LazyLoadEvent, MenuItem, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
-import { AuthService } from '../../../core/services/auth.service';
+import { StorageService } from '../../../core/services/storage.service';
 import { Page } from 'src/app/core/model/page';
 import { Role } from 'src/app/core/model/role';
 
@@ -27,7 +27,7 @@ export class UsersComponent implements OnInit {
   totalRecords = 0;
 
   constructor(
-    private authService: AuthService,
+    private storageService: StorageService,
     private userService: UserService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -118,7 +118,7 @@ export class UsersComponent implements OnInit {
     this.user = user || new User();
     this.userForm.reset(user);
     this.userForm.enable();
-    if (this.user.id === this.authService.getToken().id) {
+    if (this.user.id === this.storageService.getToken().id) {
       this.userForm.get('email').disable();
       this.userForm.get('roles').disable();
     }
@@ -129,7 +129,7 @@ export class UsersComponent implements OnInit {
     const items = [
       {icon: 'pi pi-pencil', label: 'Edit', command: () => this.saveDialog(user)},
     ];
-    if (user.id !== this.authService.getToken().id) {
+    if (user.id !== this.storageService.getToken().id) {
       items.push({icon: 'pi pi-trash', label: 'Delete', command: () => this.deleteDialog(user)});
     }
     if (!user.enabled) {
