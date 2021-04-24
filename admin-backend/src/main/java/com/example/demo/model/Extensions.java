@@ -26,10 +26,10 @@ public class Extensions {
 
     private Boolean basicConstraints; 
 
+    private Integer keyUsage;
+
     @ElementCollection
     private Set<String> keyPurposeIds;
-
-    private Integer keyUsage;
 
     @JsonIgnore
     public Set<KeyPurposeId> getEntityKeyPurposeIds() {

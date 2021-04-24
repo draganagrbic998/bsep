@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import com.example.demo.model.AdminAlarm;
 
@@ -15,6 +16,8 @@ public class AdminAlarmDTO {
 
 	private Long id;
 	private boolean status;
+	
+	@Positive(message = "Counts must be positive integer")
 	private long counts;
 	
 	@NotBlank(message = "Param cannot be blank")
