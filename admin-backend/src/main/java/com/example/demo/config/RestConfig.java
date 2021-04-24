@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.utils.Constants;
 import com.example.demo.utils.PkiProperties;
 import com.example.demo.utils.RestTemplateErrorHandler;
 
@@ -35,7 +34,7 @@ public class RestConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateErrorHandler()).build();
 		
 		try {
-			File file = new File(Constants.KEYSTORE_PATH);
+			File file = new File(this.pkiProperties.getRoot());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
 			InputStream inputStream = new FileInputStream(file);
 			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());

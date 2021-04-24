@@ -86,11 +86,10 @@ public class CertificateService {
 		this.keyStoreService.updateTrustStore(issuerInfo, cert, certificate, 
 			this.keyStoreService.saveSeparateKeys(issuerInfo, cert, keyPair.getPrivate(), chain));
 		
-		String fileName = issuerInfo.getAlias() + "_" + cert.getAlias() + "_" + cert.getOrganizationUnit();
 		byte[] returnValue = null;
 
 		try {
-			InputStream in = new FileInputStream(Constants.CERTIFICATES_FOLDER + fileName + ".jks");
+			InputStream in = new FileInputStream(Constants.CERTIFICATES_FOLDER + issuerInfo.getAlias() + "_" + cert.getAlias() + ".jks");
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
 		} 
@@ -112,9 +111,9 @@ public class CertificateService {
 					CreatedCertificateDTO.class);
 			this.certificateRequestService.delete(certificateDTO.getId());
 			
-			String certFileName = cert.getIssuerAlias() + "_" + cert.getAlias() + "_" + cert.getOrganizationUnit() + ".jks";
+			String fileName = cert.getIssuerAlias() + "_" + cert.getAlias() + ".jks";
 			String location = request.getPath().split("//")[1].split("/")[0];
-			this.emailService.sendInfoMail(cert.getEmail(), certFileName, location, "Certificate Issued - Bezbednost", Constants.ISSUED_TEMPLATE);
+			this.emailService.sendInfoMail(cert.getEmail(), fileName, location, "Certificate Issued - Bezbednost", Constants.ISSUED_TEMPLATE);
 		}
 
 	}

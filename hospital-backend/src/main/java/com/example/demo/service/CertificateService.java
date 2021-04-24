@@ -28,16 +28,16 @@ public class CertificateService {
 	private final AuthenticationProvider authProvider;
 
 	public void create(CertificateDTO certificateDTO) {
-		byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());
-		String fileName = certificateDTO.getIssuerAlias() + "_" + certificateDTO.getAlias() + "_" + certificateDTO.getOrganizationUnit() + ".jks";
-
 		try {
-			FileOutputStream out = new FileOutputStream(Constants.CERTIFICATES_FOLDER + fileName);
+			byte[] decryptedCertificate = Base64.getDecoder().decode(certificateDTO.getCertificate());
+			String fileName = Constants.CERTIFICATES_FOLDER + certificateDTO.getIssuerAlias() + "_" + certificateDTO.getAlias() + ".jks";
+
+			FileOutputStream out = new FileOutputStream(fileName);
 			out.write(decryptedCertificate);
 			out.close();
 
 			if (certificateDTO.getType().equals(CertificateType.HOSPITAL_DEVICE))
-				this.keyStoreService.updateTruststore(certificateDTO.getAlias(), Constants.CERTIFICATES_FOLDER + fileName);
+				this.keyStoreService.updateTruststore(certificateDTO.getAlias(), fileName);
 			
 		} 
 		catch (Exception e) {
@@ -63,10 +63,9 @@ public class CertificateService {
 				CertificateRequestDTO.class);
 	}
 
-	public void revoke(String certFileName) {
-		X509Certificate certificate = 
-				(X509Certificate) this.keyStoreService
-				.readCertificate(Constants.CERTIFICATES_FOLDER + certFileName, certFileName.split("_")[1]);
+	public void revoke(String fileName) {
+		X509Certificate certificate = (X509Certificate) this.keyStoreService
+				.readCertificate(Constants.CERTIFICATES_FOLDER + fileName, fileName.split("_")[1]);
 		
 		this.restTemplate.exchange(
 				CERTIFICATES_API + "/" + certificate.getSerialNumber().longValue(), 

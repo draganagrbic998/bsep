@@ -41,7 +41,7 @@ public class CertificateInfoService {
 		certificate.setRevocationDate(new Date());
 		certificate.setRevocationReason(reason);
 		certificate = this.certificateInfoRepository.save(certificate);
-		String fileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + "_" + certificate.getOrganizationUnit() + ".jks";
+		String fileName = certificate.getIssuerAlias() + "_" + certificate.getAlias() + ".jks";
 		this.emailService.sendInfoMail(certificate.getEmail(), fileName, reason, "Certificate Revoked - Bezbednost", Constants.REVOKED_TEMPLATE);
 		return certificate;
 	}
