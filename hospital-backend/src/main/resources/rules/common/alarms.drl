@@ -1,8 +1,8 @@
 package rules
-import com.example.demo.service.AlarmTriggeringService
 import com.example.demo.model.Request
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.model.AlarmType
+import com.example.demo.service.AlarmTriggeringService
 
 global AlarmTriggeringService alarmTriggeringService
 
