@@ -15,7 +15,8 @@ public class Constants {
 
 	public static final String ADMIN_ALARMS = "admin-alarms";
 	public static final String DOCTOR_ALARMS = "doctor-alarms";
-	
+	public static final String COMMON_ALARMS = "common-alarms";
+
 	public static final String CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 

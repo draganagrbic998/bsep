@@ -14,7 +14,9 @@ import org.springframework.web.filter.CorsFilter;
 import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
 import com.example.demo.security.CertificateFilter;
+import com.example.demo.security.RequestFilter;
 import com.example.demo.service.CertificateService;
+import com.example.demo.service.CommonEventService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
 
@@ -27,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserService userService;
 	private final CertificateService certificateService;
+	private final CommonEventService commonEventService;
 			
 	@Bean
 	public CorsFilter corsFilter() {
@@ -47,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().cors().and()
 			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class)
 			.addFilterBefore(new CertificateFilter(this.certificateService), BasicAuthenticationFilter.class)
+			.addFilterBefore(new RequestFilter(this.commonEventService), BasicAuthenticationFilter.class)
 			.csrf().disable();
 	}
 		

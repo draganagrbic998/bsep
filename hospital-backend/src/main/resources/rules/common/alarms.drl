@@ -1,0 +1,36 @@
+package rules
+import com.example.demo.service.AlarmTriggeringService
+import com.example.demo.model.Request
+import com.example.demo.model.AlarmTriggering
+import com.example.demo.model.AlarmType
+
+global AlarmTriggeringService alarmTriggeringService
+
+
+rule "DoS Attack"
+	salience $cnt * 1
+
+    when
+        accumulate(
+        	Request($r: this),
+        	$cnt: count($r);
+        	$cnt > 5
+        )
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmType.DOS, $cnt + ' of requests appeared in the last 60 seconds!!'));
+
+end
+
+rule "Brute-Force Attack"
+	salience $cnt * 3
+
+    when
+        accumulate(
+        	Request($r: this, login),
+        	$cnt: count($r);
+        	$cnt > 5
+        )
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmType.BRUTE_FORCE, $cnt + ' of login requests appeared in the last 60 seconds!!'));
+
+end

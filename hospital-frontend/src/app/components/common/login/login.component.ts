@@ -49,7 +49,7 @@ export class LoginComponent {
         }
       }, er => {
         this.pending = false;
-        this.snackBar.open(er.error.text ?? SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
+        this.snackBar.open(er?.error?.text ?? SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
       }
     );
   }

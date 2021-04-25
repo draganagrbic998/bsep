@@ -58,7 +58,7 @@ export class LoginComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: er.error.text ?? 'Please check your credentials'
+          detail: er?.error?.text ?? 'Please check your credentials'
         });
       });
   }
