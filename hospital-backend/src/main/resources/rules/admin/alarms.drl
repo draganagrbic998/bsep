@@ -27,11 +27,11 @@ rule "Alarm for SUCCESS status"
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.SUCCESS)),
+			Log($log: this, mode == LogMode.ATTACK, status == LogStatus.SUCCESS),
 			$logsCount: count($log)
 		)
 		Number(intValue <= $logsCount) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.SUCCESS + ""), $counts: counts) from alarmService.findAll(),
+			AdminAlarm(status == LogStatus.SUCCESS, $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
@@ -44,11 +44,11 @@ rule "Alarm for INFO status"
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.INFO)),
+			Log($log: this, mode == LogMode.ATTACK, status == LogStatus.INFO),
 			$logsCount: count($log)
 		)
 		Number(intValue <= $logsCount) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.INFO + ""), $counts: counts) from alarmService.findAll(),
+			AdminAlarm(status == LogStatus.INFO, $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
@@ -61,11 +61,11 @@ rule "Alarm for WARNING status"
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.WARNING)),
+			Log($log: this, mode == LogMode.ATTACK, status == LogStatus.WARNING),
 			$logsCount: count($log)
 		)
 		Number(intValue <= $logsCount) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.WARNING + ""), $counts: counts) from alarmService.findAll(),
+			AdminAlarm(status == LogStatus.WARNING, $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
@@ -78,11 +78,11 @@ rule "Alarm for ERROR status"
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.ERROR)),
+			Log($log: this, mode == LogMode.ATTACK, status == LogStatus.ERROR),
 			$logsCount: count($log)
 		)
 		Number(intValue <= $logsCount) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.ERROR + ""), $counts: counts) from alarmService.findAll(),
+			AdminAlarm(status == LogStatus.ERROR, $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
@@ -95,101 +95,14 @@ rule "Alarm for FATAL status"
 
     when
 		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), status.equals(LogStatus.FATAL)),
+			Log($log: this, mode == LogMode.ATTACK, status == LogStatus.FATAL),
 			$logsCount: count($log)
 		)
 		Number(intValue <= $logsCount) from accumulate(
-			AdminAlarm(status, param.equalsIgnoreCase(LogStatus.FATAL + ""), $counts: counts) from alarmService.findAll(),
+			AdminAlarm(status == LogStatus.FATAL, $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
         alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of FATAL logs appeared in the last minute!!"));
 
 end
-
-rule "Alarm for 'Login with wrong credentials'"
-	no-loop
-
-    when
-		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Login with wrong credentials")),
-			$logs: collectList($log)
-		)
-		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase("Login with wrong credentials"), $counts: counts) from alarmService.findAll(),
-			min($counts)
-		)
-    then
-        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of wrong logins from the same IP address appeared in the last minute!!"));
-
-end
-
-rule "Alarm for 'Forbidden patients view'"
-	no-loop
-
-    when
-		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden patients view")),
-			$logs: collectList($log)
-		)
-		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden patients view"), $counts: counts) from alarmService.findAll(),
-			min($counts)
-		)
-    then
-        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on patients view from the same IP address appeared in the last minute!!"));
-
-end
-
-rule "Alarm for 'Forbidden messages view'"
-	no-loop
-
-    when
-		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden messages view")),
-			$logs: collectList($log)
-		)
-		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden messages view"), $counts: counts) from alarmService.findAll(),
-			min($counts)
-		)
-    then
-        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on messages view from the same IP address appeared in the last minute!!"));
-
-end
-
-rule "Alarm for 'Forbidden logs view'"
-	no-loop
-
-    when
-		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden logs view")),
-			$logs: collectList($log)
-		)
-		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden logs view"), $counts: counts) from alarmService.findAll(),
-			min($counts)
-		)
-    then
-        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on logs view from the same IP address appeared in the last minute!!"));
-
-end
-
-rule "Alarm for 'Forbidden alarms view'"
-	no-loop
-
-    when
-		accumulate(
-			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden alarms view")),
-			$logs: collectList($log)
-		)
-		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
-			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden alarms view"), $counts: counts) from alarmService.findAll(),
-			min($counts)
-		)
-    then
-        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on alarms view from the same IP address appeared in the last minute!!"));
-
-end
-
-

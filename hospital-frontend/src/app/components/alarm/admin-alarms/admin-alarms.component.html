@@ -4,7 +4,6 @@
     *ngFor="let alarm of page.content; let i = index"
     [delete]="'Alarm #' + (i + 1)" (deleted)="delete(alarm.id)" 
     [details]="[
-        {key: 'Tracking field', value: alarm.status ? 'ALARM STATUS' : 'ALARM DESCRIPTION'},
-        {key: 'Search parameter', value: alarm.param}, {key: 'Minimum count of events', value: alarm.counts}
+        {key: 'Log status', value: alarm.status}, {key: 'Minimum count of events', value: alarm.counts}
     ]"></app-details>
 </app-list>

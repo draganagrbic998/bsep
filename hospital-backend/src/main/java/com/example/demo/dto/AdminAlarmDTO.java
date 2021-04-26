@@ -1,9 +1,10 @@
 package com.example.demo.dto;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import com.example.demo.model.AdminAlarm;
+import com.example.demo.model.LogStatus;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,20 +16,18 @@ import lombok.Setter;
 public class AdminAlarmDTO {
 
 	private Long id;
-	private boolean status;
 	
+	@NotNull(message = "Status cannot be null")
+	private LogStatus status;
+
 	@Positive(message = "Counts must be positive integer")
 	private long counts;
-	
-	@NotBlank(message = "Param cannot be blank")
-	private String param;
-		
+			
 	public AdminAlarmDTO(AdminAlarm alarm) {
 		super();
 		this.id = alarm.getId();
-		this.status = alarm.isStatus();
+		this.status = alarm.getStatus();
 		this.counts = alarm.getCounts();
-		this.param = alarm.getParam();
 	}
 	
 }
