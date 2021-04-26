@@ -96,4 +96,13 @@ public class UserService implements UserDetailsService {
 		return this.userRepository.findByEnabledFalseAndActivationLink(uuid);
 	}
 
+	public long days(String email) {
+		User user = this.userRepository.findByEmail(email);
+		if (user == null || user.isEnabled()) {
+			return 0;
+		}
+		return Math.abs(ChronoUnit.DAYS.between(user.getCreatedDate(), Instant.now()));
+
+	}
+
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
+import { StorageService } from '../../../core/services/storage.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { menuItems } from '../../../core/utils/menu-items';
@@ -15,12 +15,12 @@ export class MainViewComponent {
   items: MenuItem[] = menuItems;
 
   constructor(
-    private authService: AuthService,
+    private storageService: StorageService,
     private router: Router
   ) { }
 
   logout(): void {
-    this.authService.removeToken();
+    this.storageService.removeToken();
     this.router.navigate([environment.loginRoute]);
   }
 

@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +25,11 @@ public class AlarmTriggering {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private AlarmType type;
+	
 	@NotNull
 	private Date date;
 
@@ -42,12 +48,20 @@ public class AlarmTriggering {
 	
 	public AlarmTriggering(String message) {
 		this();
+		this.type = AlarmType.LOG;
 		this.message = message;
 	}
 
 	public AlarmTriggering(Patient patient, String message) {
 		this();
+		this.type = AlarmType.PATIENT;
 		this.patient = patient;
+		this.message = message;
+	}
+
+	public AlarmTriggering(AlarmType type, String message) {
+		this();
+		this.type = type;
 		this.message = message;
 	}
 

@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../model/user';
 import { Observable, of } from 'rxjs';
-import { Activation } from '../model/activation';
 import { Page } from '../model/page';
 import { catchError, map } from 'rxjs/operators';
-import { Login } from '../model/login';
-import { AuthToken } from '../model/auth-token';
 import { EMPTY_PAGE } from '../utils/constants';
 import { Role } from '../model/role';
 
@@ -16,13 +13,8 @@ import { Role } from '../model/role';
 export class UserService {
 
   private readonly API_PATH = 'api/users';
-  private readonly AUTH_PATH = 'auth';
 
   constructor(private httpClient: HttpClient) { }
-
-  login(login: Login): Observable<AuthToken> {
-    return this.httpClient.post<AuthToken>(`${this.AUTH_PATH}/login`, login);
-  }
 
   findAll(page: number, size: number): Observable<Page<User>> {
     const params = new HttpParams().set('page', String(page)).set('size', String(size));
@@ -59,18 +51,6 @@ export class UserService {
     return this.httpClient.post<null>(`${this.API_PATH}/send/${id}`, null).pipe(
       map(() => true),
       catchError(() => of(false))
-    );
-  }
-
-  getDisabled(uuid: string): Observable<User> {
-    return this.httpClient.get<User>(`${this.AUTH_PATH}/disabled/${uuid}`).pipe(
-      catchError(() => of(null))
-    );
-  }
-
-  activate(activation: Activation): Observable<User> {
-    return this.httpClient.post<User>(`${this.AUTH_PATH}/activate`, activation).pipe(
-      catchError(() => of(null))
     );
   }
 

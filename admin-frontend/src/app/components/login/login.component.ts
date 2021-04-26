@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
+import { StorageService } from '../../core/services/storage.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthToken } from 'src/app/core/model/auth-token';
-import { UserService } from 'src/app/core/services/user.service';
 import { SUPER_ADMIN } from 'src/app/core/utils/constants';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +18,8 @@ export class LoginComponent {
   loading = false;
 
   constructor(
+    private storageService: StorageService,
     private authService: AuthService,
-    private userService: UserService,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private router: Router
@@ -37,12 +37,12 @@ export class LoginComponent {
 
     this.loading = true;
     // tslint:disable-next-line: deprecation
-    this.userService.login(this.loginForm.value).subscribe(
+    this.authService.login(this.loginForm.value).subscribe(
       (token: AuthToken) => {
         this.loading = false;
         if (token) {
           if (token.authorities.includes(SUPER_ADMIN)) {
-            this.authService.setToken(token);
+            this.storageService.setToken(token);
             this.router.navigate(['']);
           }
           else {
@@ -58,7 +58,7 @@ export class LoginComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: er.error.text ?? 'Please check your credentials'
+          detail: er?.error?.text ?? 'Please check your credentials'
         });
       });
   }

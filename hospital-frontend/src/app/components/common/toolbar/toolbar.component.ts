@@ -31,11 +31,11 @@ export class ToolbarComponent {
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
-    return this.storageService.getUser()?.authorities.includes(ADMIN);
+    return this.storageService.getToken()?.authorities.includes(ADMIN);
   }
 
   get isDoctor(): boolean{
-    return this.storageService.getUser()?.authorities.includes(DOCTOR);
+    return this.storageService.getToken()?.authorities.includes(DOCTOR);
   }
 
   onRoute(param: string): boolean{
@@ -43,7 +43,7 @@ export class ToolbarComponent {
   }
 
   signOut(): void{
-    this.storageService.removeUser();
+    this.storageService.removeToken();
     this.router.navigate([environment.loginRoute]);
   }
 

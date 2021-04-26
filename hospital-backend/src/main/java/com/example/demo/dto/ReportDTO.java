@@ -15,5 +15,8 @@ public class ReportDTO {
 	private long warningLogs;
 	private long errorLogs;
 	private long fatalLogs;
-	private long alarms;
+	private long patientAlarms;
+	private long logAlarms;
+	private long dosAlarms;
+	private long bruteForceAlarms;
 }

@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.TokenDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.AuthTokenDTO;
 import com.example.demo.model.User;
 import com.example.demo.utils.AuthenticationProvider;
 import com.example.demo.utils.Constants;
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class UserService implements UserDetailsService {
 
 	private static final String AUTH_API = Constants.IDENTITY_BACKEND + "/auth";
-	
+
 	private final RestTemplate restTemplate;
 	private final AuthenticationProvider authProvider;
 
@@ -33,14 +33,22 @@ public class UserService implements UserDetailsService {
 				User.class).getBody();
 	}
 	
-	public UserDTO login(LoginDTO loginDTO) {
+	public AuthTokenDTO login(LoginDTO loginDTO) {
 		return this.restTemplate.exchange(
 				AUTH_API + "/login", 
 				HttpMethod.POST, 
 				this.authProvider.getAuthEntity(loginDTO), 
-				UserDTO.class).getBody();
+				AuthTokenDTO.class).getBody();
 	}
-	
+		
+	public long days(String email) {
+		return this.restTemplate.exchange(
+				AUTH_API + "/days/" + email, 
+				HttpMethod.GET, 
+				this.authProvider.getAuthEntity(null), 
+				Long.class).getBody();
+	}
+
 	public User currentUser() {
 		try {
 			return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

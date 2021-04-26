@@ -23,6 +23,7 @@ import { SpinnerComponent } from './components/loaders/spinner/spinner.component
 import { PatientComponent } from './components/patient/patient/patient.component';
 import { PatientsComponent } from './components/patient/patients/patients.component';
 import { RevokeComponent } from './components/certificate/revoke/revoke.component';
+import { FrameComponent } from './components/common/frame/frame.component';
 
 export const COMPONENTS = [
     PatientFormComponent,
@@ -49,5 +50,6 @@ export const COMPONENTS = [
     DetailsComponent,
     DialogComponent,
     ListComponent,
-    RevokeComponent
+    RevokeComponent,
+    FrameComponent
 ];

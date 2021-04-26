@@ -6,4 +6,7 @@
 	<kbase name="admin" packages="rules.admin" eventProcessingMode="stream">
 		<ksession name="admin-alarms" clockType="realtime"/>
 	</kbase> 
+	<kbase name="common" packages="rules.common" eventProcessingMode="stream">
+		<ksession name="common-alarms" clockType="realtime"/>
+	</kbase> 
 </kmodule>

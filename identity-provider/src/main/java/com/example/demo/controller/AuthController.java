@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,12 +36,12 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO) throws AuthenticationException, BadCredentialsException {
+	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
 		User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
 		return ResponseEntity.ok(new AuthTokenDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 	}
 
-	@PostMapping(value = "activate")
+	@PostMapping(value = "/activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
 	}
@@ -53,4 +51,9 @@ public class AuthController {
 		return ResponseEntity.ok(new UserDTO(this.userService.getDisabled(uuid)));
 	}
 	
+	@GetMapping(value = "/days/{email}")
+	public ResponseEntity<Long> days(@PathVariable String email) {
+		return ResponseEntity.ok(this.userService.days(email));
+	}
+
 }

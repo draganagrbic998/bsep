@@ -11,13 +11,9 @@ import { MessagesComponent } from './components/log-message/messages/messages.co
 import { PatientsComponent } from './components/patient/patients/patients.component';
 import { ReportComponent } from './components/log-message/report/report.component';
 import { LoginComponent } from './components/common/login/login.component';
-import { FrameComponent } from './components/frame/frame.component';
+import { FrameComponent } from './components/common/frame/frame.component';
 
 const routes: Routes = [
-  {
-    path: environment.frameRoute,
-    component: FrameComponent
-  },
   {
     path: environment.loginRoute,
     component: LoginComponent,
@@ -53,6 +49,10 @@ const routes: Routes = [
     component: AlarmTriggeringsComponent,
     canActivate: [AuthGuard],
     data: {authorities: [DOCTOR, ADMIN]}
+  },
+  {
+    path: environment.frameRoute,
+    component: FrameComponent
   },
   {
     path: '**',

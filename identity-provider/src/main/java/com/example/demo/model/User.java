@@ -42,10 +42,13 @@ public class User implements UserDetails {
 	@NotNull
 	private boolean enabled;
 
+	@NotNull
+	private Instant createdDate;
+	
+	private Instant activationExpiration;
+
 	@Column(unique = true)
 	private String activationLink;
-
-	private Instant activationExpiration;
 		
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", 
@@ -55,8 +58,9 @@ public class User implements UserDetails {
 
 	public User() {
 		super();
-		this.activationLink = UUID.randomUUID().toString();
+		this.createdDate = Instant.now();
 		this.activationExpiration = Instant.now().plus(48, ChronoUnit.HOURS);
+		this.activationLink = UUID.randomUUID().toString();
 	}
 
 	@Override

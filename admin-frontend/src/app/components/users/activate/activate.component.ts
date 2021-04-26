@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/model/user';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-activate',
@@ -20,7 +20,7 @@ export class ActivateComponent implements OnInit {
   activated = false;
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -47,7 +47,7 @@ export class ActivateComponent implements OnInit {
       }
 
       // tslint:disable-next-line: deprecation
-      this.userService.getDisabled(params.q).subscribe((user: User) => {
+      this.authService.getDisabled(params.q).subscribe((user: User) => {
         if (user){
           this.user = user;
           this.expired = new Date(this.user.activationExpiration).getTime() <= new Date().getTime();
@@ -66,7 +66,7 @@ export class ActivateComponent implements OnInit {
 
     this.loading = true;
     // tslint:disable-next-line: deprecation
-    this.userService.activate({...this.activateForm.value, ...{uuid: this.user.activationLink}}).subscribe((response: User) => {
+    this.authService.activate({...this.activateForm.value, ...{uuid: this.user.activationLink}}).subscribe((response: User) => {
       this.loading = false;
       if (response){
         this.activated = true;

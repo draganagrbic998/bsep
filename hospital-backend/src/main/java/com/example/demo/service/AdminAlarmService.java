@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.AdminAlarm;
-import com.example.demo.model.Log;
 import com.example.demo.repository.AdminAlarmRepository;
 
 import lombok.AllArgsConstructor;
@@ -40,16 +37,4 @@ public class AdminAlarmService {
 		this.alarmRepository.deleteById(id);
 	}
 	
-	public long countSameIpAddress(List<Log> logs) {
-		Set<String> ipAddresses = logs.stream().map(Log::getIpAddress).collect(Collectors.toSet());
-		long maxCount = -1;
-		for (String ipAddress: ipAddresses) {
-			long count = logs.stream().filter(x -> x.getIpAddress().equals(ipAddress)).count();
-			if (count > maxCount) {
-				maxCount = count;
-			}
-		}
-		return maxCount;
-	}
-
 }

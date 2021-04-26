@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,9 +39,11 @@ public class Patient {
 	private String lastName;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private BlodType blodType;
 
 	@NotNull

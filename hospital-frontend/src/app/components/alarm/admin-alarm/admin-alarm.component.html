@@ -1,35 +1,17 @@
 <app-dialog title="Create new alarm" [pending]="pending" 
 [disabled]="alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm" [class.disabled]="pending">
-        <mat-slide-toggle formControlName="status" 
-        (change)="alarmForm.controls.param.reset(); alarmForm.controls.counts.reset()">
-            {{alarmForm.controls.status.value ? 
-                'Alarm for tracking logs status' : 
-                'Alarm for tracking logs description'}}
-        </mat-slide-toggle>
         <div>
-            <span>Param: </span>
+            <span>Status: </span>
             <select
-            *ngIf="alarmForm.controls.status.value"
-            formControlName="param"
+            formControlName="status"
             [classList]="'form-control'">
-                <option value="" hidden>Select search param</option>
+                <option value="" hidden>Select log status</option>
                 <option>SUCCESS</option>
                 <option>INFO</option>
                 <option>WARNING</option>
                 <option>ERROR</option>
                 <option>FATAL</option>
-            </select>    
-            <select
-            *ngIf="!alarmForm.controls.status.value"
-            formControlName="param"
-            [classList]="'form-control'">
-                <option value="" hidden>Select search param</option>
-                <option>Login with wrong credentials</option>
-                <option>Forbidden patients view</option>
-                <option>Forbidden messages view</option>
-                <option>Forbidden logs view</option>
-                <option>Forbidden alarms view</option>
             </select>    
         </div>
         <div>

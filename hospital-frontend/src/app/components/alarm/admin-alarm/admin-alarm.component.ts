@@ -22,8 +22,7 @@ export class AdminAlarmComponent {
 
   pending = false;
   alarmForm = this.formBuilder.group({
-    status: [true, Validators.required],
-    param: ['', Validators.required],
+    status: ['', Validators.required],
     counts: ['', Validators.required]
   });
 

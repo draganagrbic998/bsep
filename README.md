@@ -6,3 +6,9 @@
 3. Петар Николић SW31/2017
 
 Линк на демонстрациони видео: https://www.mediafire.com/file/00ge5ikc2nlgr0b/majko_moja.mp4/file?fbclid=IwAR0l9CoEsHm__lblmqSZhjcQwKZuC1qs4uyPZQ6gaIA3jJJU0Gj8dglO5XM
+
+TODO:
+- Omogućite klasifikovanje po riziku (low, moderate, high, extreme)
+- Nisam videla da je HTTPS namešten (u browser-u stoji Not secure). Namestite da bude secure.
+- U tabeli gde se prikazuju svi sertifikati, root je označen plavim krugom, deluje kao da je notifikacija neka, pa promenite na nešto drugo.
+- Na front ubacite interceptor koji proverava token i usmerava na login page kad treba.

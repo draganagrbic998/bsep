@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -32,6 +33,7 @@ public class CertificateRequest {
 	private String organizationUnit;
 
 	@NotBlank
+    @Pattern(regexp = "[A-Z]{2}")
 	private String country;
 
 	@NotBlank
@@ -43,6 +45,7 @@ public class CertificateRequest {
 	private Template template;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private CertificateType type;
 
 	@NotBlank

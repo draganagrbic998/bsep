@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-frame',
@@ -8,11 +8,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class FrameComponent {
 
-  constructor(private authService: AuthService) {
+  constructor(private storageService: StorageService) {
     window.addEventListener('message', e => {
-      console.log(e.data, e.origin);
       if (e.origin === 'https://localhost:4201'){
-        localStorage.setItem(this.authService.TOKEN_KEY, e.data);
+        localStorage.setItem(this.storageService.TOKEN_KEY, e.data);
       }
     });
   }

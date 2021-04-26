@@ -16,8 +16,7 @@ public class AlarmTriggeringMapper {
 	private final DatabaseCipher databaseCipher;
 
 	public Page<AlarmTriggeringDTO> map(Page<AlarmTriggering> alarmTriggerings) {
-		return alarmTriggerings
-				.map(alarmTriggering -> new AlarmTriggeringDTO(this.databaseCipher.decrypt(alarmTriggering)));
+		return alarmTriggerings.map(alarmTriggering -> new AlarmTriggeringDTO(this.databaseCipher.decrypt(alarmTriggering)));
 	}
 
 }

@@ -1,0 +1,53 @@
+package rules
+import com.example.demo.model.Request
+import com.example.demo.model.InvalidLogin
+import com.example.demo.model.AlarmTriggering
+import com.example.demo.model.AlarmType
+import com.example.demo.model.MaliciousIpAddress
+import com.example.demo.service.AlarmTriggeringService
+import com.example.demo.service.MaliciousIpAddressService
+
+global AlarmTriggeringService alarmTriggeringService
+global MaliciousIpAddressService ipAddressService
+
+
+rule "DoS Attack"
+	salience $cnt * 1
+
+    when
+        accumulate(
+        	Request($r: this),
+        	$cnt: count($r);
+        	$cnt > 50
+        )
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmType.DOS, $cnt + ' of requests appeared in the last 60 seconds!!'));
+
+end
+
+rule "Brute-Force Attack"
+	salience $cnt * 3
+
+    when
+        accumulate(
+        	Request($r: this, login),
+        	$cnt: count($r);
+        	$cnt > 50
+        )
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmType.BRUTE_FORCE, $cnt + ' of login requests appeared in the last 60 seconds!!'));
+
+end
+
+rule "Malicious IP address"
+
+    when
+        accumulate(
+        	InvalidLogin($l: this),
+        	$list: collectList($l);
+        	alarmTriggeringService.countSameIpAddress($list) >= 5
+        )
+    then
+        ipAddressService.save(new MaliciousIpAddress(((InvalidLogin) $list.get(0)).ipAddress()));
+
+end

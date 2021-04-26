@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user';
+import { AuthToken } from 'src/app/models/auth-token';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS } from 'src/app/utils/dialog';
 import { ADMIN, DOCTOR } from 'src/app/utils/constants';
 import { StorageService } from 'src/app/services/storage.service';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,7 +18,7 @@ export class LoginComponent {
 
   constructor(
     private storageService: StorageService,
-    private userService: UserService,
+    private userService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder
@@ -37,19 +37,19 @@ export class LoginComponent {
     this.pending = true;
     // tslint:disable-next-line: deprecation
     this.userService.login(this.loginForm.value).subscribe(
-      (user: User) => {
+      (token: AuthToken) => {
         this.pending = false;
-        if (user && user.authorities.includes(ADMIN)){
-          this.storageService.setUser(user);
+        if (token && token.authorities.includes(ADMIN)){
+          this.storageService.setToken(token);
           this.router.navigate([environment.reportRoute]);
         }
-        else if (user && user.authorities.includes(DOCTOR)){
-          this.storageService.setUser(user);
+        else if (token && token.authorities.includes(DOCTOR)){
+          this.storageService.setToken(token);
           this.router.navigate([environment.patientsRoute]);
         }
       }, er => {
         this.pending = false;
-        this.snackBar.open(er.error.text ?? SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
+        this.snackBar.open(er?.error?.text ?? SNACKBAR_ERROR, SNACKBAR_CLOSE, SNACKBAR_ERROR_OPTIONS);
       }
     );
   }

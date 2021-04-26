@@ -1,6 +1,5 @@
 export interface AdminAlarm{
     id: number;
-    status: boolean;
-    param: string;
+    status: string;
     counts: number;
 }
