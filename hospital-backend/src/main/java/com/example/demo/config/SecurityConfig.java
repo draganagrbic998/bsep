@@ -15,8 +15,10 @@ import com.example.demo.security.AuthEntryPoint;
 import com.example.demo.security.AuthFilter;
 import com.example.demo.security.CertificateFilter;
 import com.example.demo.security.RequestFilter;
+import com.example.demo.service.AlarmTriggeringService;
 import com.example.demo.service.CertificateService;
 import com.example.demo.service.CommonEventService;
+import com.example.demo.service.MaliciousIpAddressService;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.Constants;
 
@@ -30,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final UserService userService;
 	private final CertificateService certificateService;
 	private final CommonEventService commonEventService;
-			
+	private final MaliciousIpAddressService ipAddressService;
+	private final AlarmTriggeringService alarmTriggeringService;
+
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
@@ -50,7 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().cors().and()
 			.addFilterBefore(new AuthFilter(this.userService), BasicAuthenticationFilter.class)
 			.addFilterBefore(new CertificateFilter(this.certificateService), BasicAuthenticationFilter.class)
-			.addFilterBefore(new RequestFilter(this.commonEventService), BasicAuthenticationFilter.class)
+			.addFilterBefore(new RequestFilter(this.commonEventService, this.ipAddressService, this.alarmTriggeringService), 
+				BasicAuthenticationFilter.class)
 			.csrf().disable();
 	}
 		

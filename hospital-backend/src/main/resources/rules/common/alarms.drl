@@ -1,7 +1,6 @@
 package rules
 import com.example.demo.model.Request
 import com.example.demo.model.InvalidLogin
-import com.example.demo.model.AlarmType
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.model.MaliciousIpAddress
 import com.example.demo.service.AlarmTriggeringService
@@ -21,7 +20,7 @@ rule "DoS Attack"
         	$cnt > 5
         )
     then
-        alarmTriggeringService.save(new AlarmTriggering(AlarmType.DOS, $cnt + ' of requests appeared in the last 60 seconds!!'));
+        alarmTriggeringService.save(new AlarmTriggering($cnt + ' of requests appeared in the last 60 seconds!!'));
 
 end
 
@@ -35,7 +34,7 @@ rule "Brute-Force Attack"
         	$cnt > 5
         )
     then
-        alarmTriggeringService.save(new AlarmTriggering(AlarmType.BRUTE_FORCE, $cnt + ' of login requests appeared in the last 60 seconds!!'));
+        alarmTriggeringService.save(new AlarmTriggering($cnt + ' of login requests appeared in the last 60 seconds!!'));
 
 end
 

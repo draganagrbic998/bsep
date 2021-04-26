@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaliciousIpAddressRepository extends JpaRepository<MaliciousIpAddress, Long> {
 
+	public MaliciousIpAddress findByName(String name);
+	
 }

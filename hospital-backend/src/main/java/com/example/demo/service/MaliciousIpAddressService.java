@@ -25,4 +25,8 @@ public class MaliciousIpAddressService {
 		}
 	}
 	
+	public boolean hasIpAddress(String ipAddress) {
+		return this.ipAddressRepository.findByName(ipAddress) != null;
+	}
+	
 }

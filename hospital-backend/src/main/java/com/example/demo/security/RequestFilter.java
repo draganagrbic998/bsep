@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.Request;
+import com.example.demo.service.AlarmTriggeringService;
 import com.example.demo.service.CommonEventService;
+import com.example.demo.service.MaliciousIpAddressService;
 
 import lombok.AllArgsConstructor;
 
@@ -18,6 +21,8 @@ import lombok.AllArgsConstructor;
 public class RequestFilter extends OncePerRequestFilter {
 	
 	private final CommonEventService commonEventService;
+	private final MaliciousIpAddressService ipAddressService;
+	private final AlarmTriggeringService alarmTriggeringService;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -25,6 +30,10 @@ public class RequestFilter extends OncePerRequestFilter {
 		
 		if (request.getServletPath().equals("/auth/login")) {
 			this.commonEventService.addRequest(new Request(true));
+			String ipAddress = request.getHeader("X-Forward-For") != null ? request.getHeader("X-Forward-For") : request.getRemoteAddr();
+			if (this.ipAddressService.hasIpAddress(ipAddress)) {
+				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt from malicious " + ipAddress + " IP address!!"));
+			}
 		}
 		else {
 			this.commonEventService.addRequest(new Request(false));
