@@ -2,6 +2,7 @@ package com.example.demo.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +39,12 @@ public class ErrorHandlingAdvice {
     	return ResponseEntity.notFound().build();
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<Void> onAccessDeniedException(AccessDeniedException e){
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+    
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Void> onException(Exception e){

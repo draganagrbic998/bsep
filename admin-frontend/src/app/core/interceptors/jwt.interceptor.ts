@@ -14,14 +14,13 @@ export class JwtInterceptor implements HttpInterceptor {
     private storageService: StorageService
   ) {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const currentUser = this.storageService.getToken();
 
     if (currentUser && currentUser.token) {
       request = request.clone({
         setHeaders: {
-          'Content-Type': 'application/json',
-          Authorization: `JWT ${currentUser.token}`
+          Authorization: currentUser.token
         }
       });
     }

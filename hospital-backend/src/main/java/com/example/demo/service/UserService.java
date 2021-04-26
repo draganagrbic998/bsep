@@ -26,11 +26,15 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public User loadUserByUsername(String token) {
-		return this.restTemplate.exchange(
-				AUTH_API, 
-				HttpMethod.POST, 
-				this.authProvider.getAuthEntity(new TokenDTO(token)), 
-				User.class).getBody();
+		try {
+			return this.restTemplate.exchange(
+					AUTH_API, 
+					HttpMethod.POST, 
+					this.authProvider.getAuthEntity(new TokenDTO(token)), 
+					User.class).getBody();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public AuthTokenDTO login(LoginDTO loginDTO) {
