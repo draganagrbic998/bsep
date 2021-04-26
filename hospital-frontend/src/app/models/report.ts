@@ -4,5 +4,8 @@ export interface Report{
     warningLogs: number;
     errorLogs: number;
     fatalLogs: number;
-    alarms: number;
+    patientAlarms: number;
+    logAlarms: number;
+    dosAlarms: number;
+    bruteForceAlarms: number;
 }

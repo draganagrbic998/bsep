@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Log;
+import com.example.demo.model.LogStatus;
 
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
@@ -22,10 +23,10 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 			+ "order by m.date desc")
 	public Page<Log> findAll(Pageable pageable, String mode, String status, String ipAddress, String description, String date);
 	
-	@Query("select count(m) from Log m where "
-			+ "lower(m.status) like lower(concat('%', :status, '%')) and "
-			+ "(cast(:start as date) is null or m.date >= :start) and "
-			+ "(cast(:end as date) is null or m.date <= :end)")
-	public long report(String status, Date start, Date end);
+	@Query("select count(l) from Log l where "
+			+ "l.status like :status and "
+			+ "(cast(:start as date) is null or l.date >= :start) and "
+			+ "(cast(:end as date) is null or l.date <= :end)")
+	public long report(LogStatus status, Date start, Date end);
 	
 }
