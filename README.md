@@ -10,5 +10,4 @@
 TODO:
 - Omogućite klasifikovanje po riziku (low, moderate, high, extreme)
 - Nisam videla da je HTTPS namešten (u browser-u stoji Not secure). Namestite da bude secure.
-- U tabeli gde se prikazuju svi sertifikati, root je označen plavim krugom, deluje kao da je notifikacija neka, pa promenite na nešto drugo.
 - Na front ubacite interceptor koji proverava token i usmerava na login page kad treba.
