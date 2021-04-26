@@ -17,7 +17,7 @@ rule "DoS Attack"
         accumulate(
         	Request($r: this),
         	$cnt: count($r);
-        	$cnt > 5
+        	$cnt > 50
         )
     then
         alarmTriggeringService.save(new AlarmTriggering($cnt + ' of requests appeared in the last 60 seconds!!'));
@@ -31,7 +31,7 @@ rule "Brute-Force Attack"
         accumulate(
         	Request($r: this, login),
         	$cnt: count($r);
-        	$cnt > 5
+        	$cnt > 50
         )
     then
         alarmTriggeringService.save(new AlarmTriggering($cnt + ' of login requests appeared in the last 60 seconds!!'));

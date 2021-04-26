@@ -17,12 +17,10 @@ public class MaliciousIpAddressService {
 	
 	@Transactional(readOnly = false)
 	public MaliciousIpAddress save(MaliciousIpAddress ipAddress) {
-		try {
-			return this.ipAddressRepository.save(ipAddress);
-		}
-		catch(Exception e) {
+		if (this.hasIpAddress(ipAddress.getName())) {
 			return null;
 		}
+		return this.ipAddressRepository.save(ipAddress);
 	}
 	
 	public boolean hasIpAddress(String ipAddress) {
