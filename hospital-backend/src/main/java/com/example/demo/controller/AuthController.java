@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginDTO;
+import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.InvalidLogin;
 import com.example.demo.dto.AuthTokenDTO;
+import com.example.demo.service.AlarmTriggeringService;
 import com.example.demo.service.CommonEventService;
 import com.example.demo.service.UserService;
 
@@ -26,6 +28,7 @@ public class AuthController {
 
 	private final UserService userService;
 	private final CommonEventService commonEventService;
+	private final AlarmTriggeringService alarmTriggeringService;
 		
 	@PostMapping(value = "/login")
 	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO, HttpServletRequest request){
@@ -35,6 +38,10 @@ public class AuthController {
 		catch(Exception e) {
 			String ipAddress = request.getHeader("X-Forward-For") != null ? request.getHeader("X-Forward-For") : request.getRemoteAddr();
 			this.commonEventService.addInvalidLogin(new InvalidLogin(ipAddress));
+			long days = this.userService.days(loginDTO.getEmail());
+			if (days >= 90) {
+				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt on account inactive for " + days + " days!!"));
+			}
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}

@@ -41,7 +41,7 @@ public class AuthController {
 		return ResponseEntity.ok(new AuthTokenDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 	}
 
-	@PostMapping(value = "activate")
+	@PostMapping(value = "/activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
 	}
@@ -51,4 +51,9 @@ public class AuthController {
 		return ResponseEntity.ok(new UserDTO(this.userService.getDisabled(uuid)));
 	}
 	
+	@GetMapping(value = "/days/{email}")
+	public ResponseEntity<Long> days(@PathVariable String email) {
+		return ResponseEntity.ok(this.userService.days(email));
+	}
+
 }
