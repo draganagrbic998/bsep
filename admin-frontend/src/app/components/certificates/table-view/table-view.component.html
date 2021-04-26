@@ -31,7 +31,7 @@
       <td>{{cert.alias}}</td>
       <td>{{cert.country}}</td>
       <td class="responsive-column">
-        <p-chip *ngIf="caAlias === cert.alias; else noBadge" [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon" pBadge></p-chip>
+        <p-chip *ngIf="caAlias === cert.alias; else noBadge" class="ca" [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
         <ng-template #noBadge>
           <p-chip [label]="getTemplate(cert.template).label" [icon]="getTemplate(cert.template).icon"></p-chip>
         </ng-template>
