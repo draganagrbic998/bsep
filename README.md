@@ -9,4 +9,3 @@
 
 TODO:
 - Nisam videla da je HTTPS namešten (u browser-u stoji Not secure). Namestite da bude secure.
-- Na front ubacite interceptor koji proverava token i usmerava na login page kad treba.
