@@ -16,9 +16,6 @@ values ('admin@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T5
 insert into user_table (email, password, first_name, last_name, enabled, created_date)
 values ('doctor@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'Pera', 'Peric', true, '2012-12-12');
 
-insert into user_table (email, password, first_name, last_name, enabled, created_date)
-values ('asd@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'asd', 'asd', false, '2012-12-12');
-
 -- ----------------------------USER ROLE------------------------------
 insert into user_role (user_id, role_id) values (1, 1);
 insert into user_role (user_id, role_id) values (2, 2);
