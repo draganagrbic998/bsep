@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AlarmTriggeringDTO;
@@ -27,11 +28,14 @@ public class AlarmTriggeringController {
 	private final AlarmTriggeringMapper alarmTriggeringMapper;
 
 	@GetMapping
-	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable){
+	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable, @RequestParam boolean low,
+			@RequestParam boolean moderate, @RequestParam boolean high, @RequestParam boolean extreme) {
 		if (this.userService.currentUser().isAdmin()) {
-			return ResponseEntity.ok(this.alarmTriggeringService.findAllForAdmin(pageable).map(AlarmTriggeringDTO::new));
+			return ResponseEntity
+					.ok(this.alarmTriggeringService.findAllForAdmin(pageable, low, moderate, high, extreme).map(AlarmTriggeringDTO::new));
 		}
-		return ResponseEntity.ok(this.alarmTriggeringMapper.map(this.alarmTriggeringService.findAllForDoctor(pageable)));
+		return ResponseEntity
+				.ok(this.alarmTriggeringMapper.map(this.alarmTriggeringService.findAllForDoctor(pageable, low, moderate, high, extreme)));
 	}
-	
+
 }

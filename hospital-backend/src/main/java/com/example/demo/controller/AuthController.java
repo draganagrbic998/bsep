@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginDTO;
+import com.example.demo.model.AlarmRisk;
 import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.InvalidLogin;
 import com.example.demo.dto.AuthTokenDTO;
@@ -40,7 +41,7 @@ public class AuthController {
 			this.commonEventService.addInvalidLogin(new InvalidLogin(ipAddress));
 			long days = this.userService.days(loginDTO.getEmail());
 			if (days >= 90) {
-				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt on account inactive for " + days + " days!!"));
+				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt on account inactive for " + days + " days!!", AlarmRisk.LOW));
 			}
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

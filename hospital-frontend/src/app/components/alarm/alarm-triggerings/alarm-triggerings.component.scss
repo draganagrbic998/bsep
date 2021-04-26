@@ -1,6 +1,29 @@
-div{
-    height: 100%;
-    width: 700px;
+@import "../../../../styles/theme";
+
+.root{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 85%;
     margin: 0 auto;
-    padding-top: 30px;
+    margin-top: 50px;
+}
+
+.left{
+    width: 48%;
+}
+
+.right{
+    width: 40%;
+    margin-top: 20px;
+}
+
+form{
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+button{
+    background-color: $main;
+    color: white;
 }

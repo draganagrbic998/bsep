@@ -15,8 +15,10 @@ export class AlarmTriggeringService {
 
   private readonly API_PATH = 'api/alarm-triggerings';
 
-  findAll(page: number): Observable<Page<AlarmTriggering>>{
-    const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
+  findAll(page: number, filterForm: any): Observable<Page<AlarmTriggering>>{
+    const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '')
+      .set('low', filterForm.low + '').set('moderate', filterForm.moderate + '')
+      .set('high', filterForm.high + '').set('extreme', filterForm.extreme + '');
     return this.http.get<Page<AlarmTriggering>>(this.API_PATH, {params}).pipe(
       catchError(() => of(EMPTY_PAGE))
     );

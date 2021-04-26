@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.model.AlarmRisk;
 import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.Request;
 import com.example.demo.service.AlarmTriggeringService;
@@ -32,7 +33,7 @@ public class RequestFilter extends OncePerRequestFilter {
 			this.commonEventService.addRequest(new Request(true));
 			String ipAddress = request.getHeader("X-Forward-For") != null ? request.getHeader("X-Forward-For") : request.getRemoteAddr();
 			if (this.ipAddressService.hasIpAddress(ipAddress)) {
-				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt from malicious " + ipAddress + " IP address!!"));
+				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt from malicious " + ipAddress + " IP address!!", AlarmRisk.MODERATE));
 			}
 		}
 		else {

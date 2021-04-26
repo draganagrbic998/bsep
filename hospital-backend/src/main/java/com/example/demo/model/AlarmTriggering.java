@@ -31,6 +31,10 @@ public class AlarmTriggering {
 	private AlarmType type;
 	
 	@NotNull
+	@Enumerated(EnumType.STRING)
+	private AlarmRisk risk;
+	
+	@NotNull
 	private Date date;
 
 	@NotBlank
@@ -46,22 +50,25 @@ public class AlarmTriggering {
 		this.date = new Date();
 	}
 	
-	public AlarmTriggering(String message) {
+	public AlarmTriggering(String message, AlarmRisk risk) {
 		this();
 		this.type = AlarmType.LOG;
 		this.message = message;
+		this.risk = risk;
 	}
 
-	public AlarmTriggering(Patient patient, String message) {
+	public AlarmTriggering(Patient patient, AlarmRisk risk, String message) {
 		this();
 		this.type = AlarmType.PATIENT;
 		this.patient = patient;
+		this.risk = risk;
 		this.message = message;
 	}
 
-	public AlarmTriggering(AlarmType type, String message) {
+	public AlarmTriggering(AlarmType type, AlarmRisk risk, String message) {
 		this();
 		this.type = type;
+		this.risk = risk;
 		this.message = message;
 	}
 

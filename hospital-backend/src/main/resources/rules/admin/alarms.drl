@@ -4,6 +4,7 @@ import com.example.demo.model.LogMode
 import com.example.demo.model.LogStatus
 import com.example.demo.model.AdminAlarm
 import com.example.demo.model.AlarmTriggering
+import com.example.demo.model.AlarmRisk
 import com.example.demo.service.AdminAlarmService
 import com.example.demo.service.AlarmTriggeringService
 import com.example.demo.service.MaliciousIpAddressService
@@ -18,7 +19,7 @@ rule "Log with malicious IP address"
     when
 		Log(ipAddressService.hasIpAddress(ipAddress), $ipAddress: ipAddress)
     then
-        alarmTriggeringService.save(new AlarmTriggering("Log with malicious" + $ipAddress + " IP address appeared!!"));
+        alarmTriggeringService.save(new AlarmTriggering("Log with malicious" + $ipAddress + " IP address appeared!!", AlarmRisk.MODERATE));
 
 end
 
@@ -35,7 +36,7 @@ rule "Alarm for SUCCESS status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of SUCCESS logs appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of SUCCESS logs appeared in the last minute!!", AlarmRisk.LOW));
 
 end
 
@@ -52,7 +53,7 @@ rule "Alarm for INFO status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of INFO logs appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of INFO logs appeared in the last minute!!", AlarmRisk.LOW));
 
 end
 
@@ -69,7 +70,7 @@ rule "Alarm for WARNING status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of WARNING logs appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of WARNING logs appeared in the last minute!!", AlarmRisk.MODERATE));
 
 end
 
@@ -86,7 +87,7 @@ rule "Alarm for ERROR status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of ERROR logs appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of ERROR logs appeared in the last minute!!", AlarmRisk.HIGH));
 
 end
 
@@ -103,6 +104,6 @@ rule "Alarm for FATAL status"
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of FATAL logs appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering($logsCount + " number of FATAL logs appeared in the last minute!!", AlarmRisk.EXTREME));
 
 end

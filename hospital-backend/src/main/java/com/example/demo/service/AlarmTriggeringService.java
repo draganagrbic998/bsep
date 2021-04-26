@@ -23,12 +23,12 @@ public class AlarmTriggeringService {
 
 	private final AlarmTriggeringRepository alarmTriggeringRepository;
 	
-	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable) {
-		return this.alarmTriggeringRepository.findByPatientIdNullOrderByDateDesc(pageable);
+	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable, boolean low, boolean moderate, boolean high, boolean extreme) {
+		return this.alarmTriggeringRepository.filterAdmin(pageable, low, moderate, high, extreme);
 	}
 	
-	public Page<AlarmTriggering> findAllForDoctor(Pageable pageable) {
-		return this.alarmTriggeringRepository.findByPatientIdNotNullOrderByDateDesc(pageable);
+	public Page<AlarmTriggering> findAllForDoctor(Pageable pageable, boolean low, boolean moderate, boolean high, boolean extreme) {
+		return this.alarmTriggeringRepository.filterDoctor(pageable, low, moderate, high, extreme);
 	}
 
 	@Transactional(readOnly = false)

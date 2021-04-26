@@ -16,10 +16,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     exports: [
         MatFormFieldModule,
+        MatCheckboxModule,
         MatInputModule,
         MatSelectModule,
         MatButtonModule,
