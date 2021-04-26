@@ -6,10 +6,21 @@ import com.example.demo.model.AdminAlarm
 import com.example.demo.model.AlarmTriggering
 import com.example.demo.service.AdminAlarmService
 import com.example.demo.service.AlarmTriggeringService
+import com.example.demo.service.MaliciousIpAddressService
 
 global AdminAlarmService alarmService
 global AlarmTriggeringService alarmTriggeringService
+global MaliciousIpAddressService ipAddressService
 
+
+rule "Log with malicious IP address"
+
+    when
+		Log(ipAddressService.hasIpAddress(ipAddress), $ipAddress: ipAddress)
+    then
+        alarmTriggeringService.save(new AlarmTriggering("Log with malicious" + $ipAddress + " IP address appeared!!"));
+
+end
 
 rule "Alarm for SUCCESS status"
 	no-loop

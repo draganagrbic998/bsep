@@ -20,6 +20,9 @@ public class LogEventService {
 	private AlarmTriggeringService alarmTriggeringService;
 	
 	@Autowired
+	private MaliciousIpAddressService ipAddressService;
+	
+	@Autowired
 	private KieContainer kieContainer;
 	
 	private KieSession kieSession;
@@ -29,6 +32,7 @@ public class LogEventService {
 		this.kieSession = this.kieContainer.newKieSession(Constants.ADMIN_ALARMS);
 		this.kieSession.setGlobal("alarmService", this.alarmService);
 		this.kieSession.setGlobal("alarmTriggeringService", this.alarmTriggeringService);
+		this.kieSession.setGlobal("ipAddressService", this.ipAddressService);
         new Thread(() -> this.kieSession.fireUntilHalt()).start();
 	}
 

@@ -60,7 +60,8 @@ public class LogService {
 	}
 
 	public String getIpAddress() {
-		return RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256);
+		return "127.0.0.1";
+		//return RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256);
 	}
 
 	public String getDescription() {
