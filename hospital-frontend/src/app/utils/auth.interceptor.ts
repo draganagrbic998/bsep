@@ -30,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (err.status !== 401 && err.status !== 403) {
          return;
         }
+        this.storageService.removeToken();
         this.router.navigate([environment.loginRoute]);
       }
     }));
