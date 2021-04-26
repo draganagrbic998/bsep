@@ -104,12 +104,12 @@ rule "Alarm for 'Login with wrong credentials'"
 			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Login with wrong credentials")),
 			$logs: collectList($log)
 		)
-		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase("Login with wrong credentials"), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of wrong logins from the same IP address appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of wrong logins from the same IP address appeared in the last minute!!"));
 
 end
 
@@ -121,12 +121,12 @@ rule "Alarm for 'Forbidden patients view'"
 			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden patients view")),
 			$logs: collectList($log)
 		)
-		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden patients view"), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on patients view from the same IP address appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on patients view from the same IP address appeared in the last minute!!"));
 
 end
 
@@ -138,12 +138,12 @@ rule "Alarm for 'Forbidden messages view'"
 			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden messages view")),
 			$logs: collectList($log)
 		)
-		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden messages view"), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on messages view from the same IP address appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on messages view from the same IP address appeared in the last minute!!"));
 
 end
 
@@ -155,12 +155,12 @@ rule "Alarm for 'Forbidden logs view'"
 			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden logs view")),
 			$logs: collectList($log)
 		)
-		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden logs view"), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on logs view from the same IP address appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on logs view from the same IP address appeared in the last minute!!"));
 
 end
 
@@ -172,12 +172,12 @@ rule "Alarm for 'Forbidden alarms view'"
 			Log($log: this, mode.equals(LogMode.ATTACK), description.equals("Forbidden alarms view")),
 			$logs: collectList($log)
 		)
-		Number(intValue <= alarmService.countSameIpAddress($logs)) from accumulate(
+		Number(intValue <= alarmTriggeringService.countSameIpAddress($logs)) from accumulate(
 			AdminAlarm(!status, param.equalsIgnoreCase("Forbidden alarms view"), $counts: counts) from alarmService.findAll(),
 			min($counts)
 		)
     then
-        alarmTriggeringService.save(new AlarmTriggering(alarmService.countSameIpAddress($logs) + " number of forbidden attempts on alarms view from the same IP address appeared in the last minute!!"));
+        alarmTriggeringService.save(new AlarmTriggering(alarmTriggeringService.countSameIpAddress($logs) + " number of forbidden attempts on alarms view from the same IP address appeared in the last minute!!"));
 
 end
 

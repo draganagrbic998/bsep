@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @Role(Role.Type.EVENT)
 @Expires("1m")
-public class Log {
+public class Log implements HasIpAddress {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,5 +46,10 @@ public class Log {
 
 	@NotBlank
 	private String description;
+
+	@Override
+	public String ipAddress() {
+		return this.ipAddress;
+	}
 
 }
