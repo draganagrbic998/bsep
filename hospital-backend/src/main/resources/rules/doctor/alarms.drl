@@ -118,6 +118,6 @@ rule "Low oxygen level"
     		max($minOxygenLevel)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.MODEREATE, "Oxygen level fell bellow " + $oxygenLevel + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.MODERATE, "Oxygen level fell bellow " + $oxygenLevel + "!!"));
 
 end
