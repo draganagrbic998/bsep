@@ -26,7 +26,7 @@
                        pPassword>
                 <label for="password">Password</label>
               </span>
-              <small class="p-error" *ngIf="activateForm.get('password').dirty && activateForm.get('password').invalid">Password invalid.</small>
+              <small class="p-error" *ngIf="activateForm.get('password').dirty && activateForm.get('password').invalid">Password must be at least 8 characters long and contain each of the following: <br> uppercase letter, lowercase letter, number, special character.</small>
             </div>
             <div class="p-col-12 p-mt-2 p-field">
               <span class="p-float-label">
