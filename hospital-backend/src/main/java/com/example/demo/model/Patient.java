@@ -39,9 +39,11 @@ public class Patient {
 	private String lastName;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private BlodType blodType;
 
 	@NotNull

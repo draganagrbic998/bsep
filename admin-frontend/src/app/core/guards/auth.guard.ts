@@ -35,6 +35,7 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['']);
     }
     else {
+      this.storageService.removeToken();
       this.router.navigate([environment.loginRoute]);
     }
 

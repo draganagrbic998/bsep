@@ -15,18 +15,18 @@ import lombok.Setter;
 public class AlarmTriggeringDTO {
 
 	private long id;
+	private AlarmRisk risk;
 	private Date date;
 	private String message;
-	private AlarmRisk risk;
 	private String patient;
 	private String insuredNumber;
 
 	public AlarmTriggeringDTO(AlarmTriggering alarmTriggering) {
 		super();
 		this.id = alarmTriggering.getId();
+		this.risk = alarmTriggering.getRisk();
 		this.date = alarmTriggering.getDate();
 		this.message = alarmTriggering.getMessage();
-		this.risk = alarmTriggering.getRisk();
 		if (alarmTriggering.getPatient() != null) {
 			this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
 			this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();			

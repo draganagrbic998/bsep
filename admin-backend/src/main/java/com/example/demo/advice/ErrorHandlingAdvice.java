@@ -42,6 +42,12 @@ public class ErrorHandlingAdvice {
     	return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage(), "CERT_INVALID"));
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public ResponseEntity<Void> onAccessDeniedException(AccessDeniedException e){
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     @ExceptionHandler(RestTemplateMessageException.class)
     @ResponseBody
     public ResponseEntity<ErrorDTO> onRestTemplateMessageException(RestTemplateMessageException e){
@@ -59,16 +65,11 @@ public class ErrorHandlingAdvice {
     public ResponseEntity<Void> onNullPointerException(NullPointerException e){
         return ResponseEntity.notFound().build();
     }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseBody
-    public ResponseEntity<Void> onAccessDeniedException(AccessDeniedException e){
-    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
     
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Void> onException(Exception e){
+    	e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

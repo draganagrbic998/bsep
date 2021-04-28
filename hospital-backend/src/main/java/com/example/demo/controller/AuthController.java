@@ -41,7 +41,7 @@ public class AuthController {
 			this.commonEventService.addInvalidLogin(new InvalidLogin(ipAddress));
 			long days = this.userService.days(loginDTO.getEmail());
 			if (days >= 90) {
-				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt on account inactive for " + days + " days!!", AlarmRisk.LOW));
+				this.alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, "Login attempt on account inactive for " + days + " days!!"));
 			}
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

@@ -19,7 +19,7 @@ export class MainViewComponent {
     private router: Router
   ) { }
 
-  logout(): void {
+  signOut(): void {
     this.storageService.removeToken();
     this.router.navigate([environment.loginRoute]);
   }

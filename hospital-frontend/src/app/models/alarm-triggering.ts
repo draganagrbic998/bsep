@@ -1,7 +1,7 @@
 export interface AlarmTriggering{
+    risk: string;
     date: Date;
     message: string;
-    risk: string;
     patient: string;
     insuredNumber: string;
 }

@@ -1,56 +1,41 @@
-<div class="root">
-    <div class="left">
-        <app-list title="NO ALARMS" [pending]="pending" [empty]="!page.content.length" 
-        [page]="page" [refresh]="true" (changedPage)="fetchAlarmTriggerings($event)">
-            <app-details 
-            *ngFor="let alarmTriggering of page.content"
-            [date]="alarmTriggering.date" [warn]="true"
-            [details]="[
-                {key: 'Patient', value: alarmTriggering.patient},
-                {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
-            [mainDetails]="[
-                {key: 'Message', value: alarmTriggering.message},
-                {key: 'Risk level', value: alarmTriggering.risk}]"
-            ></app-details>
-        </app-list>
-    </div>
-    <div class="right">
-        <app-form>
-            <h2>Filter by risk</h2>
-            <form [formGroup]="filterForm" [class.disabled]="pending">
-                <app-spacer>
-                    <mat-checkbox
-                    formControlName="low"
-                    matInput>
-                        Low
-                    </mat-checkbox>
-                    <mat-checkbox
-                    formControlName="moderate"
-                    matInput>
-                        Moderate
-                    </mat-checkbox>
-                    <mat-checkbox
-                    formControlName="high"
-                    matInput>
-                        High
-                    </mat-checkbox>
-                    <mat-checkbox
-                    formControlName="extreme"
-                    matInput>
-                        Extreme
-                    </mat-checkbox>
-                </app-spacer>
-            </form>
-            <app-spacer>
-                <span></span>
-                <span>
-                    <button 
-                    *ngIf="!pending" 
-                    (click)="fetchAlarmTriggerings(0)"
-                    mat-raised-button>Filter</button>
-                    <app-spinner *ngIf="pending"></app-spinner>    
-                </span>
-            </app-spacer>        
-        </app-form>        
-    </div>
+<div class="main">
+    <app-list title="NO ALARMS" [pending]="pending" [empty]="!page.content.length" 
+    [page]="page" [refresh]="true" (changedPage)="fetchAlarmTriggerings($event)">
+        <app-details 
+        *ngFor="let alarmTriggering of page.content"
+        [date]="alarmTriggering.date" [warn]="true"
+        [details]="[
+            {key: 'Patient', value: alarmTriggering.patient},
+            {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
+        [mainDetails]="[
+            {key: 'Message', value: alarmTriggering.message},
+            {key: 'Risk level', value: alarmTriggering.risk}]"
+        ></app-details>
+    </app-list>
+</div>
+<div class="mat-elevation-z24 filter">
+    <form [formGroup]="filterForm" [class.disabled]="pending">
+        <app-spacer>
+            <mat-checkbox
+            formControlName="low"
+            (change)="fetchAlarmTriggerings(0)">
+                Low
+            </mat-checkbox>
+            <mat-checkbox
+            formControlName="moderate"
+            (change)="fetchAlarmTriggerings(0)">
+                Moderate
+            </mat-checkbox>
+            <mat-checkbox
+            formControlName="high"
+            (change)="fetchAlarmTriggerings(0)">
+                High
+            </mat-checkbox>
+            <mat-checkbox
+            formControlName="extreme"
+            (change)="fetchAlarmTriggerings(0)">
+                Extreme
+            </mat-checkbox>
+        </app-spacer>
+    </form>
 </div>

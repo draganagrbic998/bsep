@@ -33,7 +33,7 @@ public class RequestFilter extends OncePerRequestFilter {
 			this.commonEventService.addRequest(new Request(true));
 			String ipAddress = request.getHeader("X-Forward-For") != null ? request.getHeader("X-Forward-For") : request.getRemoteAddr();
 			if (this.ipAddressService.hasIpAddress(ipAddress)) {
-				this.alarmTriggeringService.save(new AlarmTriggering("Login attempt from malicious " + ipAddress + " IP address!!", AlarmRisk.MODERATE));
+				this.alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.MODERATE, "Login attempt from malicious " + ipAddress + " IP address!!"));
 			}
 		}
 		else {

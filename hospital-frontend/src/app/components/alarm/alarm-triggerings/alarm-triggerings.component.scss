@@ -1,29 +1,19 @@
 @import "../../../../styles/theme";
 
-.root{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 85%;
+.main{
+    width: 55%;
+    height: 100%;
     margin: 0 auto;
-    margin-top: 50px;
+    padding-top: 40px;
 }
 
-.left{
-    width: 48%;
-}
-
-.right{
-    width: 40%;
-    margin-top: 20px;
-}
-
-form{
-    margin-top: 60px;
-    margin-bottom: 60px;
-}
-
-button{
-    background-color: $main;
-    color: white;
+.filter{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 45px;
+    padding-right: 45px;
+    background-color: whitesmoke;
 }

@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-activate',
@@ -24,7 +25,8 @@ export class ActivateComponent implements OnInit {
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class ActivateComponent implements OnInit {
     // tslint:disable-next-line: deprecation
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       if (!params.q) {
+        this.storageService.removeToken();
         this.router.navigate([environment.loginRoute]);
         return;
       }
@@ -53,6 +56,7 @@ export class ActivateComponent implements OnInit {
           this.expired = new Date(this.user.activationExpiration).getTime() <= new Date().getTime();
         }
         else{
+          this.storageService.removeToken();
           this.router.navigate([environment.loginRoute]);
         }
       });

@@ -20,7 +20,7 @@ rule "High pulse"
     		min($maxPulse)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Pulse has reached " + $pulse + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Pulse has reached " + $pulse + "!!"));
 
 end
 
@@ -34,7 +34,7 @@ rule "Low pulse"
     		max($minPulse)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Pulse fell bellow " + $pulse + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Pulse fell bellow " + $pulse + "!!"));
 
 end
 
@@ -48,7 +48,7 @@ rule "High pressure"
     		min($maxPressure)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Pressure has reached " + $pressure + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Pressure has reached " + $pressure + "!!"));
 
 end
 
@@ -62,7 +62,7 @@ rule "Low pressure"
     		max($minPressure)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Pressure fell bellow " + $pressure + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Pressure fell bellow " + $pressure + "!!"));
 
 end
 
@@ -76,7 +76,7 @@ rule "High temperature"
     		min($maxTemperature)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Temperature has reached " + $temperature + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Temperature has reached " + $temperature + "!!"));
 
 end
 
@@ -90,7 +90,7 @@ rule "Low temperature"
     		max($minTemperature)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.HIGH, "Temperature fell bellow " + $temperature + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.HIGH, $patient, "Temperature fell bellow " + $temperature + "!!"));
 
 end
 
@@ -104,7 +104,7 @@ rule "High oxygen level"
     		min($maxOxygenLevel)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.MODERATE, "Oxygen level has reached " + $oxygenLevel + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.MODERATE, $patient, "Oxygen level has reached " + $oxygenLevel + "!!"));
 
 end
 
@@ -118,6 +118,6 @@ rule "Low oxygen level"
     		max($minOxygenLevel)
     	)
     then
-        alarmTriggeringService.save(new AlarmTriggering($patient, AlarmRisk.MODERATE, "Oxygen level fell bellow " + $oxygenLevel + "!!"));
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.MODERATE, $patient, "Oxygen level fell bellow " + $oxygenLevel + "!!"));
 
 end

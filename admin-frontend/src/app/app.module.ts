@@ -25,7 +25,7 @@ import { DashboardComponent } from './components/main-views/dashboard/dashboard.
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { FrameComponent } from './components/frame/frame.component';
 
 @NgModule({
@@ -59,7 +59,7 @@ import { FrameComponent } from './components/frame/frame.component';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
+      useClass: AuthInterceptor,
       multi: true
     },
     ConfirmationService,

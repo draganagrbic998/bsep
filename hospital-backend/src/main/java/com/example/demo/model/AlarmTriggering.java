@@ -50,18 +50,18 @@ public class AlarmTriggering {
 		this.date = new Date();
 	}
 	
-	public AlarmTriggering(String message, AlarmRisk risk) {
+	public AlarmTriggering(AlarmRisk risk, String message) {
 		this();
 		this.type = AlarmType.LOG;
-		this.message = message;
 		this.risk = risk;
+		this.message = message;
 	}
 
-	public AlarmTriggering(Patient patient, AlarmRisk risk, String message) {
+	public AlarmTriggering(AlarmRisk risk, Patient patient, String message) {
 		this();
 		this.type = AlarmType.PATIENT;
-		this.patient = patient;
 		this.risk = risk;
+		this.patient = patient;
 		this.message = message;
 	}
 
