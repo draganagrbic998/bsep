@@ -11,7 +11,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.utils.LogCipher;
+import com.example.demo.model.LogMode;
+import com.example.demo.model.LogStatus;
 
 import lombok.AllArgsConstructor;
 
@@ -19,13 +20,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LogService {
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
-	private static Random RAND = new Random();
-	private static final long SLEEP_INTERVAL = 1000;
-	private static final String FILE_PATH = "log.txt";
-	
-	private final LogCipher logCipher;
-	
+	private final static String LOG_FILE = "log.txt";
+	private final static Random RANDOM = new Random();
+		
 	@PostConstruct
 	public void init() {
 		new Thread(() -> this.writeLogs()).start();
@@ -34,12 +31,13 @@ public class LogService {
 	private void writeLogs() {
 		while (true) {
 			try {
-				FileWriter writer = new FileWriter(FILE_PATH, true);
-				String line = String.format("%s|%s|%s|%s|%s", DATE_FORMAT.format(this.getTimestamp()), this.getMode(),
-						this.getStatus(), this.getIpAddress(), this.getDescription());
-				writer.write(this.logCipher.encrypt(line) + "\n");
+				FileWriter writer = new FileWriter(LOG_FILE, true);
+				String line = String.format("%s|%s|%s|%s|%s\n", 
+					new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").format(new Date()), 
+					this.getMode(), this.getStatus(), this.getIpAddress(), this.getDescription());
+				writer.write(line);
 				writer.close();
-				Thread.sleep(SLEEP_INTERVAL);
+				Thread.sleep(1000);
 			} 
 			catch (Exception e) {
 				e.printStackTrace();
@@ -47,26 +45,21 @@ public class LogService {
 		}
 	}
 
-	private Date getTimestamp() {
-		return new Date();
-	}
-
 	public LogMode getMode() {
-		return LogMode.values()[RAND.nextInt(LogMode.values().length)];
+		return LogMode.values()[RANDOM.nextInt(LogMode.values().length)];
 	}
 
 	public LogStatus getStatus() {
-		return LogStatus.values()[RAND.nextInt(LogStatus.values().length)];
+		return LogStatus.values()[RANDOM.nextInt(LogStatus.values().length)];
 	}
 
 	public String getIpAddress() {
-		return RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256) + "." + RAND.nextInt(256);
+		return RANDOM.nextInt(256) + "." + RANDOM.nextInt(256) + "." + RANDOM.nextInt(256) + "." + RANDOM.nextInt(256);
 	}
 
 	public String getDescription() {
-		List<String> temp = Arrays.asList("Login with wrong credentials", "Forbidden patients view",
-				"Forbidden messages view", "Forbidden logs view", "Forbidden alarms view");
-		return temp.get(RAND.nextInt(temp.size()));
+		List<String> temp = Arrays.asList("Description one", "Description two", "Description three", "Description four", "Description five");
+		return temp.get(RANDOM.nextInt(temp.size()));
 	}
 
 }

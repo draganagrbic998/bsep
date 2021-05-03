@@ -6,11 +6,14 @@ import com.example.demo.exception.AliasTakenException;
 import com.example.demo.exception.CertificateAuthorityException;
 import com.example.demo.exception.InvalidIssuerException;
 import com.example.demo.model.*;
+import com.example.demo.model.enums.LogStatus;
+import com.example.demo.model.enums.Template;
 import com.example.demo.repository.CertificateInfoRepository;
 import com.example.demo.utils.AuthenticationProvider;
+import com.example.demo.utils.CertificateGenerator;
+import com.example.demo.utils.CertificateUtils;
 import com.example.demo.utils.Constants;
-import com.example.demo.utils.certificate.CertificateGenerator;
-import com.example.demo.utils.certificate.CertificateUtils;
+import com.example.demo.utils.Logger;
 
 import lombok.AllArgsConstructor;
 
@@ -33,17 +36,31 @@ import java.util.Date;
 @AllArgsConstructor
 public class CertificateService {
 
+	public final static String CERTIFICATES_FOLDER = Constants.RESOURCES_FOLDER + "certificates" + File.separatorChar;
+
 	private final CertificateInfoRepository certificateInfoRepository;
-	private final CertificateRequestService certificateRequestService;
 	private final CertificateValidationService certificateValidationService;
+	private final CertificateRequestService certificateRequestService;
 	private final CertificateGenerator certificateGenerator;
 	private final KeyStoreService keyStoreService;
 	private final EmailService emailService;
 	private final RestTemplate restTemplate;
 	private final AuthenticationProvider authProvider;
+	private final Logger logger;
 
-	@Transactional(readOnly = false)
 	public void create(CreateCertificateDTO certificateDTO) {
+		try {
+			this.save(certificateDTO);
+			this.logger.write(LogStatus.SUCCESS, String.format("Certificate with alias %s successfully created.", certificateDTO.getAlias()));
+		}
+		catch(Exception e) {
+			this.logger.write(LogStatus.ERROR, String.format("Error occurred while creating certificate with alias %s.", certificateDTO.getAlias()));
+			throw e;
+		}
+	}
+	
+	@Transactional(readOnly = false)
+	private void save(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
 		String issuerAlias = certificateDTO.getIssuerAlias();
 		Certificate[] issuerChain = this.keyStoreService.readCertificateChain(issuerAlias);
@@ -89,7 +106,7 @@ public class CertificateService {
 		byte[] returnValue = null;
 
 		try {
-			InputStream in = new FileInputStream(Constants.CERTIFICATES_FOLDER + issuerInfo.getAlias() + "_" + cert.getAlias() + ".jks");
+			InputStream in = new FileInputStream(CERTIFICATES_FOLDER + issuerInfo.getAlias() + "_" + cert.getAlias() + ".jks");
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
 		} 
@@ -111,14 +128,15 @@ public class CertificateService {
 					CreatedCertificateDTO.class);
 			this.certificateRequestService.delete(certificateDTO.getId());
 			
-			String fileName = cert.getIssuerAlias() + "_" + cert.getAlias() + ".jks";
-			String location = request.getPath().split("//")[1].split("/")[0];
-			this.emailService.sendInfoMail(cert.getEmail(), fileName, location, "Certificate Issued - Bezbednost", Constants.ISSUED_TEMPLATE);
+			this.emailService.sendInfoMail(cert.getEmail(), 
+					cert.getIssuerAlias() + "_" + cert.getAlias() + ".jks", 
+					request.getPath().split("//")[1].split("/")[0], 
+					"Certificate Issued - Bezbednost", "certificate-issued");
 		}
 
 	}
 
-	public CertificateInfo generateCertificate(SubjectData subjectData, CertificateInfo issuer, CreateCertificateDTO certificateDTO) {
+	private CertificateInfo generateCertificate(SubjectData subjectData, CertificateInfo issuer, CreateCertificateDTO certificateDTO) {
 		CertificateInfo certificate = new CertificateInfo();
 		certificate.setIssuer(issuer);
 		certificate.setAlias(certificateDTO.getAlias());

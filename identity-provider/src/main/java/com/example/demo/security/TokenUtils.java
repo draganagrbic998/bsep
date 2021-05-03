@@ -17,7 +17,7 @@ public class TokenUtils {
 	@Value("${app-secret}")
 	private String APP_SECRET;
 			
-	@Value("1000000000")
+	@Value("${app-expires}")
 	private long EXPIRES_IN;
 	
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;

@@ -2,13 +2,12 @@ package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.Extensions;
-import com.example.demo.model.Template;
+import com.example.demo.model.enums.Template;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -25,11 +24,7 @@ public class CertificateInfoDTO {
 	private String country;
 	private String email;
 	private Template template;
-	private Date startDate;
-	private Date endDate;
 	private boolean revoked;
-	private Date revocationDate;
-	private String revocationReason;
 	private long numIssued;
 	private List<CertificateInfoDTO> issued;
 
@@ -46,11 +41,7 @@ public class CertificateInfoDTO {
 		this.country = certificate.getCountry();
 		this.email = certificate.getEmail();
 		this.template = certificate.getTemplate();
-		this.startDate = certificate.getStartDate();
-		this.endDate = certificate.getEndDate();
 		this.revoked = certificate.isRevoked();
-		this.revocationDate = certificate.getRevocationDate();
-		this.revocationReason = certificate.getRevocationReason();
 		this.extensions = certificate.getExtensions();
 	}
 	

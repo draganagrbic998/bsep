@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
@@ -29,14 +28,12 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     @Override
     @SneakyThrows
     public void handleError(ClientHttpResponse httpResponse) {
-        Gson gson = new Gson();
-        InputStream bodyStream = httpResponse.getBody();
-        InputStreamReader bodyReader = new InputStreamReader(bodyStream);
-
         try {
-            ErrorDTO errorDTO = gson.fromJson(bodyReader, ErrorDTO.class);
-            throw new RestTemplateMessageException(errorDTO);
-        } catch (JsonIOException | JsonSyntaxException ex) {
+            Gson gson = new Gson();
+            InputStreamReader bodyReader = new InputStreamReader(httpResponse.getBody());
+            throw new RestTemplateMessageException(gson.fromJson(bodyReader, ErrorDTO.class));
+        } 
+        catch (JsonIOException | JsonSyntaxException ex) {
             throw new RestTemplateVoidException();
         }
 

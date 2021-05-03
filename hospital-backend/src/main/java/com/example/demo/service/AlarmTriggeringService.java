@@ -10,25 +10,45 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.HasIpAddress;
+import com.example.demo.model.enums.LogStatus;
 import com.example.demo.repository.AlarmTriggeringRepository;
+import com.example.demo.utils.Logger;
 
 import lombok.AllArgsConstructor;
 
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
 public class AlarmTriggeringService {
 
 	private final AlarmTriggeringRepository alarmTriggeringRepository;
+	private final Logger logger;
 	
+	@Transactional(readOnly = true)
 	public Page<AlarmTriggering> findAllForAdmin(Pageable pageable, boolean low, boolean moderate, boolean high, boolean extreme) {
-		return this.alarmTriggeringRepository.filterAdmin(pageable, low, moderate, high, extreme);
+		try {
+			Page<AlarmTriggering> response = this.alarmTriggeringRepository.filterAdmin(pageable, low, moderate, high, extreme);
+			this.logger.write(LogStatus.SUCCESS, String.format("Admin alarm triggerings page number %d successfully fetched.", pageable.getPageNumber()));
+			return response;
+		}
+		catch(Exception e) {
+			this.logger.write(LogStatus.ERROR, String.format("Error occured while fetching admin alarm triggerings page number %d.", pageable.getPageNumber()));
+			throw e;
+		}
 	}
 	
+	@Transactional(readOnly = true)
 	public Page<AlarmTriggering> findAllForDoctor(Pageable pageable, boolean low, boolean moderate, boolean high, boolean extreme) {
-		return this.alarmTriggeringRepository.filterDoctor(pageable, low, moderate, high, extreme);
+		try {
+			Page<AlarmTriggering> response = this.alarmTriggeringRepository.filterDoctor(pageable, low, moderate, high, extreme);
+			this.logger.write(LogStatus.SUCCESS, String.format("Doctor alarm triggerings page number %d successfully fetched.", pageable.getPageNumber()));
+			return response;
+		}
+		catch(Exception e) {
+			this.logger.write(LogStatus.ERROR, String.format("Error occured while fetching doctor alarm triggerings page number %d.", pageable.getPageNumber()));
+			throw e;
+		}
 	}
 
 	@Transactional(readOnly = false)
@@ -41,9 +61,7 @@ public class AlarmTriggeringService {
 		long maxCount = -1;
 		for (String ipAddress: ipAddresses) {
 			long count = list.stream().filter(item -> item.ipAddress().equals(ipAddress)).count();
-			if (count > maxCount) {
-				maxCount = count;
-			}
+			if (count > maxCount) maxCount = count;
 		}
 		return maxCount;
 	}

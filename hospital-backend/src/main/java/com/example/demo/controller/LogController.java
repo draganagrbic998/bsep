@@ -19,7 +19,7 @@ import com.example.demo.service.LogService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/logs", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/logs", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('ADMIN')")	
 @AllArgsConstructor
 public class LogController {
@@ -28,7 +28,8 @@ public class LogController {
 
 	@PostMapping
 	public ResponseEntity<Page<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogSearchDTO searchDTO){
-		return ResponseEntity.ok(this.logService.findAll(pageable, searchDTO).map(LogDTO::new));
+		return ResponseEntity.ok(this.logService.findAll(pageable, searchDTO.getMode(), searchDTO.getStatus(), 
+				searchDTO.getIpAddress(), searchDTO.getDescription(), searchDTO.getDate()).map(LogDTO::new));
 	}
 	
 }

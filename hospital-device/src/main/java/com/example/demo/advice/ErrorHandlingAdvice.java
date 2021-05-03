@@ -25,12 +25,6 @@ public class ErrorHandlingAdvice {
     	return ResponseEntity.badRequest().build();
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    @ResponseBody
-    public ResponseEntity<Void> onNullPointerException(NullPointerException e){
-    	return ResponseEntity.notFound().build();
-    }
-
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Void> onException(Exception e){

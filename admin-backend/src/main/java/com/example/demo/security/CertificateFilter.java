@@ -12,12 +12,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.demo.exception.InvalidCertificateException;
 import com.example.demo.service.CertificateValidationService;
-import com.example.demo.utils.Constants;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CertificateFilter extends OncePerRequestFilter {
+
+	private final static String CERTIFICATE_ATTRIBUTE = "javax.servlet.request.X509Certificate";
 
 	private final CertificateValidationService validationService;
 	
@@ -27,7 +28,7 @@ public class CertificateFilter extends OncePerRequestFilter {
 
 		if (request.getServletPath().startsWith("/api/requests") && request.getMethod().equalsIgnoreCase("delete")) {
 			if (!this.validationService.isCertificateValid(((X509Certificate[]) 
-					request.getAttribute(Constants.CERTIFICATE_ATTRIBUTE))[0].getSerialNumber().longValue())) {
+					request.getAttribute(CERTIFICATE_ATTRIBUTE))[0].getSerialNumber().longValue())) {
 				throw new InvalidCertificateException();
 			}
 		}

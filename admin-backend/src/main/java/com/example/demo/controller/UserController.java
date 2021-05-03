@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 @AllArgsConstructor
 public class UserController {
@@ -29,7 +29,7 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.findAll(pageable));
 	}
 
-	@GetMapping(value = "/roles")
+	@GetMapping("/roles")
 	public ResponseEntity<List<RoleDTO>> findAllRoles() {
 		return ResponseEntity.ok(this.userService.findAllRoles());
 	}
@@ -39,18 +39,18 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.create(userDTO));
 	}
 
-	@PutMapping(value = "/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(this.userService.update(id, userDTO));
 	}
 
-	@DeleteMapping(value = "{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping(value = "/send/{id}")
+	@PostMapping("/send/{id}")
 	public ResponseEntity<Void> sendActivationMail(@PathVariable long id) {
 		this.userService.sendActivationMail(id);
 		return ResponseEntity.ok().build();

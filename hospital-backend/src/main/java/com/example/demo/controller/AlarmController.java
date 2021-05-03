@@ -25,7 +25,7 @@ import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/alarms", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/alarms", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class AlarmController {
 	
@@ -40,6 +40,12 @@ public class AlarmController {
 		return ResponseEntity.ok(this.adminAlarmService.findAll(pageable).map(AdminAlarmDTO::new));
 	}
 
+	@GetMapping("/{patientId}")
+	@PreAuthorize("hasAuthority('DOCTOR')")	
+	public ResponseEntity<Page<DoctorAlarmDTO>> findAll(@PathVariable long patientId, Pageable pageable){
+		return ResponseEntity.ok(this.doctorAlarmService.findAll(patientId, pageable).map(DoctorAlarmDTO::new));
+	}
+
 	@PostMapping
 	@PreAuthorize("hasAuthority('ADMIN')")	
 	public ResponseEntity<AdminAlarmDTO> create(@Valid @RequestBody AdminAlarmDTO alarmDTO){
@@ -47,28 +53,20 @@ public class AlarmController {
 		return ResponseEntity.ok(alarmDTO);
 	}
 
-	@GetMapping(value = "/{patientId}")
-	@PreAuthorize("hasAuthority('DOCTOR')")	
-	public ResponseEntity<Page<DoctorAlarmDTO>> findAll(@PathVariable long patientId, Pageable pageable){
-		return ResponseEntity.ok(this.doctorAlarmService.findAll(patientId, pageable).map(DoctorAlarmDTO::new));
-	}
-
-	@PostMapping(value = "/{patientId}")
+	@PostMapping("/{patientId}")
 	@PreAuthorize("hasAuthority('DOCTOR')")	
 	public ResponseEntity<DoctorAlarmDTO> create(@PathVariable long patientId, @Valid @RequestBody DoctorAlarmDTO alarmDTO){
 		this.doctorAlarmService.save(this.alarmMapper.map(patientId, alarmDTO));
 		return ResponseEntity.ok(alarmDTO);
 	}
 
+	@DeleteMapping("/{id}")
 	@PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
-	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id){
-		if (this.userService.currentUser().isAdmin()) {
+		if (this.userService.currentUser().isAdmin())
 			this.adminAlarmService.delete(id);
-		}
-		else {
+		else
 			this.doctorAlarmService.delete(id);
-		}
 		return ResponseEntity.noContent().build();
 	}
 	

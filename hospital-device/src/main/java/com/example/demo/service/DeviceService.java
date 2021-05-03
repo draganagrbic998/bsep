@@ -17,11 +17,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class DeviceService {
 
-	private static final String MESSAGES_API = "https://localhost:8081/api/messages";
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
-	private static final Random RANDOM = new Random();
-	private static final long SLEEP_INTERVAL = 5000;
-	private static final long PATIENT_ID = 1;
+	private final static String MESSAGES_API = "https://localhost:8081/api/messages/save";
+	private final static Random RANDOM = new Random();
 	
 	private final RestTemplate restTemplate;
 	
@@ -34,20 +31,17 @@ public class DeviceService {
 		while (true) {
 			try {
 				String text = String.format("Timestamp=%s patient=%d pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
-						DATE_FORMAT.format(this.getTimestamp()), PATIENT_ID, this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
+					new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").format(new Date()), 1, 
+					this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
 				this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
-				Thread.sleep(SLEEP_INTERVAL);
+				Thread.sleep(5000);
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	private Date getTimestamp() {
-		return new Date();
-	}
-		
+			
 	private double getPulse() {
 		return 40 + (120 - 40) * RANDOM.nextDouble();
 	}

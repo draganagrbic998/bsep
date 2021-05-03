@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.example.demo.model.enums.BlodType;
+import com.example.demo.model.enums.Gender;
+
 import lombok.Getter;
 import lombok.Setter;
 

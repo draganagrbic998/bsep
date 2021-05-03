@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.example.demo.model.enums.AlarmRisk;
+import com.example.demo.model.enums.AlarmType;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +28,10 @@ public class AlarmTriggering {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+		
+	@NotNull
+	private Date date;
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private AlarmType type;
@@ -33,9 +39,6 @@ public class AlarmTriggering {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private AlarmRisk risk;
-	
-	@NotNull
-	private Date date;
 
 	@NotBlank
 	private String message;

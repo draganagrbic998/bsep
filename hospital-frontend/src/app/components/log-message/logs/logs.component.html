@@ -13,56 +13,58 @@
     <div class="right">
         <app-form>
             <h2>Search</h2>
-            <form [formGroup]="searchForm" [class.disabled]="pending">
-                <mat-form-field>
-                    <mat-label>Mode</mat-label>
-                    <input 
-                    formControlName="mode" 
-                    matInput 
-                    placeholder="Enter mode">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Status</mat-label>
-                    <input 
-                    formControlName="status" 
-                    matInput 
-                    placeholder="Enter status">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>IP address</mat-label>
-                    <input 
-                    formControlName="ipAddress" 
-                    matInput 
-                    placeholder="Enter IP address">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Description</mat-label>
-                    <input 
-                    formControlName="description" 
-                    matInput 
-                    placeholder="Enter description">
-                </mat-form-field>
-                <mat-form-field> 
-                    <mat-label>Date</mat-label>
-                    <input 
-                    formControlName="date"
-                    matInput 
-                    placeholder="Enter date"
-                    [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                </mat-form-field>
+            <form [formGroup]="searchForm">
+                <div [class.disabled]="pending">
+                    <mat-form-field>
+                        <mat-label>Mode</mat-label>
+                        <input 
+                        formControlName="mode" 
+                        matInput 
+                        placeholder="Enter mode">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Status</mat-label>
+                        <input 
+                        formControlName="status" 
+                        matInput 
+                        placeholder="Enter status">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>IP address</mat-label>
+                        <input 
+                        formControlName="ipAddress" 
+                        matInput 
+                        placeholder="Enter IP address">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Description</mat-label>
+                        <input 
+                        formControlName="description" 
+                        matInput 
+                        placeholder="Enter description">
+                    </mat-form-field>
+                    <mat-form-field> 
+                        <mat-label>Date</mat-label>
+                        <input 
+                        formControlName="date"
+                        matInput 
+                        placeholder="Enter date"
+                        [matDatepicker]="date">
+                        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                        <mat-datepicker #date></mat-datepicker>
+                    </mat-form-field>    
+                </div>
+                <app-spacer>
+                    <span></span>
+                    <span>
+                        <button 
+                        *ngIf="!pending" 
+                        (click)="fetchLogs(0)"
+                        mat-raised-button>Search</button>
+                        <app-spinner *ngIf="pending"></app-spinner>    
+                    </span>
+                </app-spacer>            
             </form>
-            <app-spacer>
-                <span></span>
-                <span>
-                    <button 
-                    *ngIf="!pending" 
-                    (click)="fetchLogs(0)"
-                    mat-raised-button>Search</button>
-                    <app-spinner *ngIf="pending"></app-spinner>    
-                </span>
-            </app-spacer>        
         </app-form>        
     </div>
 </div>

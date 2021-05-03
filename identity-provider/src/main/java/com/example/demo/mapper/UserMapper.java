@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @AllArgsConstructor
@@ -22,12 +23,14 @@ public class UserMapper {
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
 	
+	@Transactional(readOnly = true)
     public User map(UserDTO userDTO) {
     	User user = new User();
     	this.setModel(user, userDTO);
         return user;
     }
     
+	@Transactional(readOnly = true)
     public User map(long id, UserDTO userDTO) {
     	User user = this.userRepository.findById(userDTO.getId()).get();
     	this.setModel(user, userDTO);

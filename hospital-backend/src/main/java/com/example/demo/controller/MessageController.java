@@ -22,25 +22,25 @@ import com.example.demo.service.MessageService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class MessageController {
 
 	private final MessageService messageService;
 	private final MessageMapper messageMapper;
 
+	@PostMapping
 	@PreAuthorize("hasAuthority('DOCTOR')")
-	@PostMapping(value = "/search")
 	public ResponseEntity<Page<MessageDTO>> findAll(Pageable pageable, @Valid @RequestBody MessageSearchDTO searchDTO) {
-		return ResponseEntity.ok(this.messageMapper.map(this.messageService.findAll(pageable, searchDTO)));
+		return ResponseEntity.ok(this.messageService.findAll(pageable, searchDTO.getInsuredNumber(), 
+				searchDTO.getFirstName(), searchDTO.getLastName(), searchDTO.getDate()).map(message -> this.messageMapper.map(message)));
 	}
 
-	@PostMapping
+	@PostMapping("/save")
 	public ResponseEntity<MessageMeasureDTO> create(@Valid @RequestBody MessageMeasureDTO messageDTO) {
 		Message message = this.messageMapper.map(messageDTO);
-		if (message.getPatient() != null) {
+		if (message.getPatient() != null)
 			this.messageService.save(this.messageMapper.map(messageDTO));
-		}
 		return ResponseEntity.ok(messageDTO);
 	}
 

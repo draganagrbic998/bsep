@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class CertificateAuthorityException extends RuntimeException {
 
 	public CertificateAuthorityException() {
-		super("The certificate is not a CA");
+		super("The certificate is not a CA.");
 	}
 	
 }

@@ -3,7 +3,6 @@ package com.example.demo.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -36,12 +35,11 @@ public class DatabaseCiperConfig {
 		SecretKey key = null;
 
 		try {
-			File file = new File(this.cipherProperties.getDbKeystorePath());
 			KeyStore keyStore = KeyStore.getInstance("JCEKS");
-			InputStream in = new FileInputStream(file);
+			InputStream in = new FileInputStream(new File(this.cipherProperties.getDbKeystorePath()));
 			keyStore.load(in, this.pkiProperties.getKeystorePassword().toCharArray());
-			key = (SecretKey) keyStore.getKey("databaseKey", this.pkiProperties.getKeystorePassword().toCharArray());
 			in.close();
+			key = (SecretKey) keyStore.getKey("databaseKey", this.pkiProperties.getKeystorePassword().toCharArray());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -56,16 +54,15 @@ public class DatabaseCiperConfig {
 				File file = new File(this.cipherProperties.getDbKeystorePath());
 				file.createNewFile();
 
-				KeyStore ks = KeyStore.getInstance("JCEKS");
-				ks.load(null, this.pkiProperties.getKeystorePassword().toCharArray());
+				KeyStore keyStore = KeyStore.getInstance("JCEKS");
+				keyStore.load(null, this.pkiProperties.getKeystorePassword().toCharArray());
 
 				KeyStore.ProtectionParameter protParam = new KeyStore.PasswordProtection(
 						this.pkiProperties.getKeystorePassword().toCharArray());
 
-				KeyStore.SecretKeyEntry skEntry = new KeyStore.SecretKeyEntry(key);
-				ks.setEntry("databaseKey", skEntry, protParam);
-
-				ks.store(new FileOutputStream(file), this.pkiProperties.getKeystorePassword().toCharArray());
+				KeyStore.SecretKeyEntry keyEntry = new KeyStore.SecretKeyEntry(key);
+				keyStore.setEntry("databaseKey", keyEntry, protParam);
+				keyStore.store(new FileOutputStream(file), this.pkiProperties.getKeystorePassword().toCharArray());
 			} 
 			catch (Exception e) {
 				e.printStackTrace();
@@ -75,8 +72,7 @@ public class DatabaseCiperConfig {
 		IvParameterSpec ips = null;
 
 		try {
-			File file = ResourceUtils.getFile(this.cipherProperties.getIpsPath());
-			InputStream in = new FileInputStream(file);
+			InputStream in = new FileInputStream(ResourceUtils.getFile(this.cipherProperties.getIpsPath()));
 			ips = new IvParameterSpec(in.readAllBytes());
 			in.close();
 		} 
@@ -85,27 +81,20 @@ public class DatabaseCiperConfig {
 		}
 
 		if (ips == null) {
-			byte[] iv = new byte[16];
-			new SecureRandom().nextBytes(iv);
-			ips = new IvParameterSpec(iv);
-
-			File file = new File(this.cipherProperties.getIpsPath());
-			FileOutputStream out = null;
-
 			try {
+				byte[] iv = new byte[16];
+				new SecureRandom().nextBytes(iv);
+				ips = new IvParameterSpec(iv);
+
+				File file = new File(this.cipherProperties.getIpsPath());
 				file.createNewFile();
-				out = new FileOutputStream(file);
+				
+				FileOutputStream out = new FileOutputStream(file);
 				out.write(iv);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
+				out.close();
 			}
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			catch(Exception e) {
+				e.printStackTrace();
 			}
 		}
 

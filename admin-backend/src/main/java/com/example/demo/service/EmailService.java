@@ -33,11 +33,10 @@ public class EmailService {
 			Map<String, Object> variables = Map.of("firstName", firstName, "link", String.format(ACTIVATION_URL, link));
 			context.setVariables(variables);
 
-			String html = this.templateEngine.process("activation-mail", context);
 			helper.setTo(to);
-			helper.setText(html, true);
-			helper.setSubject("Activation email - Bezbednost");
 			helper.setFrom("bezbednost.ftn@gmail.com");
+			helper.setSubject("Activation email - Bezbednost");
+			helper.setText(this.templateEngine.process("activation-mail", context), true);
 			this.emailSender.send(message);
 		}
 		catch(Exception e) {
@@ -54,11 +53,10 @@ public class EmailService {
 			Map<String, Object> variables = Map.of("certFileName", certFileName, "secondVariable", secondVariable);
 			context.setVariables(variables);
 
-			String html = this.templateEngine.process(template, context);
 			helper.setTo(to);
-			helper.setText(html, true);
-			helper.setSubject(subject);
 			helper.setFrom("bezbednost.ftn@gmail.com");
+			helper.setSubject(subject);
+			helper.setText(this.templateEngine.process(template, context), true);
 			this.emailSender.send(message);
 		}
 		catch(Exception e) {

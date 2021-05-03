@@ -9,7 +9,6 @@ import com.example.demo.repository.MaliciousIpAddressRepository;
 import lombok.AllArgsConstructor;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
 public class MaliciousIpAddressService {
 
@@ -17,12 +16,10 @@ public class MaliciousIpAddressService {
 	
 	@Transactional(readOnly = false)
 	public MaliciousIpAddress save(MaliciousIpAddress ipAddress) {
-		if (this.hasIpAddress(ipAddress.getName())) {
-			return null;
-		}
-		return this.ipAddressRepository.save(ipAddress);
+		return this.hasIpAddress(ipAddress.getName()) ? null : this.ipAddressRepository.save(ipAddress);
 	}
 	
+	@Transactional(readOnly = true)
 	public boolean hasIpAddress(String ipAddress) {
 		return this.ipAddressRepository.findByName(ipAddress) != null;
 	}

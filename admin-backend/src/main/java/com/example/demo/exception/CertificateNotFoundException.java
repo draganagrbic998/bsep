@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class CertificateNotFoundException extends RuntimeException {
 
 	public CertificateNotFoundException() {
-		super("The certificate was not found");
+		super("The certificate was not found.");
 	}
 	
 }

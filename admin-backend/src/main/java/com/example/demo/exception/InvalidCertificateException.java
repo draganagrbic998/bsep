@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class InvalidCertificateException extends RuntimeException {
 
 	public InvalidCertificateException() {
-		super("The certificate is not valid");
+		super("The certificate is not valid.");
 	}
 	
 }

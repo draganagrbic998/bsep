@@ -16,7 +16,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 
-	private static final String AUTHORIZATION_HEADER = "Authorization";
+	private final static String AUTHORIZATION_HEADER = "Authorization";
 
 	private final UserDetailsService userService;
 	private final TokenUtils tokenUtils;
@@ -26,7 +26,7 @@ public class AuthFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String token = request.getHeader(AUTHORIZATION_HEADER);
-		if (token != null && !token.trim().equals("")) {
+		if (token != null && !token.isBlank()) {
 			UserDetails user = this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
 			if (user != null && this.tokenUtils.validateToken(user, token)) {
 				AuthToken authToken = new AuthToken(user, token);

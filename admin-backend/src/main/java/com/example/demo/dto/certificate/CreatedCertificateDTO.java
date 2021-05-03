@@ -1,6 +1,6 @@
 package com.example.demo.dto.certificate;
 
-import com.example.demo.model.CertificateType;
+import com.example.demo.model.enums.CertificateType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -28,26 +28,11 @@ public class KeyStoreReader {
 		}
 	}
 	
-	public PrivateKey readPrivateKey(String storeName, String storePassword, String alias, String password) {
-		try {
-			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
-			keyStore.load(in, storePassword.toCharArray());
-
-			if (keyStore.isKeyEntry(alias)) {
-				return (PrivateKey) keyStore.getKey(alias, password.toCharArray());
-			}
-			return null;
-		} 
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public IssuerData readIssuerFromStore(String storeName, String alias, char[] storePassword, char[] password) {
 		try {
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
 			this.keyStore.load(in, storePassword);
+			in.close();
 			Certificate certificate = this.keyStore.getCertificate(alias);
 			if (certificate == null)
 				throw new CertificateNotFoundException();
@@ -61,16 +46,26 @@ public class KeyStoreReader {
 		}
 	}
 
+	public PrivateKey readPrivateKey(String storeName, String storePassword, String alias, String password) {
+		try {
+			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
+			keyStore.load(in, storePassword.toCharArray());
+			in.close();
+			return keyStore.isKeyEntry(alias) ? (PrivateKey) keyStore.getKey(alias, password.toCharArray()) : null;
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public Certificate[] readCertificateChain(String storeName, String storePassword, String alias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance("JKS", "SUN");
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(storeName));
 			keyStore.load(in, storePassword.toCharArray());
-
-			if (keyStore.isKeyEntry(alias)) {
-				return keyStore.getCertificateChain(alias);
-			}
-			return null;
+			in.close();
+			return keyStore.isKeyEntry(alias) ? keyStore.getCertificateChain(alias) : null;
 		} 
 		catch (Exception e) {
 			throw new RuntimeException(e);

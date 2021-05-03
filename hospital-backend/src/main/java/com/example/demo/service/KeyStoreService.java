@@ -24,8 +24,8 @@ public class KeyStoreService {
 	}
 
 	public void updateTruststore(String deviceAlias, String certificatePath) {
-		X509Certificate certificate = (X509Certificate) this.keyStoreReader.readCertificate(certificatePath,
-				this.pkiProperties.getKeystorePassword(), deviceAlias);
+		X509Certificate certificate = (X509Certificate) this.keyStoreReader.readCertificate(
+				certificatePath, this.pkiProperties.getKeystorePassword(), deviceAlias);
 		this.keyStoreWriter.updateTrustStore(this.pkiProperties.getKeyAlias(), deviceAlias, certificate,
 				this.pkiProperties.getKeystore(), certificatePath, this.pkiProperties.getKeystorePassword());
 	}

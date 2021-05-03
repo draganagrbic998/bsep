@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class InvalidIssuerException extends RuntimeException {
 
 	public InvalidIssuerException() {
-		super("The issuer is not valid");
+		super("The issuer is not valid.");
 	}
 	
 }

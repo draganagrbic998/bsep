@@ -18,7 +18,7 @@ import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/alarm-triggerings", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/alarm-triggerings", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
 @AllArgsConstructor
 public class AlarmTriggeringController {
@@ -28,14 +28,11 @@ public class AlarmTriggeringController {
 	private final AlarmTriggeringMapper alarmTriggeringMapper;
 
 	@GetMapping
-	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable, @RequestParam boolean low,
-			@RequestParam boolean moderate, @RequestParam boolean high, @RequestParam boolean extreme) {
-		if (this.userService.currentUser().isAdmin()) {
-			return ResponseEntity
-					.ok(this.alarmTriggeringService.findAllForAdmin(pageable, low, moderate, high, extreme).map(AlarmTriggeringDTO::new));
-		}
-		return ResponseEntity
-				.ok(this.alarmTriggeringMapper.map(this.alarmTriggeringService.findAllForDoctor(pageable, low, moderate, high, extreme)));
+	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable,
+			@RequestParam boolean low, @RequestParam boolean moderate, @RequestParam boolean high, @RequestParam boolean extreme) {
+		if (this.userService.currentUser().isAdmin())
+			return ResponseEntity.ok(this.alarmTriggeringService.findAllForAdmin(pageable, low, moderate, high, extreme).map(AlarmTriggeringDTO::new));
+		return ResponseEntity.ok(this.alarmTriggeringService.findAllForDoctor(pageable, low, moderate, high, extreme).map(alarm -> this.alarmTriggeringMapper.map(alarm)));
 	}
 
 }

@@ -1,0 +1,124 @@
+03/05/2021-20:45:11|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:45:11|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:53:15|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:53:15|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:53:17|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:53:17|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:53:23|NORMAL|SUCCESS|127.0.0.1|Configuration successfully fetched.
+03/05/2021-20:53:36|NORMAL|SUCCESS|127.0.0.1|Configuration successfully changed.
+03/05/2021-20:53:37|NORMAL|SUCCESS|127.0.0.1|Configuration successfully fetched.
+03/05/2021-20:53:41|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:53:41|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:53:53|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
+03/05/2021-20:53:54|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:54:08|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid 8d81215f-5422-4e28-9b8d-dd2df4717b4c successfully fetched.
+03/05/2021-20:54:16|NORMAL|SUCCESS|127.0.0.1|User with uuid 8d81215f-5422-4e28-9b8d-dd2df4717b4c successfully activated.
+03/05/2021-20:54:33|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:54:34|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:54:35|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:54:35|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:54:36|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:54:36|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:54:52|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:54:52|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:55:03|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
+03/05/2021-20:55:04|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:55:16|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully deleted.
+03/05/2021-20:55:16|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:55:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:55:19|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:55:20|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:55:20|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:55:25|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:55:25|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:55:25|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-20:55:26|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-20:55:26|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-20:55:26|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-20:55:30|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+03/05/2021-23:39:41|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-23:39:41|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-23:39:43|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-23:39:43|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-23:39:48|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-23:39:48|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+03/05/2021-23:39:49|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-23:39:49|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-23:39:55|NORMAL|SUCCESS|127.0.0.1|Configuration successfully fetched.
+03/05/2021-23:39:57|NORMAL|SUCCESS|127.0.0.1|Configuration successfully changed.
+03/05/2021-23:39:58|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+03/05/2021-23:39:58|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+03/05/2021-23:40:03|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+03/05/2021-23:40:03|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:06:20|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:06:25|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:06:25|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:06:26|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:06:29|NORMAL|SUCCESS|127.0.0.1|Certificate with alias hospital1 successfully fetched.
+04/05/2021-00:06:30|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:06:34|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:06:34|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:06:34|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test1 successfully created.
+04/05/2021-00:06:34|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:06:35|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:08:28|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 2 successfully saved.
+04/05/2021-00:08:31|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:08:38|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:08:42|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 2 successfully fetched.
+04/05/2021-00:08:42|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 2 successfully deleted.
+04/05/2021-00:08:42|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test2 successfully created.
+04/05/2021-00:08:43|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:08:43|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:12:54|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:13:01|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:13:01|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:13:06|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:13:11|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:13:11|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:13:11|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test1 successfully created.
+04/05/2021-00:13:12|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:13:12|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:21:39|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:21:45|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:21:48|NORMAL|ERROR|127.0.0.1|Error occurred while creating certificate with alias test1.
+04/05/2021-00:23:35|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:23:37|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:23:37|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:23:40|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:23:46|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:23:46|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:23:46|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test1 successfully created.
+04/05/2021-00:23:46|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:23:46|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:34:33|NORMAL|SUCCESS|127.0.0.1|Certificate with id 3 successfully revoked.
+04/05/2021-00:49:25|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:49:28|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:49:32|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:49:32|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:49:35|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:49:37|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:49:37|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:49:44|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:49:47|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:49:48|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:49:48|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test1 successfully created.
+04/05/2021-00:49:48|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:49:48|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:51:07|NORMAL|SUCCESS|127.0.0.1|Certificate with id 4 successfully revoked.
+04/05/2021-00:51:22|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:51:24|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:51:29|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:51:29|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:51:29|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test2 successfully created.
+04/05/2021-00:51:30|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:51:30|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:52:56|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully saved.
+04/05/2021-00:52:58|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+04/05/2021-00:53:01|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully fetched.
+04/05/2021-00:53:01|NORMAL|SUCCESS|127.0.0.1|Certificate request with id 1 successfully deleted.
+04/05/2021-00:53:01|NORMAL|SUCCESS|127.0.0.1|Certificate with alias test3 successfully created.
+04/05/2021-00:53:02|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+04/05/2021-00:53:02|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:53:14|NORMAL|SUCCESS|127.0.0.1|Certificate with id 5 successfully revoked.
+04/05/2021-00:53:22|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+04/05/2021-00:53:22|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.

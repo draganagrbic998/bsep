@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class AuthController {
 
@@ -29,29 +29,28 @@ public class AuthController {
 	public ResponseEntity<AuthTokenDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
 		String token = tokenDTO.getToken();
 		User user = (User) this.userService.loadUserByUsername(this.tokenUtils.getEmail(token));
-		if (user != null && this.tokenUtils.validateToken(user, token)) {
+		if (user != null && this.tokenUtils.validateToken(user, token))
 			return ResponseEntity.ok(new AuthTokenDTO(user, token));
-		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 	
-	@PostMapping(value = "/login")
+	@PostMapping("/login")
 	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
 		User user = (User) this.authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())).getPrincipal();
 		return ResponseEntity.ok(new AuthTokenDTO(user, this.tokenUtils.generateToken(user.getEmail())));
 	}
 
-	@PostMapping(value = "/activate")
+	@PostMapping("/activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
 	}
 
-	@GetMapping(value = "/disabled/{uuid}")
+	@GetMapping("/disabled/{uuid}")
 	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
 		return ResponseEntity.ok(new UserDTO(this.userService.getDisabled(uuid)));
 	}
 	
-	@GetMapping(value = "/days/{email}")
+	@GetMapping("/days/{email}")
 	public ResponseEntity<Long> days(@PathVariable String email) {
 		return ResponseEntity.ok(this.userService.days(email));
 	}

@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class CommonlyUsedPasswordException extends RuntimeException {
 
     public CommonlyUsedPasswordException() {
-        super("The chosen password is a commonly used one");
+        super("The chosen password is a commonly used one.");
     }
 
 }

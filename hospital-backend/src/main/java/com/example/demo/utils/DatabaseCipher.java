@@ -15,10 +15,12 @@ import com.example.demo.model.Message;
 import com.example.demo.model.Patient;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DatabaseCipher {
@@ -27,67 +29,60 @@ public class DatabaseCipher {
 	private SecretKey key;
 	private IvParameterSpec ips;
 
-	public String encrypt(String plainText) {
-		byte[] cipherText = null;
-		
-		if (plainText.isBlank())
-			return plainText;
-		
+	public String encrypt(String plainText) {		
+		if (plainText.isBlank()) return plainText;
 		try {
-			this.cipher.init(Cipher.ENCRYPT_MODE, key, ips);
-			cipherText = this.cipher.doFinal(plainText.getBytes());
+			this.cipher.init(Cipher.ENCRYPT_MODE, this.key, this.ips);
+			return Base64.getEncoder().encodeToString(this.cipher.doFinal(plainText.getBytes()));
 		} 
 		catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return Base64.getEncoder().encodeToString(cipherText);
-	}
-
-	public Patient encrypt(Patient patient) {
-		patient.setAddress(this.encrypt(patient.getAddress()));
-		patient.setCity(this.encrypt(patient.getCity()));
-		patient.setFirstName(this.encrypt(patient.getFirstName()));
-		patient.setLastName(this.encrypt(patient.getLastName()));
-		patient.setInsuredNumber(this.encrypt(patient.getInsuredNumber()));
-		return patient;
 	}
 
 	public String decrypt(String cipherText) {
-		byte[] plainText = null;
 		try {
-			this.cipher.init(Cipher.DECRYPT_MODE, key, ips);
-			plainText = this.cipher.doFinal(Base64.getDecoder().decode(cipherText));
+			this.cipher.init(Cipher.DECRYPT_MODE, this.key, this.ips);
+			return new String(this.cipher.doFinal(Base64.getDecoder().decode(cipherText)));
 		} 
 		catch (InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return new String(plainText);
+	}
+
+	public Patient encrypt(Patient patient) {
+		patient.setInsuredNumber(this.encrypt(patient.getInsuredNumber()));
+		patient.setFirstName(this.encrypt(patient.getFirstName()));
+		patient.setLastName(this.encrypt(patient.getLastName()));
+		patient.setAddress(this.encrypt(patient.getAddress()));
+		patient.setCity(this.encrypt(patient.getCity()));
+		return patient;
 	}
 
 	public Patient decrypt(Patient patient) {
-		patient.setAddress(this.decrypt(patient.getAddress()));
-		patient.setCity(this.decrypt(patient.getCity()));
+		patient.setInsuredNumber(this.decrypt(patient.getInsuredNumber()));
 		patient.setFirstName(this.decrypt(patient.getFirstName()));
 		patient.setLastName(this.decrypt(patient.getLastName()));
-		patient.setInsuredNumber(this.decrypt(patient.getInsuredNumber()));
+		patient.setAddress(this.decrypt(patient.getAddress()));
+		patient.setCity(this.decrypt(patient.getCity()));
 		return patient;
 	}
 
 	public Message decrypt(Message message) {
-		Patient p = new Patient();
-		p.setFirstName(this.decrypt(message.getPatient().getFirstName()));
-		p.setLastName(this.decrypt(message.getPatient().getLastName()));
-		p.setInsuredNumber(this.decrypt(message.getPatient().getInsuredNumber()));
-		message.setPatient(p);
+		Patient patient = new Patient();
+		patient.setInsuredNumber(this.decrypt(message.getPatient().getInsuredNumber()));
+		patient.setFirstName(this.decrypt(message.getPatient().getFirstName()));
+		patient.setLastName(this.decrypt(message.getPatient().getLastName()));
+		message.setPatient(patient);
 		return message;
 	}
 
 	public AlarmTriggering decrypt(AlarmTriggering alarmTriggering) {
-		Patient p = new Patient();
-		p.setFirstName(this.decrypt(alarmTriggering.getPatient().getFirstName()));
-		p.setLastName(this.decrypt(alarmTriggering.getPatient().getLastName()));
-		p.setInsuredNumber(this.decrypt(alarmTriggering.getPatient().getInsuredNumber()));
-		alarmTriggering.setPatient(p);
+		Patient patient = new Patient();
+		patient.setInsuredNumber(this.decrypt(alarmTriggering.getPatient().getInsuredNumber()));
+		patient.setFirstName(this.decrypt(alarmTriggering.getPatient().getFirstName()));
+		patient.setLastName(this.decrypt(alarmTriggering.getPatient().getLastName()));
+		alarmTriggering.setPatient(patient);
 		return alarmTriggering;
 	}
 	

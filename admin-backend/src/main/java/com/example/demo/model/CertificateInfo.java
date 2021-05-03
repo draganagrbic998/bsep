@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.example.demo.model.enums.Template;
+
 import java.util.Date;
 
 @Getter
@@ -68,9 +70,7 @@ public class CertificateInfo {
     private Extensions extensions;
 
     public String getIssuerAlias() {
-    	if (this.issuer == null) {
-    		return this.alias;
-    	}
+    	if (this.issuer == null) return this.alias;
     	return this.issuer.getAlias();
     }
     

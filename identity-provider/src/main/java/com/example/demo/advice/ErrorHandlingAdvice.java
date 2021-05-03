@@ -42,12 +42,6 @@ public class ErrorHandlingAdvice {
         return ResponseEntity.badRequest().body(new ErrorDTO("Bad credentials", "BAD_CREDENTIALS"));
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    @ResponseBody
-    public ResponseEntity<Void> onNullPointerException(NullPointerException e){
-        return ResponseEntity.notFound().build();
-    }
-
     @ExceptionHandler
     @ResponseBody
     public ResponseEntity<Void> onException(Exception e){

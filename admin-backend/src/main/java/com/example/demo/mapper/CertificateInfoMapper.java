@@ -23,9 +23,8 @@ public class CertificateInfoMapper {
 		CertificateInfoDTO certificateDTO = new CertificateInfoDTO(certificate);
 		List<CertificateInfo> certificates = this.certificateRepository.findIssued(certificate.getId());
 		certificateDTO.setNumIssued(certificates.size());
-        if (mappingLevel > 0) {
-            certificateDTO.setIssued(certificates.stream().map(ci -> this.map(ci, mappingLevel - 1)).collect(Collectors.toList()));;
-        }
+        if (mappingLevel > 0)
+        	certificateDTO.setIssued(certificates.stream().map(ci -> this.map(ci, mappingLevel - 1)).collect(Collectors.toList()));
 		return certificateDTO;
 	}
 	

@@ -25,7 +25,7 @@ export class ReportComponent implements OnInit {
   getReport(): void{
     this.pending = true;
     // tslint:disable-next-line: deprecation
-    this.reportService.report(this.searchForm.value).subscribe(
+    this.reportService.report(this.searchForm.value.start, this.searchForm.value.end).subscribe(
       (report: Report) => {
         this.pending = false;
         this.report = report;

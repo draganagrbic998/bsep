@@ -15,23 +15,23 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class AuthController {
 
 	private final UserService userService;
 	
-	@PostMapping(value = "/login")
+	@PostMapping("/login")
 	public ResponseEntity<AuthTokenDTO> login(@Valid @RequestBody LoginDTO loginDTO){
 		return ResponseEntity.ok(this.userService.login(loginDTO));
 	}
 
-	@PostMapping(value = "/activate")
+	@PostMapping("/activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
 		return ResponseEntity.ok(this.userService.activate(activationDTO));
 	}
 
-	@GetMapping(value = "/disabled/{uuid}")
+	@GetMapping("/disabled/{uuid}")
 	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
 		return ResponseEntity.ok(this.userService.getDisabled(uuid));
 	}

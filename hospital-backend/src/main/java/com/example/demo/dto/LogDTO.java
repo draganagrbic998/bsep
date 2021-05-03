@@ -3,8 +3,8 @@ package com.example.demo.dto;
 import java.util.Date;
 
 import com.example.demo.model.Log;
-import com.example.demo.model.LogMode;
-import com.example.demo.model.LogStatus;
+import com.example.demo.model.enums.LogMode;
+import com.example.demo.model.enums.LogStatus;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

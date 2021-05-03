@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LoginAttemptService {
 
-    private final int MAX_ATTEMPT = 10;
+    private final static int MAX_ATTEMPT = 10;
     private final LoadingCache<String, Long> attemptsCache;
     private final UserRepository userRepository;
 
@@ -26,10 +26,9 @@ public class LoginAttemptService {
     public LoginAttemptService(UserRepository userRepository) {
         super();
         this.userRepository = userRepository;
-        this.attemptsCache = CacheBuilder.newBuilder().
-                expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<>() {
+        this.attemptsCache = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<>() {
             public Long load(String key) {
-                return 0L;
+                return 0l;
             }
         });
     }
@@ -42,27 +41,26 @@ public class LoginAttemptService {
     @EventListener
     public void loginFailed(AuthenticationFailureBadCredentialsEvent ev) throws AccountBlockedException {
         String email = (String) ev.getAuthentication().getPrincipal();
-        if (email.equalsIgnoreCase("superadmin@gmail.com")) {
-            return;
-        }
+        if (email.equalsIgnoreCase("superadmin@gmail.com")) return;
 
         long attempts;
         try {
             attempts = this.attemptsCache.get(email);
-        } catch (ExecutionException e) {
+        } 
+        catch (ExecutionException e) {
             attempts = 0;
         }
+        
         if (attempts++ < MAX_ATTEMPT) {
             this.attemptsCache.put(email, attempts);
             return;
         }
 
-        User u = this.userRepository.findByEmail(email);
+        User user = this.userRepository.findByEmail(email);
         this.attemptsCache.invalidate(email);
-        if (u == null) return;
-        u.setEnabled(false);
-        this.userRepository.save(u);
-
+        if (user == null) return;
+        user.setEnabled(false);
+        this.userRepository.save(user);
         throw new AccountBlockedException();
     }
 }

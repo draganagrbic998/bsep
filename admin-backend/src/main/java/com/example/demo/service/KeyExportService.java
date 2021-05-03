@@ -19,7 +19,7 @@ public class KeyExportService {
 	public String getCrt(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
 		StringBuilder chainBuilder = new StringBuilder();
-		for (Certificate certificate : chain) {
+		for (Certificate certificate: chain) {
 			String pemCertificate = this.writePem(certificate);
 			chainBuilder.append(pemCertificate);
 		}

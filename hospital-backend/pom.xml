@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>hospital-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bolnica-backend</name>
+	<name>hospital-backend</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -65,6 +65,7 @@
 			<artifactId>kie-ci</artifactId>
 			<version>6.5.0.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-spring</artifactId>
@@ -100,7 +101,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>

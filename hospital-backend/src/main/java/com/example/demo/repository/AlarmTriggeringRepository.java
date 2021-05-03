@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.demo.model.AlarmTriggering;
-import com.example.demo.model.AlarmType;
+import com.example.demo.model.enums.AlarmType;
 
 public interface AlarmTriggeringRepository extends JpaRepository<AlarmTriggering, Long> {
 
@@ -28,7 +28,8 @@ public interface AlarmTriggeringRepository extends JpaRepository<AlarmTriggering
 			+ "order by a.date desc")
 	public Page<AlarmTriggering> filterDoctor(Pageable pageable, boolean low, boolean moderate, boolean high, boolean extreme);
 
-	@Query("select count(a) from AlarmTriggering a where " + "a.type like :type and "
+	@Query("select count(a) from AlarmTriggering a where "
+			+ "a.type like :type and "
 			+ "(cast(:start as date) is null or a.date >= :start) and "
 			+ "(cast(:end as date) is null or a.date <= :end)")
 	public long report(AlarmType type, Date start, Date end);

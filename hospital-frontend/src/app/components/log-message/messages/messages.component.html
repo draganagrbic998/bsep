@@ -19,49 +19,51 @@
     <div class="right">
         <app-form>
             <h2>Search</h2>
-            <form [formGroup]="searchForm" [class.disabled]="pending">
-                <mat-form-field>
-                    <mat-label>Patient insured number</mat-label>
-                    <input 
-                    formControlName="insuredNumber" 
-                    matInput 
-                    placeholder="Enter insured number">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Patient first name</mat-label>
-                    <input 
-                    formControlName="firstName" 
-                    matInput 
-                    placeholder="Enter first name">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Patient last name</mat-label>
-                    <input 
-                    formControlName="lastName" 
-                    matInput 
-                    placeholder="Enter last name">
-                </mat-form-field>
-                <mat-form-field> 
-                    <mat-label>Date</mat-label>
-                    <input 
-                    formControlName="date"
-                    matInput 
-                    placeholder="Enter date"
-                    [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                </mat-form-field>
+            <form [formGroup]="searchForm">
+                <div [class.disabled]="pending">
+                    <mat-form-field>
+                        <mat-label>Patient insured number</mat-label>
+                        <input 
+                        formControlName="insuredNumber" 
+                        matInput 
+                        placeholder="Enter insured number">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Patient first name</mat-label>
+                        <input 
+                        formControlName="firstName" 
+                        matInput 
+                        placeholder="Enter first name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Patient last name</mat-label>
+                        <input 
+                        formControlName="lastName" 
+                        matInput 
+                        placeholder="Enter last name">
+                    </mat-form-field>
+                    <mat-form-field> 
+                        <mat-label>Date</mat-label>
+                        <input 
+                        formControlName="date"
+                        matInput 
+                        placeholder="Enter date"
+                        [matDatepicker]="date">
+                        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                        <mat-datepicker #date></mat-datepicker>
+                    </mat-form-field>    
+                </div>
+                <app-spacer>
+                    <span></span>
+                    <span>
+                        <button 
+                        *ngIf="!pending" 
+                        (click)="fetchMessages(0)"
+                        mat-raised-button>Search</button>
+                        <app-spinner *ngIf="pending"></app-spinner>    
+                    </span>
+                </app-spacer>            
             </form>
-            <app-spacer>
-                <span></span>
-                <span>
-                    <button 
-                    *ngIf="!pending" 
-                    (click)="fetchMessages(0)"
-                    mat-raised-button>Search</button>
-                    <app-spinner *ngIf="pending"></app-spinner>    
-                </span>
-            </app-spacer>        
         </app-form>        
     </div>
 </div>

@@ -34,8 +34,8 @@ public class Extensions {
     @JsonIgnore
     public Set<KeyPurposeId> getEntityKeyPurposeIds() {
         return keyPurposeIds.stream()
-                .map(kpi -> KeyPurposeId.getInstance(id_kp.branch(kpi)))
-                .collect(Collectors.toSet());
+	        .map(kpi -> KeyPurposeId.getInstance(id_kp.branch(kpi)))
+	        .collect(Collectors.toSet());
     }
 
 }

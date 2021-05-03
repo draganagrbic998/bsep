@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")
 @AllArgsConstructor
 public class UserController {
@@ -33,7 +33,7 @@ public class UserController {
 		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
 	}
 
-	@GetMapping(value = "/roles")
+	@GetMapping("/roles")
 	public ResponseEntity<List<RoleDTO>> findAllRoles() {
 		return ResponseEntity.ok(this.userService.findAllRoles().stream().map(RoleDTO::new).collect(Collectors.toList()));
 	}
@@ -43,18 +43,18 @@ public class UserController {
 		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(userDTO))));
 	}
 
-	@PutMapping(value = "/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(id, userDTO))));
 	}
 
-	@DeleteMapping(value = "{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping(value = "/send/{id}")
+	@GetMapping("/send/{id}")
 	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
 		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}

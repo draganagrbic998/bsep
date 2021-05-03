@@ -22,7 +22,7 @@ import com.example.demo.service.CertificateValidationService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping(value = "/api/requests", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/requests", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class CertificateRequestController {
 
@@ -31,20 +31,20 @@ public class CertificateRequestController {
 	private final CertificateRequestService certificateRequestService;
 	private final CertificateRequestMapper certificateRequestMapper;
 
-	@GetMapping(value = "/{serial}")
+	@GetMapping("/{serial}")
 	public ResponseEntity<Boolean> validate(@PathVariable long serial) {
 		return ResponseEntity.ok(this.certificateValidationService.isCertificateValid(serial));
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<Void> create(@Valid @RequestBody CertificateRequestDTO requestDTO) {
 		this.certificateRequestService.save(this.certificateRequestMapper.map(requestDTO));
 		return ResponseEntity.ok().build();			
 	}
 
+	@DeleteMapping("/{serial}")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@DeleteMapping(value = "/{serial}")
 	public ResponseEntity<Void> revoke(@PathVariable long serial) {
 		this.certificateInfoService.revoke(serial, "Revocation requested by hospital admin.");
 		return ResponseEntity.ok().build();			

@@ -12,27 +12,27 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('ADMIN')")
 @AllArgsConstructor
 public class CertificateController {
 
 	private final CertificateService certificateService;
 
-	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	@PostMapping
+	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
 	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO) {
 		this.certificateService.create(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);			
 	}
 
-	@PostMapping(value = "/request")
+	@PostMapping("/request")
 	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
 		this.certificateService.request(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
 
-	@DeleteMapping(value = "/{fileName}")
+	@DeleteMapping("/{fileName}")
 	public ResponseEntity<Void> revoke(@PathVariable String fileName) {
 		this.certificateService.revoke(fileName);
 		return ResponseEntity.noContent().build();

@@ -34,10 +34,10 @@ public class RestConfig {
 		RestTemplate restTemplate = this.restTemplateBuilder.errorHandler(new RestTemplateErrorHandler()).build();
 		
 		try {
-			File file = new File(this.pkiProperties.getRoot());
 			KeyStore keyStore = KeyStore.getInstance("JKS");
-			InputStream inputStream = new FileInputStream(file);
-			keyStore.load(inputStream, this.pkiProperties.getKeystorePassword().toCharArray());
+			InputStream in = new FileInputStream(new File(this.pkiProperties.getRoot()));
+			keyStore.load(in, this.pkiProperties.getKeystorePassword().toCharArray());
+			in.close();
 
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
 					new SSLContextBuilder().loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
@@ -51,7 +51,7 @@ public class RestConfig {
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
-			inputStream.close();
+			in.close();
 		}
 
 		catch (Exception e) {

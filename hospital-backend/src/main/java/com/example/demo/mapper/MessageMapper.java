@@ -2,7 +2,6 @@ package com.example.demo.mapper;
 
 import java.text.SimpleDateFormat;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.MessageDTO;
@@ -17,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MessageMapper {
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
 	
 	private final PatientService patientService;
 	private final DatabaseCipher databaseCipher;
@@ -25,8 +24,7 @@ public class MessageMapper {
 	public Message map(MessageMeasureDTO messageDTO) {
 		try {
 			Message message = new Message();
-			messageDTO.setText(messageDTO.getText().replace(',', '.'));
-			String[] array = messageDTO.getText().split(" ");
+			String[] array = messageDTO.getText().replace(',', '.').split(" ");
 			message.setDate(DATE_FORMAT.parse(array[0].trim().split("=")[1].trim()));
 			message.setPatient(this.patientService.findOne(Long.parseLong(array[1].trim().split("=")[1].trim())));
 			message.setPulse(Double.parseDouble(array[2].trim().split("=")[1].trim()));
@@ -39,9 +37,9 @@ public class MessageMapper {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public Page<MessageDTO> map(Page<Message> messages) {
-		return messages.map(message -> new MessageDTO(this.databaseCipher.decrypt(message)));
+	
+	public MessageDTO map(Message message) {
+		return new MessageDTO(this.databaseCipher.decrypt(message));
 	}
 		
 }

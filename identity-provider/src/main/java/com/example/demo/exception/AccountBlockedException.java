@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class AccountBlockedException extends RuntimeException {
 	
     public AccountBlockedException() {
-        super("The account was disabled. Please contact an administrator in order to reactivate it.");
+        super("The account has been disabled. Please contact an administrator in order to reactivate it.");
     }
 
 }

@@ -4,7 +4,6 @@ import com.example.demo.keystore.KeyStoreReader;
 import com.example.demo.keystore.KeyStoreWriter;
 import com.example.demo.model.CertificateInfo;
 import com.example.demo.model.IssuerData;
-import com.example.demo.utils.Constants;
 import com.example.demo.utils.PkiProperties;
 
 import lombok.AllArgsConstructor;
@@ -54,18 +53,18 @@ public class KeyStoreService {
 				this.pkiProperties.getKeystorePassword().toCharArray());
 	}
 
+	public void updateTrustStore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, String subjectFilename) {
+		this.keyStoreWriter.updateTruststore(issuer, cert, certificate, 
+				CertificateService.CERTIFICATES_FOLDER + issuer.getIssuerAlias() + "_" + issuer.getAlias() + ".jks", 
+				subjectFilename, this.pkiProperties.getRoot(), this.pkiProperties.getKeystorePassword());
+	}
+
 	public String saveSeparateKeys(CertificateInfo issuer, CertificateInfo cert, PrivateKey privateKey, Certificate[] chain) {
-		String filename = Constants.CERTIFICATES_FOLDER + issuer.getAlias() + "_" + cert.getAlias() + ".jks";
+		String filename = CertificateService.CERTIFICATES_FOLDER + issuer.getAlias() + "_" + cert.getAlias() + ".jks";
 		this.keyStoreWriter.loadKeyStore(null, this.pkiProperties.getKeystorePassword().toCharArray());
 		this.keyStoreWriter.write(cert.getAlias(), privateKey, this.pkiProperties.getKeystorePassword().toCharArray(), chain);
 		this.keyStoreWriter.saveKeyStore(filename, this.pkiProperties.getKeystorePassword().toCharArray());
 		return filename;
-	}
-
-	public void updateTrustStore(CertificateInfo issuer, CertificateInfo cert, X509Certificate certificate, String subjectFilename) {
-		String issuerFilename =  Constants.CERTIFICATES_FOLDER + issuer.getIssuerAlias() + "_" + issuer.getAlias() + ".jks";
-		this.keyStoreWriter.addToTruststore(issuer, cert, certificate, issuerFilename, subjectFilename, 
-				this.pkiProperties.getRoot(), this.pkiProperties.getKeystorePassword());
 	}
 
 }

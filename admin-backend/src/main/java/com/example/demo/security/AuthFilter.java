@@ -5,8 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.utils.Constants;
-
 import lombok.AllArgsConstructor;
 
 import javax.servlet.FilterChain;
@@ -18,14 +16,16 @@ import java.io.IOException;
 @AllArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 
+	public final static String AUTHORIZATION_HEADER = "Authorization";
+
 	private final UserDetailsService userService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String token = request.getHeader(Constants.AUTHORIZATION_HEADER);
-		if (token != null && !token.trim().equals("")) {
+		String token = request.getHeader(AUTHORIZATION_HEADER);
+		if (token != null && !token.isBlank()) {
 			UserDetails user = this.userService.loadUserByUsername(token);
 			if (user != null) {
 				AuthToken authToken = new AuthToken(user, token);

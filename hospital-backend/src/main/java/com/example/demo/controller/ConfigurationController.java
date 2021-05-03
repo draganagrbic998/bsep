@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('SUPER_ADMIN')")	
 @AllArgsConstructor
 public class ConfigurationController {
@@ -21,13 +21,13 @@ public class ConfigurationController {
     private final ConfigurationService configurationService;
 
     @GetMapping
-    public ResponseEntity<Configuration> get() {
-        return ResponseEntity.ok(this.configurationService.get());
+    public ResponseEntity<Configuration> getConfiguration() {
+        return ResponseEntity.ok(this.configurationService.getConfiguration());
     }
 
     @PutMapping
-    public ResponseEntity<Void> set(@Valid @RequestBody Configuration configuration) {
-        this.configurationService.set(configuration);
+    public ResponseEntity<Void> setConfiguration(@Valid @RequestBody Configuration configuration) {
+        this.configurationService.setConfiguration(configuration);
         return ResponseEntity.ok().build();
     }
 

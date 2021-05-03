@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 
+import com.example.demo.model.enums.LogMode;
+import com.example.demo.model.enums.LogStatus;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

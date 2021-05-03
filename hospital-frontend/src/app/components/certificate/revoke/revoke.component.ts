@@ -19,7 +19,7 @@ export class RevokeComponent {
   ) { }
 
   pending = false;
-  fileName = new FormControl('', [Validators.required, Validators.pattern(new RegExp('.+_.+_.+\.jks'))]);
+  fileName = new FormControl('', [Validators.required, Validators.pattern(new RegExp('.+_.+\.jks'))]);
 
   confirm(): void {
     if (this.fileName.invalid){

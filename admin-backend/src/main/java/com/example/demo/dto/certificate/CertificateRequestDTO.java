@@ -1,7 +1,7 @@
 package com.example.demo.dto.certificate;
 
 import com.example.demo.model.CertificateRequest;
-import com.example.demo.model.Template;
+import com.example.demo.model.enums.Template;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

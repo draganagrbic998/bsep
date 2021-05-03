@@ -18,7 +18,7 @@ export class MessageService {
 
   findAll(page: number, search: MessageSearch): Observable<Page<Message>>{
     const params = new HttpParams().set('page', page + '').set('size', PAGE_SIZE + '');
-    return this.http.post<Page<Message>>(`${this.API_PATH}/search`, search, {params}).pipe(
+    return this.http.post<Page<Message>>(this.API_PATH, search, {params}).pipe(
       catchError(() => of(EMPTY_PAGE))
     );
   }

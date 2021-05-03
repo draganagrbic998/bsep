@@ -6,7 +6,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.CertificateInfo;
@@ -14,7 +14,7 @@ import com.example.demo.repository.CertificateInfoRepository;
 
 import lombok.AllArgsConstructor;
 
-@Component
+@Service
 @AllArgsConstructor
 public class CertificateValidationService {
 
@@ -31,33 +31,21 @@ public class CertificateValidationService {
 		}
 	}
 
-	@Transactional(readOnly = true)
 	public boolean isCertificateValid(String alias) {
 		Certificate[] chain = this.keyStoreService.readCertificateChain(alias);
-		if (chain == null) {
-			return false;
-		}
+		if (chain == null) return false;
 
-		for (int i = 0; i < chain.length; i++) {
+		for (int i = 0; i < chain.length; ++i) {
 			X509Certificate certificate = (X509Certificate) chain[i];
 			CertificateInfo cert = this.certificateInfoRepository.findById(certificate.getSerialNumber().longValue()).orElse(null);
 
-			if (cert == null) {
+			if (cert == null) return false;
+			if (cert.isRevoked()) return false;
+			if (new Date().after(certificate.getNotAfter()) || new Date().before(certificate.getNotBefore()))
 				return false;
-			}
-
-			if (cert.isRevoked()) {
-				return false;
-			}
-
-			if (new Date().after(certificate.getNotAfter()) || new Date().before(certificate.getNotBefore())) {
-				return false;
-			}
 
 			try {
-				if (i == chain.length - 1) {
-					return this.isSelfSigned(certificate);
-				}
+				if (i == chain.length - 1) return this.isSelfSigned(certificate);
 				X509Certificate issuer = (X509Certificate) chain[i + 1];
 				certificate.verify(issuer.getPublicKey());
 			} 

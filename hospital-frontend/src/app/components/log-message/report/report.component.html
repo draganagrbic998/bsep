@@ -57,38 +57,40 @@
   <div class="right">
     <app-form>
       <h2>Search</h2>
-        <form [formGroup]="searchForm" [class.disabled]="pending">
-          <mat-form-field> 
-            <mat-label>Start date</mat-label>
-            <input 
-            formControlName="start"
-            matInput 
-            placeholder="Enter start date"
-            [matDatepicker]="start">
-            <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
-            <mat-datepicker #start></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field> 
-          <mat-label>End date</mat-label>
-          <input 
-          formControlName="end"
-          matInput 
-          placeholder="Enter end date"
-          [matDatepicker]="end">
-          <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
-          <mat-datepicker #end></mat-datepicker>
-        </mat-form-field>
+        <form [formGroup]="searchForm">
+          <div [class.disabled]="pending">
+            <mat-form-field> 
+              <mat-label>Start date</mat-label>
+              <input 
+              formControlName="start"
+              matInput 
+              placeholder="Enter start date"
+              [matDatepicker]="start">
+              <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
+              <mat-datepicker #start></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field> 
+              <mat-label>End date</mat-label>
+              <input 
+              formControlName="end"
+              matInput 
+              placeholder="Enter end date"
+              [matDatepicker]="end">
+              <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
+              <mat-datepicker #end></mat-datepicker>
+            </mat-form-field>  
+          </div>
+          <app-spacer>
+            <span></span>
+            <span>
+                <button 
+                *ngIf="!pending" 
+                (click)="getReport()"
+                mat-raised-button>Search</button>
+                <app-spinner *ngIf="pending"></app-spinner>    
+            </span>
+          </app-spacer>          
         </form>
-        <app-spacer>
-          <span></span>
-          <span>
-              <button 
-              *ngIf="!pending" 
-              (click)="getReport()"
-              mat-raised-button>Search</button>
-              <app-spinner *ngIf="pending"></app-spinner>    
-          </span>
-      </app-spacer>        
     </app-form>
   </div>
 

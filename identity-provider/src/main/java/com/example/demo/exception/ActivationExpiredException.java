@@ -4,7 +4,7 @@ package com.example.demo.exception;
 public class ActivationExpiredException extends RuntimeException {
 
     public ActivationExpiredException() {
-        super("The activation link has expired");
+        super("The activation link has expired.");
     }
 
 }

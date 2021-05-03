@@ -2,7 +2,7 @@ package rules
 import com.example.demo.model.Message
 import com.example.demo.model.DoctorAlarm
 import com.example.demo.model.AlarmTriggering
-import com.example.demo.model.AlarmRisk
+import com.example.demo.model.enums.AlarmRisk
 import com.example.demo.service.DoctorAlarmService
 import com.example.demo.service.AlarmTriggeringService
 

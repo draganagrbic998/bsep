@@ -9,21 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.model.AlarmRisk;
 import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.Request;
+import com.example.demo.model.enums.AlarmRisk;
 import com.example.demo.service.AlarmTriggeringService;
-import com.example.demo.service.CommonEventService;
 import com.example.demo.service.MaliciousIpAddressService;
+import com.example.demo.service.event.CommonEventService;
+import com.example.demo.utils.AuthenticationProvider;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class RequestFilter extends OncePerRequestFilter {
 	
-	private final CommonEventService commonEventService;
-	private final MaliciousIpAddressService ipAddressService;
 	private final AlarmTriggeringService alarmTriggeringService;
+	private final MaliciousIpAddressService ipAddressService;
+	private final CommonEventService commonEventService;
+	private final AuthenticationProvider authProvider;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -31,14 +33,12 @@ public class RequestFilter extends OncePerRequestFilter {
 		
 		if (request.getServletPath().equals("/auth/login")) {
 			this.commonEventService.addRequest(new Request(true));
-			String ipAddress = request.getHeader("X-Forward-For") != null ? request.getHeader("X-Forward-For") : request.getRemoteAddr();
-			if (this.ipAddressService.hasIpAddress(ipAddress)) {
-				this.alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.MODERATE, "Login attempt from malicious " + ipAddress + " IP address!!"));
-			}
+			if (this.ipAddressService.hasIpAddress(this.authProvider.getIpAddress()))
+				this.alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.MODERATE, 
+						String.format("Login attempt from malicious %s IP address!!", this.authProvider.getIpAddress())));
 		}
-		else {
+		else 
 			this.commonEventService.addRequest(new Request(false));
-		}
 		filterChain.doFilter(request, response);		
 
 	}

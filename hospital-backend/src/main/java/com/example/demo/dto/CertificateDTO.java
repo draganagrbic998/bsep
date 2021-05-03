@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.model.CertificateType;
+import com.example.demo.model.enums.CertificateType;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

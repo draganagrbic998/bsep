@@ -5,9 +5,9 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.model.BlodType;
-import com.example.demo.model.Gender;
 import com.example.demo.model.Patient;
+import com.example.demo.model.enums.BlodType;
+import com.example.demo.model.enums.Gender;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
