@@ -51,7 +51,6 @@ public class RestConfig {
 			requestFactory.setReadTimeout(10000);
 			requestFactory.setConnectTimeout(10000);
 			restTemplate.setRequestFactory(requestFactory);
-			in.close();
 		}
 
 		catch (Exception e) {

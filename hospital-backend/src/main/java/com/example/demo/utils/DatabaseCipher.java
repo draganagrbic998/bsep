@@ -15,13 +15,7 @@ import com.example.demo.model.Message;
 import com.example.demo.model.Patient;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class DatabaseCipher {
 
