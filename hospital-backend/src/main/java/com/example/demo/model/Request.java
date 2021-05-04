@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Role(Role.Type.EVENT)
-@Expires("1s")
+@Expires("60s")
 public class Request {
 
 	private boolean login;
