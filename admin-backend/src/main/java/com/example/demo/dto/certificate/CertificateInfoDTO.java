@@ -21,6 +21,7 @@ public class CertificateInfoDTO {
 	private String commonName;
 	private String organization;
 	private String organizationUnit;
+	private String domain;
 	private String country;
 	private String email;
 	private Template template;
@@ -38,6 +39,7 @@ public class CertificateInfoDTO {
 		this.commonName = certificate.getCommonName();
 		this.organization = certificate.getOrganization();
 		this.organizationUnit = certificate.getOrganizationUnit();
+		this.domain = certificate.getDomain();
 		this.country = certificate.getCountry();
 		this.email = certificate.getEmail();
 		this.template = certificate.getTemplate();

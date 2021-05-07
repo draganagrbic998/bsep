@@ -45,4 +45,6 @@ public class CertificateRequestDTO {
 	
 	private String path;
 	
+	private String domain;
+
 }

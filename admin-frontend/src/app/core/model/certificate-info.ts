@@ -7,6 +7,7 @@ export class CertificateInfo {
     commonName: string;
     organization: string;
     organizationUnit: string;
+    domain: string;
     country: string;
     email: string;
     template: string;

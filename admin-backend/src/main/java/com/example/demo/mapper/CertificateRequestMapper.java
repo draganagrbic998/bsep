@@ -20,6 +20,7 @@ public class CertificateRequestMapper {
 		request.setTemplate(requestDTO.getTemplate());
 		request.setType(CertificateType.valueOf(requestDTO.getType()));
 		request.setPath(requestDTO.getPath());
+		request.setDomain(requestDTO.getDomain());
 		return request;
 	}
 

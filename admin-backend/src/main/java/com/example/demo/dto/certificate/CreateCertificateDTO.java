@@ -45,6 +45,8 @@ public class CreateCertificateDTO {
 	@NotNull(message = "Template cannot be null")
 	private Template template;
 	
+	private String domain;
+	
 	private Extensions extensions;
 	
 }

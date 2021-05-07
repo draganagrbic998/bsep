@@ -17,6 +17,7 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
+      <th>Domain</th>
       <th>Common name</th>
       <th>Alias</th>
       <th>Country</th>
@@ -27,6 +28,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-certReq>
     <tr>
+      <td>{{certReq.domain}}</td>
       <td>{{certReq.commonName}}</td>
       <td>{{certReq.alias}}</td>
       <td>{{certReq.country}}</td>

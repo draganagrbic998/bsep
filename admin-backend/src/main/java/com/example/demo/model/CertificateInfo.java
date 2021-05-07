@@ -38,6 +38,9 @@ public class CertificateInfo {
     private String organizationUnit;
 
     @NotBlank
+    private String domain;
+    
+    @NotBlank
     @Pattern(regexp = "[A-Z]{2}")
     private String country;
 
@@ -68,7 +71,7 @@ public class CertificateInfo {
     
     @OneToOne(cascade = CascadeType.ALL)
     private Extensions extensions;
-
+    
     public String getIssuerAlias() {
     	if (this.issuer == null) return this.alias;
     	return this.issuer.getAlias();

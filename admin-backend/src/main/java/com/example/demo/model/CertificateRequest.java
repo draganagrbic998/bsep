@@ -54,4 +54,6 @@ public class CertificateRequest {
 	@NotBlank
 	private String path;
 
+	@NotBlank
+	private String domain;
 }

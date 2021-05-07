@@ -48,6 +48,9 @@ public class CertificateRequestDTO {
 	@NotBlank(message = "Path cannot be empty")
 	private String path;
 
+	@NotBlank(message = "Domain cannot be empty")
+	private String domain;
+	
 	public CertificateRequestDTO(CertificateRequest certificateRequest) {
 		this.id = certificateRequest.getId();
 		this.alias = certificateRequest.getAlias();
@@ -59,6 +62,7 @@ public class CertificateRequestDTO {
 		this.template = certificateRequest.getTemplate();
 		this.type = certificateRequest.getType().name();
 		this.path = certificateRequest.getPath();
+		this.domain = certificateRequest.getDomain();
 	}
 
 }

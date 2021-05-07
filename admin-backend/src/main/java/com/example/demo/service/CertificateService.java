@@ -149,6 +149,14 @@ public class CertificateService {
 		certificate.setStartDate(subjectData.getStartDate());
 		certificate.setEndDate(subjectData.getEndDate());
 		certificate.setExtensions(certificateDTO.getExtensions());
+		
+		if (certificateDTO.getId() != null) {
+			CertificateRequest request = this.certificateRequestService.findOne(certificateDTO.getId());
+			certificate.setDomain(request.getDomain());
+		} else {
+			certificate.setDomain(certificateDTO.getCommonName());
+		}
+		
 		return certificate;
 	}
 
