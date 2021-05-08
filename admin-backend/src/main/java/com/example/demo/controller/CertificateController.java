@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import javax.validation.Valid;
 
@@ -75,6 +76,15 @@ public class CertificateController {
 	@GetMapping(path = "/download-key/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public ResponseEntity<InputStreamResource> downloadKey(@PathVariable String alias) {
 		ByteArrayInputStream in = new ByteArrayInputStream(this.keyExportService.getKey(alias).getBytes());
+		int length = in.available();
+		InputStreamResource resource = new InputStreamResource(in);
+		return ResponseEntity.ok().contentLength(length).body(resource);
+	}
+
+	@GetMapping(path = "/download-jks/{issuerAlias}/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<InputStreamResource> downloadJks(@PathVariable String alias,
+														   @PathVariable String issuerAlias) throws IOException {
+		ByteArrayInputStream in = new ByteArrayInputStream(this.certificateService.getJks(issuerAlias, alias));
 		int length = in.available();
 		InputStreamResource resource = new InputStreamResource(in);
 		return ResponseEntity.ok().contentLength(length).body(resource);

@@ -17,6 +17,7 @@ import com.example.demo.utils.Logger;
 
 import lombok.AllArgsConstructor;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -60,7 +61,7 @@ public class CertificateService {
 	}
 	
 	@Transactional(readOnly = false)
-	private void save(CreateCertificateDTO certificateDTO) {
+	public void save(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
 		String issuerAlias = certificateDTO.getIssuerAlias();
 		Certificate[] issuerChain = this.keyStoreService.readCertificateChain(issuerAlias);
@@ -103,10 +104,10 @@ public class CertificateService {
 		this.keyStoreService.updateTrustStore(issuerInfo, cert, certificate, 
 			this.keyStoreService.saveSeparateKeys(issuerInfo, cert, keyPair.getPrivate(), chain));
 		
-		byte[] returnValue = null;
+		byte[] returnValue;
 
 		try {
-			InputStream in = new FileInputStream(CERTIFICATES_FOLDER + issuerInfo.getAlias() + "_" + cert.getAlias() + ".jks");
+			InputStream in = new FileInputStream(getJksName(issuerInfo.getAlias(), cert.getAlias()));
 			returnValue = IOUtils.toByteArray(in);
 			in.close();
 		} 
@@ -136,6 +137,13 @@ public class CertificateService {
 
 	}
 
+
+	public byte[] getJks(String issuerAlias,
+						 String alias) throws IOException {
+		File jksFile = new File(getJksName(issuerAlias, alias));
+		return FileUtils.readFileToByteArray(jksFile);
+	}
+
 	private CertificateInfo generateCertificate(SubjectData subjectData, CertificateInfo issuer, CreateCertificateDTO certificateDTO) {
 		CertificateInfo certificate = new CertificateInfo();
 		certificate.setIssuer(issuer);
@@ -160,5 +168,8 @@ public class CertificateService {
 		return certificate;
 	}
 
+	private String getJksName(String issuerAlias, String alias) {
+		return CERTIFICATES_FOLDER + issuerAlias + "_" + alias + ".jks";
+	}
 }
 

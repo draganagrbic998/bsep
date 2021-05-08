@@ -53,13 +53,21 @@ export class CertificateService {
   }
 
   downloadCrt(alias: string): Observable<Blob> {
-    return this.httpClient.get<Blob>(`${this.API_PATH}/download-crt/${alias}`, {responseType: 'blob' as 'json'})
+    return this.httpClient.get<Blob>(`${this.API_PATH}/download-crt/${alias}`,
+      {responseType: 'blob' as 'json'})
     .pipe(catchError(() => of(null)));
   }
 
   downloadKey(alias: string): Observable<Blob> {
-    return this.httpClient.get<Blob>(`${this.API_PATH}/download-key/${alias}`, {responseType: 'blob' as 'json'})
+    return this.httpClient.get<Blob>(`${this.API_PATH}/download-key/${alias}`,
+      {responseType: 'blob' as 'json'})
     .pipe(catchError(() => of(null)));
+  }
+
+  downloadJks(issuerAlias: string, alias: string): Observable<Blob> {
+    return this.httpClient.get<Blob>(`${this.API_PATH}/download-jks/${issuerAlias}/${alias}`,
+      {responseType: 'blob' as 'json'})
+      .pipe(catchError(() => of(null)));
   }
 
 }

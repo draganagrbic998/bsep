@@ -21,21 +21,23 @@
   <p-tabMenu [model]="tabItems" [activeItem]="tabItems[activeIndex]"></p-tabMenu>
   <div>
     <div *ngIf="activeIndex === 0">
-      <app-table-view 
+      <app-table-view
         (openCertificate)="openCertificate($event)"
         (revokeCertificate)="openRevoke($event)"
         (downloadCrt)="downloadCrt($event)"
         (downloadKey)="downloadKey($event)"
+        (downloadJks)="downloadJks($event)"
         (switchCA)="switchCA($event)"
         #table>
       </app-table-view>
     </div>
     <div *ngIf="activeIndex === 1">
-      <app-tree-view 
+      <app-tree-view
         (openCertificate)="openCertificate($event)"
         (revokeCertificate)="openRevoke($event)"
         (downloadCrt)="downloadCrt($event)"
         (downloadKey)="downloadKey($event)"
+        (downloadJks)="downloadJks($event)"
         (switchCA)="switchCA($event)"
         #tree
       ></app-tree-view>

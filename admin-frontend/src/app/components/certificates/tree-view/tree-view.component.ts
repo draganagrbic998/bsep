@@ -20,17 +20,20 @@ export class TreeViewComponent implements AfterViewInit {
   @Output() revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() downloadKey: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() downloadJks: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
   menuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
-    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
+    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)},
+    {icon: 'pi pi-download', label: '.jks', command: () => this.downloadJks.emit(this.context)}
   ];
   oldMenuItems: MenuItem[] = [
     {icon: 'pi pi-info', label: 'Details', command: () => this.openCertificate.emit(this.context)},
     {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(this.context)},
-    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)}
+    {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(this.context)},
+    {icon: 'pi pi-download', label: '.jks', command: () => this.downloadJks.emit(this.context)}
   ];
 
   g: d3.Selection<SVGGElement, unknown, HTMLElement, any>;

@@ -169,3 +169,16 @@
 08/05/2021-14:43:07|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
 08/05/2021-14:43:09|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
 08/05/2021-14:43:10|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:01:24|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:01:24|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:02:22|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:02:22|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:02:47|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:02:47|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:03:30|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:03:31|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:03:55|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:03:55|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:04:09|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-15:04:36|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-15:04:36|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.

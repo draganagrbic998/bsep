@@ -20,6 +20,7 @@ export class TableViewComponent {
   @Output() revokeCertificate: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() downloadCrt: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() downloadKey: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
+  @Output() downloadJks: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
   @Output() switchCA: EventEmitter<CertificateInfo> = new EventEmitter<CertificateInfo>();
 
   certificates: CertificateInfo[] = [];
@@ -54,6 +55,7 @@ export class TableViewComponent {
       {icon: 'pi pi-info', label: 'Details', command: () => this.openCertificate.emit(certificate)},
       {icon: 'pi pi-download', label: '.crt', command: () => this.downloadCrt.emit(certificate)},
       {icon: 'pi pi-download', label: '.key', command: () => this.downloadKey.emit(certificate)},
+      {icon: 'pi pi-download', label: '.jks', command: () => this.downloadJks.emit(certificate)},
     ];
 
     if (certificate.alias !== this.caAlias && certificate.alias !== ROOT_ALIAS && !certificate.revoked) {

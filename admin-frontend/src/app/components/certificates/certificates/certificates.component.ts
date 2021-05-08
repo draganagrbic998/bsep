@@ -127,6 +127,12 @@ export class CertificatesComponent implements OnInit {
     .subscribe((response: Blob) => this.download(response, 'certificate.key'));
   }
 
+  downloadJks(certificate: CertificateInfo): void {
+    this.certificateService.downloadJks(certificate.issuerAlias, certificate.alias)
+      // tslint:disable-next-line: deprecation
+      .subscribe((response: Blob) => this.download(response, 'keystore.jks'));
+  }
+
   getTemplate(value: string): Template {
     return Object.values(extensionTemplates).find((template: Template) => template.enumValue === value);
   }
