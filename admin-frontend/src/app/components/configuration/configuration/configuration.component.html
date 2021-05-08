@@ -47,6 +47,7 @@
   <ng-template #tableView>
     <p-table [value]="configuration.configurations"
              [rowHover]="true"
+             dataKey="id"
              editMode="row">
       <ng-template pTemplate="caption">
         <div class="p-d-flex p-ai-center">
@@ -97,9 +98,9 @@
           </td>
 
           <td style="text-align:center">
-            <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(logConfiguration, ri)" class="p-button-rounded p-button-text"></button>
-            <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(logConfiguration, ri)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
-            <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+            <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(logConfiguration)" class="p-button-rounded p-button-text"></button>
+            <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(logConfiguration)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
+            <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(logConfiguration, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
             <button *ngIf="!editing" pButton type="button" icon="pi pi-trash" (click)="deleteConfiguration(ri)" class="p-button-rounded p-button-text p-button-danger"></button>
           </td>
 

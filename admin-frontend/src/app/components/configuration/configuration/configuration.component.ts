@@ -15,6 +15,7 @@ export class ConfigurationComponent {
   oldConfiguration: { [s: number]: LogConfiguration; } = {};
   loading = false;
   hospitalApiControl: FormControl = new FormControl('');
+  currentId = 1;
 
   constructor(
     private configurationService: ConfigurationService,
@@ -30,7 +31,12 @@ export class ConfigurationComponent {
     // tslint:disable-next-line: deprecation
     this.configurationService.connect(this.hospitalApiControl.value.trim()).subscribe((response: Configuration) => {
       this.loading = false;
+      this.currentId = 1;
       this.configuration = response;
+      this.configuration.configurations = this.configuration.configurations.map(lc => {
+        lc.id = this.currentId++;
+        return lc;
+      });
       if (this.configuration){
         this.hospitalApiControl.disable();
         this.messageService.add({severity: 'success', summary: 'Success', detail: 'Connection established.'});
@@ -62,32 +68,35 @@ export class ConfigurationComponent {
 
   cancel(): void {
     this.configuration = null;
+    this.currentId = 1;
     this.hospitalApiControl.enable();
   }
 
   addConfiguration(): void {
-    this.configuration.configurations.push(new LogConfiguration());
+    const lcfg = new LogConfiguration();
+    lcfg.id = this.currentId++;
+    this.configuration.configurations.push(lcfg);
   }
 
   deleteConfiguration(index: number): void {
     this.configuration.configurations.splice(index, 1);
   }
 
-  onRowEditInit(logConfiguration: LogConfiguration, index: number): void {
-    this.oldConfiguration[index] = logConfiguration;
+  onRowEditInit(logConfiguration: LogConfiguration): void {
+    this.oldConfiguration[logConfiguration.id] = logConfiguration;
   }
 
-  onRowEditSave(configuration: LogConfiguration, index: number): void {
+  onRowEditSave(configuration: LogConfiguration): void {
     if (!this.isValid(configuration)) {
       return;
     }
-    delete this.oldConfiguration[index];
+    delete this.oldConfiguration[configuration.id];
     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Configuration modified'});
   }
 
-  onRowEditCancel(index: number): void {
-    this.configuration.configurations[index] = this.oldConfiguration[index];
-    delete this.oldConfiguration[index];
+  onRowEditCancel(logConfiguration: LogConfiguration, index: number): void {
+    this.configuration.configurations[index] = this.oldConfiguration[logConfiguration.id];
+    delete this.oldConfiguration[logConfiguration.id];
   }
 
   private checkConfiguration(): boolean {
