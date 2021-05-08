@@ -24,31 +24,31 @@ const routes: Routes = [
     path: environment.reportRoute,
     component: ReportComponent,
     canActivate: [AuthGuard],
-    data: {authorities: [USER_ROLE.ADMIN]}
+    data: {roles: [USER_ROLE.ADMIN]}
   },
   {
     path: environment.patientsRoute,
     component: PatientsComponent,
     canActivate: [AuthGuard],
-    data: {authorities: [USER_ROLE.DOCTOR]}
+    data: {roles: [USER_ROLE.DOCTOR]}
   },
   {
     path: environment.messagesRoute,
     component: MessagesComponent,
     canActivate: [AuthGuard],
-    data: {authorities: [USER_ROLE.DOCTOR]}
+    data: {roles: [USER_ROLE.DOCTOR]}
   },
   {
     path: environment.logsRoute,
     component: LogsComponent,
     canActivate: [AuthGuard],
-    data: {authorities: [USER_ROLE.ADMIN]}
+    data: {roles: [USER_ROLE.ADMIN]}
   },
   {
     path: environment.alarmsRoute,
     component: AlarmTriggeringsComponent,
     canActivate: [AuthGuard],
-    data: {authorities: [USER_ROLE.DOCTOR, USER_ROLE.ADMIN]}
+    data: {roles: [USER_ROLE.DOCTOR, USER_ROLE.ADMIN]}
   },
   {
     path: environment.frameRoute,

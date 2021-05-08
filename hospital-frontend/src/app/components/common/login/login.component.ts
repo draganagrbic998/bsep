@@ -8,6 +8,7 @@ import { USER_ROLE } from 'src/app/utils/constants';
 import { StorageService } from 'src/app/services/storage.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
+import {Role} from '../../../models/role';
 
 @Component({
   selector: 'app-login',
@@ -39,11 +40,11 @@ export class LoginComponent {
     this.userService.login(this.loginForm.value).subscribe(
       (token: AuthToken) => {
         this.pending = false;
-        if (token && token.authorities.includes(USER_ROLE.ADMIN)){
+        if (token && token.roles.some((r: Role) => r.name === USER_ROLE.ADMIN)){
           this.storageService.setToken(token);
           this.router.navigate([environment.reportRoute]);
         }
-        else if (token && token.authorities.includes(USER_ROLE.DOCTOR)){
+        else if (token && token.roles.some((r: Role) => r.name === USER_ROLE.DOCTOR)){
           this.storageService.setToken(token);
           this.router.navigate([environment.patientsRoute]);
         }

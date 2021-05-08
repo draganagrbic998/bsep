@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: '',
     component: MainViewComponent,
-    data: {authorities: [USER_ROLE.SUPER_ADMIN]},
+    data: {roles: [USER_ROLE.SUPER_ADMIN]},
     canActivate: [AuthGuard],
     children: [
       {

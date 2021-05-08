@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('SUPER_ADMIN')")
+@PreAuthorize("hasAuthority('READ_USERS')")
 @AllArgsConstructor
 public class UserController {
 
@@ -35,16 +35,19 @@ public class UserController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(this.userService.create(userDTO));
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(this.userService.update(id, userDTO));
 	}
 
 	@DeleteMapping("{id}")
+	@PreAuthorize("hasAuthority('DELETE_USERS')")
 	public ResponseEntity<Void> delete(@PathVariable long id) {
 		this.userService.delete(id);
 		return ResponseEntity.noContent().build();

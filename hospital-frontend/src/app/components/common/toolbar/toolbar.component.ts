@@ -12,6 +12,7 @@ import { USER_ROLE } from 'src/app/utils/constants';
 import { PatientFormComponent } from '../../patient/patient-form/patient-form.component';
 import { FormControl } from '@angular/forms';
 import { PatientService } from 'src/app/services/patient.service';
+import {Role} from '../../../models/role';
 
 @Component({
   selector: 'app-toolbar',
@@ -31,11 +32,11 @@ export class ToolbarComponent {
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
-    return this.storageService.getToken()?.authorities.includes(USER_ROLE.ADMIN);
+    return this.storageService.getToken()?.roles?.some((r: Role) => r.name === USER_ROLE.ADMIN);
   }
 
   get isDoctor(): boolean{
-    return this.storageService.getToken()?.authorities.includes(USER_ROLE.DOCTOR);
+    return this.storageService.getToken()?.roles?.some((r: Role) => r.name === USER_ROLE.DOCTOR);
   }
 
   onRoute(param: string): boolean{

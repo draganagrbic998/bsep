@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('SUPER_ADMIN')")
+@PreAuthorize("hasAuthority('READ_CONFIGURATION')")
 @AllArgsConstructor
 public class ConfigurationController {
 
@@ -26,6 +26,7 @@ public class ConfigurationController {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasAuthority('SAVE_CONFIGURATION')")
 	public ResponseEntity<Void> setConfiguration(@Valid @RequestBody ConfigurationDTO target) {
 		this.configurationService.setConfiguration(target.getUrl(), target.getConfiguration());
 		return ResponseEntity.ok().build();

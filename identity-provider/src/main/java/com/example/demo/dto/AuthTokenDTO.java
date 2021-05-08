@@ -17,13 +17,14 @@ public class AuthTokenDTO {
 
 	private long id;
 	private String token;
+	private List<RoleDTO> roles;
 	private List<String> authorities;
 	
 	public AuthTokenDTO(User user, String token) {
 		super();
 		this.id = user.getId();
 		this.token = token;
+		this.roles = user.getRoles().stream().map(RoleDTO::new).collect(Collectors.toList());
 		this.authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 	}
-
 }

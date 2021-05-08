@@ -156,3 +156,16 @@
 04/05/2021-02:24:16|NORMAL|SUCCESS|127.0.0.1|Certificate with alias hospital1 successfully fetched.
 04/05/2021-02:24:19|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
 04/05/2021-02:24:24|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-14:42:28|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+08/05/2021-14:42:29|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+08/05/2021-14:42:32|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-14:42:32|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-14:42:48|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+08/05/2021-14:42:49|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+08/05/2021-14:42:52|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-14:42:52|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.
+08/05/2021-14:42:57|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-14:43:03|NORMAL|SUCCESS|127.0.0.1|Certificate with alias hospital1 successfully fetched.
+08/05/2021-14:43:07|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.
+08/05/2021-14:43:09|NORMAL|SUCCESS|127.0.0.1|Certificate requests page number 0 successfully fetched.
+08/05/2021-14:43:10|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.

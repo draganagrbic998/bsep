@@ -26,7 +26,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('SUPER_ADMIN')")
+@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 @AllArgsConstructor
 public class CertificateController {
 
@@ -52,12 +52,14 @@ public class CertificateController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('SAVE_CERTIFICATES')")
 	public ResponseEntity<CreateCertificateDTO> create(@Valid @RequestBody CreateCertificateDTO certificateDTO) {
 		this.certificateService.create(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);
 	}
 
 	@PutMapping
+	@PreAuthorize("hasAuthority('REVOKE_CERTIFICATES')")
 	public ResponseEntity<CertificateInfoDTO> revoke(@Valid @RequestBody RevokeDTO revokeDTO) {
 		return ResponseEntity.ok(new CertificateInfoDTO(this.certificateInfoService.revoke(revokeDTO.getId(), revokeDTO.getReason())));
 	}

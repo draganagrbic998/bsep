@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { StorageService } from '../services/storage.service';
 import { USER_ROLE } from '../utils/constants';
+import {Role} from '../model/role';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +21,18 @@ export class AuthGuard implements CanActivate {
       if (!this.storageService.getToken()){
         return true;
       }
-      if (!this.storageService.getToken().authorities?.includes(USER_ROLE.SUPER_ADMIN)){
+      if (!this.storageService.getToken().roles?.some((r: Role) => r.name === USER_ROLE.SUPER_ADMIN)){
         return true;
       }
     }
 
-    for (const authority of route.data.authorities || []){
-      if (this.storageService.getToken()?.authorities.includes(authority)){
+    for (const role of route.data.roles || []){
+      if (this.storageService.getToken().roles?.some((r: Role) => r.name === role)){
         return true;
       }
     }
 
-    if (this.storageService.getToken()?.authorities.includes(USER_ROLE.SUPER_ADMIN)) {
+    if (this.storageService.getToken()?.roles?.some((r: Role) => r.name === USER_ROLE.SUPER_ADMIN)) {
       this.router.navigate(['']);
     }
     else {
