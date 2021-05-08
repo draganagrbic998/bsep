@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthToken } from 'src/app/models/auth-token';
 import { SNACKBAR_CLOSE, SNACKBAR_ERROR, SNACKBAR_ERROR_OPTIONS } from 'src/app/utils/dialog';
-import { ADMIN, DOCTOR } from 'src/app/utils/constants';
+import { USER_ROLE } from 'src/app/utils/constants';
 import { StorageService } from 'src/app/services/storage.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -39,11 +39,11 @@ export class LoginComponent {
     this.userService.login(this.loginForm.value).subscribe(
       (token: AuthToken) => {
         this.pending = false;
-        if (token && token.authorities.includes(ADMIN)){
+        if (token && token.authorities.includes(USER_ROLE.ADMIN)){
           this.storageService.setToken(token);
           this.router.navigate([environment.reportRoute]);
         }
-        else if (token && token.authorities.includes(DOCTOR)){
+        else if (token && token.authorities.includes(USER_ROLE.DOCTOR)){
           this.storageService.setToken(token);
           this.router.navigate([environment.patientsRoute]);
         }

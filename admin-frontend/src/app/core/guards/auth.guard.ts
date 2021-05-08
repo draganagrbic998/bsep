@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { StorageService } from '../services/storage.service';
-import { SUPER_ADMIN } from '../utils/constants';
+import { USER_ROLE } from '../utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       if (!this.storageService.getToken()){
         return true;
       }
-      if (!this.storageService.getToken().authorities?.includes(SUPER_ADMIN)){
+      if (!this.storageService.getToken().authorities?.includes(USER_ROLE.SUPER_ADMIN)){
         return true;
       }
     }
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    if (this.storageService.getToken()?.authorities.includes(SUPER_ADMIN)) {
+    if (this.storageService.getToken()?.authorities.includes(USER_ROLE.SUPER_ADMIN)) {
       this.router.navigate(['']);
     }
     else {

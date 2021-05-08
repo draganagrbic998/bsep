@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AuthToken } from '../model/auth-token';
-import { ADMIN, DOCTOR } from '../utils/constants';
+import { USER_ROLE } from '../utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class StorageService {
 
   setToken(token: AuthToken): void{
     localStorage.setItem(this.TOKEN_KEY, JSON.stringify(token));
-    if (token.authorities.includes(ADMIN) || token.authorities.includes(DOCTOR)){
+    if (token.authorities.includes(USER_ROLE.ADMIN) || token.authorities.includes(USER_ROLE.DOCTOR)){
       (document.getElementById('receiver') as any).contentWindow
       .postMessage(JSON.stringify(token), 'https://localhost:4201');
     }

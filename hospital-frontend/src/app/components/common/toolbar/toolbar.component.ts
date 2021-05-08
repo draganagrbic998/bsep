@@ -8,7 +8,7 @@ import { AdminAlarmComponent } from '../../alarm/admin-alarm/admin-alarm.compone
 import { AdminAlarmsComponent } from '../../alarm/admin-alarms/admin-alarms.component';
 import { RequestComponent } from '../../certificate/request/request.component';
 import { RevokeComponent } from '../../certificate/revoke/revoke.component';
-import { ADMIN, DOCTOR } from 'src/app/utils/constants';
+import { USER_ROLE } from 'src/app/utils/constants';
 import { PatientFormComponent } from '../../patient/patient-form/patient-form.component';
 import { FormControl } from '@angular/forms';
 import { PatientService } from 'src/app/services/patient.service';
@@ -31,11 +31,11 @@ export class ToolbarComponent {
   search: FormControl = new FormControl('');
 
   get isAdmin(): boolean{
-    return this.storageService.getToken()?.authorities.includes(ADMIN);
+    return this.storageService.getToken()?.authorities.includes(USER_ROLE.ADMIN);
   }
 
   get isDoctor(): boolean{
-    return this.storageService.getToken()?.authorities.includes(DOCTOR);
+    return this.storageService.getToken()?.authorities.includes(USER_ROLE.DOCTOR);
   }
 
   onRoute(param: string): boolean{

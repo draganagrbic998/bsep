@@ -4,7 +4,7 @@ import { StorageService } from '../../core/services/storage.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthToken } from 'src/app/core/model/auth-token';
-import { SUPER_ADMIN } from 'src/app/core/utils/constants';
+import { USER_ROLE } from 'src/app/core/utils/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -41,7 +41,7 @@ export class LoginComponent {
       (token: AuthToken) => {
         this.loading = false;
         if (token) {
-          if (token.authorities.includes(SUPER_ADMIN)) {
+          if (token.authorities.includes(USER_ROLE.SUPER_ADMIN)) {
             this.storageService.setToken(token);
             this.router.navigate(['']);
           }
@@ -62,5 +62,4 @@ export class LoginComponent {
         });
       });
   }
-
 }

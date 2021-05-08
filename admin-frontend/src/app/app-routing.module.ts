@@ -11,7 +11,7 @@ import { CertificatesComponent } from './components/certificates/certificates/ce
 import { UsersComponent } from './components/users/users/users.component';
 import { ConfigurationComponent } from './components/configuration/configuration/configuration.component';
 import { AddCertificateComponent } from './components/certificates/add-certificate/add-certificate.component';
-import { SUPER_ADMIN } from './core/utils/constants';
+import { USER_ROLE } from './core/utils/constants';
 import { FrameComponent } from './components/frame/frame.component';
 
 const routes: Routes = [
@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: '',
     component: MainViewComponent,
-    data: {authorities: [SUPER_ADMIN]},
+    data: {authorities: [USER_ROLE.SUPER_ADMIN]},
     canActivate: [AuthGuard],
     children: [
       {
