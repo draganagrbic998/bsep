@@ -20,7 +20,7 @@ public class CertificateController {
 	private final CertificateService certificateService;
 
 	@PostMapping
-	@PreAuthorize("hasAuthority('SUPER_ADMIN')")
+	@PreAuthorize("hasAuthority('SAVE_CERTIFICATES')")
 	public ResponseEntity<CertificateDTO> create(@RequestBody CertificateDTO certificateDTO) {
 		this.certificateService.create(certificateDTO);
 		return ResponseEntity.ok(certificateDTO);			

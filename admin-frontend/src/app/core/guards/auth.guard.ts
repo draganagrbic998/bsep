@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
     }
 
     for (const role of route.data.roles || []){
-      if (this.storageService.getToken().roles?.some((r: Role) => r.name === role)){
+      if (this.storageService.getToken()?.roles?.some((r: Role) => r.name === role)){
         return true;
       }
     }

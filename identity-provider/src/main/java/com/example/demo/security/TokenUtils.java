@@ -20,7 +20,7 @@ public class TokenUtils {
 	@Value("${app-expires}")
 	private long EXPIRES_IN;
 	
-	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
+	private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 	
 	public String generateToken(String email) {
 		return Jwts.builder()

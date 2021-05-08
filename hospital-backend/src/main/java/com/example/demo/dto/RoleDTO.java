@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class AuthTokenDTO {
+public class RoleDTO {
+
 	private long id;
-	private String token;
-	private List<RoleDTO> roles;
-	private List<String> authorities;
+	
+	@NotBlank(message = "Name cannot be null")
+	private String name;
+		
 }
