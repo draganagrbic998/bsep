@@ -15,12 +15,12 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const currentUser = this.storageService.getToken();
+    const token = this.storageService.getToken()?.token;
 
-    if (currentUser && currentUser.token) {
+    if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: currentUser.token
+          Authorization: token
         }
       });
     }

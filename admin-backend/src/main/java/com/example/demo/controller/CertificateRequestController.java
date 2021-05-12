@@ -37,14 +37,14 @@ public class CertificateRequestController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('REQUEST_CERTIFICATES')")
 	public ResponseEntity<Void> create(@Valid @RequestBody CertificateRequestDTO requestDTO) {
 		this.certificateRequestService.save(this.certificateRequestMapper.map(requestDTO));
 		return ResponseEntity.ok().build();			
 	}
 
 	@DeleteMapping("/{serial}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('REQUEST_CERTIFICATES')")
 	public ResponseEntity<Void> revoke(@PathVariable long serial) {
 		this.certificateInfoService.revoke(serial, "Revocation requested by hospital admin.");
 		return ResponseEntity.ok().build();			

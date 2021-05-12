@@ -21,13 +21,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 @AllArgsConstructor
 public class CertificateController {
 
@@ -38,16 +36,19 @@ public class CertificateController {
 	private final KeyExportService keyExportService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 	public ResponseEntity<Page<CertificateInfoDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateInfoService.findAll(pageable).map(certificate -> this.certificateInfoMapper.map(certificate, 0)));
 	}
 
 	@GetMapping("/{alias}")
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 	public ResponseEntity<CertificateInfoDTO> findByAlias(@PathVariable String alias) {
 		return ResponseEntity.ok(this.certificateInfoMapper.map(this.certificateInfoService.findByAlias(alias), 1));
 	}
 
 	@GetMapping("/requests")
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 	public ResponseEntity<Page<CertificateRequestDTO>> findAllRequests(Pageable pageable) {
 		return ResponseEntity.ok(this.certificateRequestService.findAll(pageable).map(CertificateRequestDTO::new));
 	}
@@ -66,6 +67,7 @@ public class CertificateController {
 	}
 
 	@GetMapping(path = "/download-crt/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 	public ResponseEntity<InputStreamResource> downloadCrt(@PathVariable String alias) {
 		ByteArrayInputStream in = new ByteArrayInputStream(this.keyExportService.getCrt(alias).getBytes());
 		int length = in.available();
@@ -74,6 +76,7 @@ public class CertificateController {
 	}
 
 	@GetMapping(path = "/download-key/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
 	public ResponseEntity<InputStreamResource> downloadKey(@PathVariable String alias) {
 		ByteArrayInputStream in = new ByteArrayInputStream(this.keyExportService.getKey(alias).getBytes());
 		int length = in.available();
@@ -82,8 +85,8 @@ public class CertificateController {
 	}
 
 	@GetMapping(path = "/download-jks/{issuerAlias}/{alias}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<InputStreamResource> downloadJks(@PathVariable String alias,
-														   @PathVariable String issuerAlias) throws IOException {
+	@PreAuthorize("hasAuthority('READ_CERTIFICATES')")
+	public ResponseEntity<InputStreamResource> downloadJks(@PathVariable String issuerAlias, @PathVariable String alias) {
 		ByteArrayInputStream in = new ByteArrayInputStream(this.certificateService.getJks(issuerAlias, alias));
 		int length = in.available();
 		InputStreamResource resource = new InputStreamResource(in);

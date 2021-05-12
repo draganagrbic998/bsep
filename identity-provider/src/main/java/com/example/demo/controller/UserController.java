@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('READ_USERS')")
 @AllArgsConstructor
 public class UserController {
 
@@ -29,11 +28,13 @@ public class UserController {
 	private final UserMapper userMapper;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('READ_USERS')")
 	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
 	}
 
 	@GetMapping("/roles")
+	@PreAuthorize("hasAuthority('READ_USERS')")
 	public ResponseEntity<List<RoleDTO>> findAllRoles() {
 		return ResponseEntity.ok(this.userService.findAllRoles().stream().map(RoleDTO::new).collect(Collectors.toList()));
 	}
@@ -58,6 +59,7 @@ public class UserController {
 	}
 
 	@GetMapping("/send/{id}")
+	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
 		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
 	}

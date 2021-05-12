@@ -1,74 +1,18 @@
-03/05/2021-20:53:17|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:53:17|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:53:41|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:53:41|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:53:53|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
-03/05/2021-20:53:54|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:54:08|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid 8d81215f-5422-4e28-9b8d-dd2df4717b4c successfully fetched.
-03/05/2021-20:54:16|NORMAL|SUCCESS|127.0.0.1|User with uuid 8d81215f-5422-4e28-9b8d-dd2df4717b4c successfully activated.
-03/05/2021-20:54:35|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:54:35|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:54:36|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:54:36|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:54:52|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:54:52|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:55:03|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
-03/05/2021-20:55:04|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:55:16|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully deleted.
-03/05/2021-20:55:16|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:55:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:55:19|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-20:55:25|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-20:55:26|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-23:39:43|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-23:39:43|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-23:39:49|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-23:39:49|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-03/05/2021-23:39:58|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-03/05/2021-23:39:58|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-00:57:43|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email doctor@gmail.com successfully fetched.
-04/05/2021-01:01:22|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:22|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:23|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:24|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:25|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:26|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:01:27|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:04:56|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:04:57|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:04:58|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:04:58|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:04:59|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:05:00|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:44|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:45|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:46|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:47|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:48|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:08:48|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:44|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:44|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:45|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:46|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:46|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:10:47|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:32|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:32|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:33|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:34|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:35|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-01:12:35|NORMAL|SUCCESS|127.0.0.1|Inactive days for user with email admin@gmail.com successfully fetched.
-04/05/2021-02:19:56|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-04/05/2021-02:19:57|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:20:05|NORMAL|SUCCESS|127.0.0.1|User with id 2 successfully saved.
-04/05/2021-02:20:05|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:20:26|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-04/05/2021-02:20:26|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:20:35|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
-04/05/2021-02:20:35|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:20:39|NORMAL|SUCCESS|127.0.0.1|User with id 2 successfully saved.
-04/05/2021-02:20:39|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:20:50|NORMAL|SUCCESS|127.0.0.1|User with id 2 successfully saved.
-04/05/2021-02:20:50|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
-04/05/2021-02:21:03|NORMAL|SUCCESS|127.0.0.1|User with id 2 successfully deleted.
-04/05/2021-02:21:03|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:31:38|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-18:31:38|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:31:39|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-18:31:40|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:31:46|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
+12/05/2021-18:31:47|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:32:06|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid 0a6778f8-f834-485b-a806-47ed487e434f successfully fetched.
+12/05/2021-18:32:15|NORMAL|SUCCESS|127.0.0.1|User with uuid 0a6778f8-f834-485b-a806-47ed487e434f successfully activated.
+12/05/2021-18:32:34|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-18:32:34|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:32:40|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
+12/05/2021-18:32:41|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:32:46|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully deleted.
+12/05/2021-18:32:46|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:34:14|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-18:34:14|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-18:34:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-18:34:19|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.

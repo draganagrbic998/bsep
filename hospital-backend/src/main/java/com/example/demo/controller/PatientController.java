@@ -25,7 +25,6 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/api/patients", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('DOCTOR')")	
 @AllArgsConstructor
 public class PatientController {
 
@@ -33,21 +32,25 @@ public class PatientController {
 	private final PatientMapper patientMapper;
 			
 	@GetMapping
+	@PreAuthorize("hasAuthority('READ_PATIENTS')")	
 	public ResponseEntity<Page<PatientDTO>> findAll(Pageable pageable, @RequestParam String search){
 		return ResponseEntity.ok(this.patientService.findAll(pageable, search).map(patient -> this.patientMapper.map(patient)));
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('SAVE_PATIENTS')")	
 	public ResponseEntity<PatientDTO> create(@Valid @RequestBody PatientDTO patientDTO){
 		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(patientDTO))));
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('SAVE_PATIENTS')")	
 	public ResponseEntity<PatientDTO> update(@PathVariable long id, @Valid @RequestBody PatientDTO patientDTO){
 		return ResponseEntity.ok(this.patientMapper.map(this.patientService.save(this.patientMapper.map(id, patientDTO))));
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('DELETE_PATIENTS')")	
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		this.patientService.delete(id);
 		return ResponseEntity.noContent().build();

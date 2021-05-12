@@ -19,7 +19,6 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/api/alarm-triggerings", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
 @AllArgsConstructor
 public class AlarmTriggeringController {
 
@@ -28,6 +27,7 @@ public class AlarmTriggeringController {
 	private final AlarmTriggeringMapper alarmTriggeringMapper;
 
 	@GetMapping
+	@PreAuthorize("hasAnyAuthority('READ_ALARMS')")
 	public ResponseEntity<Page<AlarmTriggeringDTO>> findAll(Pageable pageable,
 			@RequestParam boolean low, @RequestParam boolean moderate, @RequestParam boolean high, @RequestParam boolean extreme) {
 		if (this.userService.currentUser().isAdmin())

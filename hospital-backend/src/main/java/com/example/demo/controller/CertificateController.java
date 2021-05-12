@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/certificates", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('ADMIN')")
 @AllArgsConstructor
 public class CertificateController {
 
@@ -27,12 +26,14 @@ public class CertificateController {
 	}
 
 	@PostMapping("/request")
+	@PreAuthorize("hasAuthority('REQUEST_CERTIFICATES')")
 	public ResponseEntity<CertificateRequestDTO> request(@RequestBody CertificateRequestDTO requestDTO) {
 		this.certificateService.request(requestDTO);
 		return ResponseEntity.ok(requestDTO);
 	}
 
 	@DeleteMapping("/{fileName}")
+	@PreAuthorize("hasAuthority('REQUEST_CERTIFICATES')")
 	public ResponseEntity<Void> revoke(@PathVariable String fileName) {
 		this.certificateService.revoke(fileName);
 		return ResponseEntity.noContent().build();

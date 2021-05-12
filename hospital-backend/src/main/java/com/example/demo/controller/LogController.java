@@ -20,13 +20,13 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/api/logs", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('ADMIN')")	
 @AllArgsConstructor
 public class LogController {
 
 	private final LogService logService;
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('READ_LOGS')")	
 	public ResponseEntity<Page<LogDTO>> findAll(Pageable pageable, @Valid @RequestBody LogSearchDTO searchDTO){
 		return ResponseEntity.ok(this.logService.findAll(pageable, searchDTO.getMode(), searchDTO.getStatus(), 
 				searchDTO.getIpAddress(), searchDTO.getDescription(), searchDTO.getDate()).map(LogDTO::new));

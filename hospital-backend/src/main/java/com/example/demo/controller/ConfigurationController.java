@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/configuration", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('READ_CONFIGURATION')")
 @AllArgsConstructor
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_CONFIGURATION')")
     public ResponseEntity<Configuration> getConfiguration() {
         return ResponseEntity.ok(this.configurationService.getConfiguration());
     }

@@ -137,11 +137,13 @@ public class CertificateService {
 
 	}
 
-
-	public byte[] getJks(String issuerAlias,
-						 String alias) throws IOException {
-		File jksFile = new File(getJksName(issuerAlias, alias));
-		return FileUtils.readFileToByteArray(jksFile);
+	public byte[] getJks(String issuerAlias, String alias) {
+		try {
+			return FileUtils.readFileToByteArray(new File(this.getJksName(issuerAlias, alias)));
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private CertificateInfo generateCertificate(SubjectData subjectData, CertificateInfo issuer, CreateCertificateDTO certificateDTO) {

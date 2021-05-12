@@ -15,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User implements UserDetails {
 
+	private List<String> roles;
 	private List<String> authorities;
 
 	@Override
@@ -53,11 +54,11 @@ public class User implements UserDetails {
 	}
 	
 	public boolean isAdmin() {
-		return this.authorities.stream().anyMatch(auth -> auth.equals("ADMIN"));
+		return this.roles.stream().anyMatch(role -> role.equals("ADMIN"));
 	}
 	
 	public boolean isDoctor() {
-		return this.authorities.stream().anyMatch(auth -> auth.equals("DOCTOR"));
+		return this.roles.stream().anyMatch(role -> role.equals("DOCTOR"));
 	}
-	
+
 }

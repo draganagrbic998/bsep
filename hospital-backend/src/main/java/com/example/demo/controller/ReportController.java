@@ -17,13 +17,13 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/api/report", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('ADMIN')")	
 @AllArgsConstructor
 public class ReportController {
 
 	private final ReportService reportService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('READ_REPORT')")	
 	public ResponseEntity<ReportDTO> report(@RequestParam(required=false) Date start, @RequestParam(required=false) Date end){
 		return ResponseEntity.ok(this.reportService.report(start, end));
 	}

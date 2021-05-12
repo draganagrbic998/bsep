@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { AuthToken } from 'src/app/core/model/auth-token';
 import { USER_ROLE } from 'src/app/core/utils/constants';
 import { AuthService } from 'src/app/core/services/auth.service';
-import {Role} from '../../core/model/role';
 
 @Component({
   selector: 'app-login',
@@ -42,7 +41,7 @@ export class LoginComponent {
       (token: AuthToken) => {
         this.loading = false;
         if (token) {
-          if (token.roles.some((r: Role) => r.name === USER_ROLE.SUPER_ADMIN)) {
+          if (token.roles.includes(USER_ROLE.SUPER_ADMIN)) {
             this.storageService.setToken(token);
             this.router.navigate(['']);
           }

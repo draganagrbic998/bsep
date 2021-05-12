@@ -3,7 +3,6 @@ import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { StorageService } from '../services/storage.service';
 import { USER_ROLE } from './constants';
-import {Role} from '../models/role';
 
 @Injectable({
   providedIn: 'root'
@@ -21,22 +20,22 @@ export class AuthGuard implements CanActivate {
       if (!this.storageService.getToken()){
         return true;
       }
-      if (!this.storageService.getToken().roles?.some((r: Role) => r.name === USER_ROLE.ADMIN) &&
-        !this.storageService.getToken().roles?.some((r: Role) => r.name === USER_ROLE.DOCTOR)){
+      if (!this.storageService.getToken()?.roles.includes(USER_ROLE.ADMIN) &&
+        !this.storageService.getToken()?.roles.includes(USER_ROLE.DOCTOR)){
         return true;
       }
     }
 
     for (const role of route.data.roles || []){
-      if (this.storageService.getToken()?.roles?.some((r: Role) => r.name === role)){
+      if (this.storageService.getToken()?.roles.includes(role)){
         return true;
       }
     }
 
-    if (this.storageService.getToken()?.roles?.some((r: Role) => r.name === USER_ROLE.ADMIN)) {
+    if (this.storageService.getToken()?.roles.includes(USER_ROLE.ADMIN)) {
       this.router.navigate([environment.reportRoute]);
     }
-    else if (this.storageService.getToken()?.roles?.some((r: Role) => r.name === USER_ROLE.DOCTOR)){
+    else if (this.storageService.getToken()?.roles.includes(USER_ROLE.DOCTOR)){
       this.router.navigate([environment.patientsRoute]);
     }
     else {

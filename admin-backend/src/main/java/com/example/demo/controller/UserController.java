@@ -18,18 +18,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAuthority('READ_USERS')")
 @AllArgsConstructor
 public class UserController {
 
 	private final UserService userService;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('READ_USERS')")
 	public ResponseEntity<PageDTO<UserDTO>> findAll(Pageable pageable) {
 		return ResponseEntity.ok(this.userService.findAll(pageable));
 	}
 
 	@GetMapping("/roles")
+	@PreAuthorize("hasAuthority('READ_USERS')")
 	public ResponseEntity<List<RoleDTO>> findAllRoles() {
 		return ResponseEntity.ok(this.userService.findAllRoles());
 	}
@@ -54,6 +55,7 @@ public class UserController {
 	}
 
 	@PostMapping("/send/{id}")
+	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<Void> sendActivationMail(@PathVariable long id) {
 		this.userService.sendActivationMail(id);
 		return ResponseEntity.ok().build();

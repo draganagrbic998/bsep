@@ -35,33 +35,33 @@ public class AlarmController {
 	private final AlarmMapper alarmMapper;
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority('ADMIN')")	
+	@PreAuthorize("hasAuthority('READ_LOG_ALARMS')")	
 	public ResponseEntity<Page<AdminAlarmDTO>> findAll(Pageable pageable){
 		return ResponseEntity.ok(this.adminAlarmService.findAll(pageable).map(AdminAlarmDTO::new));
 	}
 
 	@GetMapping("/{patientId}")
-	@PreAuthorize("hasAuthority('DOCTOR')")	
+	@PreAuthorize("hasAuthority('READ_MESSAGE_ALARMS')")	
 	public ResponseEntity<Page<DoctorAlarmDTO>> findAll(@PathVariable long patientId, Pageable pageable){
 		return ResponseEntity.ok(this.doctorAlarmService.findAll(patientId, pageable).map(DoctorAlarmDTO::new));
 	}
 
 	@PostMapping
-	@PreAuthorize("hasAuthority('ADMIN')")	
+	@PreAuthorize("hasAuthority('SAVE_LOG_ALARMS')")	
 	public ResponseEntity<AdminAlarmDTO> create(@Valid @RequestBody AdminAlarmDTO alarmDTO){
 		this.adminAlarmService.save(this.alarmMapper.map(alarmDTO));
 		return ResponseEntity.ok(alarmDTO);
 	}
 
 	@PostMapping("/{patientId}")
-	@PreAuthorize("hasAuthority('DOCTOR')")	
+	@PreAuthorize("hasAuthority('SAVE_MESSAGE_ALARMS')")	
 	public ResponseEntity<DoctorAlarmDTO> create(@PathVariable long patientId, @Valid @RequestBody DoctorAlarmDTO alarmDTO){
 		this.doctorAlarmService.save(this.alarmMapper.map(patientId, alarmDTO));
 		return ResponseEntity.ok(alarmDTO);
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAnyAuthority('ADMIN','DOCTOR')")
+	@PreAuthorize("hasAnyAuthority('DELETE_ALARMS')")
 	public ResponseEntity<Void> delete(@PathVariable long id){
 		if (this.userService.currentUser().isAdmin())
 			this.adminAlarmService.delete(id);
