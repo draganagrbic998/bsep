@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.security.TokenUtils;
 import com.example.demo.service.UserService;
@@ -24,7 +25,8 @@ public class AuthController {
 	private final UserService userService;
 	private final TokenUtils tokenUtils;
 	private final AuthenticationManager authManager;
-	
+	private final UserMapper userMapper;
+
 	@PostMapping
 	public ResponseEntity<AuthTokenDTO> auth(@Valid @RequestBody TokenDTO tokenDTO){
 		String token = tokenDTO.getToken();
@@ -42,12 +44,12 @@ public class AuthController {
 
 	@PostMapping("/activate")
 	public ResponseEntity<UserDTO> activate(@RequestBody ActivationDTO activationDTO) {
-		return ResponseEntity.ok(new UserDTO(this.userService.activate(activationDTO)));
+		return ResponseEntity.ok(this.userMapper.map(this.userService.activate(activationDTO)));
 	}
 
 	@GetMapping("/disabled/{uuid}")
 	public ResponseEntity<UserDTO> getDisabled(@PathVariable String uuid) {
-		return ResponseEntity.ok(new UserDTO(this.userService.getDisabled(uuid)));
+		return ResponseEntity.ok(this.userMapper.map(this.userService.getDisabled(uuid)));
 	}
 	
 	@GetMapping("/days/{email}")

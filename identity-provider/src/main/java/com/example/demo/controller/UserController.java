@@ -30,7 +30,7 @@ public class UserController {
 	@GetMapping
 	@PreAuthorize("hasAuthority('READ_USERS')")
 	public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
-		return ResponseEntity.ok(this.userService.findAll(pageable).map(UserDTO::new));
+		return ResponseEntity.ok(this.userService.findAll(pageable).map(user -> this.userMapper.map(user)));
 	}
 
 	@GetMapping("/roles")
@@ -42,13 +42,13 @@ public class UserController {
 	@PostMapping
 	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
-		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(userDTO))));
+		return ResponseEntity.ok(this.userMapper.map(this.userService.save(this.userMapper.map(userDTO))));
 	}
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> update(@PathVariable long id, @Valid @RequestBody UserDTO userDTO) {
-		return ResponseEntity.ok(new UserDTO(this.userService.save(this.userMapper.map(id, userDTO))));
+		return ResponseEntity.ok(this.userMapper.map(this.userService.save(this.userMapper.map(id, userDTO))));
 	}
 
 	@DeleteMapping("/{id}")
@@ -61,7 +61,7 @@ public class UserController {
 	@GetMapping("/send/{id}")
 	@PreAuthorize("hasAuthority('SAVE_USERS')")
 	public ResponseEntity<UserDTO> sendActivationMail(@PathVariable long id) {
-		return ResponseEntity.ok(new UserDTO(this.userService.resetActivationLink(id)));
+		return ResponseEntity.ok(this.userMapper.map(this.userService.resetActivationLink(id)));
 	}
 
 }

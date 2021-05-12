@@ -12,3 +12,54 @@
 12/05/2021-20:55:38|NORMAL|SUCCESS|127.0.0.1|Configuration successfully changed.|ConfigurationService
 12/05/2021-22:12:20|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.|CertificateInfoService
 12/05/2021-22:12:20|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.|CertificateInfoService
+12/05/2021-23:19:56|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+12/05/2021-23:19:56|NORMAL|ERROR|127.0.0.1|Error occured while fetching users page number 0.|UserService
+12/05/2021-23:55:53|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+12/05/2021-23:55:53|NORMAL|ERROR|127.0.0.1|Error occured while fetching users page number 0.|UserService
+12/05/2021-23:59:09|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+12/05/2021-23:59:12|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+12/05/2021-23:59:12|NORMAL|ERROR|127.0.0.1|Error occured while fetching users page number 0.|UserService
+13/05/2021-00:00:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:00:22|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:00:22|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:03:05|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:03:33|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:03:33|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:03:37|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:03:37|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:03:50|NORMAL|ERROR|127.0.0.1|Error occured while saving user.|UserService
+13/05/2021-00:03:50|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:07:36|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:07:36|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:07:43|NORMAL|SUCCESS|127.0.0.1|User with id 1 successfully saved.|UserService
+13/05/2021-00:07:43|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:07:52|NORMAL|SUCCESS|127.0.0.1|User with id 1 successfully saved.|UserService
+13/05/2021-00:07:52|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:08:04|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:08:04|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:09:23|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid 472771e5-0d44-4e24-b7b2-75b3de39e335 successfully fetched.|UserService
+13/05/2021-00:09:41|NORMAL|SUCCESS|127.0.0.1|User with uuid 472771e5-0d44-4e24-b7b2-75b3de39e335 successfully activated.|UserService
+13/05/2021-00:10:12|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:10:12|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:13:18|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.|CertificateInfoService
+13/05/2021-00:13:18|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.|CertificateInfoService
+13/05/2021-00:13:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:13:19|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:13:29|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:13:29|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:14:33|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:14:33|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:14:44|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:14:45|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:15:53|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:15:53|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:17:56|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:17:56|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:18:04|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:18:04|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:18:31|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid 80107ded-e999-4399-b3b7-1bd66fa2aa29 successfully fetched.|UserService
+13/05/2021-00:18:38|NORMAL|SUCCESS|127.0.0.1|User with uuid 80107ded-e999-4399-b3b7-1bd66fa2aa29 successfully activated.|UserService
+13/05/2021-00:18:48|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:18:48|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:18:57|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:18:58|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService

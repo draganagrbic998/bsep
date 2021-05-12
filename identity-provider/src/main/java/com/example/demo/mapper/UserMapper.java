@@ -6,6 +6,7 @@ import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.DatabaseCipher;
 
 import lombok.AllArgsConstructor;
 
@@ -19,30 +20,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @AllArgsConstructor
 public class UserMapper {
-	
+
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
-	
+	private final DatabaseCipher databaseCipher;
+
 	@Transactional(readOnly = true)
-    public User map(UserDTO userDTO) {
-    	User user = new User();
-    	this.setModel(user, userDTO);
-        return user;
-    }
-    
+	public User map(UserDTO userDTO) {
+		User user = new User();
+		this.setModel(user, userDTO);
+		return this.databaseCipher.encrypt(user);
+	}
+
 	@Transactional(readOnly = true)
-    public User map(long id, UserDTO userDTO) {
-    	User user = this.userRepository.findById(userDTO.getId()).get();
-    	this.setModel(user, userDTO);
-        return user;
-    }
-    
-    private void setModel(User user, UserDTO userDTO) {
-        user.setEmail(userDTO.getEmail());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        List<Role> roles = this.roleRepository.findAllById(userDTO.getRoles().stream().map(RoleDTO::getId).collect(Collectors.toList()));
-        user.setRoles(new HashSet<>(roles));
-    }
+	public User map(long id, UserDTO userDTO) {
+		User user = this.userRepository.findById(userDTO.getId()).get();
+		this.setModel(user, userDTO);
+		return this.databaseCipher.encrypt(user);
+	}
+
+	public UserDTO map(User user) {
+		return new UserDTO(this.databaseCipher.decrypt(user));
+	}
+
+	private void setModel(User user, UserDTO userDTO) {
+		user.setEmail(userDTO.getEmail());
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+		List<Role> roles = this.roleRepository
+				.findAllById(userDTO.getRoles().stream().map(RoleDTO::getId).collect(Collectors.toList()));
+		user.setRoles(new HashSet<>(roles));
+	}
 
 }

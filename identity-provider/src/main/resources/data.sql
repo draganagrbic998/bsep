@@ -1,10 +1,10 @@
 -- ----------------------------USERS------------------------------
 insert into user_table (email, password, first_name, last_name, enabled, created_date)
-values ('superadmin@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'Pera', 'Peric', true, '2012-12-12');
+values ('superadmin@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'EcQOrvgyeLxlG/n/7Ul2eA==', '7QTj41tvPJi/S4dmwuBoWQ==', true, '2012-12-12');
 insert into user_table (email, password, first_name, last_name, enabled, created_date)
-values ('admin@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'Pera', 'Peric', true, '2012-12-12');
+values ('admin@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'EcQOrvgyeLxlG/n/7Ul2eA==', '7QTj41tvPJi/S4dmwuBoWQ==', true, '2012-12-12');
 insert into user_table (email, password, first_name, last_name, enabled, created_date)
-values ('doctor@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'Pera', 'Peric', true, '2012-12-12');
+values ('doctor@gmail.com', '$2a$10$aL2cRpbMvSsvTcIGxUoauO4RMefDmYtEEARsmKJpwJ7T585HfBsra', 'EcQOrvgyeLxlG/n/7Ul2eA==', '7QTj41tvPJi/S4dmwuBoWQ==', true, '2012-12-12');
 
 -- ----------------------------ROLES------------------------------
 insert into role (name) values ('SUPER_ADMIN');
