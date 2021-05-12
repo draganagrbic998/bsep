@@ -52,6 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().cors().and()
 			.addFilterBefore(new AuthFilter(this.userService, this.tokenUtils), BasicAuthenticationFilter.class)
 			.csrf().disable();
+        http
+	        .headers()
+	        .xssProtection()
+	        .and()
+	        .contentSecurityPolicy("script-src 'self'");
 	}
 		
 }

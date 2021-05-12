@@ -58,6 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.addFilterBefore(new CertificateFilter(this.certificateService), BasicAuthenticationFilter.class)
 			.addFilterBefore(new RequestFilter(this.alarmTriggeringService, this.ipAddressService, this.commonEventService, this.authProvider), BasicAuthenticationFilter.class)
 			.csrf().disable();
+        http
+	        .headers()
+	        .xssProtection()
+	        .and()
+	        .contentSecurityPolicy("script-src 'self'");
 	}
 		
 }
