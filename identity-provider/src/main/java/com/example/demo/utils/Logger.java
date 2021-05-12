@@ -37,4 +37,13 @@ public class Logger {
 		}
 	}
 	
+	public void clearLogFile() {
+		try {
+			FileWriter writer = new FileWriter(LOG_FILE, false);
+			writer.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
