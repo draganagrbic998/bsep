@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.enums.LogStatus;
@@ -40,13 +41,14 @@ public class Logger {
 		}
 	}
 	
-	public void clearLogFile() {
+	@Scheduled(fixedDelay = 60000)
+	public void rotateLogs() {
 		try {
-			FileWriter writer = new FileWriter(LOG_FILE, false);
-			writer.close();
+			new FileWriter(LOG_FILE).close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }
