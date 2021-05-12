@@ -23,6 +23,176 @@ rule "Log with malicious IP address"
 
 end
 
+rule "Alarm for AdminAlarmService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("AdminAlarmService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("AdminAlarmService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from AdminAlarmService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for AlarmTriggeringService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("AlarmTriggeringService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("AlarmTriggeringService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from AlarmTriggeringService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for CertificateService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("CertificateService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("CertificateService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from CertificateService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for ConfigurationService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("ConfigurationService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("ConfigurationService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from ConfigurationService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for DoctorAlarmService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("DoctorAlarmService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("DoctorAlarmService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from DoctorAlarmService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for LogService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("LogService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("LogService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from LogService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for MessageService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("MessageService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("MessageService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from MessageService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for PatientService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("PatientService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("PatientService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from PatientService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for ReportService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("ReportService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("ReportService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from ReportService appeared in the last minute!!"));
+
+end
+
+rule "Alarm for UserService service"
+	no-loop
+
+    when
+		accumulate(
+			Log($log: this, mode == LogMode.ATTACK, service.equals("UserService")),
+			$logsCount: count($log)
+		)
+		Number(intValue <= $logsCount) from accumulate(
+			AdminAlarm(service != null, service.equals("UserService"), $counts: counts) from alarmService.findAll(),
+			min($counts)
+		)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, $logsCount + " number of logs from UserService appeared in the last minute!!"));
+
+end
+
 rule "Alarm for SUCCESS status"
 	no-loop
 

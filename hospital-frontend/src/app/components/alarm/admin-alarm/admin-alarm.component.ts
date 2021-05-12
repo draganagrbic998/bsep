@@ -22,14 +22,22 @@ export class AdminAlarmComponent {
 
   pending = false;
   alarmForm = this.formBuilder.group({
-    status: ['', Validators.required],
+    type: [true, Validators.required],
+    param: ['', Validators.required],
     counts: ['', Validators.required]
   });
 
   confirm(): void{
     this.pending = true;
     // tslint:disable-next-line: deprecation
-    this.alarmService.saveAdmin(this.alarmForm.value).subscribe(
+    const alarmValue = this.alarmForm.value;
+    if (this.alarmForm.value.type){
+      alarmValue.status = this.alarmForm.value.param;
+    }
+    else{
+      alarmValue.service = this.alarmForm.value.param;
+    }
+    this.alarmService.saveAdmin(alarmValue).subscribe(
       (alarm: AdminAlarm) => {
         this.pending = false;
         if (alarm){

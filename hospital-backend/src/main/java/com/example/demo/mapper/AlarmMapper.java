@@ -19,6 +19,7 @@ public class AlarmMapper {
 	public AdminAlarm map(AdminAlarmDTO alarmDTO) {
 		AdminAlarm alarm = new AdminAlarm();
 		alarm.setStatus(alarmDTO.getStatus());
+		alarm.setService(alarmDTO.getService());
 		alarm.setCounts(alarmDTO.getCounts());
 		return alarm;
 	}

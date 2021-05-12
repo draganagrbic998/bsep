@@ -1,10 +1,17 @@
 <app-dialog title="Create new alarm" [pending]="pending" 
 [disabled]="alarmForm.invalid" (confirmed)="confirm()">
     <form [formGroup]="alarmForm" [class.disabled]="pending">
-        <div>
+        <mat-slide-toggle 
+        formControlName="type" 
+        (change)="alarmForm.controls.param.reset(''); alarmForm.controls.counts.reset('')">
+            {{alarmForm.controls.type.value ? 
+                'Alarm for tracking logs status' : 
+                'Alarm for tracking logs origin'}}
+        </mat-slide-toggle>     
+        <div *ngIf="alarmForm.controls.type.value">
             <span>Status: </span>
             <select
-            formControlName="status"
+            formControlName="param"
             [classList]="'form-control'">
                 <option value="" hidden>Select log status</option>
                 <option>SUCCESS</option>
@@ -12,6 +19,24 @@
                 <option>WARNING</option>
                 <option>ERROR</option>
                 <option>FATAL</option>
+            </select>    
+        </div>
+        <div *ngIf="!alarmForm.controls.type.value">
+            <span>Service: </span>
+            <select
+            formControlName="param"
+            [classList]="'form-control'">
+                <option value="" hidden>Select log origin</option>
+                <option>AdminAlarmService</option>
+                <option>AlarmTriggeringService</option>
+                <option>CertificateService</option>
+                <option>ConfigurationService</option>
+                <option>DoctorAlarmService</option>
+                <option>LogService</option>
+                <option>MessageService</option>
+                <option>PatientService</option>
+                <option>ReportService</option>
+                <option>UserService</option>
             </select>    
         </div>
         <div>
