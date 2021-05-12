@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
@@ -45,6 +46,7 @@ public class Log implements HasIpAddress {
 	private LogStatus status;
 	
 	@NotBlank
+	@Pattern(regexp = "[0-9]{1,4}\\.[0-9]{1,4}\\.[0-9]{1,4}.[0-9]{1,4}")
 	private String ipAddress;
 
 	@NotBlank

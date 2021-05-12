@@ -10,6 +10,82 @@ global DoctorAlarmService alarmService
 global AlarmTriggeringService alarmTriggeringService
 
 
+rule "Low oxygen level and low pressure"
+	agenda-group "doctor-alarms"
+	
+    when
+    	Message($oxygenLevel: oxygenLevel, $pressure: pressure, $patient: patient)
+    	Number(doubleValue > $oxygenLevel) from accumulate(
+    		DoctorAlarm(minOxygenLevel != null, $minOxygenLevel: minOxygenLevel) from alarmService.findAll($patient.getId()),
+    		max($minOxygenLevel)
+    	)
+    	Number(doubleValue > $pressure) from accumulate(
+    		DoctorAlarm(minPressure != null, $minPressure: minPressure) from alarmService.findAll($patient.getId()),
+    		max($minPressure)
+    	)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.EXTREME, $patient, 
+        	"Oxygen level fell bellow " + $oxygenLevel + " and pressure fell bellow " + $pressure + "!!"));
+
+end
+
+rule "Low pressure and low pulse"
+	agenda-group "doctor-alarms"
+	
+    when
+    	Message($pressure: pressure, $pulse: pulse, $patient: patient)
+    	Number(doubleValue > $pressure) from accumulate(
+    		DoctorAlarm(minPressure != null, $minPressure: minPressure) from alarmService.findAll($patient.getId()),
+    		max($minPressure)
+    	)
+    	Number(doubleValue > $pulse) from accumulate(
+    		DoctorAlarm(minPulse != null, $minPulse: minPulse) from alarmService.findAll($patient.getId()),
+    		max($minPulse)
+    	)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.EXTREME, $patient,
+        	"Pressure fell bellow " + $pressure + " and pulse fell bellow " + $pulse + "!!"));
+
+end
+
+rule "High pressure and high pulse"
+	agenda-group "doctor-alarms"
+	
+    when
+    	Message($pressure: pressure, $pulse: pulse, $patient: patient)
+    	Number(doubleValue < $pressure) from accumulate(
+    		DoctorAlarm(maxPressure != null, $maxPressure: maxPressure) from alarmService.findAll($patient.getId()),
+    		min($maxPressure)
+    	)
+    	Number(doubleValue < $pulse) from accumulate(
+    		DoctorAlarm(maxPulse != null, $maxPulse: maxPulse) from alarmService.findAll($patient.getId()),
+    		min($maxPulse)
+    	)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.EXTREME, $patient,
+        	"Pressure has reached " + $pressure + " and pulse has reached " + $pulse + "!!"));
+
+end
+
+rule "Low temperature and low pressure"
+	agenda-group "doctor-alarms"
+	
+    when
+    	Message($temperature: temperature, $pressure: pressure, $patient: patient)
+    	Number(doubleValue > $temperature) from accumulate(
+    		DoctorAlarm(minTemperature != null, $minTemperature: minTemperature) from alarmService.findAll($patient.getId()),
+    		max($minTemperature)
+    	)
+    	Number(doubleValue > $pressure) from accumulate(
+    		DoctorAlarm(minPressure != null, $minPressure: minPressure) from alarmService.findAll($patient.getId()),
+    		max($minPressure)
+    	)
+    then
+        alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.EXTREME, $patient, 
+        	"Temperature fell bellow " + $temperature + " and pressure fell bellow " + $pressure + "!!"));
+
+end
+
 rule "High pulse"
 	agenda-group "doctor-alarms"
 	
