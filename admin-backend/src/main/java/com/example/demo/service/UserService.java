@@ -33,10 +33,10 @@ public class UserService implements UserDetailsService {
 	public User loadUserByUsername(String token) {
 		try {
 			return this.restTemplate.exchange(
-					AUTH_API, 
-					HttpMethod.POST, 
-					this.authProvider.getAuthEntity(new TokenDTO(token)), 
-					User.class).getBody();
+				AUTH_API, 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(new TokenDTO(token)), 
+				User.class).getBody();
 		} 
 		catch (Exception e) {
 			return null;
@@ -46,10 +46,10 @@ public class UserService implements UserDetailsService {
 	public AuthTokenDTO login(LoginDTO loginDTO) {
 		try {
 			return this.restTemplate.exchange(
-					AUTH_API + "/login", 
-					HttpMethod.POST, 
-					this.authProvider.getAuthEntity(loginDTO), 
-					AuthTokenDTO.class).getBody();
+				AUTH_API + "/login", 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(loginDTO), 
+				AuthTokenDTO.class).getBody();
 		}
 		catch(Exception e) {
 			throw e;
@@ -60,10 +60,10 @@ public class UserService implements UserDetailsService {
 		try {
 			ParameterizedTypeReference<PageDTO<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
 			PageDTO<UserDTO> response = this.restTemplate.exchange(
-					String.format("%s?page=%d&size=%d", USERS_API, pageable.getPageNumber(), pageable.getPageSize()),
-					HttpMethod.GET,
-					this.authProvider.getAuthEntity(null),
-					responseType).getBody();
+				String.format("%s?page=%d&size=%d", USERS_API, pageable.getPageNumber(), pageable.getPageSize()),
+				HttpMethod.GET,
+				this.authProvider.getAuthEntity(null),
+				responseType).getBody();
 			this.logger.write(LogStatus.SUCCESS, String.format("Users page number %d successfully fetched.", pageable.getPageNumber()));
 			return response;
 		}
@@ -77,10 +77,10 @@ public class UserService implements UserDetailsService {
 		try {
 			ParameterizedTypeReference<List<RoleDTO>> responseType = new ParameterizedTypeReference<>() {};
 			List<RoleDTO> response = this.restTemplate.exchange(
-					USERS_API + "/roles",
-					HttpMethod.GET,
-					this.authProvider.getAuthEntity(null),
-					responseType).getBody();
+				USERS_API + "/roles",
+				HttpMethod.GET,
+				this.authProvider.getAuthEntity(null),
+				responseType).getBody();
 			this.logger.write(LogStatus.SUCCESS, "Roles successfully fetched.");
 			return response;
 		}
@@ -93,10 +93,10 @@ public class UserService implements UserDetailsService {
 	public UserDTO create(UserDTO userDTO) {
 		try {
 			UserDTO user = this.restTemplate.exchange(
-					USERS_API, 
-					HttpMethod.POST, 
-					this.authProvider.getAuthEntity(userDTO), 
-					UserDTO.class).getBody();
+				USERS_API, 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(userDTO), 
+				UserDTO.class).getBody();
 			this.sendActivationMail(user);
 			this.logger.write(LogStatus.SUCCESS, String.format("User with id %d successfully saved.", user.getId()));
 			return user;
@@ -110,10 +110,10 @@ public class UserService implements UserDetailsService {
 	public UserDTO update(long id, UserDTO userDTO) {
 		try {
 			UserDTO response = this.restTemplate.exchange(
-					USERS_API + "/" + id,
-					HttpMethod.PUT,
-					this.authProvider.getAuthEntity(userDTO), 
-					UserDTO.class).getBody();
+				USERS_API + "/" + id,
+				HttpMethod.PUT,
+				this.authProvider.getAuthEntity(userDTO), 
+				UserDTO.class).getBody();
 			this.logger.write(LogStatus.SUCCESS, String.format("User with id %d successfully saved.", response.getId()));
 			return response;
 		}
@@ -126,10 +126,10 @@ public class UserService implements UserDetailsService {
 	public void delete(long id) {
 		try {
 			this.restTemplate.exchange(
-					USERS_API + "/" + id, 
-					HttpMethod.DELETE, 
-					this.authProvider.getAuthEntity(null), 
-					Void.class);
+				USERS_API + "/" + id, 
+				HttpMethod.DELETE, 
+				this.authProvider.getAuthEntity(null), 
+				Void.class);
 			this.logger.write(LogStatus.SUCCESS, String.format("User with id %d successfully deleted.", id));
 		}
 		catch(Exception e) {
@@ -141,10 +141,10 @@ public class UserService implements UserDetailsService {
 	public void sendActivationMail(long id) {
 		try {
 			UserDTO user = this.restTemplate.exchange(
-					USERS_API + "/send/" + id, 
-					HttpMethod.GET, 
-					this.authProvider.getAuthEntity(null), 
-					UserDTO.class).getBody();
+				USERS_API + "/send/" + id, 
+				HttpMethod.GET, 
+				this.authProvider.getAuthEntity(null), 
+				UserDTO.class).getBody();
 			this.sendActivationMail(user);
 			this.logger.write(LogStatus.SUCCESS, String.format("An activation mail has been successfully sent to user with id %d.", id));
 		}
@@ -157,10 +157,10 @@ public class UserService implements UserDetailsService {
 	public UserDTO activate(ActivationDTO activationDTO) {
 		try {
 			UserDTO response = this.restTemplate.exchange(
-					AUTH_API + "/activate", 
-					HttpMethod.POST, 
-					this.authProvider.getAuthEntity(activationDTO), 
-					UserDTO.class).getBody();
+				AUTH_API + "/activate", 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(activationDTO), 
+				UserDTO.class).getBody();
 			this.logger.write(LogStatus.SUCCESS, String.format("User with uuid %s successfully activated.", activationDTO.getUuid()));
 			return response;
 		}
@@ -173,10 +173,10 @@ public class UserService implements UserDetailsService {
 	public UserDTO getDisabled(String uuid) {
 		try {
 			UserDTO response = this.restTemplate.exchange(
-					AUTH_API + "/disabled/" + uuid, 
-					HttpMethod.GET, 
-					this.authProvider.getAuthEntity(null), 
-					UserDTO.class).getBody();
+				AUTH_API + "/disabled/" + uuid, 
+				HttpMethod.GET, 
+				this.authProvider.getAuthEntity(null), 
+				UserDTO.class).getBody();
 			this.logger.write(LogStatus.SUCCESS, String.format("Disabled user with uuid %s successfully fetched.", uuid));
 			return response;
 		}

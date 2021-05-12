@@ -5,4 +5,5 @@ export interface Log{
     status: string;
     ipAddress: string;
     description: string;
+    service: string;
 }

@@ -60,8 +60,17 @@ public class CertificateService {
 		}
 	}
 	
+	public byte[] getJks(String issuerAlias, String alias) {
+		try {
+			return FileUtils.readFileToByteArray(new File(this.getJksName(issuerAlias, alias)));
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Transactional(readOnly = false)
-	public void save(CreateCertificateDTO certificateDTO) {
+	private void save(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
 		String issuerAlias = certificateDTO.getIssuerAlias();
 		Certificate[] issuerChain = this.keyStoreService.readCertificateChain(issuerAlias);
@@ -123,10 +132,10 @@ public class CertificateService {
 			);
 
 			this.restTemplate.exchange(
-					request.getPath(), 
-					HttpMethod.POST, 
-					this.authProvider.getAuthEntity(created), 
-					CreatedCertificateDTO.class);
+				request.getPath(), 
+				HttpMethod.POST, 
+				this.authProvider.getAuthEntity(created), 
+				CreatedCertificateDTO.class);
 			this.certificateRequestService.delete(certificateDTO.getId());
 			
 			this.emailService.sendInfoMail(cert.getEmail(), 
@@ -135,15 +144,6 @@ public class CertificateService {
 					"Certificate Issued - Bezbednost", "certificate-issued");
 		}
 
-	}
-
-	public byte[] getJks(String issuerAlias, String alias) {
-		try {
-			return FileUtils.readFileToByteArray(new File(this.getJksName(issuerAlias, alias)));
-		}
-		catch(Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	private CertificateInfo generateCertificate(SubjectData subjectData, CertificateInfo issuer, CreateCertificateDTO certificateDTO) {

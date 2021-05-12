@@ -5,7 +5,11 @@
             <app-details 
             *ngFor="let log of page.content"
             [date]="log.date"
-            [details]="[{key: 'Mode', value: log.mode}, {key: 'Status', value: log.status}, {key: 'IP address', value: log.ipAddress}]"
+            [details]="[
+                {key: 'Mode', value: log.mode}, 
+                {key: 'Status', value: log.status}, 
+                {key: 'IP address', value: log.ipAddress},
+                {key: 'Service', value: log.service}]"
             [mainDetails]="[{key: 'Description', value: log.description}]"
             ></app-details>
         </app-list>

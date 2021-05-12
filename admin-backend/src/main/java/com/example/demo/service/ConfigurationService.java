@@ -24,10 +24,10 @@ public class ConfigurationService {
     public Configuration getConfiguration(String url) {
     	try {
         	Configuration response = this.restTemplate.exchange(
-        			String.format(CONFIG_URL, url), 
-        			HttpMethod.GET, 
-        			this.authProvider.getAuthEntity(null), 
-        			Configuration.class).getBody();
+    			String.format(CONFIG_URL, url), 
+    			HttpMethod.GET, 
+    			this.authProvider.getAuthEntity(null), 
+    			Configuration.class).getBody();
             this.logger.write(LogStatus.SUCCESS, "Configuration successfully fetched.");   
         	return response;
     	}
@@ -40,10 +40,10 @@ public class ConfigurationService {
     public void setConfiguration(String url, Configuration configuration) {
     	try {
         	this.restTemplate.exchange(
-        			String.format(CONFIG_URL, url), 
-        			HttpMethod.PUT, 
-        			this.authProvider.getAuthEntity(configuration), 
-        			Void.class);
+    			String.format(CONFIG_URL, url), 
+    			HttpMethod.PUT, 
+    			this.authProvider.getAuthEntity(configuration), 
+    			Void.class);
             this.logger.write(LogStatus.SUCCESS, "Configuration successfully changed.");   
     	}
     	catch(Exception e) {

@@ -16,3 +16,15 @@
 12/05/2021-18:34:14|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
 12/05/2021-18:34:19|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
 12/05/2021-18:34:19|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:27:54|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:27:54|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:31:02|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:31:02|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:33:10|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:33:10|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:34:22|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:34:22|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:35:53|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:35:53|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+12/05/2021-20:36:33|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.
+12/05/2021-20:36:33|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.

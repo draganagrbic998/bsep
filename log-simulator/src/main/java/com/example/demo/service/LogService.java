@@ -32,9 +32,9 @@ public class LogService {
 		while (true) {
 			try {
 				FileWriter writer = new FileWriter(LOG_FILE, true);
-				String line = String.format("%s|%s|%s|%s|%s\n", 
+				String line = String.format("%s|%s|%s|%s|%s|%s\n", 
 					new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").format(new Date()), 
-					this.getMode(), this.getStatus(), this.getIpAddress(), this.getDescription());
+					this.getMode(), this.getStatus(), this.getIpAddress(), this.getDescription(), this.getService());
 				writer.write(line);
 				writer.close();
 				Thread.sleep(1000);
@@ -59,6 +59,12 @@ public class LogService {
 
 	public String getDescription() {
 		List<String> temp = Arrays.asList("Description one", "Description two", "Description three", "Description four", "Description five");
+		return temp.get(RANDOM.nextInt(temp.size()));
+	}
+	
+	public String getService() {
+		List<String> temp = Arrays.asList("AdminAlarmService", "AlarmTriggeringService", "CertificateService", "ConfigurationService", 
+			"DoctorAlarmService", "LogService", "MessageService", "PatientService", "ReportService", "UserService");
 		return temp.get(RANDOM.nextInt(temp.size()));
 	}
 

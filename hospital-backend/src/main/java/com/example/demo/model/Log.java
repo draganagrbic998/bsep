@@ -50,6 +50,9 @@ public class Log implements HasIpAddress {
 	@NotBlank
 	private String description;
 
+	@NotBlank
+	private String service;
+
 	@Override
 	public String ipAddress() {
 		return this.ipAddress;

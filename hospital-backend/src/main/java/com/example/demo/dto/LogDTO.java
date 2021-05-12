@@ -21,6 +21,7 @@ public class LogDTO {
 	private LogStatus status;
 	private String ipAddress;
 	private String description;
+	private String service;
 	
 	public LogDTO(Log log) {
 		super();
@@ -30,6 +31,7 @@ public class LogDTO {
 		this.status = log.getStatus();
 		this.ipAddress = log.getIpAddress();
 		this.description = log.getDescription();
+		this.service = log.getService();
 	}
 	
 }
