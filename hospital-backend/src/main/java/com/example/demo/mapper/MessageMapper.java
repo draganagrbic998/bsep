@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MessageMapper {
 
-	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyyTHH:mm:ss");
 	
 	private final PatientService patientService;
 	private final DatabaseCipher databaseCipher;

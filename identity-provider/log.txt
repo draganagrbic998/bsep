@@ -77,3 +77,15 @@
 13/05/2021-00:18:48|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
 13/05/2021-00:18:57|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.
 13/05/2021-00:18:58|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.
+13/05/2021-00:31:58|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:31:58|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:32:03|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:32:04|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:32:15|NORMAL|SUCCESS|127.0.0.1|Disabled user with uuid a33a1f51-19df-4ac0-8d4e-259210027199 successfully fetched.|UserService
+13/05/2021-00:32:23|NORMAL|SUCCESS|127.0.0.1|User with uuid a33a1f51-19df-4ac0-8d4e-259210027199 successfully activated.|UserService
+13/05/2021-00:32:34|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:32:34|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:32:43|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+13/05/2021-00:32:43|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+13/05/2021-00:32:49|NORMAL|SUCCESS|127.0.0.1|User with id 4 successfully saved.|UserService
+13/05/2021-00:32:49|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService

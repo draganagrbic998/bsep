@@ -33,7 +33,7 @@ public class LogService {
 			try {
 				FileWriter writer = new FileWriter(LOG_FILE, true);
 				String line = String.format("%s|%s|%s|%s|%s|%s\n", 
-					new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").format(new Date()), 
+					new SimpleDateFormat("dd/MM/yyyyTHH:mm:ss").format(new Date()), 
 					this.getMode(), this.getStatus(), this.getIpAddress(), this.getDescription(), this.getService());
 				writer.write(line);
 				writer.close();
