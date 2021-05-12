@@ -4,9 +4,7 @@
         <app-details 
         *ngFor="let alarmTriggering of page.content"
         [date]="alarmTriggering.date" [warn]="true"
-        [details]="[
-            {key: 'Patient', value: alarmTriggering.patient},
-            {key: 'Insured number', value: alarmTriggering.insuredNumber}]"
+        [details]="[{key: 'Patient', value: alarmTriggering.patient}]"
         [mainDetails]="[
             {key: 'Message', value: alarmTriggering.message},
             {key: 'Risk level', value: alarmTriggering.risk}]"

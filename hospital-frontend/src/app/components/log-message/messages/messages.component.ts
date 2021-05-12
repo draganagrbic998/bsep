@@ -20,7 +20,6 @@ export class MessagesComponent implements OnInit {
   page: Page<Message> = EMPTY_PAGE;
   pending = true;
   searchForm = this.formBuilder.group({
-    insuredNumber: [''],
     firstName: [''],
     lastName: [''],
     date: ['']

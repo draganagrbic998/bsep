@@ -6,5 +6,4 @@ export interface Message{
     temperature: number;
     oxygenLevel: number;
     patient: string;
-    insuredNumber: string;
 }

@@ -12,9 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MessageSearchDTO {
-
-	@NotNull(message = "Insured number cannot be null")
-	private String insuredNumber;
 	
 	@NotNull(message = "First name cannot be null")
 	private String firstName;

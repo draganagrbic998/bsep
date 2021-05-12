@@ -26,10 +26,9 @@ public class MessageService {
 	private final Logger logger;
 	
 	@Transactional(readOnly = true)
-	public Page<Message> findAll(Pageable pageable, String insuredNumber, String firstName, String lastName, Date date) {
+	public Page<Message> findAll(Pageable pageable, String firstName, String lastName, Date date) {
 		try {
 			Page<Message> response = this.messageRepository.findAll(pageable, 
-				this.databaseCipher.encrypt(insuredNumber), 
 				this.databaseCipher.encrypt(firstName), 
 				this.databaseCipher.encrypt(lastName), 
 				date);

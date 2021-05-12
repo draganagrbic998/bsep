@@ -19,7 +19,6 @@ public class AlarmTriggeringDTO {
 	private AlarmRisk risk;
 	private String message;
 	private String patient;
-	private String insuredNumber;
 
 	public AlarmTriggeringDTO(AlarmTriggering alarmTriggering) {
 		super();
@@ -27,10 +26,8 @@ public class AlarmTriggeringDTO {
 		this.date = alarmTriggering.getDate();
 		this.risk = alarmTriggering.getRisk();
 		this.message = alarmTriggering.getMessage();
-		if (alarmTriggering.getPatient() != null) {
+		if (alarmTriggering.getPatient() != null)
 			this.patient = alarmTriggering.getPatient().getFirstName() + " " + alarmTriggering.getPatient().getLastName();
-			this.insuredNumber = alarmTriggering.getPatient().getInsuredNumber();			
-		}
 	}
 	
 }

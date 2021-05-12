@@ -5,9 +5,7 @@
             <app-details 
             *ngFor="let message of page.content"
             [date]="message.date"
-            [details]="[
-                {key: 'Patient', value: message.patient},
-                {key: 'Insured number', value: message.insuredNumber}]"
+            [details]="[{key: 'Patient', value: message.patient}]"
             [mainDetails]="[
                 {key: 'Pulse', value: message.pulse},
                 {key: 'Pressure', value: message.pressure},
@@ -21,13 +19,6 @@
             <h2>Search</h2>
             <form [formGroup]="searchForm">
                 <div [class.disabled]="pending">
-                    <mat-form-field>
-                        <mat-label>Patient insured number</mat-label>
-                        <input 
-                        formControlName="insuredNumber" 
-                        matInput 
-                        placeholder="Enter insured number">
-                    </mat-form-field>
                     <mat-form-field>
                         <mat-label>Patient first name</mat-label>
                         <input 
