@@ -20,18 +20,18 @@ export class AuthGuard implements CanActivate {
       if (!this.storageService.getToken()){
         return true;
       }
-      if (!this.storageService.getToken()?.roles.includes(USER_ROLE.SUPER_ADMIN)){
+      if (!this.storageService.getToken()?.roles?.includes(USER_ROLE.SUPER_ADMIN)){
         return true;
       }
     }
 
     for (const role of route.data.roles || []){
-      if (this.storageService.getToken()?.roles.includes(role)){
+      if (this.storageService.getToken()?.roles?.includes(role)){
         return true;
       }
     }
 
-    if (this.storageService.getToken()?.roles.includes(USER_ROLE.SUPER_ADMIN)) {
+    if (this.storageService.getToken()?.roles?.includes(USER_ROLE.SUPER_ADMIN)) {
       this.router.navigate(['']);
     }
     else {

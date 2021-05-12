@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
     exports: [
@@ -36,7 +37,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatProgressSpinnerModule,
         MatTableModule,
         MatPaginatorModule,
-        MatRadioModule
+        MatRadioModule,
+        MatSlideToggleModule
     ]
 })
 export class MaterialModule { }

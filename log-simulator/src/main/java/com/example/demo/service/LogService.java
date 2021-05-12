@@ -46,7 +46,8 @@ public class LogService {
 	}
 
 	public LogMode getMode() {
-		return LogMode.values()[RANDOM.nextInt(LogMode.values().length)];
+		return LogMode.ATTACK;
+		//return LogMode.values()[RANDOM.nextInt(LogMode.values().length)];
 	}
 
 	public LogStatus getStatus() {

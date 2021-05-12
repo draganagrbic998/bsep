@@ -20,22 +20,22 @@ export class AuthGuard implements CanActivate {
       if (!this.storageService.getToken()){
         return true;
       }
-      if (!this.storageService.getToken()?.roles.includes(USER_ROLE.ADMIN) &&
-        !this.storageService.getToken()?.roles.includes(USER_ROLE.DOCTOR)){
+      if (!this.storageService.getToken()?.roles?.includes(USER_ROLE.ADMIN) &&
+        !this.storageService.getToken()?.roles?.includes(USER_ROLE.DOCTOR)){
         return true;
       }
     }
 
     for (const role of route.data.roles || []){
-      if (this.storageService.getToken()?.roles.includes(role)){
+      if (this.storageService.getToken()?.roles?.includes(role)){
         return true;
       }
     }
 
-    if (this.storageService.getToken()?.roles.includes(USER_ROLE.ADMIN)) {
+    if (this.storageService.getToken()?.roles?.includes(USER_ROLE.ADMIN)) {
       this.router.navigate([environment.reportRoute]);
     }
-    else if (this.storageService.getToken()?.roles.includes(USER_ROLE.DOCTOR)){
+    else if (this.storageService.getToken()?.roles?.includes(USER_ROLE.DOCTOR)){
       this.router.navigate([environment.patientsRoute]);
     }
     else {
