@@ -52,6 +52,7 @@ public class UserService implements UserDetailsService {
 				AuthTokenDTO.class).getBody();
 		}
 		catch(Exception e) {
+			this.logger.write(LogStatus.ERROR, "Unsuccessful login!");
 			throw e;
 		}
 	}

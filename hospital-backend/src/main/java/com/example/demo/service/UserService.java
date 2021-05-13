@@ -13,9 +13,11 @@ import com.example.demo.model.AlarmTriggering;
 import com.example.demo.model.InvalidLogin;
 import com.example.demo.model.User;
 import com.example.demo.model.enums.AlarmRisk;
+import com.example.demo.model.enums.LogStatus;
 import com.example.demo.service.event.CommonEventService;
 import com.example.demo.utils.AuthenticationProvider;
 import com.example.demo.utils.Constants;
+import com.example.demo.utils.Logger;
 
 import lombok.AllArgsConstructor;
 
@@ -29,6 +31,7 @@ public class UserService implements UserDetailsService {
 	private final CommonEventService commonEventService;
 	private final RestTemplate restTemplate;
 	private final AuthenticationProvider authProvider;
+	private final Logger logger;
 
 	@Override
 	public User loadUserByUsername(String token) {
@@ -58,6 +61,7 @@ public class UserService implements UserDetailsService {
 			if (days >= 90)
 				this.alarmTriggeringService.save(new AlarmTriggering(AlarmRisk.LOW, 
 						String.format("Login attempt on account with %s email inactive for %d days!!", loginDTO.getEmail(), days)));
+			this.logger.write(LogStatus.ERROR, "Unsuccessful login!");
 			throw e;
 		}
 	}

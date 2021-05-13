@@ -60,15 +60,6 @@ public class CertificateService {
 		}
 	}
 	
-	public byte[] getJks(String issuerAlias, String alias) {
-		try {
-			return FileUtils.readFileToByteArray(new File(this.getJksName(issuerAlias, alias)));
-		}
-		catch(Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@Transactional(readOnly = false)
 	private void save(CreateCertificateDTO certificateDTO) {
 		this.keyStoreService.loadKeyStore();
@@ -170,8 +161,18 @@ public class CertificateService {
 		return certificate;
 	}
 
+	public byte[] getJks(String issuerAlias, String alias) {
+		try {
+			return FileUtils.readFileToByteArray(new File(this.getJksName(issuerAlias, alias)));
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private String getJksName(String issuerAlias, String alias) {
 		return CERTIFICATES_FOLDER + issuerAlias + "_" + alias + ".jks";
 	}
+	
 }
 
