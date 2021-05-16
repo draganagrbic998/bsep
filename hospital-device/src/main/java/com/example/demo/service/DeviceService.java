@@ -31,7 +31,7 @@ public class DeviceService {
 		while (true) {
 			try {
 				String text = String.format("Timestamp=%s patient=%d pulse=%.2f pressure=%.2f temperature=%.2f oxygen_level=%.2f", 
-					new SimpleDateFormat("dd/MM/yyyyTHH:mm:ss").format(new Date()), 1, 
+					new SimpleDateFormat("dd/MM/yyyy'T'HH:mm:ss").format(new Date()), 1, 
 					this.getPulse(), this.getPressure(), this.getTemperature(), this.getOxygenLevel());
 				this.restTemplate.postForEntity(MESSAGES_API, new MessageDTO(text), String.class);
 				Thread.sleep(5000);

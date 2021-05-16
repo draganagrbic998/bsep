@@ -73,6 +73,8 @@ public class LogService {
 				if (new File(config.getPath()).exists())
 					new Thread(() -> this.readLogs(CONFIG_VERSION, config.getPath(), config.getInterval(), config.getRegExp())).start();
 			}
+			if (!configuration.getConfigurations().stream().anyMatch(config -> config.getPath().equals(Logger.LOG_FILE)))
+				new Thread(() -> this.readLogs(CONFIG_VERSION, Logger.LOG_FILE, 1000, ".*")).start();
 		}
 		catch(Exception e) {
 			e.printStackTrace();

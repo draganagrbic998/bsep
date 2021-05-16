@@ -16,8 +16,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Logger {
 
-	public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyyTHH:mm:ss");
-	private final static String LOG_FILE = "log.txt";
+	public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy'T'HH:mm:ss");
+	public final static String LOG_FILE = "log.txt";
 	private final static String LOG_PATTERN = "%s|%s|%s|%s|%s|%s\n";
 	
 	private final AuthenticationProvider authProvider;
