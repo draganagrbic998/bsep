@@ -63,7 +63,7 @@ public class LoginAttemptService {
         this.attemptsCache.invalidate(email);
         if (user == null) return;
         user.setEnabled(false);
-        this.userRepository.save(databaseCipher.encrypt(user));
+        this.userRepository.save(this.databaseCipher.encrypt(user));
         throw new AccountBlockedException();
     }
 }
