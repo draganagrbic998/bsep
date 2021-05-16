@@ -8,7 +8,6 @@ import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.utils.DatabaseCipher;
 import com.example.demo.utils.Logger;
 
 import lombok.AllArgsConstructor;
@@ -41,12 +40,11 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final Logger logger;
-	private final DatabaseCipher databaseCipher;
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return this.databaseCipher.decrypt(this.userRepository.findByEmail(username));
+		return this.userRepository.findByEmail(username);
 	}
 
 	@Transactional(readOnly = true)

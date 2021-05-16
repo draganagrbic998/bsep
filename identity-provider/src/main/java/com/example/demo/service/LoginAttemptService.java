@@ -7,7 +7,6 @@ import com.example.demo.utils.DatabaseCipher;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
@@ -22,13 +21,10 @@ public class LoginAttemptService {
     private final static int MAX_ATTEMPT = 10;
     private final LoadingCache<String, Long> attemptsCache;
     private final UserRepository userRepository;
-    private final DatabaseCipher databaseCipher;
 
-    @Autowired
     public LoginAttemptService(UserRepository userRepository, DatabaseCipher databaseCipher) {
         super();
         this.userRepository = userRepository;
-        this.databaseCipher = databaseCipher;
         this.attemptsCache = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<>() {
             public Long load(String key) {
                 return 0l;
@@ -63,7 +59,7 @@ public class LoginAttemptService {
         this.attemptsCache.invalidate(email);
         if (user == null) return;
         user.setEnabled(false);
-        this.userRepository.save(this.databaseCipher.encrypt(user));
+        this.userRepository.save(user);
         throw new AccountBlockedException();
     }
 }
