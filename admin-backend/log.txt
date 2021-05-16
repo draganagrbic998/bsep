@@ -1,0 +1,4 @@
+17/05/2021T01:58:26|NORMAL|SUCCESS|127.0.0.1|Roles successfully fetched.|UserService
+17/05/2021T01:58:26|NORMAL|SUCCESS|127.0.0.1|Users page number 0 successfully fetched.|UserService
+17/05/2021T01:58:27|NORMAL|SUCCESS|127.0.0.1|Certificate with alias root successfully fetched.|CertificateInfoService
+17/05/2021T01:58:27|NORMAL|SUCCESS|127.0.0.1|Certificates page number 0 successfully fetched.|CertificateInfoService

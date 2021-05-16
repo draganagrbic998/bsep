@@ -22,7 +22,6 @@ import com.example.demo.mapper.LogMapper;
 import com.example.demo.model.Configuration;
 import com.example.demo.model.Log;
 import com.example.demo.model.LogConfiguration;
-import com.example.demo.model.enums.LogStatus;
 import com.example.demo.repository.LogRepository;
 import com.example.demo.service.event.LogEventService;
 import com.example.demo.utils.Logger;
@@ -40,21 +39,12 @@ public class LogService {
 	private final LogRepository logRepository;
 	private final LogEventService eventService;
 	private final LogMapper logMapper;
-	private final Logger logger;
 	
 	@Transactional(readOnly = true)
 	public Page<Log> findAll(Pageable pageable, String mode, String status, String ipAddress, String description, Date date) {
-		try {
-			Page<Log> response = this.logRepository.findAll(pageable, 
+		return this.logRepository.findAll(pageable, 
 				mode, status, ipAddress, description,
 				date == null ? "empty" : new SimpleDateFormat("yyyy-MM-dd").format(date));
-			this.logger.write(LogStatus.SUCCESS, String.format("Logs page number %d successfully fetched.", pageable.getPageNumber()));
-			return response;
-		}
-		catch(Exception e) {
-			this.logger.write(LogStatus.ERROR, String.format("Error occured while fetching logs page number %d.", pageable.getPageNumber()));
-			throw e;
-		}
 	}
 
 	@PostConstruct

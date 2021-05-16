@@ -1,1 +1,1 @@
-{"configurations":[{"path":"../log-simulator/log.txt","interval":1000,"regExp":".*"},{"path":"log.txt","interval":1000,"regExp":".*"}]}
+{"configurations":[{"path":"log.txt","interval":10000,"regExp":".*"}]}
