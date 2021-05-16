@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.AccountBlockedException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.utils.DatabaseCipher;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -21,11 +22,13 @@ public class LoginAttemptService {
     private final static int MAX_ATTEMPT = 10;
     private final LoadingCache<String, Long> attemptsCache;
     private final UserRepository userRepository;
+    private final DatabaseCipher databaseCipher;
 
     @Autowired
-    public LoginAttemptService(UserRepository userRepository) {
+    public LoginAttemptService(UserRepository userRepository, DatabaseCipher databaseCipher) {
         super();
         this.userRepository = userRepository;
+        this.databaseCipher = databaseCipher;
         this.attemptsCache = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<>() {
             public Long load(String key) {
                 return 0l;
@@ -60,7 +63,7 @@ public class LoginAttemptService {
         this.attemptsCache.invalidate(email);
         if (user == null) return;
         user.setEnabled(false);
-        this.userRepository.save(user);
+        this.userRepository.save(databaseCipher.encrypt(user));
         throw new AccountBlockedException();
     }
 }
